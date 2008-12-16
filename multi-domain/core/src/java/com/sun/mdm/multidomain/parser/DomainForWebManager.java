@@ -16,6 +16,8 @@ public class DomainForWebManager {
     
     private String mDomainName = null;
     
+    private String mMidmXMLLocation = null;
+    
     private ArrayList<SimpleSearchType> mSearchType = new ArrayList<SimpleSearchType>();
     
     private ArrayList<SearchDetail> mSearchDetail = new ArrayList<SearchDetail>();
@@ -31,6 +33,8 @@ public class DomainForWebManager {
     private int recordDetailSeqValue = 0;
     
     private String validationStr = null;
+    
+    private String mDomainMidmXML = null;
     
     public DomainForWebManager(String name) {
         this.mDomainName = name;
@@ -206,6 +210,22 @@ public class DomainForWebManager {
 
     public String getValidationStr() {
         return validationStr;
+    }
+
+    public String getMidmXMLLocation() {
+        return mMidmXMLLocation;
+    }
+
+    public void setMidmXMLLocation(String midmXMLLocation) {
+        this.mMidmXMLLocation = midmXMLLocation;
+    }
+
+    public String geMDomainMidmXML() {
+        return mDomainMidmXML;
+    }
+
+    public void setDomainMidmXML(String mDomainMidmXML) {
+        this.mDomainMidmXML = mDomainMidmXML;
     }
     
 }

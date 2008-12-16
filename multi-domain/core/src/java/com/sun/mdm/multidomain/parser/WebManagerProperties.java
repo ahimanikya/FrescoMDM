@@ -77,6 +77,8 @@ public class WebManagerProperties {
     
     // testing--raymond tam    
     public static String mTAG_REL_FIELD_IS_SENSITIVE = "is-sensitive";
+
+    public static String mTAG_REL_FIELD_IS_RANGE = "is-range-search";
     
     public static String mTAG_PAGE_IDENTIFIER = "identifier";
     
@@ -87,6 +89,8 @@ public class WebManagerProperties {
     public static String mTAG_SUB_SCREENS = "subscreens";
     
     public static String mTAG_SEARCH_PAGES = "search-pages";
+    
+    public static String mTAG_MIDM_XML_LOCATION = "midm-location";
     
     public static String mTAG_SIMPLE_SEARCH_PAGE = "simple-search-page";
     

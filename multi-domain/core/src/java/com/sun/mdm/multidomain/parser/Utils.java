@@ -218,7 +218,27 @@ public class Utils {
             throw new ParserException("PAR506: Failed to parse: {0}:{1}" + 
                                                     xmlSource.getPublicId() + ":" + ex.getMessage());
         }
-    }    
+    }   
+    
+    /**
+     * @param xmlSource object definition
+     * @return ret EIndexObject
+     * @throws ParserException exception
+     */
+    public static String parseMidmNodeObject(InputSource xmlSource) throws ParserException {
+        try {
+            /**
+            DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+            mDoc = docBuilder.parse(xmlSource);
+             */ 
+            MIDMObjectDef ret = new MIDMObjectDef();
+            return ret.parseMIdmNodeObject(xmlSource);
+        } catch (Exception ex) {
+            throw new ParserException("PAR506: Failed to parse: {0}:{1}" + 
+                                                    xmlSource.getPublicId() + ":" + ex.getMessage());
+        }
+    }       
 /**
      * @param xmlSource object definition
      * @return ret EIndexObject

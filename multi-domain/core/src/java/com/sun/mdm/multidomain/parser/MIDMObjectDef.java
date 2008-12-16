@@ -18,6 +18,19 @@ import java.util.Iterator;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.xml.sax.InputSource;
 
+
+import org.w3c.dom.DOMConfiguration;
+import org.w3c.dom.DOMImplementation;
+
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStreamWriter;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Result;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import org.w3c.dom.Node;
 /**
  *
  * @author wee
@@ -60,6 +73,8 @@ public class MIDMObjectDef {
     
     private static final String FIELD_NODE = "field";
     
+    public static final String DOMAIN_MIDM_NODES = "domain-nodes";
+    
     private static final String INPUT_MASK = "input-mask";
     private static final String VALUE_MASK = "value-mask";
     private static final String KEY_TYPE = "key-type";
@@ -69,6 +84,7 @@ public class MIDMObjectDef {
     private static final String VALUE_LIST = "value-list";
     private static final String VALUE_TYPE = "value-type";
     public static final String FIELD_DELIM = ".";
+    
 
     
     private DocumentBuilder builder;
@@ -80,6 +96,112 @@ public class MIDMObjectDef {
     private String rootObjectName = null;
     
     //private ObjectNode objNode = null;
+    
+    public String parseMIdmNodeObject(InputSource input) throws Exception {
+        String midmNodeStr = null;
+        
+        /**
+        DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+        Document mDoc = docBuilder.parse(input);
+        Element root = mDoc.getDocumentElement();
+        midmNodeStr = writeToString(root);
+        
+         */
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document doc = builder.parse(input);
+        Element root = doc.getDocumentElement();        
+        NodeList children = root.getChildNodes();
+        Node element = null;
+
+        for (int i = 0; i < children.getLength(); i++) {
+            if (children.item(i).getNodeType() == Node.ELEMENT_NODE) {
+                element = children.item(i);
+                 String name = ((Element) children.item(i)).getTagName();
+                if (!name.equals("node")) {
+                    root.removeChild(element);
+                    //Node tempNode = root.a
+                    //root.appendChild((Node) children.item(i));
+                }
+                //break;
+            }
+        }
+        
+        
+        root.removeAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "noNamespaceSchemaLocation");
+        //root.setAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "noNamespaceSchemaLocation", "schema/MultiDomainWebManager.xsd");
+        byte[] webXml = transformToXML(doc);
+        //return new String(webXml);
+
+        return new String(webXml);
+    }
+    
+    public String writeToString(Element rootMIDM) throws IOException, Exception {
+        //XMLWriterUtil xmlDoc = new XMLWriterUtil();
+        Document xmldoc = null;
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        DOMImplementation impl = builder.getDOMImplementation();
+        xmldoc = impl.createDocument(null, DOMAIN_MIDM_NODES, null);
+
+        Element root = xmldoc.getDocumentElement();
+        NodeList children = rootMIDM.getChildNodes();
+        Node element = null;
+
+        for (int i = 0; i < children.getLength(); i++) {
+            if (children.item(i).getNodeType() == Node.ELEMENT_NODE) {
+                element = children.item(i);
+                 String name = ((Element) children.item(i)).getTagName();
+                if (!name.equals("node")) {
+                    rootMIDM.removeChild(element);
+                    //Node tempNode = root.a
+                    //root.appendChild((Node) children.item(i));
+                }
+                //break;
+            }
+        }
+        
+        /**
+            
+        if (null != element && ((Element) element).getTagName().equals("midm") && element.hasChildNodes()) {
+            NodeList nl1 = element.getChildNodes();
+            for (int i1 = 0; i1 < nl1.getLength(); i1++) {
+                if (nl1.item(i1).getNodeType() == Node.ELEMENT_NODE) {
+                    String name = ((Element) children.item(i1)).getTagName();
+                    if (name.equals("node")) {
+                        root.appendChild(nl1.item(i1));
+                    }
+                }
+            }
+        }
+         */ 
+    
+        root.setAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "noNamespaceSchemaLocation", "schema/MultiDomainWebManager.xsd");
+        byte[] webXml = transformToXML(xmldoc);
+        return new String(webXml);
+
+    }
+    
+    public byte[] transformToXML(Document xmldoc) throws Exception {
+        DOMConfiguration domConfig = xmldoc.getDomConfig();
+        //domConfig.setParameter("format-pretty-print", "true");
+        DOMSource domSource = new DOMSource(xmldoc);
+        TransformerFactory tf = TransformerFactory.newInstance();
+        tf.setAttribute("indent-number", 4);        
+        Transformer serializer = tf.newTransformer();
+        serializer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+
+        serializer.setOutputProperty(OutputKeys.INDENT, "yes");
+        serializer.setOutputProperty(OutputKeys.VERSION, "1.0");
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        Result result = new StreamResult(new OutputStreamWriter(out, "UTF-8"));
+        serializer.transform(domSource, result);
+        return out.toByteArray();
+        
+    }
+
+    
     
     public DomainForWebManager parseMIDMNode(InputSource input) throws Exception {
         

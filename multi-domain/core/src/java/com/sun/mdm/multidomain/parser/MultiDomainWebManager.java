@@ -17,7 +17,6 @@ import org.w3c.dom.Node;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -41,7 +40,7 @@ public class MultiDomainWebManager {
     //private PageDefinition mPageDefinition = new PageDefinition();
     private PageDefinition mPageDefinition = null;
     //private ArrayList<PageDefinition> mPageDefinitions = new ArrayList<PageDefinition>();
-    private static String RELATIONSHIP_WEB_MANAGER = "MultiDomainWebManager";
+    private static String MULTIDOMAIN_WEB_MANAGER = "MultiDomainWebManager";
     
     private String validationStr = "";
 
@@ -292,7 +291,7 @@ public class MultiDomainWebManager {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         DOMImplementation impl = builder.getDOMImplementation();
-        xmldoc = impl.createDocument(null, RELATIONSHIP_WEB_MANAGER, null);
+        xmldoc = impl.createDocument(null, MULTIDOMAIN_WEB_MANAGER, null);
 
         Element root = xmldoc.getDocumentElement();
         root.setAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "noNamespaceSchemaLocation", "schema/MultiDomainWebManager.xsd");
@@ -392,6 +391,9 @@ public class MultiDomainWebManager {
             Element eSensitive = xmlDoc.createElement(WebManagerProperties.mTAG_REL_FIELD_IS_SENSITIVE);
             eSensitive.appendChild(xmlDoc.createTextNode(Boolean.toString(fieldRef.isSensitive())));
             
+            Element eRangeSearch = xmlDoc.createElement(WebManagerProperties.mTAG_REL_FIELD_IS_RANGE);
+            eRangeSearch.appendChild(xmlDoc.createTextNode(Boolean.toString(fieldRef.isRangeSearch())));
+
             relTypeFieldElm.appendChild(eFieldName);
             relTypeFieldElm.appendChild(eDisplayName);
             relTypeFieldElm.appendChild(eDisplayOrder);
@@ -401,7 +403,8 @@ public class MultiDomainWebManager {
             relTypeFieldElm.appendChild(eValueType);
             relTypeFieldElm.appendChild(eInputMask);            
             relTypeFieldElm.appendChild(eValueMask);            
-            relTypeFieldElm.appendChild(eSensitive);            
+            relTypeFieldElm.appendChild(eSensitive);   
+            relTypeFieldElm.appendChild(eRangeSearch);
         }
 
         
@@ -500,6 +503,11 @@ public class MultiDomainWebManager {
             Element elmDomainName = xmlDoc.createElement(WebManagerProperties.mTAG_NAME);
             elmDomainName.appendChild(xmlDoc.createTextNode(domain.getDomainName()));
             elmDomain.appendChild(elmDomainName);
+
+            // domain xml location
+            Element elmDomainLoc = xmlDoc.createElement(WebManagerProperties.mTAG_MIDM_XML_LOCATION);
+            elmDomainLoc.appendChild(xmlDoc.createTextNode(domain.getMidmXMLLocation()));
+            elmDomain.appendChild(elmDomainLoc);
 
             //search-pages
             ArrayList<SimpleSearchType> searchPages = domain.getSearchType();
@@ -833,6 +841,7 @@ public class MultiDomainWebManager {
         String inputMask = null;
         String outputMask = null;
         boolean sensitive = false;
+        boolean isRange = false;
 
         NodeList children = node.getChildNodes();
 
@@ -863,6 +872,8 @@ public class MultiDomainWebManager {
                     outputMask = RelationshipUtil.getStrElementValue(elm);
                 } else if (elementName.equals(WebManagerProperties.mTAG_REL_FIELD_IS_SENSITIVE)) {
                     sensitive = Boolean.valueOf(RelationshipUtil.getStrElementValue(elm)).booleanValue();
+                }  else if (elementName.equals(WebManagerProperties.mTAG_REL_FIELD_IS_RANGE)) {
+                    isRange = Boolean.valueOf(RelationshipUtil.getStrElementValue(elm)).booleanValue();
                 } 
             }
 
@@ -870,7 +881,7 @@ public class MultiDomainWebManager {
 
         RelationFieldReference fieldRef = new RelationFieldReference(fieldName, displayName,
                 displayOrder, maxLen, guiType, valueList, valueType, 
-                inputMask, outputMask, sensitive);
+                inputMask, outputMask, sensitive, isRange);
 
         return fieldRef;
 
@@ -1068,6 +1079,9 @@ public class MultiDomainWebManager {
                 if (elementName.equals(WebManagerProperties.mTAG_NAME)) {
                     String value = RelationshipUtil.getStrElementValue(elm);
                     domain = new DomainForWebManager(value);                    
+                } else if (elementName.equals(WebManagerProperties.mTAG_MIDM_XML_LOCATION)) {
+                    String value = RelationshipUtil.getStrElementValue(elm);
+                    domain.setMidmXMLLocation(value);                 
                 } else if (elementName.equals(WebManagerProperties.mTAG_SEARCH_PAGES)) {
                     parseSearchPages(elm, domain);
                 } else if (elementName.equals(WebManagerProperties.mTAG_SEARCH_RESULT_PAGES)) {

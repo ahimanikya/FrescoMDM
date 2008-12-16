@@ -21,6 +21,7 @@ public class RelationFieldReference {
     private String mInputMask = null;
     private String mOutputMask = null;
     private boolean mSensitive = false;
+    private boolean mRangeSearch = false;
 
     public RelationFieldReference() {}
     
@@ -38,6 +39,7 @@ public class RelationFieldReference {
         this.mKeyType = keyType;
     }
     
+    /**
      public RelationFieldReference(String fieldName, String displayName, int displayOrder,
             int maxLen, String guiType, String valueList,
             String valueType, String inputMask, String outputMask,
@@ -54,7 +56,27 @@ public class RelationFieldReference {
         this.mOutputMask = outputMask;
         this.mSensitive = sensitive;
     }
+     */ 
+     
+     
+     public RelationFieldReference(String fieldName, String displayName, int displayOrder,
+            int maxLen, String guiType, String valueList,
+            String valueType, String inputMask, String outputMask,
+            boolean sensitive, boolean isRange) {
 
+        this.mFieldName = fieldName;
+        this.mFieldDisplayName = displayName;
+        this.mDisplayOrder = displayOrder;
+        this.mGuiType = guiType;
+        this.mMaxLength = maxLen;
+        this.mValueList = valueList;
+        this.mValueType = valueType;
+        this.mInputMask = inputMask;
+        this.mOutputMask = outputMask;
+        this.mSensitive = sensitive;
+        this.mRangeSearch = isRange;
+    }
+     
     public RelationFieldReference createCopy() {
         RelationFieldReference field = new RelationFieldReference();
         field.mFieldName = this.mFieldName;
@@ -67,6 +89,7 @@ public class RelationFieldReference {
         field.mInputMask = this.mInputMask;
         field.mOutputMask = this.mOutputMask;
         field.mSensitive = this.mSensitive;
+        field.mRangeSearch = this.mRangeSearch;
         field.mKeyType = this.mKeyType;
         return field;
     } 
@@ -153,5 +176,13 @@ public class RelationFieldReference {
 
     public void setSensitive(boolean sensitive) {
         this.mSensitive = sensitive;
+    }
+
+    public boolean isRangeSearch() {
+        return mRangeSearch;
+    }
+
+    public void setRangeSearch(boolean isRangeSearch) {
+        this.mRangeSearch = isRangeSearch;
     }
 }
