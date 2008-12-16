@@ -123,37 +123,9 @@ public class RelationshipDefService implements Serializable {
      * Method 'update'
      *
      */
-    public void update(RelationshipDef rel) throws RelationshipDefDaoException {
-        /* RelationshipDef object */
-        RelationshipDefDto dto = new RelationshipDefDto();        
-        dto.setRelationshipDefId(rel.getId());        
-        dto.setRelationshipName(rel.getName());
-        dto.setDescription(rel.getDescription());
-        dto.setSourceDomain(rel.getSourceDomain());
-        dto.setTargetDomain(rel.getTargetDomain());
-        dto.setBidirectional(rel.getDirection() == RelationshipDef.DirectionMode.BIDIRECTIONAL ? "T" : "F");
-        dto.setEffectiveFromReq(rel.getEffectiveFromIncluded() ? "T" : "F");
-        dto.setEffectiveToReq(rel.getEffectiveToRequired() ? "T" : "F");
-        dto.setPurgeDateReq(rel.getPurgeDateRequired() ? "T" : "F");
-        dto.setEffectiveFromInc(rel.getEffectiveFrom() ? "T" : "F");
-        dto.setEffectiveToInc(rel.getPurgeDate() ? "T" : "F");
-        dto.setPurgeDateInc(rel.getPurgeDate() ? "T" : "F");
-        dto.setPlugIn(rel.getPlugin());                
-                
-        List<Attribute> attrs = rel.getAttributes();
-        List<RelationshipEaDto> eattrs = new ArrayList<RelationshipEaDto>();
-        for (Attribute attr : attrs) {
-            RelationshipEaDto eattr = new RelationshipEaDto();
-            eattr.setRelationshipDefId(rel.getId());
-            eattr.setAttributeName(attr.getColumnName());
-            eattr.setColumnName(attr.getColumnName());
-            eattr.setColumnType(attr.getType().toString());
-            eattr.setDefaultValue(attr.getDefaultValue());
-            eattr.setIsSearchable(attr.getIsRequired());
-            eattr.setIsRequired(attr.getIsRequired());                    
-        }        
+    public int update(RelationshipDef rel) throws RelationshipDefDaoException {
         RelationshipDefDaoImpl dao = new RelationshipDefDaoImpl(mConn);
-        dao.update(dto);
+        return dao.update(rel);
     }
 
     /**
