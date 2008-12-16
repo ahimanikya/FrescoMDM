@@ -80,14 +80,7 @@ public class RelationshipDefDto implements Serializable {
      * This attribute maps to the column PURGE_DATE_REQ in the relationship_def table.
      */
     protected String purgeDateInc;
-    /**
-     * This attribute maps to the column EFFECTIVE_FROM in the relationship_def table.
-     */
-    protected String effectiveFrom;
-    /**
-     * This attribute maps to the column EFFECTIVE_TO in the relationship_def table.
-     */
-    protected String effectiveTo;
+   
     /**
      * This attribute maps to the column PURGE_DATE in the relationship_def table.
      */
