@@ -100,14 +100,6 @@ public class MIDMObjectDef {
     public String parseMIdmNodeObject(InputSource input) throws Exception {
         String midmNodeStr = null;
         
-        /**
-        DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-        Document mDoc = docBuilder.parse(input);
-        Element root = mDoc.getDocumentElement();
-        midmNodeStr = writeToString(root);
-        
-         */
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         Document doc = builder.parse(input);
@@ -121,18 +113,16 @@ public class MIDMObjectDef {
                  String name = ((Element) children.item(i)).getTagName();
                 if (!name.equals("node")) {
                     root.removeChild(element);
-                    //Node tempNode = root.a
-                    //root.appendChild((Node) children.item(i));
                 }
-                //break;
             }
         }
         
-        
-        root.removeAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "noNamespaceSchemaLocation");
         //root.setAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "noNamespaceSchemaLocation", "schema/MultiDomainWebManager.xsd");
+        root.removeAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "schema/midm.xsd");
+        root.removeAttribute("xmlns:xsi"); 
+        root.removeAttribute("xsi:noNamespaceSchemaLocation");
+        //root.removeAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "noNamespaceSchemaLocation");
         byte[] webXml = transformToXML(doc);
-        //return new String(webXml);
 
         return new String(webXml);
     }
@@ -185,13 +175,11 @@ public class MIDMObjectDef {
     
     public byte[] transformToXML(Document xmldoc) throws Exception {
         DOMConfiguration domConfig = xmldoc.getDomConfig();
-        //domConfig.setParameter("format-pretty-print", "true");
         DOMSource domSource = new DOMSource(xmldoc);
         TransformerFactory tf = TransformerFactory.newInstance();
-        tf.setAttribute("indent-number", 4);        
+        tf.setAttribute("indent-number", 4);  
         Transformer serializer = tf.newTransformer();
         serializer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-
         serializer.setOutputProperty(OutputKeys.INDENT, "yes");
         serializer.setOutputProperty(OutputKeys.VERSION, "1.0");
         ByteArrayOutputStream out = new ByteArrayOutputStream();
