@@ -45,9 +45,6 @@ public abstract class AttributesDef {
     private boolean effectiveToIncluded;
     private boolean purgeDateIncluded;
     private String plugIn;
-    private boolean effectiveFrom;
-    private boolean effectiveTo;
-    private boolean purgeDate;
     private List<Attribute> attributes; //extended attributes.
 
     /**
@@ -160,15 +157,15 @@ public abstract class AttributesDef {
      * @return boolean EffectiveFromRequired attribute.
      */
     public boolean getEffectiveFrom() {
-        return effectiveFrom;
+        return effectiveFromIncluded;
     }
 
     /**
      * Set effectiveFrom attribute.
      * @param effectiveFrom EffectiveFrom attribute.
      */
-    public void setEffectiveFrom(boolean effectiveFrom) {
-        this.effectiveFrom = effectiveFrom;
+    public void setEffectiveFrom(boolean effectiveFromIncluded) {
+        this.effectiveFromIncluded = effectiveFromIncluded;
     }
 
     /**
@@ -176,15 +173,15 @@ public abstract class AttributesDef {
      * @return boolean effectiveTo attribute.
      */
     public boolean getEffectiveTo() {
-        return effectiveTo;
+        return effectiveToIncluded;
     }
 
     /**
      * Set effectiveTo attribute.
      * @param effectiveTo EffectiveTo attribute.
      */
-    public void setEffectiveTo(boolean effectiveTo) {
-        this.effectiveTo = effectiveTo;
+    public void setEffectiveTo(boolean effectiveToIncluded) {
+        this.effectiveToIncluded = effectiveToIncluded;
     }
 
     /**
@@ -240,15 +237,15 @@ public abstract class AttributesDef {
      * @return boolean PurgeDate attribute.
      */
     public boolean getPurgeDate() {
-        return purgeDate;
+        return purgeDateIncluded;
     }
 
     /**
      * Set purgeDate attribute.
      * @param purgeDate PurgeDate attribute.
      */
-    public void setPurgeDate(boolean purgeDate) {
-        this.purgeDate = purgeDate;
+    public void setPurgeDate(boolean purgeDateIncluded) {
+        this.purgeDateIncluded = purgeDateIncluded;
     }
 
     /**
