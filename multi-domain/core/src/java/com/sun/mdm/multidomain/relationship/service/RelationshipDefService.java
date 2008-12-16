@@ -34,6 +34,7 @@ import com.sun.mdm.multidomain.attributes.Attribute;
 import com.sun.mdm.multidomain.relationship.ops.impl.RelationshipDefDaoImpl;
 import com.sun.mdm.multidomain.relationship.ops.impl.RelationshipEaDaoImpl;
 import com.sun.mdm.multidomain.relationship.ops.dao.RelationshipDefDao;
+import com.sun.mdm.multidomain.relationship.ops.dto.RelationshipDefDto;
 import com.sun.mdm.multidomain.relationship.ops.dto.RelationshipEaDto;
 
 import java.util.List;
@@ -124,10 +125,35 @@ public class RelationshipDefService implements Serializable {
      */
     public void update(RelationshipDef rel) throws RelationshipDefDaoException {
         /* RelationshipDef object */
-        //RelationshipDefDto dto = new RelationshipDefDto();
-        //copyToRelDto(rel, dto);
-        //RelationshipDefDaoImpl dao = new RelationshipDefDaoImpl();
-        //dao.update(dto);
+        RelationshipDefDto dto = new RelationshipDefDto();        
+        dto.setRelationshipDefId(rel.getId());        
+        dto.setRelationshipName(rel.getName());
+        dto.setDescription(rel.getDescription());
+        dto.setSourceDomain(rel.getSourceDomain());
+        dto.setTargetDomain(rel.getTargetDomain());
+        dto.setBidirectional(rel.getDirection() == RelationshipDef.DirectionMode.BIDIRECTIONAL ? "T" : "F");
+        dto.setEffectiveFromReq(rel.getEffectiveFromIncluded() ? "T" : "F");
+        dto.setEffectiveToReq(rel.getEffectiveToRequired() ? "T" : "F");
+        dto.setPurgeDateReq(rel.getPurgeDateRequired() ? "T" : "F");
+        dto.setEffectiveFromInc(rel.getEffectiveFrom() ? "T" : "F");
+        dto.setEffectiveToInc(rel.getPurgeDate() ? "T" : "F");
+        dto.setPurgeDateInc(rel.getPurgeDate() ? "T" : "F");
+        dto.setPlugIn(rel.getPlugin());                
+                
+        List<Attribute> attrs = rel.getAttributes();
+        List<RelationshipEaDto> eattrs = new ArrayList<RelationshipEaDto>();
+        for (Attribute attr : attrs) {
+            RelationshipEaDto eattr = new RelationshipEaDto();
+            eattr.setRelationshipDefId(rel.getId());
+            eattr.setAttributeName(attr.getColumnName());
+            eattr.setColumnName(attr.getColumnName());
+            eattr.setColumnType(attr.getType().toString());
+            eattr.setDefaultValue(attr.getDefaultValue());
+            eattr.setIsSearchable(attr.getIsRequired());
+            eattr.setIsRequired(attr.getIsRequired());                    
+        }        
+        RelationshipDefDaoImpl dao = new RelationshipDefDaoImpl(mConn);
+        dao.update(dto);
     }
 
     /**
