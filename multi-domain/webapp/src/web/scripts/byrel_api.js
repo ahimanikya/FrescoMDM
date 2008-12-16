@@ -246,11 +246,11 @@ function searchRelationships() {
     var relationshipDef = document.getElementById("select_relationshipDefs").value;
     
    if(sourceDomain == null || sourceDomain == "") {
-       alert(getMessageForI18N("select_source_record"));
+       alert(getMessageForI18N("select_source_domain"));
        return false;
    }
    if(targetDomain == null || targetDomain == "") {
-       alert(getMessageForI18N("select_destination_record"));
+       alert(getMessageForI18N("select_destination_domain"));
        return false;
    }   
    if(relationshipDef == null || relationshipDef == "") {
@@ -271,7 +271,7 @@ function searchRelationships() {
       var attributeValue =  document.getElementById("select_custom_" + relationshipDefObj.extendedAttributes[c].name).value;
       var attributeType = relationshipDefObj.extendedAttributes[c].dataType;
       if( ! isValidCustomAttribute( attributeType, attributeValue) ) {
-          alert(attributeValue + " " + getMessageForI18N("isnotavalidvaluefor")+ " " + attributeName + " " + getMessageForI18N("attribute")+getMessageForI18N("period"));
+          alert(attributeValue + " " + getMessageForI18N("isnotavalidvaluefor")+ " " + attributeName + " " + getMessageForI18N("attribute")+ " " +getMessageForI18N("attributeTypeFor")+ " " +attributeValue + " " +getMessageForI18N("is")+ " " +"'"+attributeType+"'");
           attributeId.focus(); 
           return;
       }
@@ -464,7 +464,7 @@ function displaySearchResults ( currentPage, itemsPerPage) {
     dwr.util.removeAllRows("relationshipsListing");
     if(data == null || data.length<=0) {
         //alert("no relationship definitions found");
-        dwr.util.addRows("relationshipsListing", [''], [function(data){return "No Relationships found.";}], {
+        dwr.util.addRows("relationshipsListing", [''], [function(data){return getMessageForI18N("no_Relationships_found");}], {
               cellCreator:function(options) {
                 var td = document.createElement("td");
                 td.colSpan="7"; td.align="center";
@@ -532,7 +532,7 @@ function populateRelationshipDetails(relationshipId, indexNum) {
         var relationshipDef = cachedRelationshipDefs[relationshipDefName];
     
         var relationshipRecordPane = dijit.byId("relationshipRecordDetailsPane"); 
-        var strRecordPaneTitleHTML = "<table cellspacing='0' cellpadding='0'><tr><td>Relationship Attributes: ";
+        var strRecordPaneTitleHTML = "<table cellspacing='0' cellpadding='0'><tr><td>"+getMessageForI18N("relationship_Attributes")+getMessageForI18N("colon")+ " "
         strRecordPaneTitleHTML += cachedSearchResults[indexNum].sourceHighLight;
         strRecordPaneTitleHTML += " " + relationshipDef.name ;
         strRecordPaneTitleHTML += "</td><td>" + getRelationshipDefDirectionIcon(relationshipDef.biDirection) + "</td><td>";
@@ -687,7 +687,7 @@ function loadAddSearchCriteria(){
     // Set title of add dialog
     var relationshipDef = cachedRelationshipDefs[currentSelectedRelationshipDef];
     var addDialogObj = dijit.byId("byrel_add"); 
-    strTitleHTML = "<span style='vertical-align:middle;'>Add Relationship: " + currentSelectedSourceDomain ;
+    strTitleHTML = "<span style='vertical-align:middle;'>"+getMessageForI18N("add_Relationship")+getMessageForI18N("colon")+ " " + currentSelectedSourceDomain ;
     strTitleHTML += " " + currentSelectedRelationshipDef + getRelationshipDefDirectionIcon(relationshipDef.biDirection) ;
     strTitleHTML += " " + currentSelectedTargetDomain + "</span>";      
     addDialogObj.attr("title", strTitleHTML);    
@@ -1044,13 +1044,13 @@ function ByRelAddRelationship(){
       var attributeType = relationshipDef.extendedAttributes[cc].dataType;
         if(getBoolean(relationshipDef.extendedAttributes[cc].isRequired)) {
           if( isEmpty (attributeValue) ) {
-              alert(getMessageForI18N("enterValueFor") + " " + attributeName +getMessageForI18N("period") );
+              alert(getMessageForI18N("enter_ValueFor") + " " + attributeName +getMessageForI18N("period") );
               attributeId.focus();
               return ;
           }
       }
       if( ! isValidCustomAttribute( attributeType, attributeValue) ) {
-          alert(attributeValue + " " +getMessageForI18N("isnotavalidvaluefor")+ " " +attributeName + " " +getMessageForI18N("attribute") +getMessageForI18N("period"));
+          alert(attributeValue + " " +getMessageForI18N("isnotavalidvaluefor")+ " " +attributeName + " " +getMessageForI18N("attribute")+ " " +getMessageForI18N("attributeTypeFor")+ " " +attributeValue + " " +getMessageForI18N("is")+ " " +"'"+attributeType+"'");
           attributeId.focus();
           return;
       }
@@ -1063,7 +1063,7 @@ function ByRelAddRelationship(){
            startDate =  document.getElementById('add_predefined_startDate').value;
            if(startDateRequireField == true){
               if( isEmpty (startDate) ) {
-              alert(getMessageForI18N("enterValueFor") + " " + getMessageForI18N("effectiveFrom")+getMessageForI18N("period"));
+              alert(getMessageForI18N("enterValueFor_effectiveFrom"));
               startDateField.focus();
               return ;
             } 
@@ -1074,7 +1074,7 @@ function ByRelAddRelationship(){
            endDate =  document.getElementById('add_predefined_endDate').value;
            if(endDateRequireField == true){
              if( isEmpty (endDate) ) {
-              alert(getMessageForI18N("enterValueFor") + " " + getMessageForI18N("effectiveTo")+getMessageForI18N("period"));
+              alert(getMessageForI18N("enterValueFor_effectiveTo"));
               endDateField.focus();
               return ;
            }  
@@ -1085,7 +1085,7 @@ function ByRelAddRelationship(){
            purgeDate =  document.getElementById('add_predefined_purgeDate').value;
            if(purgeDateRequireField == true){
               if( isEmpty (purgeDate) ) {
-              alert(getMessageForI18N("enterValueFor") + " " + getMessageForI18N("purgeDate")+getMessageForI18N("period"));
+              alert(getMessageForI18N("enterValueFor_purgeDate"));
               purgeDateField.focus();
               return ;
            } 
@@ -1170,13 +1170,13 @@ function updateRelationship () {
       
       if(getBoolean(relationshipDefAttributes[i].isRequired)) {
           if( isEmpty (attributeValue) ) {
-              alert(getMessageForI18N("enterValueFor") + " " + attributeName +getMessageForI18N("period"));
+              alert(getMessageForI18N("enter_ValueFor") + " " + attributeName +getMessageForI18N("period"));
               attributeId.focus();
               return ;
           }
       }
       if( ! isValidCustomAttribute( attributeType, attributeValue) ) {
-          alert(attributeValue + " " +getMessageForI18N("isnotavalidvaluefor")+ " " +attributeName + " " +getMessageForI18N("attribute") +getMessageForI18N("period"));
+          alert(attributeValue + " " +getMessageForI18N("isnotavalidvaluefor")+ " " +attributeName + " " +getMessageForI18N("attribute")+ " " +getMessageForI18N("attributeTypeFor")+ " " +attributeValue + " " +getMessageForI18N("is")+ " " +"'"+attributeType+"'");
           attributeId.focus();
           return;
       }
@@ -1188,7 +1188,7 @@ function updateRelationship () {
            startDate =  document.getElementById('edit_predefined_startDate').value;
            if(startDateRequire == true){
                if( isEmpty (startDate) ) {
-              alert(getMessageForI18N("enterValueFor") + " " + getMessageForI18N("effectiveFrom")+getMessageForI18N("period"));
+              alert(getMessageForI18N("enterValueFor_effectiveFrom"));
               startDateField.focus();
               return ;
            }
@@ -1199,7 +1199,7 @@ function updateRelationship () {
            endDate =  document.getElementById('edit_predefined_endDate').value;
            if(endDateRequire == true){
                if( isEmpty (endDate) ) {
-              alert(getMessageForI18N("enterValueFor") + " " + getMessageForI18N("effectiveTo")+getMessageForI18N("period"));
+              alert(getMessageForI18N("enterValueFor_effectiveTo"));
               endDateField.focus();
               return ;
             }
@@ -1210,7 +1210,7 @@ function updateRelationship () {
            purgeDate =  document.getElementById('edit_predefined_purgeDate').value;
            if(purgeDateRequire == true){
                if( isEmpty (purgeDate) ) {
-              alert(getMessageForI18N("enterValueFor") + " " + getMessageForI18N("purgeDate")+getMessageForI18N("period"));
+              alert(getMessageForI18N("enterValueFor_purgeDate"));
               purgeDateField.focus();
               return ;
             }

@@ -37,7 +37,7 @@
                        <table cellspacing="0" cellpadding="0"  width="100%" >
                            <tr>
                                <td class="selectedDataBox" width="70%"><div id="selectedSourceDomain" >&nbsp;</div></td>
-                               <td align="left"><div id="selectSourceDomainFilterImg" style="display:none;"><img src="images/icons/filter.png" title="Search Criteria Applied"></div></td>
+                               <td align="left"><div id="selectSourceDomainFilterImg" style="display:none;"><img src="images/icons/filter.png" title="<f:message key='search_criteria_applied' />"></div></td>
                            </tr>
                        </table>
                    </td>
@@ -50,7 +50,7 @@
                        <table cellspacing="0" cellpadding="0" width="100%">
                            <tr>
                                <td class="selectedDataBox" width="70%"><div id="selectedRelationshipDef" >&nbsp;</div></td>
-                               <td align="left"><div id="selectRelationshipDefFilterImg" style="display:none;"><img src="images/icons/filter.png" title="Search Criteria Applied"></div></td>
+                               <td align="left"><div id="selectRelationshipDefFilterImg" style="display:none;"><img src="images/icons/filter.png" title="<f:message key='search_criteria_applied' />"></div></td>
                            </tr>
                        </table>                       
                    </td>
@@ -71,7 +71,7 @@
                <tr><td colspan="2"><img src="images/spacer.gif" height="10" width="1"></td></tr>
                <tr>
                    <td colspan="2" class="generalText">
-                       Select Relationship to View Details
+                       <f:message key="select_relationship_to_view_details" />
                    </td>
                </tr>
                <tr>
@@ -102,8 +102,8 @@
                             <thead class="header">
                                 <tr>
                                     <th>&nbsp;&nbsp;</th>
-                                    <th class="generalTextBold">Source Record</th>
-                                    <th class="generalTextBold">Target Record</th>
+                                    <th class="generalTextBold"><f:message key="source_record" /></th>
+                                    <th class="generalTextBold"><f:message key="target_record" /></th>
                                 </tr>
                             </thead>
                             <tbody id="relationshipsListing">

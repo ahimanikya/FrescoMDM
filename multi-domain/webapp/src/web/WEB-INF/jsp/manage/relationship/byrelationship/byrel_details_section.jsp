@@ -14,17 +14,14 @@
 
            <div dojoType="dijit.layout.ContentPane" region="center" gutters="true" minSize="50" splitter="true" style="border:0px;background-color:#F9F9F0;">
                 <div dojoType="dijit.layout.ContentPane" href="m_record_details.htm?prefix=source" parseOnLoad="true" >
-                    source record details
                 </div>
                 <div style="padding:4px;"></div>
                 <div dojoType="dijit.layout.ContentPane" href="m_record_details.htm?prefix=target" parseOnLoad="true" >
-                    target record details
                 </div>
            </div>
 
            <div dojoType="dijit.layout.ContentPane" gutters="true" region="bottom"  minSize="100"  splitter="true" style="height:300px;border:0px;background-color:#F9F9F0;">
                <div dojoType="dijit.layout.ContentPane" href="m_byrel_edit_attributes.htm" parseOnLoad="true" >
-                    edit attributes
                 </div>
            </div>
         </div> 

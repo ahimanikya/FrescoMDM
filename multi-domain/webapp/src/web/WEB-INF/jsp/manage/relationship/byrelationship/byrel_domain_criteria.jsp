@@ -6,13 +6,13 @@
 
 
 <div class="MainBox">
-   <div class="TitleBar"><f:message key="select_text" /> <f:message key="source_domain_text" /></div>
+   <div class="TitleBar"><f:message key="select_source_domain_text" /></div>
    <div class="Content">
     <table border="0"  width="100%">
     <tr>
         <td class="generalTextBold">
             &nbsp;<f:message key="source_domain_text" /><f:message key="colon_symbol" />&nbsp;<f:message key="mandatory_symbol" />&nbsp;&nbsp;
-            <select id="select_sourceDomain" name="select_sourceDomain" title="<f:message key='source_domain_text' />"  onchange="loadRelationshipDefs();loadSelectSourceSearchTypes(this.id)">
+            <select id="select_sourceDomain" name="<f:message key='source_domain_text' />" title="<f:message key='source_domain_text' />"  onchange="loadRelationshipDefs();loadSelectSourceSearchTypes(this.id)">
             </select>
         </td>
     </tr>
@@ -20,17 +20,17 @@
     <tr>
         <td>
             
-           <div dojoType="dijit.GenericTitlePane" title="<f:message key="search_criteria_for_records" />" class="MainBox" jsId="pane1">
+           <div dojoType="dijit.GenericTitlePane" title="<f:message key='search_criteria_for_records' />" class="MainBox" jsId="pane1">
             <div class="Content">
                <table border="0">
                    <tr>
                        <td class="generalTextBold">
-                           <f:message key="select_text" /> <f:message key="the_text" /> <f:message key="search_text" /> <f:message key="type_text" />
+                           <f:message key="select_the_search_type" />
                        </td>
                    </tr>
                    <tr>
                        <td>
-                          <select id="select_source_searchtypes" name="Source Domain" title="<f:message key='select_text' /> <f:message key='the_text' /> <f:message key='search_text' /> <f:message key='type_text' />" onchange="selectSourceSearchFields(this.id);">
+                          <select id="select_source_searchtypes" name="<f:message key="select_the_search_type" />" title="<f:message key="select_the_search_type" />" onchange="selectSourceSearchFields(this.id);">
                           </select>
                        </td>
                    </tr>
@@ -56,7 +56,7 @@
 <div style="padding:3px;"></div>
 
   <div class="MainBox">
-    <div class="TitleBar"><f:message key="select_text" /> <f:message key="target_domain_text" /></div>
+    <div class="TitleBar"><f:message key="select_target_domain_text" /></div>
     <div class="Content">
     <table border="0" width="100%">
     <tr>
@@ -76,12 +76,12 @@
                <table border="0">
                    <tr>
                        <td class="generalTextBold">
-                           <f:message key="select_text" /> <f:message key="the_text" /> <f:message key="search_text" /> <f:message key="type_text" />
+                           <f:message key="select_the_search_type" /> 
                        </td>
                    </tr>
                    <tr>
                        <td>
-                          <select id="select_target_searchtypes"  name="Source Domain" title="<f:message key='select_text' /> <f:message key='the_text' /> <f:message key='search_text' /> <f:message key='type_text' />" onchange="selectTargetSearchFields(this.id);">
+                          <select id="select_target_searchtypes"  name="<f:message key="select_the_search_type" /> " title="<f:message key="select_the_search_type" /> " onchange="selectTargetSearchFields(this.id);">
                           </select>
                        </td>
                    </tr>

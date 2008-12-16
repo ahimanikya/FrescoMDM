@@ -9,7 +9,7 @@
     <table>
         <tr>
             <td>
-             <f:message key="relationship_attributes_text" /> <f:message key="colon_symbol" />
+             <f:message key="relationship_attributes_text" /><f:message key="colon_symbol" />
            </td>
            <td id="byrel_addRelationshipDef"></td>
         </tr>
@@ -23,7 +23,7 @@
                     <table border="0" width="100%" >
                        <tr>
                             <td class="Heading" colspan="2">
-                                <f:message key="custom_text" /> <f:message key="attributes_text" />
+                                <f:message key="custom_attributes" />
                             </td>
                         </tr>
                         <tr>
@@ -53,7 +53,7 @@
                     <table border="0" width="100%">
                         <tr>
                             <td class="Heading">
-                                <f:message key="predefined_text" /><f:message key="attributes_text" />
+                                <f:message key="predefined_attributes" />
                             </td>
                         </tr>
                         <tr>

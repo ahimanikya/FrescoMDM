@@ -169,7 +169,7 @@ function validateHierarchyForm() {
       * dijit.byId("hierarchy_add_description").attr("value");
       * */
     if(dojo.byId('hierarchy_add_name').value=='') {
-       alert(getMessageForI18N("select_name"));
+       alert(getMessageForI18N("enter_name"));
        dojo.byId('hierarchy_add_name').focus();
        return false;
     }
@@ -272,7 +272,7 @@ function validateEditHierarchyForm() {
     
       if(dojo.byId('hierarchy_edit_name').value=='') 
        {
-           alert(getMessageForI18N("select_name"));
+           alert(getMessageForI18N("enter_name"));
            dojo.byId('hierarchy_edit_name').focus();
            return false;
        }

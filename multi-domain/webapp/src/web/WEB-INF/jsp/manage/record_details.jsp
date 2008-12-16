@@ -27,7 +27,7 @@ if(prefix == null) prefix = "pre" + d.getTime();
      
 </script>
 
-<div dojoType="dijit.RecordDetailsTitlePane" title="Record Details" id ="<%=prefix%>RecordDetailsTitlePane" class="MainBox" 
+<div dojoType="dijit.RecordDetailsTitlePane" title="<f:message key="record_details" />" id ="<%=prefix%>RecordDetailsTitlePane" class="MainBox" 
         onSummaryClick="showRecordFullDetails('<%=prefix%>RecordSummaryDiv','<%=prefix%>RecordDetailDiv',false);" onDetailsClick="showRecordFullDetails('<%=prefix%>RecordSummaryDiv','<%=prefix%>RecordDetailDiv',true);" parseOnLoad="true">
 
     <!-- sumarry content -->

@@ -6,7 +6,7 @@
 
 
 <div class="MainBox">
-  <div class="TitleBar"><f:message key="select_text" /> <f:message key="relationship" /></div>
+  <div class="TitleBar"><f:message key="select_relationship" /></div>
   <div class="Content">
   <table border="0" width="100%">
     <tr>
@@ -21,7 +21,7 @@
     <tr>
         <td>
             
-           <div dojoType="dijit.GenericTitlePane"  title="<f:message key="search_criteria_for_relationhship" /> <f:message key="attributes_text" />" class="MainBox" jsId="pane1">
+           <div dojoType="dijit.GenericTitlePane"  title="<f:message key='search_criteria_for_relationhship_attributes' />" class="MainBox" jsId="pane1">
 
             <div class="Content">
                <table border="0" width="100%">
@@ -31,7 +31,7 @@
                             <table border="0" width="100%" >
                                <tr>
                                     <td class="Heading" colspan="5">
-                                        <f:message key="custom_text" /> <f:message key="attributes_text" />
+                                        <f:message key="custom_attributes" />
                                     </td>
                                 </tr>
                                 <tr>
@@ -63,7 +63,7 @@
                                 <table border="0" width="100%">
                                    <tr>
                                         <td class="Heading">
-                                            <f:message key="predefined_text" /> <f:message key="attributes_text" />
+                                            <f:message key="predefined_attributes" />
                                         </td>
                                     </tr>
                                     <tr>

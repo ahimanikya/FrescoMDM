@@ -25,6 +25,7 @@
     title="<f:message key="relationship_attributes_text" /><f:message key="colon_symbol" />">
     
     <div class="Content" id="editAttributesDiv" style="display:none;">
+        <form name="editRelationshiAttributesForm">
       <table border="0" width="100%">
         <tr>
             <td>
@@ -32,7 +33,7 @@
                     <table border="0">
                         <tr>
                             <td class="Heading" colspan="2">
-                                <f:message key="custom_text" /> <f:message key="attributes_text" />
+                                <f:message key="custom_attributes" />
                             </td>
                         </tr>
                         <tr>
@@ -63,7 +64,7 @@
                     <table border="0">
                         <tr>
                             <td class="Heading" colspan="4">
-                                <f:message key="predefined_text" /> <f:message key="attributes_text" />
+                                <f:message key="predefined_attributes" />
                             </td>
                         </tr>
                         <tr>
@@ -115,14 +116,15 @@
             <td align="right" width="20%">
                 <table cellpadding="0" cellspacing="0" border="0">
                     <tr>
-                        <td><input type="button" title="<f:message key="save_text" />" value="<f:message key="save_text" />"/ onclick="updateRelationship();"></td>
+                        <td><input type="button" title="<f:message key='save_text' />" value="<f:message key='save_text' />" onclick="updateRelationship();"></td>
                         <td class="button_spacing"></td>
-                        <td><input type="button" title="<f:message key="revert_text" />" value="<f:message key="revert_text" />" /></td>
+                        <td><input type="button" onclick="document.editRelationshiAttributesForm.reset();" title="<f:message key='revert_text' />" value="<f:message key='revert_text' />" /></td>
                     </tr>
                 </table>                            
             </td>
         </tr>
      </table>
+     </form>  
    </div>
  </div>
  
