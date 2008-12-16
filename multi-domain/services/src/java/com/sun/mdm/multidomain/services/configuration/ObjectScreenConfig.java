@@ -40,6 +40,9 @@ public abstract class ObjectScreenConfig {
 	private ArrayList<SearchResultDetailsConfig> mSearchResultDetailsConfigs;	// ArrayList of SearchResultDetails 
     
 
+    /** Constructor for ObjectScreenConfig.
+     * 
+     */
     public ObjectScreenConfig() {
     	mFieldConfigs = new ArrayList<FieldConfig>();		
     	mSearchScreenConfigs = new ArrayList<SearchScreenConfig>();	
@@ -48,44 +51,59 @@ public abstract class ObjectScreenConfig {
     	mSearchResultDetailsConfigs = new ArrayList<SearchResultDetailsConfig>();	
     }    
 
-    // retrieves the Domain ID
-    
+    /**  Retrieve the Domain ID
+     * 
+     * @return the Domain ID
+     */
     public String getID() {         
         return mId;
     }
     
-    // sets the Domain ID
-
+    /** Sets the Domain ID
+     * 
+     * @param id The value of the Domain ID
+     */
     public void setID(String id) {
         mId = id;
     }
 
-    // retrieves the display name for this domain
-    
+    /**  Retrieve the display name for this object screen.
+     * 
+     * @return the display name for this object screen.
+     */
     public String getDisplayName() {
         return mDisplayName;
     }
     
-    // sets the display name for this domain
-    
+    /** Sets the display name for this object screen.
+     * 
+     * @param  name  The display name for this object screen.
+     */
     public void setDisplayName(String name) {   
         mDisplayName = name;
     }
 
-    // retrieves the FieldConfig objects for the attributes in the corresponding object
-    
+    /**  Retrieve the FieldConfig objects for the attributes in the corresponding object.
+     * 
+     * @return the the FieldConfig objects for the attributes in the corresponding object.
+     */
     public ArrayList<FieldConfig> getFieldConfigs() {        
         return mFieldConfigs;
     }
 
-    // sets the FieldConfig objects for the attributes in the corresponding object
-    
+    /**  Sets the FieldConfig objects for the attributes in the corresponding object
+     * 
+     * @return the the FieldConfig objects for the attributes in the corresponding object.
+     */
     public void setFieldConfigs(ArrayList<FieldConfig> fieldConfigs) {   
         mFieldConfigs = fieldConfigs;
     }
 
-    // returns the field configuration information for a field.
-    
+    /**  Retrives the field configuration information for a field.
+     * 
+     * @param fieldname  Name of the field to retrieve.
+     * @return the FieldConfig objects for a field.
+     */
     public FieldConfig getFieldConfig(String fieldname) { 
         Iterator<FieldConfig> iter = mFieldConfigs.iterator();
         while (iter.hasNext()) {
@@ -97,20 +115,28 @@ public abstract class ObjectScreenConfig {
         return null;
     }
 
-    // add a field configuration class
-    
+    /**  Add a field configuration instance.
+     * 
+     * @param fieldConfig  FieldConfig instance to add.
+     */
     public void addFieldConfig(FieldConfig fieldConfig) { 
         mFieldConfigs.add(fieldConfig);
     }
 
-    // returns the configuration for all search screens (ArrayList of SearchScreenConfig objects)
-    
+    /**  Retrives the configuration for all search screens
+     * 
+     * @param fieldname  Name of the field to retrieve.
+     * @return An ArrayList containing the configuration for all search screens.
+     */
     public ArrayList<SearchScreenConfig> getSearchScreenConfigs() { 
         return mSearchScreenConfigs;
     }
 
-    // returns the search screen configuration that matches the screenTitle parameter.
-    
+    /**  Retrives the search screen configuration that matches the screenTitle parameter.
+     * 
+     * @param screenTitle  Title of the screen
+     * @return The configuration for corresponding search screen.
+     */
     public SearchScreenConfig getSearchScreenConfig(String screenTitle) { 
         if (screenTitle != null) {
             for (SearchScreenConfig ssc : mSearchScreenConfigs) {
@@ -121,12 +147,18 @@ public abstract class ObjectScreenConfig {
         return null;
     }
 
-    // returns the configuration for all search screens (ArrayList of SearchScreenConfig objects)
-    
+    /**  Sets the search screen configurations
+     * 
+     * @param searchScreenConfigs  Search screen configurations.
+     */
     public void setSearchScreenConfigs(ArrayList<SearchScreenConfig> searchScreenConfigs) { 
         mSearchScreenConfigs = searchScreenConfigs;
     }
     
+    /**  Add a search screen configurations
+     * 
+     * @param searchScreenConfig  Search screen configuration to add.
+     */
     public void addSearchScreenConfig(SearchScreenConfig searchScreenConfig) 
             throws Exception {
         mSearchScreenConfigs.add(searchScreenConfig);
@@ -138,39 +170,53 @@ public abstract class ObjectScreenConfig {
         mSearchScreenConfigs.remove(searchScreenConfig);
     }
 */    
-    // retrieves all search results configurations
-    
+
+    /**  Retrieves all search results configurations
+     * 
+     * @return Search results screen configurations.
+     */
     public ArrayList<SearchResultsConfig> getSearchResultsConfigs() {  
         return mSearchResultsConfigs;
     }
 
-    // sets all search results configurations
-
+    /**  Sets all search results configurations
+     * 
+     * @param searchResultsConfig  Search results screen configuration to add.
+     */
     public void setSearchResultsConfigs(ArrayList<SearchResultsConfig> searchResultsConfigs) {  
         mSearchResultsConfigs = searchResultsConfigs;
     }
 
-    // add a search result configuration
-    
+    /**  Add a search result configuration.
+     * 
+     * @param searchResultsConfig  Search results screen configuration to add.
+     */
     public void addSearchResultsConfig(SearchResultsConfig searchResultsConfig) 
             throws Exception {
         mSearchResultsConfigs.add(searchResultsConfig);
     }
     
 
-    // retrieves all SearchResultsSummaryConfig objects
-        
+    /**  Retrieves all search results summary configurations.
+     * 
+     * @return All search result summary configurations.
+     */
     public ArrayList<SearchResultsSummaryConfig> getSearchResultsSummaryConfigs() {  
         return mSearchResultsSummaryConfigs;
     }
 
-    // sets all SearchResultsSummaryConfig objects
-    
-    public void  setSearchResultsSummaryConfigs(ArrayList<SearchResultsSummaryConfig>sRSC) {  
+    /**  Sets all search results summary configurations.
+     * 
+     * @param sRSC  ArrayList of search results summary configurations.
+     */
+    public void setSearchResultsSummaryConfigs(ArrayList<SearchResultsSummaryConfig>sRSC) {  
         mSearchResultsSummaryConfigs = sRSC;
     }
 
-    // add a search result summary configuration
+    /**  Add a search results summary configuration.
+     * 
+     * @param sRSC  Search results summary configuration to add.
+     */
     public void addSearchResultsSummaryConfig(SearchResultsSummaryConfig sRSC) 
             throws Exception {
         mSearchResultsSummaryConfigs.add(sRSC);
@@ -185,26 +231,37 @@ public abstract class ObjectScreenConfig {
         mSearchResultsConfigs.remove(searchResultsConfig);
     }
 */
-    // retrieves all search results detail configurations
-    
+
+    /**  Retrieves all search result details configurations.
+     * 
+     * @returns All search result details configurations.
+     */
     public ArrayList<SearchResultDetailsConfig> getSearchResultDetailsConfigs() { 
         return mSearchResultDetailsConfigs;
     }
 
-    // sets all search results detail configurations
-
-    public void setSearchResultDetailsConfigs(ArrayList<SearchResultDetailsConfig> searchResultDetailsConfigs) { // returns the configuration for all second tier search results screens (for individual records) (ArrayList of SearchResultsDetailsConfig objects)
+    /**  Sets all search result details configurations.
+     * 
+     * @param searchResultDetailsConfigs All search result details configurations.
+     */
+    public void setSearchResultDetailsConfigs(ArrayList<SearchResultDetailsConfig> searchResultDetailsConfigs) { 
         mSearchResultDetailsConfigs = searchResultDetailsConfigs;
     }
 
-    // add a search result details configuration
+    /**  Add a search result details configuration.
+     * 
+     * @param searchResultDetailsConfig One instance of search result details configuration.
+     */
     public void addSearchResultDetailsConfig(SearchResultDetailsConfig searchResultDetailsConfig) 
             throws Exception {
         mSearchResultDetailsConfigs.add(searchResultDetailsConfig);
     }
     
-    // retrieves the search results configuration for a given search  result config ID
-
+    /**  Retrieves the search results configuration for a given search result config ID.
+     * 
+     * @param searchResultsConfigId  Search result config ID.
+     * @return search results configuration for the search result config ID.
+     */
     public SearchResultsConfig getSearchResultsConfig(Integer searchResultsConfigId) 
             throws Exception {  
         Iterator<SearchResultsConfig> iter = mSearchResultsConfigs.iterator();	
@@ -217,8 +274,11 @@ public abstract class ObjectScreenConfig {
         return null;
     }
     
-    // retrieves the search results summary configuration for a given search results config ID
-
+    /**  Retrieves the search results summary configuration for a given search results config ID.
+     * 
+     * @param searchResultsConfigId  Search result config ID.
+     * @return search results summary configuration for the seardch result config ID.
+     */
     public SearchResultsSummaryConfig getSearchResultsSummaryConfig(Integer searchResultsConfigId) 
             throws Exception {  
                 
@@ -235,8 +295,11 @@ public abstract class ObjectScreenConfig {
         return null;
     }
     
-     // retrieves the search results detail configuration for a given search results config ID
-
+    /**  Retrieves the search results detail configuration for a given search results config ID.
+     * 
+     * @param searchResultsConfigId  Search result config ID.
+     * @return search results details configuration for the seardch result config ID.
+     */
     public SearchResultDetailsConfig getSearchResultsDetailsConfig(Integer searchResultsConfigId) 
             throws Exception {  
 
