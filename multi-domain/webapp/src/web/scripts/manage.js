@@ -81,12 +81,23 @@ function changeViewToByRelationship(contentPaneId) {
     _deleteChildWidgets(contentPaneId);
     contentPaneObj.setHref (byRelationshipMainPage);
     currentView = "by_rel";    
+    initializeByRelationshipScreen ();
 }
 function changeViewToByRecord(contentPaneId) {
     var contentPaneObj = dijit.byId(contentPaneId);
     _deleteChildWidgets(contentPaneId);
     contentPaneObj.setHref (byRecordMainPage);
     currentView = "by_rec";
+    initializeByRecordScreen ();
+}
+function initializeByRecordScreen() {  
+}
+function initializeByRelationshipScreen() {
+    currentSelectedSourceDomain = null; 
+    currentSelectedTargetDomain = null; 
+    currentSelectedRelationshipDef = null; 
+    isByRelSelectDialogLoaded = false; 
+    isByRelAddDialogLoaded = false; 
 }
 function _deleteChildWidgets( parentId) {
     var parentObj = dijit.byId(parentId);
@@ -506,7 +517,7 @@ function refreshRelationshipsListingButtonsPalette () {
         else
             imgDeSelectAllButtonObj.src =   deselectAllButtonDisabled.src;
     }
-    
+
     var imgAddButtonObj = dojo.byId("imgAddRelationshipListing");
     if(imgAddButtonObj != null) {
         if(currentSelectedSourceDomain != null && currentSelectedTargetDomain!=null && currentSelectedRelationshipDef!=null) {
