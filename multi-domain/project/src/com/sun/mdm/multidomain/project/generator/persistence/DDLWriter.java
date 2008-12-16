@@ -239,8 +239,8 @@ public class DDLWriter {
             for (int i = 0; i < colCount; i++) {
                 String tempCol = columnTemplate;
                 colIdx += i;
-                tempCol = tempCol.replaceAll("<column-name>", type.toUpperCase() + "_" + i);
-                tempCol = tempCol.replaceAll("<column-type>", dbColType);
+                tempCol = tempCol.replaceAll("<column-name>", type.toUpperCase() + "_" + colIdx);
+                tempCol = tempCol.replaceAll("<column-type>", dbColType.toUpperCase());
                 //tempCol = tempCol.trim();
                 columns += tempCol;
             }
