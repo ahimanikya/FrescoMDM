@@ -42,67 +42,94 @@ public class DomainScreenConfig extends ObjectScreenConfig {
     private ArrayList<GroupScreenConfig> mGroupScreenConfigs;   // ArrayList of GroupScreenConfig objects
     private HashMap <String, HierarchyScreenConfig> mHierarchyScreenConfigs;   // key is the name of the hierarchyType
 
+    /** Constructor for DomainScreenConfig
+     * 
+     */
     public DomainScreenConfig() {
         mGroupScreenConfigs = new ArrayList<GroupScreenConfig>();
         mHierarchyScreenConfigs = new HashMap<String, HierarchyScreenConfig>();
     }
     
+    /** Constructor for DomainScreenConfig
+     * 
+     * @param domain Domain
+     */
     public DomainScreenConfig(Domain domain) {
         mGroupScreenConfigs = new ArrayList<GroupScreenConfig>();
         mHierarchyScreenConfigs = new HashMap<String, HierarchyScreenConfig>();
         mDomain = domain;
     }
     
-    // retrieves the Domain object for this domain
-    
+    /** Retrieve the Domain object for this domain.
+     * 
+     * @return The Domain object for this domain.
+     */
     public Domain getDomain() {     
         return mDomain;
     }
 
-    // sets the Domain object for this domain
-    
+    /** Sets the Domain object for this domain.
+     * 
+     * @param domain  The Domain object for this domain.
+     */
     public void setDomain(Domain domain) {       
         mDomain = domain;
     }
 
-    // retrieves the SummaryLabel for this domain
-    
+    /** Retrieve the SummaryLabel for this domain
+     * 
+     * @return The summary label for this domain.
+     */
     public SummaryLabel getSummaryLabel() {   
         return mSummaryLabel;
     }
 
-    // sets the SummaryLabel for this domain
-    
+    /** Sets the SummaryLabel for this domain
+     * 
+     * @param summaryLabel  The summary label for this domain.
+     */
     public void setSummaryLabel(SummaryLabel summaryLabel) { 
         mSummaryLabel = summaryLabel;
     }
 
-    // retrieves the GroupScreenConfig instances    
-    
+    /** Retrieve the GroupScreenConfig instances for this domain
+     * 
+     * @return The group screen configurations for this domain.
+     */
     public ArrayList<GroupScreenConfig> getGroupScreenConfigs() {  
         return mGroupScreenConfigs;
     }
 
-    // sets the GroupScreenConfig instances
-    
+    /** Sets the GroupScreenConfig instances for this domain
+     * 
+     * @param  configs  The group screen configurations for this domain.
+     */
     public void setGroupScreenConfigs(ArrayList<GroupScreenConfig> configs) {  
         mGroupScreenConfigs = configs;
     }
 
-    // retrieves the GroupScreenConfig object with the matching name
-    
+    /** Retrieve the GroupScreenConfig instances for a hierarchy.
+     * 
+     * @param  hierarchyName  Hierarchy name.
+     * @return The group screen configuration for a hierarchy.
+     */
     public GroupScreenConfig getGroupScreenConfig(String hierarchyName) {   
         return null;
     }
 
-    // retrieves the HierarchyScreenConfig instances
-    
+    /** Retrieve the HierarchyScreenConfig instances.
+     * 
+     * @return The hierarchy screen configurations.
+     */
     public HashMap<String, HierarchyScreenConfig> getHierarchyScreenConfigs() {      
         return mHierarchyScreenConfigs;
     }
 
-    // returns a Hierarchy screen configuration for a specific hierarchy
-    
+    /** Retrieve the HierarchyScreenConfig instance for a specific hiearchy.
+     * 
+     * @param  hierarchyName  The hierarchy name.
+     * @return The hierarchy screen configuration for a specific hierarchy.
+     */
     public HierarchyScreenConfig getHierarchyScreenConfig(String hierarchyName) 
             throws Exception {
                 
@@ -119,7 +146,10 @@ public class DomainScreenConfig extends ObjectScreenConfig {
         return hSC;
     }
     
-    // add a Hierarchy screen config object
+    /** Add a hierarchy screen configuration.
+     * 
+     * @param hSC  Hiearchy screen configuration.
+     */
     public void addHierarchyScreenConfig(HierarchyScreenConfig hSC) 
             throws Exception {
 
@@ -137,7 +167,10 @@ public class DomainScreenConfig extends ObjectScreenConfig {
         mHierarchyScreenConfigs.put(hierarchyName, hSC);
     }
     
-    // Remove a Hierarchy screen config object
+    /** Remove a hierarchy screen configuration.
+     * 
+     * @param hierarchyName  Name of the hierarchy.
+     */
     public void removeHierarchyScreenConfig(String hierarchyName) 
             throws Exception {
 
