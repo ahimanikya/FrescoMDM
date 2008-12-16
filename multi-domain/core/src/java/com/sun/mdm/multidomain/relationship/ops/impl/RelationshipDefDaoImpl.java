@@ -35,6 +35,7 @@ import com.sun.mdm.multidomain.relationship.RelationshipDef;
 import com.sun.mdm.multidomain.relationship.RelationshipDef.DirectionMode;
 import com.sun.mdm.multidomain.relationship.ops.dao.AbstractDAO;
 import com.sun.mdm.multidomain.relationship.ops.dao.RelationshipDefDao;
+import com.sun.mdm.multidomain.relationship.ops.dto.RelationshipEaDto;
 import com.sun.mdm.multidomain.relationship.ops.exceptions.RelationshipDefDaoException;
 import com.sun.mdm.multidomain.sql.AND;
 import com.sun.mdm.multidomain.sql.Criteria;
@@ -130,6 +131,7 @@ public class RelationshipDefDaoImpl extends AbstractDAO implements RelationshipD
         PreparedStatement stmt = null;
 
         try {
+
             UpdateBuilder builder = new UpdateBuilder();
             builder.setTable(RELATIONSHIP_DEF.getTableName());
             for (RELATIONSHIP_DEF rel : RELATIONSHIP_DEF.values()) {
@@ -161,6 +163,20 @@ public class RelationshipDefDaoImpl extends AbstractDAO implements RelationshipD
             stmt.setLong(index++, relDef.getId());
             int rows = stmt.executeUpdate();
 
+            /* RelationshipDef Extend Attributes */
+            RelationshipEaDto attDto = new RelationshipEaDto();
+            ArrayList<Attribute> attrList = (ArrayList<Attribute>) relDef.getAttributes();
+            RelationshipEaDaoImpl relEaDao = new RelationshipEaDaoImpl(userConn);
+            for (Attribute att : attrList) {
+                attDto.setRelationshipDefId(relDef.getId());
+                attDto.setAttributeName(att.getName());
+                attDto.setColumnName(att.getColumnName());
+                attDto.setColumnType(att.getType().name());
+                attDto.setDefaultValue(att.getDefaultValue());
+                attDto.setIsRequired(att.getIsRequired());
+                attDto.setIsSearchable(att.getIsSearchable());
+                relEaDao.update(attDto);
+            }
             return rows;
         } catch (Exception _e) {
             _e.printStackTrace();

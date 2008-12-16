@@ -26,6 +26,7 @@ import com.sun.mdm.multidomain.relationship.ops.dao.AbstractDAO;
 import com.sun.mdm.multidomain.relationship.ops.dao.RelationshipEaDao;
 import com.sun.mdm.multidomain.relationship.ops.dto.RelationshipEaDto;
 import com.sun.mdm.multidomain.relationship.ops.exceptions.*;
+import com.sun.mdm.multidomain.sql.AND;
 import com.sun.mdm.multidomain.sql.DeleteBuilder;
 import static com.sun.mdm.multidomain.sql.DBSchema.*;
 import com.sun.mdm.multidomain.sql.InsertBuilder;
@@ -104,33 +105,42 @@ public class RelationshipEaDaoImpl extends AbstractDAO implements RelationshipEa
     /**
      * Updates a single row in the relationship_ea table.
      */
-    public void update(long pk, RelationshipEaDto dto) throws RelationshipEaDaoException {
+    public void update(RelationshipEaDto dto) throws RelationshipEaDaoException {
 
         PreparedStatement stmt = null;
         try {
             //Build UPDATE SQL
             UpdateBuilder updateBld = new UpdateBuilder();
             updateBld.setTable(RELATIONSHIP_EA.getTableName());
+            Parameter p1 = null, p2 = null;
             for (RELATIONSHIP_EA ea : RELATIONSHIP_EA.values()) {
-                if (ea.columnName.equalsIgnoreCase(RELATIONSHIP_DEF.getPKColumName())) {
-                    updateBld.addCriteria(new Parameter(ea.columnName));
-                } else {
-                    updateBld.addColumns(ea.columnName);
+                switch (ea) {
+                    case RELATIONSHIP_DEF_ID:
+                        p1 = new Parameter(ea.columnName);
+                        break;
+                    case ATTRIBUTE_NAME:
+                        p2 = new Parameter(ea.columnName);
+                        break;
+                    case EA_ID:
+                        // DO NOT update primary key
+                        break;
+                    default:
+                        updateBld.addColumns(ea.columnName);
                 }
             }
+            updateBld.addCriteria(new AND(p1, p2));
             String sqlStr = SQLBuilder.buildSQL(updateBld);
             stmt = mConn.prepareStatement(sqlStr);
             int index = 1;
-            stmt.setLong(index++, dto.getEaId());
-            stmt.setLong(index++, dto.getRelationshipDefId());
-            stmt.setString(index++, dto.getAttributeName());
             stmt.setString(index++, dto.getColumnName());
             stmt.setString(index++, dto.getColumnType());
             stmt.setString(index++, dto.getDefaultValue());
             stmt.setString(index++, dto.getIsSearchable() ? "T" : "F");
             stmt.setString(index++, dto.getIsRequired() ? "T" : "F");
-            stmt.setLong(10, pk);
+            stmt.setLong(index++, dto.getRelationshipDefId());
+            stmt.setString(index++, dto.getAttributeName());
             int rows = stmt.executeUpdate();
+
         } catch (Exception _e) {
             _e.printStackTrace();
             throw new RelationshipEaDaoException("Exception: " + _e.getMessage(), _e);
