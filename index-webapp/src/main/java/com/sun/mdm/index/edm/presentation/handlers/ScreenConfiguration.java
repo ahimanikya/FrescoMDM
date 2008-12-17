@@ -4,6 +4,7 @@
  */
 package com.sun.mdm.index.edm.presentation.handlers;
 
+import com.sun.mdm.index.edm.common.PullDownListItem;
 import com.sun.mdm.index.edm.presentation.validations.EDMValidation;
 import com.sun.mdm.index.edm.services.configuration.FieldConfig;
 import com.sun.mdm.index.edm.services.configuration.SearchScreenConfig;
@@ -35,6 +36,8 @@ public class ScreenConfiguration {
     private static transient final Localizer mLocalizer = Localizer.get();
 
     private ArrayList searchScreenFieldGroupArray = new ArrayList();
+    private ArrayList searchScreenFieldGroupArrayGrouped = new ArrayList();
+    private HashMap searchScreenHashMap = new HashMap();
 
     private ArrayList searchScreenConfigArray = new ArrayList();
     /**
@@ -679,46 +682,14 @@ public class ScreenConfiguration {
      */
     public void changeSearchType(ValueChangeEvent event) {
         // get the event with the changed values
-        String selectedSearchType = (String) event.getNewValue();
-        //this.searchType = selectedSearchType;
-        setSearchType(selectedSearchType);
-          HashMap newHashMap = new HashMap();
-        if(screenObject!=null){//fix for 6679172,6684209
-        ArrayList screenConfigList = screenObject.getSearchScreensConfig();
-      
+        String selectedSearchTypeVar = (String) event.getNewValue();
+        setSearchType(selectedSearchTypeVar);
+        setSelectedSearchType(selectedSearchTypeVar);
         
-        Iterator iteratorScreenConfig = screenConfigList.iterator();
-        while (iteratorScreenConfig.hasNext()) {
-            SearchScreenConfig objSearchScreenConfig = (SearchScreenConfig) iteratorScreenConfig.next();
-            if (this.searchType.equalsIgnoreCase(objSearchScreenConfig.getScreenTitle())) {
-                
-                //set the instruction line here
-                setInstructionLine(objSearchScreenConfig.getInstruction());
-
-                // Get an array list of field config groups
-                ArrayList basicSearchFieldConfigs = objSearchScreenConfig.getFieldConfigs();
-                Iterator basicSearchFieldConfigsIterator = basicSearchFieldConfigs.iterator();
-                //Iterate the the FieldConfigGroup array list
-                while (basicSearchFieldConfigsIterator.hasNext()) {
-                    //Build array of field config groups 
-                    FieldConfigGroup basicSearchFieldGroup = (FieldConfigGroup) basicSearchFieldConfigsIterator.next();
-                    //Build array of field configs from 
-                    //screenConfigArray = basicSearchFieldGroup.getFieldConfigs();
-                    ArrayList fieldConfigsList = basicSearchFieldGroup.getFieldConfigs();
-                    for (int i = 0; i < fieldConfigsList.size(); i++) {
-                        FieldConfig object = (FieldConfig) fieldConfigsList.get(i);
-                        if (object.isRange()) {
-                            newHashMap.put(object.getDisplayName(), null);
-                        } else {
-                            newHashMap.put(object.getName(), null);
-                        }
-                    }
-                }
-            }
-        }
-        }
-        this.setUpdateableFeildsMap(newHashMap);        
-        
+        searchScreenFieldGroupArray = new ArrayList();
+        searchScreenHashMap  = new HashMap();
+        searchScreenFieldGroupArrayGrouped = new ArrayList();
+                        
     }
 
     public String getSearchType() {
@@ -932,7 +903,32 @@ public class ScreenConfiguration {
                     while (basicSearchFieldConfigsIterator.hasNext()) {
                         //Build array of field config groups 
                         FieldConfigGroup basicSearchFieldGroup = (FieldConfigGroup) basicSearchFieldConfigsIterator.next();
+
+                        //Fix for 6682971 - Start
                         //Build array of field configs from 
+                        ArrayList fieldConfigsArray = basicSearchFieldGroup.getFieldConfigs();
+                        ArrayList fcArrayList = new ArrayList();
+                        for (int i = 0; i < fieldConfigsArray.size(); i++) {
+                            FieldConfig objFieldConfig = (FieldConfig) fieldConfigsArray.get(i);
+                            if((objFieldConfig.getValueType() == 6 || objFieldConfig.getValueType() == 8 )&& objFieldConfig.getDisplayName().indexOf("To") != -1 || objFieldConfig.getDisplayName().indexOf("From") != -1) {
+                                objFieldConfig.setRange(true);
+                            }
+                            if (objFieldConfig.isRange()) {
+                                fcArrayList.add(objFieldConfig);
+                                if (fcArrayList.size() == 2) {
+                                    searchScreenFieldGroupArrayGrouped.add(fcArrayList);
+                                    fcArrayList = new ArrayList();
+                                }
+                            } else {
+                                fcArrayList.add(objFieldConfig);
+                                searchScreenFieldGroupArrayGrouped.add(fcArrayList);
+                                fcArrayList = new ArrayList();
+                            }
+                        }
+                        searchScreenHashMap.put(basicSearchFieldGroup.getDescription(), searchScreenFieldGroupArrayGrouped);
+                        searchScreenFieldGroupArrayGrouped = new ArrayList();
+                        //Fix for 6682971 - Ends
+
                         searchScreenFieldGroupArray.add(basicSearchFieldGroup);
                     }
                 } else if (screenObject.getSearchScreensConfig() != null && screenObject.getSearchScreensConfig().size() == 1){
@@ -947,6 +943,32 @@ public class ScreenConfiguration {
                     while (basicSearchFieldConfigsIterator.hasNext()) {
                         //Build array of field config groups 
                         FieldConfigGroup basicSearchFieldGroup = (FieldConfigGroup) basicSearchFieldConfigsIterator.next();
+
+                        //Fix for 6682971 - Start
+                        //Build array of field configs from 
+                        ArrayList fieldConfigsArray = basicSearchFieldGroup.getFieldConfigs();
+                        ArrayList fcArrayList = new ArrayList();
+                        for (int i = 0; i < fieldConfigsArray.size(); i++) {
+                            FieldConfig objFieldConfig = (FieldConfig) fieldConfigsArray.get(i);
+                            if((objFieldConfig.getValueType() == 6 || objFieldConfig.getValueType() == 8 )&& objFieldConfig.getDisplayName().indexOf("To") != -1 || objFieldConfig.getDisplayName().indexOf("From") != -1) {
+                                objFieldConfig.setRange(true);
+                            }
+                            if (objFieldConfig.isRange()) {
+                                fcArrayList.add(objFieldConfig);
+                                if (fcArrayList.size() == 2) {
+                                    searchScreenFieldGroupArrayGrouped.add(fcArrayList);
+                                    fcArrayList = new ArrayList();
+                                }
+                            } else {
+                                fcArrayList.add(objFieldConfig);
+                                searchScreenFieldGroupArrayGrouped.add(fcArrayList);
+                                fcArrayList = new ArrayList();
+                            }
+                        }
+                        searchScreenHashMap.put(basicSearchFieldGroup.getDescription(), searchScreenFieldGroupArrayGrouped);
+                        searchScreenFieldGroupArrayGrouped = new ArrayList();
+                        //Fix for 6682971 - Ends
+
                         searchScreenFieldGroupArray.add(basicSearchFieldGroup);
                     }
                 }
@@ -957,6 +979,7 @@ public class ScreenConfiguration {
             //Logger.getLogger(ScreenConfiguration.class.getName()).log(Level.SEVERE, "Failed Get the Screen Config Array Object: ", e);
             mLogger.error(mLocalizer.x("SNC003: Failed to get SearchScreenField GroupArray:{0}", e.getMessage())); 
         }
+         
         
         return searchScreenFieldGroupArray;
     }
@@ -1119,5 +1142,126 @@ public class ScreenConfiguration {
         return true;
     }
 
+    public ArrayList getSearchScreenFieldGroupArrayGrouped() {
+        return searchScreenFieldGroupArrayGrouped;
+    }
 
+    public void setSearchScreenFieldGroupArrayGrouped(ArrayList searchScreenFieldGroupArrayGrouped) {
+        this.searchScreenFieldGroupArrayGrouped = searchScreenFieldGroupArrayGrouped;
+    }
+
+    public HashMap getSearchScreenHashMap() {
+        return searchScreenHashMap;
+    }
+
+    public void setSearchScreenHashMap(HashMap searchScreenHashMap) {
+        this.searchScreenHashMap = searchScreenHashMap;
+    }
+
+
+    public ArrayList getFieldGroupList(String selectedSearchType) {
+        ArrayList searchScreenFieldGroup = new ArrayList();
+
+        ArrayList basicSearchFieldConfigs;
+        try {
+
+            if (screenObject != null && screenObject.getSearchScreensConfig() != null) { //fix for 6679172,6684209
+                ArrayList screenConfigList = screenObject.getSearchScreensConfig();
+                Iterator iteratorScreenConfig = screenConfigList.iterator();
+                while (iteratorScreenConfig.hasNext()) {
+                    SearchScreenConfig objSearchScreenConfig = (SearchScreenConfig) iteratorScreenConfig.next();
+                    if (screenObject.getSearchScreensConfig() != null && screenObject.getSearchScreensConfig().size() > 1 && selectedSearchType.equalsIgnoreCase(objSearchScreenConfig.getScreenTitle())) {
+                        // Get an array list of field config groups
+                        basicSearchFieldConfigs = objSearchScreenConfig.getFieldConfigs();
+                        //set the instruction line here
+                        setInstructionLine(objSearchScreenConfig.getInstruction());
+
+                        Iterator basicSearchFieldConfigsIterator = basicSearchFieldConfigs.iterator();
+
+                        //Iterate the the FieldConfigGroup array list
+                        while (basicSearchFieldConfigsIterator.hasNext()) {
+                            //Build array of field config groups 
+                            FieldConfigGroup basicSearchFieldGroup = (FieldConfigGroup) basicSearchFieldConfigsIterator.next();
+
+                            //Fix for 6682971 - Start
+                            //Build array of field configs from 
+                            ArrayList fieldConfigsArray = basicSearchFieldGroup.getFieldConfigs();
+                            ArrayList fcArrayList = new ArrayList();
+                            for (int i = 0; i < fieldConfigsArray.size(); i++) {
+                                FieldConfig objFieldConfig = (FieldConfig) fieldConfigsArray.get(i);
+                                if ((objFieldConfig.getValueType() == 6 || objFieldConfig.getValueType() == 8) && objFieldConfig.getDisplayName().indexOf("To") != -1 || objFieldConfig.getDisplayName().indexOf("From") != -1) {
+                                    objFieldConfig.setRange(true);
+                                }
+                                if (objFieldConfig.isRange()) {
+                                    fcArrayList.add(objFieldConfig);
+                                    if (fcArrayList.size() == 2) {
+                                        searchScreenFieldGroupArrayGrouped.add(fcArrayList);
+                                        fcArrayList = new ArrayList();
+                                    }
+                                } else {
+                                    fcArrayList.add(objFieldConfig);
+                                    searchScreenFieldGroupArrayGrouped.add(fcArrayList);
+                                    fcArrayList = new ArrayList();
+                                }
+                            }
+                            searchScreenHashMap.put(basicSearchFieldGroup.getDescription(), searchScreenFieldGroupArrayGrouped);
+                            searchScreenFieldGroupArrayGrouped = new ArrayList();
+                            //Fix for 6682971 - Ends
+
+                            searchScreenFieldGroup.add(basicSearchFieldGroup);
+                        }
+                    } else if (screenObject.getSearchScreensConfig() != null && screenObject.getSearchScreensConfig().size() == 1) {
+                        // Get an array list of field config groups
+                        basicSearchFieldConfigs = objSearchScreenConfig.getFieldConfigs();
+
+                        //set the instruction line here
+                        setInstructionLine(objSearchScreenConfig.getInstruction());
+
+                        Iterator basicSearchFieldConfigsIterator = basicSearchFieldConfigs.iterator();
+                        //Iterate the the FieldConfigGroup array list
+                        while (basicSearchFieldConfigsIterator.hasNext()) {
+                            //Build array of field config groups 
+                            FieldConfigGroup basicSearchFieldGroup = (FieldConfigGroup) basicSearchFieldConfigsIterator.next();
+
+                            //Fix for 6682971 - Start
+                            //Build array of field configs from 
+                            ArrayList fieldConfigsArray = basicSearchFieldGroup.getFieldConfigs();
+                            ArrayList fcArrayList = new ArrayList();
+                            for (int i = 0; i < fieldConfigsArray.size(); i++) {
+                                FieldConfig objFieldConfig = (FieldConfig) fieldConfigsArray.get(i);
+                                if ((objFieldConfig.getValueType() == 6 || objFieldConfig.getValueType() == 8) && objFieldConfig.getDisplayName().indexOf("To") != -1 || objFieldConfig.getDisplayName().indexOf("From") != -1) {
+                                    objFieldConfig.setRange(true);
+                                }
+                                if (objFieldConfig.isRange()) {
+                                    fcArrayList.add(objFieldConfig);
+                                    if (fcArrayList.size() == 2) {
+                                        searchScreenFieldGroupArrayGrouped.add(fcArrayList);
+                                        fcArrayList = new ArrayList();
+                                    }
+                                } else {
+                                    fcArrayList.add(objFieldConfig);
+                                    searchScreenFieldGroupArrayGrouped.add(fcArrayList);
+                                    fcArrayList = new ArrayList();
+                                }
+                            }
+                            searchScreenHashMap.put(basicSearchFieldGroup.getDescription(), searchScreenFieldGroupArrayGrouped);
+                            searchScreenFieldGroupArrayGrouped = new ArrayList();
+                            //Fix for 6682971 - Ends
+
+                            searchScreenFieldGroup.add(basicSearchFieldGroup);
+                        }
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            //Logger.getLogger(ScreenConfiguration.class.getName()).log(Level.SEVERE, "Failed Get the Screen Config Array Object: ", e);
+            mLogger.error(mLocalizer.x("SNC003: Failed to get SearchScreenField GroupArray:{0}", e.getMessage()));
+        }
+
+
+        return searchScreenFieldGroup;
+    }
+
+    
 }

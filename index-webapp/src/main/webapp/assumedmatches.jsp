@@ -42,6 +42,9 @@
 <%@ page import="java.util.HashMap"  %>
 <%@ page import="java.util.Enumeration"%>
 
+<%@ page import="com.sun.mdm.index.edm.services.configuration.FieldConfigGroup"  %>
+<%@ page import="com.sun.mdm.index.edm.common.PullDownListItem"%>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceHandler"  %>
 
 
 <f:view>    
@@ -98,9 +101,13 @@ function setRand(thisrand)  {
    URI = URI.substring(1, URI.lastIndexOf("/"));
    FacesContext facesContext = FacesContext.getCurrentInstance(); 
    String from = (String)facesContext.getExternalContext().getRequestParameterMap().get("where");
-  AssumeMatchHandler assumeMatchHandler = new AssumeMatchHandler();
   Operations operations=new Operations();
   Enumeration parameterNames = request.getParameterNames();
+
+   HttpSession facesSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+   AssumeMatchHandler  assumeMatchHandler = (facesSession.getAttribute("AssumeMatchHandler") != null ) ? (AssumeMatchHandler) facesSession.getAttribute("AssumeMatchHandler") : new AssumeMatchHandler();
+   SourceHandler sourceHandler= new SourceHandler();
+
 %>
     <div id ="assumedmatches " class="basicSearch">
             <table border="0" cellpadding="0" cellspacing="0" align="right">
@@ -134,109 +141,102 @@ function setRand(thisrand)  {
                            %>
                             
                             <input id='lidmask' type='hidden' title='lidmask' name='lidmask' value='DDD-DDD-DDDD' />
-                            <h:dataTable headerClass="tablehead"  
-                                         id="searchScreenFieldGroupArrayId" 
-                                         var="searchScreenFieldGroup" 
-                                         value="#{AssumeMatchHandler.searchScreenFieldGroupArray}">
-						    <h:column>
-   				            <div style="font-size:12px;font-weight:bold;color:#0739B6;"><h:outputText value="#{searchScreenFieldGroup.description}" /></div>
-                            <h:dataTable headerClass="tablehead"  
-                                         id="fieldConfigId" 
-                                         var="feildConfig" 
-                                         value="#{searchScreenFieldGroup.fieldConfigs}">
+							<div id="SearchCriteria">
+							<table width="100%" cellpadding="2" cellspacing="2">
+							<%
+							  for(int i = 0 ; i < assumeMatchHandler.getSearchScreenFieldGroupArray().size(); i++) {
+                                 FieldConfigGroup basicSearchFieldGroup = (FieldConfigGroup) assumeMatchHandler.getSearchScreenFieldGroupArray().get(i);
 
-                                <!--Rendering Non Updateable HTML Text Area-->
-                                   <h:column>
-                                            <nobr>
-                                                <h:outputText rendered="#{feildConfig.oneOfTheseRequired}" >
-												     <span style="font-size:9px;color:blue;verticle-align:top">&dagger;&nbsp;</span>
- 												</h:outputText>
-                                                <h:outputText rendered="#{feildConfig.required}">
-												     <span style="font-size:9px;color:red;verticle-align:top">*&nbsp;</span>
- 												</h:outputText>
+							%>
+							   <tr><td>&nbsp;</td></tr>
+							   <%if(basicSearchFieldGroup.getDescription() != null ) {%>
+							   <tr>
+							     <td>
+							      <font style="color:blue"><%=basicSearchFieldGroup.getDescription()%></font>
+							     </td>
+							   </tr>
+							   <%}%>
+                               <%
+								 ArrayList fieldGroupArrayList  = (ArrayList)assumeMatchHandler.getSearchScreenHashMap().get(basicSearchFieldGroup.getDescription());
+								%>
+							   <%for(int j = 0 ; j < fieldGroupArrayList.size() ; j++) {
+								  ArrayList fieldConfigArrayList = (ArrayList) fieldGroupArrayList.get(j);
+								  ValueExpression fieldConfigArrayListVar = ExpressionFactory.newInstance().createValueExpression( fieldConfigArrayList,  fieldConfigArrayList.getClass()); 	
 
-                                                <h:outputText value="#{feildConfig.displayName}" />
-                                            </nobr>
-                                        </h:column>
-                                        <!--Rendering HTML Select Menu List-->
-                                        <h:column rendered="#{feildConfig.guiType eq 'MenuList'}" >
-                                            <nobr>
-                                                <h:selectOneMenu title='#{feildConfig.name}'
-                                                                 rendered="#{feildConfig.name ne 'SystemCode'}"
-	                                                             value="#{AssumeMatchHandler.updateableFeildsMap[feildConfig.name]}">
-                                                    <f:selectItem itemLabel="" itemValue="" />
-                                                    <f:selectItems  value="#{feildConfig.selectOptions}" />
-                                                </h:selectOneMenu>
-                                                
-                                                <h:selectOneMenu  onchange="javascript:setLidMaskValue(this,'advancedformData')"
-                                                                  title='#{feildConfig.name}'                                           id="SystemCode" 
-    															  value="#{AssumeMatchHandler.updateableFeildsMap[feildConfig.name]}"
-                                                                  rendered="#{feildConfig.name eq 'SystemCode'}">
-                                                    <f:selectItem itemLabel="" itemValue="" />
-                                                    <f:selectItems  value="#{feildConfig.selectOptions}" />
-                                                </h:selectOneMenu>
-                                            </nobr>
-                                        </h:column>
-                                        <!--Rendering Updateable HTML Text boxes-->
-                                        <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType ne 6 }" >
-                                            <nobr>
-                                                <h:inputText   required="#{feildConfig.required}" 
-                                                               label="#{feildConfig.displayName}" 
-                                                               onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
-                                                               onkeyup="javascript:qws_field_on_key_up(this)"
-                                                               title='#{feildConfig.name}'
-                                                               maxlength="#{feildConfig.maxSize}" 
-															   size="#{feildConfig.maxLength}" 
-															   value="#{AssumeMatchHandler.updateableFeildsMap[feildConfig.name]}"
-                                                               rendered="#{feildConfig.name ne 'LID' && feildConfig.name ne 'EUID'}"/>
-                                                
-                                                <h:inputText   required="#{feildConfig.required}" 
-												               id="LID"
-															   readonly="true"
-															   title='#{feildConfig.name}'
-                                                               label="#{feildConfig.displayName}" 
-                                                               onkeydown="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value)"
-                                                               onkeyup="javascript:qws_field_on_key_up(this)"
-															   maxlength="#{feildConfig.maxSize}" 
-															   size="#{feildConfig.maxLength}" 
-                                                               onblur="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value)"
-															   value="#{AssumeMatchHandler.updateableFeildsMap[feildConfig.name]}"
-                                                               rendered="#{feildConfig.name eq 'LID'}"/>
-                                                               
-                                                <h:inputText   required="#{feildConfig.required}" 
-                                                               label="#{feildConfig.displayName}" 
-															   title='#{feildConfig.name}'
-                                                               maxlength="#{SourceHandler.euidLength}" 
-															   value="#{AssumeMatchHandler.updateableFeildsMap[feildConfig.name]}"
-                                                               rendered="#{feildConfig.name eq 'EUID'}"/>
-                                                                   
-                                                               
-                                            </nobr>
-                                        </h:column>
-                                        
-                                        <!--Rendering Updateable HTML Text Area-->
-                                        <h:column rendered="#{feildConfig.guiType eq 'TextArea'}" >
-                                            <nobr>
-                                                <h:inputTextarea label="#{feildConfig.displayName}"  id="fieldConfigIdTextArea"   required="#{feildConfig.required}"/>
-                                            </nobr>
-                                        </h:column>
-                                        
-                                        <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6}" >
+								%>
+								<tr>
+								<%for(int k = 0 ; k < fieldConfigArrayList.size() ; k++) {
+								  FieldConfig fieldConfig = (FieldConfig) fieldConfigArrayList.get(k);
+
+									   String title = fieldConfig.getName();
+									   int maxlength = (fieldConfig.getName().equalsIgnoreCase("EUID")) ? sourceHandler.getEuidLength(): fieldConfig.getMaxSize();
+								%>
+							     <td>
+									<nobr>											
+										<%if(fieldConfig.isOneOfTheseRequired()) {%>
+											 <span style="font-size:9px;color:blue;verticle-align:top">&dagger;&nbsp;</span>
+										<%}%>
+										<%if(fieldConfig.isRequired()) {%>
+											 <span style="font-size:9px;color:red;verticle-align:top">*&nbsp;</span>
+										<%}%>
+										<%=fieldConfig.getDisplayName()%>
+									</nobr>
+								 
+								 </td>
+							      <td>
+								  <%if(fieldConfig.getGuiType().equalsIgnoreCase("MenuList")) {%>
+								             <% if( "SystemCode".equalsIgnoreCase(fieldConfig.getName()))  {%>
+                                                <select title="<%=fieldConfig.getName()%>"
+												        name="<%=fieldConfig.getName()%>" 
+                                                        onchange="javascript:setLidMaskValue(this,'advancedformData')"
+												        id="SystemCode">	
+											 <%} else {%>
+                                               <select title="<%=fieldConfig.getName()%>"
+												     name="<%=fieldConfig.getName()%>" >	
+											<%}%>
+                                              <%PullDownListItem[]   pullDownListItemArray = fieldConfig.getPossibleValues();%>
+											    <option value=""></option>
+											    <%for(int p = 0; p <pullDownListItemArray.length;p++) {%>
+											     	<option value="<%=pullDownListItemArray[p].getName()%>"><%=pullDownListItemArray[p].getDescription()%></option>
+												<%}%>
+											</select>
+
+								  <%}%>
+								  <%if(fieldConfig.getGuiType().equalsIgnoreCase("TextArea")) {%>
+                                      <textarea 
+									            id="<%=fieldConfig.getName()%>" 
+												title="<%=title%>"
+												name="<%=fieldConfig.getName()%>" ></textarea>
+                                <%}%>
+
+								  <%if(fieldConfig.getGuiType().equalsIgnoreCase("TextBox")) {
+									  %>
+									  <%if(fieldConfig.getName().equalsIgnoreCase("LID")) {%>
+                                                 <input type="text" 
+												       id="LID"
+												       title="<%=title%>"
+												       name="<%=fieldConfig.getName()%>" 
+													   maxlength="<%=maxlength%>" 
+                                                       readonly="true"
+													   onkeydown="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value)"
+                                                       onkeyup="javascript:qws_field_on_key_up(this)"
+                                                       onblur="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value)"/>
+ 
+									  <%} else {%>
+									   <%if(fieldConfig.getValueType() == 6 ) {%>
                                           <nobr>
                                             <input type="text" 
-                                                   id = "<h:outputText value="#{feildConfig.name}"/>"  
-												   title="<h:outputText value="#{feildConfig.name}"/>"
-                                                   value="<h:outputText value="#{AssumeMatchHandler.updateableFeildsMap[feildConfig.name]}"/>"
-                                                   required="<h:outputText value="#{feildConfig.required}"/>" 
-                                                   maxlength="<h:outputText value="#{feildConfig.maxSize}"/>"
-                                                   size="<h:outputText value="#{feildConfig.maxLength}"/>"
-                                                   onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{feildConfig.inputMask}"/>')"
-                                                   onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                   onblur="javascript:validate_date(this,'<%=dateFormat%>');javascript:accumilateFieldsOnBlur(this,'<h:outputText value="#{feildConfig.name}"/>')">
+												   id="<%=title%>"
+												   title="<%=title%>"
+												   name="<%=fieldConfig.getName()%>" 
+												   maxlength="<%=maxlength%>" 
+ 												   size="<%=fieldConfig.getMaxLength()%>"
+													onkeydown="javascript:qws_field_on_key_down(this, '<%=(fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0)?fieldConfig.getInputMask():""%>')"
+													onkeyup="javascript:qws_field_on_key_up(this)"                                          onblur="javascript:validate_date(this,'<%=dateFormat%>')">
                                                   <a href="javascript:void(0);" 
-												     title="<h:outputText value="#{feildConfig.displayName}"/>"
+												     title="<%=title%>"
                                                      onclick="g_Calendar.show(event,
-												          '<h:outputText value="#{feildConfig.name}"/>',
+												          '<%=title%>',
 														  '<%=dateFormat%>',
 														  '<%=global_daysOfWeek%>',
 														  '<%=global_months%>',
@@ -245,40 +245,52 @@ function setRand(thisrand)  {
 														  '<%=cal_today_text%>',
 														  '<%=cal_month_text%>',
 														  '<%=cal_year_text%>')" 
-														  ><img  border="0"  title="<h:outputText value="#{feildConfig.displayName}"/> (<%=dateFormat%>)"  src="./images/cal.gif"/></a>
+														  ><img  border="0"  title="<%=title%> (<%=dateFormat%>)"  src="./images/cal.gif"/></a>
 												  <font class="dateFormat">(<%=dateFormat%>)</font>
                                           </nobr>
-                                        </h:column>
-                            </h:dataTable>
-								</h:column>
-							  <f:facet name="footer">
-                                     <h:column>
-                                       <div>
-                                        <table  cellpadding="0" cellspacing="0">
-                                         <tr>
-                                          <td>
-                                          <nobr>
-										  <% if(operations.isAssumedMatch_SearchView()){%>	
-										   <a class="button" title="<h:outputText value="#{msgs.search_button_label}"/>"  id = "deactivateReport" href="javascript:void(0)"
-										   onclick="javascript:getFormValues('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/assumematchservice.jsf?random=rand'+'&'+queryStr,'outputdiv','')">
-												 <span><h:outputText value="#{msgs.search_button_label}"/></span>
-											</a>
-										 <%}%>
-                                        </nobr>
-                                           <nobr>
-                                              <h:outputLink title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:
-                    						  document.getElementById('messages').innerHTML='';
-											  ClearContents('advancedformData')" >
-                                                <span><h:outputText value="#{msgs.clear_button_label}"/></span>
-                                              </h:outputLink>
-                                           </nobr>									
-                                      </td>
-                                        </tr>
-                                      </table>
-									   </div>
-                                     </h:column>
-                               </f:facet>
-                            </h:dataTable>
+                                       <%} else {%>
+
+                                                <input type="text" 
+												       title="<%=title%>"
+												       name="<%=fieldConfig.getName()%>" 
+													   maxlength="<%=maxlength%>" 
+ 													   size="<%=fieldConfig.getMaxLength()%>"
+													   onkeydown="javascript:qws_field_on_key_down(this, '<%=(fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0)?fieldConfig.getInputMask():""%>')"
+													   onkeyup="javascript:qws_field_on_key_up(this)" />
+
+                                       <%}%>
+
+									  <%}%>
+ 								  <%}%>
+								  </td>
+  							   <%}%>
+							   </tr>
+							   <%}%>
+
+							<%}%>
+							</table>
+							</div>
+                             <table  cellpadding="0" cellspacing="0">
+								 <tr>
+								  <td>
+								  <nobr>
+								  <% if(operations.isAssumedMatch_SearchView()){%>	
+								   <a class="button" title="<h:outputText value="#{msgs.search_button_label}"/>"  id = "deactivateReport" href="javascript:void(0)"
+								   onclick="javascript:getFormValues('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/assumematchservice.jsf?random=rand'+'&'+queryStr,'outputdiv','')">
+										 <span><h:outputText value="#{msgs.search_button_label}"/></span>
+									</a>
+								 <%}%>
+								</nobr>
+								   <nobr>
+									  <h:outputLink title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:
+               						  document.getElementById('messages').innerHTML='';
+									  ClearContents('advancedformData')" >
+										<span><h:outputText value="#{msgs.clear_button_label}"/></span>
+									  </h:outputLink>
+								   </nobr>									
+							  </td>
+								</tr>
+                             </table>
                         </td>
                     </tr>
 					<%if(countFc == 0) {%>

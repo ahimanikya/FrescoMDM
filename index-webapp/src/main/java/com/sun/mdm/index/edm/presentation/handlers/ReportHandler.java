@@ -1742,4 +1742,44 @@ public class ReportHandler {
     }
     return orderdedScreens;
 } 
+  
+  
+    public ArrayList getFieldGroupList(SearchScreenConfig objSearchScreenConfig) {
+        ArrayList searchScreenFieldGroupArrayGrouped = new ArrayList();
+        try {
+            Iterator basicSearchFieldConfigsIterator = objSearchScreenConfig.getFieldConfigs().iterator();
+            //Iterate the the FieldConfigGroup array list
+            while (basicSearchFieldConfigsIterator.hasNext()) {
+                //Build array of field config groups 
+                FieldConfigGroup basicSearchFieldGroup = (FieldConfigGroup) basicSearchFieldConfigsIterator.next();
+
+                ArrayList fieldConfigsArray = basicSearchFieldGroup.getFieldConfigs();
+                ArrayList fcArrayList = new ArrayList();
+                for (int i = 0; i < fieldConfigsArray.size(); i++) {
+                    FieldConfig objFieldConfig = (FieldConfig) fieldConfigsArray.get(i);
+                    if ((objFieldConfig.getValueType() == 6 || objFieldConfig.getValueType() == 8) && objFieldConfig.getDisplayName().indexOf("To") != -1 || objFieldConfig.getDisplayName().indexOf("From") != -1) {
+                        objFieldConfig.setRange(true);
+                    }
+                    if (objFieldConfig.isRange()) {
+                        fcArrayList.add(objFieldConfig);
+                        if (fcArrayList.size() == 2) {
+                            searchScreenFieldGroupArrayGrouped.add(fcArrayList);
+                            fcArrayList = new ArrayList();
+                        }
+                    } else {
+                        fcArrayList.add(objFieldConfig);
+                        searchScreenFieldGroupArrayGrouped.add(fcArrayList);
+                        fcArrayList = new ArrayList();
+                    }
+                }
+                //Fix for 6682971 - Ends
+
+            }
+        } catch (Exception e) {
+            //Logger.getLogger(ScreenConfiguration.class.getName()).log(Level.SEVERE, "Failed Get the Screen Config Array Object: ", e);
+            mLogger.error(mLocalizer.x("SNC003: Failed to get SearchScreenField GroupArray:{0}", e.getMessage()));
+        }
+        return searchScreenFieldGroupArrayGrouped;
+    }
+  
 }

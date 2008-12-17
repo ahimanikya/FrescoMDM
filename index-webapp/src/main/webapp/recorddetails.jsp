@@ -65,6 +65,10 @@
 <%@ page import="javax.el.ValueExpression" %>
 <%@ page import="com.sun.mdm.index.edm.presentation.security.Operations"%>
 <%@ page import="javax.faces.context.FacesContext" %>
+<%@ page import="javax.faces.model.SelectItem" %>
+<%@ page import="com.sun.mdm.index.edm.services.configuration.FieldConfigGroup"  %>
+<%@ page import="com.sun.mdm.index.edm.common.PullDownListItem"%>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceHandler"  %>
 
 <f:view>
 <html>
@@ -137,6 +141,9 @@ function align(thisevent,divID) {
    StringBuffer myColumnDefs = new StringBuffer();
    Enumeration parameterNames = request.getParameterNames();
    Operations operations=new Operations();
+   HttpSession facesSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+   RecordDetailsHandler  recordDetailsHandler = (facesSession.getAttribute("RecordDetailsHandler") != null ) ? (RecordDetailsHandler) facesSession.getAttribute("RecordDetailsHandler") : new RecordDetailsHandler();
+   SourceHandler sourceHandler= new SourceHandler();
 %>
 
 <title><h:outputText value="#{msgs.application_heading}"/></title>  
@@ -149,149 +156,138 @@ function align(thisevent,divID) {
         <div id="advancedSearch" class="duplicaterecords" style="visibility:visible;display:block">
      <div id="searchType">
             <table border="0" cellpadding="0" cellspacing="0" align="right">
-                <h:form id="searchTypeForm" >
+                <form id="searchTypeForm" >
                             <tr>
                                 <td>
                                     <h:outputText  rendered="#{RecordDetailsHandler.possilbeSearchTypesCount gt 1}"  value="#{msgs.patdet_search_text}"/>&nbsp;
-                                    <h:selectOneMenu id="searchType" title="#{msgs.search_Type}" rendered="#{RecordDetailsHandler.possilbeSearchTypesCount gt 1}" onchange="submit();" style="width:220px;" value="#{RecordDetailsHandler.searchType}" valueChangeListener="#{RecordDetailsHandler.changeSearchType}" >
-                                        <f:selectItems  value="#{RecordDetailsHandler.possilbeSearchTypes}" />
-                                    </h:selectOneMenu>
-                                </td>
+                                               <select id="searchTypeList" title="<%=bundle.getString("search_Type")%>" onchange="javascript:document.getElementById('outputdiv').innerHTML ='';getRecordDetailsFormValues('searchTypeForm');checkedItems = new Array();setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchscreenservices.jsf?random='+rand+'&'+queryStr,'SearchCriteria','')" style="width:220px;">	
+                                              <%ArrayList   searchListItemArray = recordDetailsHandler.getPossilbeSearchTypes();%>
+											    <%for(int p = 0; p <searchListItemArray.size();p++) {
+                                                        SelectItem selectItem = (SelectItem) searchListItemArray.get(p);
+													%>
+                                                    <%if(request.getParameter("selectedSearchType") != null && request.getParameter("selectedSearchType").equalsIgnoreCase(selectItem.getLabel())) {%>
+											     	  <option value="<%=selectItem.getValue()%>" selected="true"><%=selectItem.getLabel()%></option>
+													<%} else {%>
+											     	<option value="<%=selectItem.getValue()%>"><%=selectItem.getLabel()%></option>
+													<%}%>
+												<%}%>
+											</select>
+
+								</td>
                             </tr>
-                </h:form>
-            </table>
-   </div>            <h:form id="advancedformData" >
+                </form>
+ </table>
+   </div>            
+
+   <h:form id="advancedformData" >
+                            <input id='lidmask' type='hidden' title='lidmask' name='lidmask' value='' />
                 <input type="hidden" id="selectedSearchType" title='selectedSearchType' 
-				value='<h:outputText value="#{RecordDetailsHandler.selectedSearchType}"/>' />
+				value='<%=recordDetailsHandler.getSelectedSearchType()%>' />
 
              <table border="0" cellpadding="0" cellspacing="0">
-			   <tr>
-			     <td align="left"><p><nobr><h:outputText  value="#{RecordDetailsHandler.instructionLine}"/></nobr></p>
-				 </td>
-				 
-
-			   </tr>
                     <tr>
                         <td colspan="2">
-                            <input id='lidmask' type='hidden' title='lidmask' name='lidmask' value='' />
-                            <h:dataTable cellpadding="0" cellspacing="0"
-                                         id="searchScreenFieldGroupArrayId" 
-                                         var="searchScreenFieldGroup" 
-                                         value="#{RecordDetailsHandler.searchScreenFieldGroupArray}">
-						    <h:column>
-   				            <p>
-							     <h:outputText value="#{searchScreenFieldGroup.description}" />
-							</p>
-                            <h:dataTable headerClass="tablehead"  
-							             cellpadding="0" cellspacing="0"
-                                         id="fieldConfigId" 										 
-                                         var="feildConfig" 
-                                         value="#{searchScreenFieldGroup.fieldConfigs}">
+                           <div id="SearchCriteria">
+							<table width="100%" cellpadding="0" cellspacing="0">
+							<%if(recordDetailsHandler.getInstructionLine() != null ) {%>
+						   <tr>
+							 <td colspan="2" align="left"><p><nobr><%=recordDetailsHandler.getInstructionLine()%></nobr></p>
+							 </td>
+						   </tr>
+						   <%}%>
+							<%
+							  for(int i = 0 ; i < recordDetailsHandler.getSearchScreenFieldGroupArray().size(); i++) {
+                                 FieldConfigGroup basicSearchFieldGroup = (FieldConfigGroup) recordDetailsHandler.getSearchScreenFieldGroupArray().get(i);
 
-                                <!--Rendering Non Updateable HTML Text Area-->
-                               <!--Rendering Non Updateable HTML Text Area-->
-                                        <h:column>
-                                            <nobr>											
-                                                <h:outputText rendered="#{feildConfig.oneOfTheseRequired}" >
-												     <span style="font-size:9px;color:blue;verticle-align:top">&dagger;&nbsp;</span>
- 												</h:outputText>
-                                                <h:outputText rendered="#{feildConfig.required}">
-												     <span style="font-size:9px;color:red;verticle-align:top">*&nbsp;</span>
- 												</h:outputText>
-                                                <h:outputText value="#{feildConfig.displayName}" />
-                                            </nobr>
-                                        </h:column>
-                                        <!--Rendering HTML Select Menu List-->
-                                        <h:column rendered="#{feildConfig.guiType eq 'MenuList'}" >
-                                            <nobr>
-                                                <h:selectOneMenu title='#{feildConfig.name}'
-                                                                 rendered="#{feildConfig.name ne 'SystemCode'}"
-	                                                             value="#{RecordDetailsHandler.updateableFeildsMap[feildConfig.name]}">
-                                                    <f:selectItem itemLabel="" itemValue="" />
-                                                    <f:selectItems  value="#{feildConfig.selectOptions}" />
-                                                </h:selectOneMenu>
-                                                
-                                                <h:selectOneMenu  onchange="javascript:setLidMaskValue(this,'advancedformData')"
-												                  title='#{feildConfig.name}'  
-                                                                  id="SystemCode" 
-    															  value="#{RecordDetailsHandler.updateableFeildsMap[feildConfig.name]}"
-                                                                  rendered="#{feildConfig.name eq 'SystemCode'}">
-                                                    <f:selectItem itemLabel="" itemValue="" />
-                                                    <f:selectItems  value="#{feildConfig.selectOptions}" />
-                                                </h:selectOneMenu>
-                                            </nobr>
-                                        </h:column>
-                                        <!--Rendering Updateable HTML Text boxes-->
-                                        <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType ne 6 }" >
-                                            <nobr>
-                                                <h:inputText   required="#{feildConfig.required}" 
-												               title='#{feildConfig.displayName}'
-                                                               label="#{feildConfig.displayName}" 
-                                                               onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
-                                                               onkeyup="javascript:qws_field_on_key_up(this)"
-                                                               maxlength="#{feildConfig.maxSize}" 
-															   size="#{feildConfig.maxLength}"
-															   value="#{RecordDetailsHandler.updateableFeildsMap[feildConfig.name]}"
-                                                               rendered="#{feildConfig.range && feildConfig.name ne 'LID' && feildConfig.name ne 'EUID'}"/>
+							%>
+							   <tr><td>&nbsp;</td></tr>
+							   <%if( basicSearchFieldGroup.getDescription() != null ) { %>
+							   <tr>
+							     <td colspan="2">
+							      <font style="color:blue"><%=basicSearchFieldGroup.getDescription()%></font>
+							     </td>
+							   </tr>
+							   <%}%>
+                               <%
+								 ArrayList fieldGroupArrayList  = (ArrayList)recordDetailsHandler.getSearchScreenHashMap().get(basicSearchFieldGroup.getDescription());
+								%>
+							   <%for(int j = 0 ; j < fieldGroupArrayList.size() ; j++) {
+								  ArrayList fieldConfigArrayList = (ArrayList) fieldGroupArrayList.get(j);
+								  ValueExpression fieldConfigArrayListVar = ExpressionFactory.newInstance().createValueExpression( fieldConfigArrayList,  fieldConfigArrayList.getClass()); 	
 
-												<h:inputText   required="#{feildConfig.required}" 
-												               title='#{feildConfig.name}'
-                                                               label="#{feildConfig.displayName}" 
-                                                               onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
-                                                               onkeyup="javascript:qws_field_on_key_up(this)"
-                                                               maxlength="#{feildConfig.maxSize}" 
-															   size="#{feildConfig.maxLength}"
-															   value="#{RecordDetailsHandler.updateableFeildsMap[feildConfig.name]}"
-                                                               rendered="#{!feildConfig.range && feildConfig.name ne 'LID' && feildConfig.name ne 'EUID'}"/>
-                                                
-                                                <h:inputText   required="#{feildConfig.required}" 
-												               id="LID"
-															   title='#{feildConfig.name}'
-                                                               label="#{feildConfig.displayName}" 
-															   readonly="true"
-															   onkeydown="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value)"
-                                                               onkeyup="javascript:qws_field_on_key_up(this)"
-                                                               onblur="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value)"
-															   value="#{RecordDetailsHandler.updateableFeildsMap[feildConfig.name]}"
-                                                               rendered="#{!feildConfig.range && feildConfig.name eq 'LID'}"/>
-                                                               
-                                                <h:inputText   required="#{feildConfig.required}" 
-                                                               label="#{feildConfig.displayName}" 
-															   title='#{feildConfig.name}'
-                                                               onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
-                                                               onkeyup="javascript:qws_field_on_key_up(this)"
-                                                               maxlength="#{SourceHandler.euidLength}" 
-															   value="#{RecordDetailsHandler.updateableFeildsMap[feildConfig.name]}"
-                                                               rendered="#{!feildConfig.range && feildConfig.name eq 'EUID'}"/>
-                                                                   
-                                                               
-                                            </nobr>
-                                        </h:column>
-                                        
-                                        <!--Rendering Updateable HTML Text Area-->
-                                        <h:column rendered="#{feildConfig.guiType eq 'TextArea'}" >
-                                            <nobr>
-                                                <h:inputTextarea label="#{feildConfig.displayName}"  title='#{feildConfig.name}'
-												id="fieldConfigIdTextArea"   required="#{feildConfig.required}"/>
-                                            </nobr>
-                                        </h:column>
-                                        
-                                        <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6  && !feildConfig.range}" >
+								%>
+								<tr>
+								<%for(int k = 0 ; k < fieldConfigArrayList.size() ; k++) {
+								  FieldConfig fieldConfig = (FieldConfig) fieldConfigArrayList.get(k);
+									   String title = (fieldConfig.isRange()) ? fieldConfig.getDisplayName(): fieldConfig.getName();
+									   int maxlength = (fieldConfig.getName().equalsIgnoreCase("EUID")) ? sourceHandler.getEuidLength(): fieldConfig.getMaxSize();
+								%>
+							     <td>
+									<nobr>											
+										<%if(fieldConfig.isOneOfTheseRequired()) {%>
+											 <span style="font-size:9px;color:blue;verticle-align:top">&dagger;&nbsp;</span>
+										<%}%>
+										<%if(fieldConfig.isRequired()) {%>
+											 <span style="font-size:9px;color:red;verticle-align:top">*&nbsp;</span>
+										<%}%>
+										<%=fieldConfig.getDisplayName()%>
+									</nobr>
+								 
+								 </td>
+							      <td>
+								  <%if(fieldConfig.getGuiType().equalsIgnoreCase("MenuList")) {%>
+								             <% if( "SystemCode".equalsIgnoreCase(fieldConfig.getName()))  {%>
+                                                <select title="<%=fieldConfig.getName()%>"
+												        name="<%=fieldConfig.getName()%>" 
+                                                        onchange="javascript:setLidMaskValue(this,'advancedformData')"
+												        id="SystemCode">	
+											 <%} else {%>
+                                               <select title="<%=fieldConfig.getName()%>"
+												     name="<%=fieldConfig.getName()%>" >	
+											<%}%>
+                                              <%PullDownListItem[]   pullDownListItemArray = fieldConfig.getPossibleValues();%>
+											    <option value=""></option>
+											    <%for(int p = 0; p <pullDownListItemArray.length;p++) {%>
+											     	<option value="<%=pullDownListItemArray[p].getName()%>"><%=pullDownListItemArray[p].getDescription()%></option>
+												<%}%>
+											</select>
+
+								  <%}%>
+								  <%if(fieldConfig.getGuiType().equalsIgnoreCase("TextArea")) {%>
+                                      <textarea 
+									            id="<%=fieldConfig.getName()%>" 
+												title="<%=title%>"
+												name="<%=fieldConfig.getName()%>" ></textarea>
+                                <%}%>
+
+								  <%if(fieldConfig.getGuiType().equalsIgnoreCase("TextBox")) {
+									  %>
+									  <%if(fieldConfig.getName().equalsIgnoreCase("LID")) {%>
+                                                 <input type="text" 
+												       id="LID"
+												       title="<%=title%>"
+												       name="<%=fieldConfig.getName()%>" 
+													   maxlength="<%=maxlength%>" 
+                                                       readonly="true"
+													   onkeydown="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value)"
+                                                       onkeyup="javascript:qws_field_on_key_up(this)"
+                                                       onblur="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value)"/>
+ 
+									  <%} else {%>
+									   <%if(fieldConfig.getValueType() == 6 ) {%>
                                           <nobr>
                                             <input type="text" 
-                                                   id = "<h:outputText value="#{feildConfig.name}"/>"  
-												   title="<h:outputText value="#{feildConfig.name}"/>"  
-                                                   value="<h:outputText value="#{RecordDetailsHandler.updateableFeildsMap[feildConfig.name]}"/>"
-                                                   required="<h:outputText value="#{feildConfig.required}"/>" 
-                                                   maxlength="<h:outputText value="#{feildConfig.maxSize}"/>"
-                                                   size="<h:outputText value="#{feildConfig.maxLength}"/>"
-                                                   onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{feildConfig.inputMask}"/>')"
-                                                   onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                   onblur="javascript:validate_date(this,'<%=dateFormat%>')">
+												   id="<%=title%>"
+												   title="<%=title%>"
+												   name="<%=fieldConfig.getName()%>" 
+												   maxlength="<%=maxlength%>" 
+ 												   size="<%=fieldConfig.getMaxLength()%>"
+													onkeydown="javascript:qws_field_on_key_down(this, '<%=(fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0)?fieldConfig.getInputMask():""%>')"
+													onkeyup="javascript:qws_field_on_key_up(this)"                                          onblur="javascript:validate_date(this,'<%=dateFormat%>')">
                                                   <a href="javascript:void(0);" 
-												     title="<h:outputText value="#{feildConfig.displayName}"/>"
+												     title="<%=title%>"
                                                      onclick="g_Calendar.show(event,
-												          '<h:outputText value="#{feildConfig.name}"/>',
+												          '<%=title%>',
 														  '<%=dateFormat%>',
 														  '<%=global_daysOfWeek%>',
 														  '<%=global_months%>',
@@ -300,41 +296,32 @@ function align(thisevent,divID) {
 														  '<%=cal_today_text%>',
 														  '<%=cal_month_text%>',
 														  '<%=cal_year_text%>')" 
-														  ><img  border="0"  title="<h:outputText value="#{feildConfig.displayName}"/> (<%=dateFormat%>)"  src="./images/cal.gif"/></a>
+														  ><img  border="0"  title="<%=title%> (<%=dateFormat%>)"  src="./images/cal.gif"/></a>
 												  <font class="dateFormat">(<%=dateFormat%>)</font>
                                           </nobr>
-                                        </h:column>
-										<h:column rendered="#{ feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6  &&  feildConfig.range}" >
-                                          <nobr>
-                                            <input type="text" 
-                                                   id = "<h:outputText value="#{feildConfig.displayName}"/>"  
-												   title="<h:outputText value="#{feildConfig.displayName}"/>"  
-                                                   value="<h:outputText value="#{RecordDetailsHandler.updateableFeildsMap[feildConfig.name]}"/>"
-                                                   required="<h:outputText value="#{feildConfig.required}"/>" 
-                                                   maxlength="<h:outputText value="#{feildConfig.maxLength}"/>"
-                                                   onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{feildConfig.inputMask}"/>')"
-                                                   onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                   onblur="javascript:validate_date(this,'<%=dateFormat%>')">
-                                                  <a href="javascript:void(0);" 
-												     title="<h:outputText value="#{feildConfig.displayName}"/>"
-                                                     onclick="g_Calendar.show(event,
-												          '<h:outputText value="#{feildConfig.displayName}"/>',
-														  '<%=dateFormat%>',
-														  '<%=global_daysOfWeek%>',
-														  '<%=global_months%>',
-														  '<%=cal_prev_text%>',
-														  '<%=cal_next_text%>',
-														  '<%=cal_today_text%>',
-														  '<%=cal_month_text%>',
-														  '<%=cal_year_text%>')" 
-														  ><img  border="0"  title="<h:outputText value="#{feildConfig.displayName}"/> (<%=dateFormat%>)"  src="./images/cal.gif"/></a>
-												  <font class="dateFormat">(<%=dateFormat%>)</font>
-                                          </nobr>
-                                        </h:column>
-                             
-                            </h:dataTable> <!--Field config loop-->
-						    </h:column>
-                            </h:dataTable> <!--Field groups loop-->
+                                       <%} else {%>
+
+                                                <input type="text" 
+												       title="<%=title%>"
+												       name="<%=fieldConfig.getName()%>" 
+													   maxlength="<%=maxlength%>" 
+ 													   size="<%=fieldConfig.getMaxLength()%>"
+													   onkeydown="javascript:qws_field_on_key_down(this, '<%=(fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0)?fieldConfig.getInputMask():""%>')"
+													   onkeyup="javascript:qws_field_on_key_up(this)" />
+
+                                       <%}%>
+
+									  <%}%>
+ 								  <%}%>
+								  </td>
+  							   <%}%>
+							   </tr>
+							   <%}%>
+
+							<%}%>
+							 <tr><td colspan="2">&nbsp;</td></tr>
+							</table>
+                           </div> <!-- Search div ends here -->
                             <table  cellpadding="0" cellspacing="0" style="	border:0px red solid;padding-left:20px">
                                 <tr>
                                     <td align="left">
@@ -406,9 +393,6 @@ function align(thisevent,divID) {
 
         <%
 		  
-		  HttpSession facesSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-
-          RecordDetailsHandler  recordDetailsHandler = new RecordDetailsHandler();
           String[][] lidMaskingArray = recordDetailsHandler.getAllSystemCodes();
           
         %>
@@ -455,7 +439,7 @@ function align(thisevent,divID) {
             
             formNameValue.lidmask.value  = getLidMask(selectedValue,systemCodes,lidMasks);
          }   
-         var selectedSearchValue = document.getElementById("searchTypeForm:searchType").options[document.getElementById("searchTypeForm:searchType").selectedIndex].value;
+         var selectedSearchValue = document.getElementById("searchTypeList").options[document.getElementById("searchTypeList").selectedIndex].value;
          document.getElementById("selectedSearchType").value = selectedSearchValue;
                   
 
@@ -476,13 +460,13 @@ function align(thisevent,divID) {
 </script>
 <!-- Added  on 22-aug-2008 to incorparte with the functionality of back button in euiddetails.jsp  -->
     <%if(request.getParameter("back")!=null){%>
-    <script>
+  <script>
 		 <% 
 		  String qryString  = request.getQueryString();
 	      qryString  = qryString.replaceAll("collectEuids=true","");
 		%>
-         var queryStr = '<%=qryString%>';
-         setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/recorddetailsservice.jsf?random='+rand+'&'+queryStr,'outputdiv','');
+		 setRand(Math.random());
+         var queryStrVar = '<%=qryString%>';
    
    <% while(parameterNames.hasMoreElements())   { 
         String attributeName = (String) parameterNames.nextElement();
@@ -547,6 +531,18 @@ function align(thisevent,divID) {
 <script type="text/javascript">
     makeDraggable("activeDiv");
   </script>
+       <%if(request.getParameter("back")!=null){%>
+	   	<% 
+		  String qryString  = request.getQueryString();
+	      qryString  = qryString.replaceAll("collectEuids=true","");
+		%>
+
+    <script>
+            var queryStrVar = '<%=qryString%>';
+		    getRecordDetailsFormValues('searchTypeForm');
+			ajaxURL('/<%=URI%>/ajaxservices/searchscreenservices.jsf?random='+rand+'&'+queryStr+'&myStrVar='+queryStrVar,'SearchCriteria','');
+   </script>
+   <%}%>
 
 </f:view>
 

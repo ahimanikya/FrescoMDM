@@ -46,7 +46,11 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.AuditLogHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.NavigationHandler"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.LocaleHandler"  %>
+
+<%@ page import="com.sun.mdm.index.edm.common.PullDownListItem"%>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceHandler"  %>
  
+
 <%@ page import="java.util.Iterator"  %>
 <%@ page import="java.util.HashMap"  %>
 <%@ page import="java.util.ResourceBundle"  %>
@@ -75,7 +79,7 @@ function setRand(thisrand)  {
    ArrayList labelsList  = new ArrayList();
    ArrayList fullFieldNamesList  = new ArrayList();
    StringBuffer myColumnDefs = new StringBuffer();
-
+   SourceHandler sourceHandler = new SourceHandler();
 
 %>
 <%
@@ -210,130 +214,120 @@ if(session!=null ){
                                                         </h:selectOneMenu>      
 													   </h:panelGroup>
 													   </h:panelGrid>
-                                                          <h:dataTable headerClass="tablehead"
-                                                            id="searchScreenFieldGroupArrayId" 
-                                                            var="searchScreenFieldGroup" 
-                                                            value="<%=basicSearchFGValueExpression%>">
-                                                       <h:column>
-                                				            <div style="font-size:12px;font-weight:bold;color:#0739B6;" >
-															<h:outputText value="#{searchScreenFieldGroup.description}" /></div>
-																	<h:dataTable headerClass="tablehead"  
-																				 id="fieldConfigId" 
-																				 var="feildConfig" 
-																				 value="#{searchScreenFieldGroup.fieldConfigs}">
-																		<!--Rendering Non Updateable HTML Text Area-->
-																		 <h:column>
-                                                                          <nobr>
-                                                                               <h:outputText rendered="#{feildConfig.oneOfTheseRequired}" >
-												                                 <span style="font-size:9px;color:blue;verticle-align:top">&dagger;&nbsp;</span>
- 												                               </h:outputText>
-                                                                              <h:outputText rendered="#{feildConfig.required}">
-												                                 <span style="font-size:9px;color:red;verticle-align:top">*&nbsp;</span>
- 												                               </h:outputText>
-                                                                             <h:outputText value="#{feildConfig.displayName}" />
-                                                                         </nobr>
-																				</h:column>
-																				<!--Rendering HTML Select Menu List-->
-																				<h:column rendered="#{feildConfig.guiType eq 'MenuList'}" >
-																					<nobr>
-																						<h:selectOneMenu 
-																						value="#{ReportHandler.reportParameters[feildConfig.name]}" 
-																						title="#{feildConfig.name}" 
-																						rendered="#{feildConfig.name ne 'SystemCode'}" >
-																							<f:selectItem itemLabel="" itemValue="" />
-																							<f:selectItems  value="#{feildConfig.selectOptions}" />
-																						</h:selectOneMenu>
-																						
-																						<h:selectOneMenu  
-																						value="#{ReportHandler.reportParameters[feildConfig.name]}" 																					title="#{feildConfig.name}" 
-                                                                                        onchange="javascript:setLidMaskValue(this)"  id="SystemCode" 
-																						rendered="#{feildConfig.name eq 'SystemCode'}">
-																						<f:selectItem itemLabel="" itemValue="" />
-																						<f:selectItems  value="#{feildConfig.selectOptions}" />
-																						</h:selectOneMenu>
-																					</nobr>
-																				</h:column>
-																				<!--Rendering Updateable HTML Text boxes-->
-																				<h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType ne 6 }" >
-																					<nobr>
-																						<h:inputText   required="#{feildConfig.required}" 
-																					   value="#{ReportHandler.reportParameters[feildConfig.name]}" 
-
-																		               title="#{feildConfig.name}"
-																					   label="#{feildConfig.displayName}" 
-																					   onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
-																					   onkeyup="javascript:qws_field_on_key_up(this)"
-                                                                                       maxlength="#{feildConfig.maxSize}" 
-																					   size="#{feildConfig.maxLength}"
-																					   rendered="#{feildConfig.name ne 'LID' && feildConfig.name ne 'EUID'}"/>
-                                      <h:inputHidden id="SystemCodeHidden" value="#{ReportHandler.reportParameters['SystemCodeHidden']}"/>	
-										<h:inputHidden id="LIDHidden" value="#{ReportHandler.reportParameters['LIDHidden']}"/>			
-																						<h:inputText   required="#{feildConfig.required}" 
-																									   id="LID"
-																									   title="#{feildConfig.name}"
-																									   value="#{ReportHandler.reportParameters[feildConfig.name]}" 
-																									   label="#{feildConfig.displayName}" 
-																									   onkeydown="javascript:qws_field_on_key_down(this, document.lidform.lidmask.value)"
-																									   onkeyup="javascript:qws_field_on_key_up(this)"
-																									   maxlength="#{feildConfig.maxSize}" 
-																									   size="#{feildConfig.maxLength}"
-																									   rendered="#{feildConfig.name eq 'LID'}"/>
-																									   
-																						<h:inputText   required="#{feildConfig.required}" 
- 																						               title="#{feildConfig.name}"
-																									   value="#{ReportHandler.reportParameters[feildConfig.name]}" 
-																									   label="#{feildConfig.displayName}" 
-																									   maxlength="#{SourceHandler.euidLength}" 
-																									   rendered="#{feildConfig.name eq 'EUID'}"/>
-																										   
-																					</nobr>
-																				</h:column>
-																				
-																				<!--Rendering Updateable HTML Text Area-->
-																				<h:column rendered="#{feildConfig.guiType eq 'TextArea'}" >
-																					<nobr>
-																						<h:inputTextarea 
-																						value="#{ReportHandler.reportParameters[feildConfig.name]}" 
-																						label="#{feildConfig.displayName}"  
-																						title="#{feildConfig.name}"
-																						id="fieldConfigIdTextArea"   required="#{feildConfig.required}"/>
-																					</nobr>
-																				</h:column>
-																				
-																				<h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6}" >
-																				  <nobr>
-	                                          <input type="text"
-id = "form<%=i%><h:outputText value="#{feildConfig.name}"/>"
-title = "<h:outputText value="#{feildConfig.name}"/>"
-value="<h:outputText value="#{ReportHandler.reportParameters[feildConfig.name]}"/>"
-required="<h:outputText value="#{feildConfig.required}"/>"
-maxlength="<h:outputText value="#{feildConfig.maxSize}"/>"
-size="<h:outputText value="#{feildConfig.maxLength}"/>"
-onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{feildConfig.inputMask}"/>')"
-onkeyup="javascript:qws_field_on_key_up(this)"
-onblur="javascript:validate_date(this,'<%=dateFormat%>')">
-<a href="javascript:void(0);"
-title="<h:outputText value="#{feildConfig.displayName}"/>"
-onclick="g_Calendar.show(event,
-'form<%=i%><h:outputText value="#{feildConfig.name}"/>',
-'<%=dateFormat%>',
-'<%=global_daysOfWeek%>',
-'<%=global_months%>',
-'<%=cal_prev_text%>',
-'<%=cal_next_text%>',
-'<%=cal_today_text%>',
-'<%=cal_month_text%>',
-'<%=cal_year_text%>')"
-><img border="0" title="<h:outputText value="#{feildConfig.displayName}"/> (<%=dateFormat%>)" src="./images/cal.gif"/></a>
-<font class="dateFormat">(<%=dateFormat%>)</font>
-
-																				  </nobr>
-																				</h:column>
-																	</h:dataTable> <!--Field config loop-->
-															</h:column>
-                                                       </h:dataTable> 
 <!--End Field groups loop-->
 												  <input type="hidden" title="tabName" name="reportName" value="<%=orderdedScreens[i].getDisplayTitle()%>"/>
+												  <table>
+												  <tr><td>&nbsp;</td></tr>
+												   <%
+													 ArrayList fieldGroupArrayList  = reportHandler.getFieldGroupList(objSearchScreenConfig);
+													%>
+												   <%for(int j = 0 ; j < fieldGroupArrayList.size() ; j++) {
+													  ArrayList fieldConfigArrayList = (ArrayList) fieldGroupArrayList.get(j);
+													%>
+													<tr>
+													<%for(int k = 0 ; k < fieldConfigArrayList.size() ; k++) {
+													  FieldConfig fieldConfig = (FieldConfig) fieldConfigArrayList.get(k);
+
+														   String title = fieldConfig.getName();
+														   int maxlength = (fieldConfig.getName().equalsIgnoreCase("EUID")) ? sourceHandler.getEuidLength(): fieldConfig.getMaxSize();
+													%>
+													 <td>
+														<nobr>											
+															<%if(fieldConfig.isOneOfTheseRequired()) {%>
+																 <span style="font-size:9px;color:blue;verticle-align:top">&dagger;&nbsp;</span>
+															<%}%>
+															<%if(fieldConfig.isRequired()) {%>
+																 <span style="font-size:9px;color:red;verticle-align:top">*&nbsp;</span>
+															<%}%>
+															<%=fieldConfig.getDisplayName()%>
+														</nobr>
+													 
+													 </td>
+													  <td>
+													  <%if(fieldConfig.getGuiType().equalsIgnoreCase("MenuList")) {%>
+																 <% if( "SystemCode".equalsIgnoreCase(fieldConfig.getName()))  {%>
+																	<select title="<%=fieldConfig.getName()%>"
+																			name="<%=fieldConfig.getName()%>" 
+																			onchange="javascript:setLidMaskValue(this,'advancedformData')"
+																			id="SystemCode">	
+																 <%} else {%>
+																   <select title="<%=fieldConfig.getName()%>"
+																		 name="<%=fieldConfig.getName()%>" >	
+																<%}%>
+																  <%PullDownListItem[]   pullDownListItemArray = fieldConfig.getPossibleValues();%>
+																	<option value=""></option>
+																	<%for(int p = 0; p <pullDownListItemArray.length;p++) {%>
+																		<option value="<%=pullDownListItemArray[p].getName()%>"><%=pullDownListItemArray[p].getDescription()%></option>
+																	<%}%>
+																</select>
+
+													  <%}%>
+													  <%if(fieldConfig.getGuiType().equalsIgnoreCase("TextArea")) {%>
+														  <textarea 
+																	id="<%=fieldConfig.getName()%>" 
+																	title="<%=title%>"
+																	name="<%=fieldConfig.getName()%>" ></textarea>
+													<%}%>
+
+													  <%if(fieldConfig.getGuiType().equalsIgnoreCase("TextBox")) {
+														  %>
+														  <%if(fieldConfig.getName().equalsIgnoreCase("LID")) {%>
+																	 <input type="text" 
+																		   id="LID"
+																		   title="<%=title%>"
+																		   name="<%=fieldConfig.getName()%>" 
+																		   maxlength="<%=maxlength%>" 
+																		   readonly="true"
+																		   onkeydown="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value)"
+																		   onkeyup="javascript:qws_field_on_key_up(this)"
+																		   onblur="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value)"/>
+					 
+														  <%} else {%>
+														   <%if(fieldConfig.getValueType() == 6 ) {%>
+															  <nobr>
+																<input type="text" 
+																	   id="<%=i%><%=title%>"
+																	   title="<%=title%>"
+																	   name="<%=fieldConfig.getName()%>" 
+																	   maxlength="<%=maxlength%>" 
+																	   size="<%=fieldConfig.getMaxLength()%>"
+																		onkeydown="javascript:qws_field_on_key_down(this, '<%=(fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0)?fieldConfig.getInputMask():""%>')"
+																		onkeyup="javascript:qws_field_on_key_up(this)"                                          onblur="javascript:validate_date(this,'<%=dateFormat%>')">
+																	  <a href="javascript:void(0);" 
+																		 title="<%=title%>"
+																		 onclick="g_Calendar.show(event,
+																			  '<%=i%><%=title%>',
+																			  '<%=dateFormat%>',
+																			  '<%=global_daysOfWeek%>',
+																			  '<%=global_months%>',
+																			  '<%=cal_prev_text%>',
+																			  '<%=cal_next_text%>',
+																			  '<%=cal_today_text%>',
+																			  '<%=cal_month_text%>',
+																			  '<%=cal_year_text%>')" 
+																			  ><img  border="0"  title="<%=title%> (<%=dateFormat%>)"  src="./images/cal.gif"/></a>
+																	  <font class="dateFormat">(<%=dateFormat%>)</font>
+															  </nobr>
+														   <%} else {%>
+
+																	<input type="text" 
+																		   title="<%=title%>"
+																		   name="<%=fieldConfig.getName()%>" 
+																		   maxlength="<%=maxlength%>" 
+																		   size="<%=fieldConfig.getMaxLength()%>"
+																		   onkeydown="javascript:qws_field_on_key_down(this, '<%=(fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0)?fieldConfig.getInputMask():""%>')"
+																		   onkeyup="javascript:qws_field_on_key_up(this)" />
+
+														   <%}%>
+
+														  <%}%>
+													  <%}%>
+													  </td>
+												   <%}%>
+												   </tr>
+												   <%}%>
+
+												  </table>
 <!-- Action Buttons -->   
 													<table  cellpadding="0" cellspacing="0">
 													 <tr>
@@ -376,13 +370,13 @@ onclick="g_Calendar.show(event,
 												    <td>
 													   <nobr>
 														  <a class="button"  title="<h:outputText value="#{msgs.clear_button_label}"/>" href="javascript:void(0)" onclick="javascript:
-							                              document.getElementById('messages').innerHTML='';
+                                                          document.getElementById('messages').innerHTML='';
 														  if(document.getElementById('errormessages1')!=null){
 														  document.getElementById('errormessages1').innerHTML='';
 														  }
 														  if(document.getElementById('errormessages')!=null){
 														   document.getElementById('errormessages').innerHTML='';
-														  }
+														  }	
 														  ClearContents('form<%=i%>')" >
 															<span><h:outputText value="#{msgs.clear_button_label}"/> </span>
 														  </a>

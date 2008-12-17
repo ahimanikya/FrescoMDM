@@ -63,6 +63,11 @@
 <%@ page import="java.util.ResourceBundle"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ConfigManager" %>
 
+<%@ page import="javax.faces.model.SelectItem" %>
+<%@ page import="com.sun.mdm.index.edm.services.configuration.FieldConfigGroup"  %>
+<%@ page import="com.sun.mdm.index.edm.common.PullDownListItem"%>
+<%@ page import="com.sun.mdm.index.edm.presentation.handlers.SourceHandler"  %>
+
 <f:view>
     
    
@@ -148,7 +153,11 @@ function align(thisevent,divID) {
 
 <% 
    FacesContext facesContext = FacesContext.getCurrentInstance(); 
+   
    HttpSession facesSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+   SearchDuplicatesHandler  searchDuplicatesHandler = (facesSession.getAttribute("SearchDuplicatesHandler") != null ) ? (SearchDuplicatesHandler) facesSession.getAttribute("SearchDuplicatesHandler") : new SearchDuplicatesHandler();
+   SourceHandler sourceHandler= new SourceHandler();
+
    String from = (String)facesContext.getExternalContext().getRequestParameterMap().get("where");
    Integer size = 0; 
    double rand = java.lang.Math.random();
@@ -160,149 +169,147 @@ function align(thisevent,divID) {
    ArrayList fullFieldNamesList  = new ArrayList();
    StringBuffer myColumnDefs = new StringBuffer();
    Enumeration parameterNames = request.getParameterNames();
+   Operations operations=new Operations();
+
 %>
 
 <div id="mainContent" style="overflow:hidden">   
 <table><tr><td>
-<div id="advancedSearch" class="duplicaterecords" >
-      <div id="searchType" style="background-color:blue;">
-             <table border="0" cellpadding="0" cellspacing="0" align="right">
-                <h:form id="searchTypeForm" >
+        <div id="advancedSearch" class="duplicaterecords" style="visibility:visible;display:block">
+            <table border="0" cellpadding="0" cellspacing="0" align="right">
+                <form id="searchTypeForm" >
                             <tr>
                                 <td>
                                     <h:outputText  rendered="#{SearchDuplicatesHandler.possilbeSearchTypesCount gt 1}"  value="#{msgs.patdet_search_text}"/>&nbsp;
-                                    <h:selectOneMenu id="searchType" title="#{msgs.search_Type}" rendered="#{SearchDuplicatesHandler.possilbeSearchTypesCount gt 1}" onchange="submit();" style="width:220px;" value="#{SearchDuplicatesHandler.searchType}" valueChangeListener="#{SearchDuplicatesHandler.changeSearchType}" >
-                                        <f:selectItems  value="#{SearchDuplicatesHandler.possilbeSearchTypes}" />
-                                    </h:selectOneMenu>
+                                               <select id="searchTypeList" title="<%=bundle.getString("search_Type")%>" onchange="javascript:document.getElementById('outputdiv').innerHTML ='';getRecordDetailsFormValues('searchTypeForm');checkedItems = new Array();setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchscreenservices.jsf?random='+rand+'&'+queryStr,'SearchCriteria','')" style="width:220px;">	
+                                              <%ArrayList   searchListItemArray = searchDuplicatesHandler.getPossilbeSearchTypes();%>
+											    <%for(int p = 0; p <searchListItemArray.size();p++) {
+                                                        SelectItem selectItem = (SelectItem) searchListItemArray.get(p);
+													%>
+                                                    <%if(request.getParameter("selectedSearchType") != null && request.getParameter("selectedSearchType").equalsIgnoreCase(selectItem.getLabel())) {%>
+											     	  <option value="<%=selectItem.getValue()%>" selected="true"><%=selectItem.getLabel()%></option>
+													<%} else {%>
+											     	<option value="<%=selectItem.getValue()%>"><%=selectItem.getLabel()%></option>
+													<%}%>
+												<%}%>
+											</select>
                                 </td>
                             </tr>
-                             <tr>
-                     </tr>
-                </h:form>
-              </table>
-      </div>            
-     
-  
-             <table border="0" cellpadding="0" cellspacing="0">
-		<tr>
-		 <td align="left"><p><nobr><h:outputText  value="#{SearchDuplicatesHandler.instructionLine}"/></nobr></p></td>
-		</tr>
-               <tr>
-                <td colspan="2">
-              	 <h:form id="advancedformData" >
-                <input type="hidden" id="selectedSearchType" title='selectedSearchType' 
-				value='<h:outputText value="#{SearchDuplicatesHandler.selectedSearchType}"/>' />
-                            <input id='lidmask' title="lidmask" type='hidden' name='lidmask' value='' />
-                            <h:dataTable cellpadding="0" cellspacing="0"
-                                         id="searchScreenFieldGroupArrayId" 
-                                         var="searchScreenFieldGroup" 
-                                         value="#{SearchDuplicatesHandler.searchScreenFieldGroupArray}">
-					<h:column>
-   				         <p>
-					   <h:outputText value="#{searchScreenFieldGroup.description}" />
-					</p>
-                                         <h:dataTable headerClass="tablehead"  
-							             cellpadding="0" cellspacing="0"
-                                         id="fieldConfigId" 										 
-                                         var="feildConfig" 
-                                         value="#{searchScreenFieldGroup.fieldConfigs}">
+                </form>
+					 <tr><td colspan="2">&nbsp;</td></tr>
+            </table>
 
-                                <!--Rendering Non Updateable HTML Text Area-->
-                               <!--Rendering Non Updateable HTML Text Area-->
-                                        <h:column>
-                                            <nobr>
-                                                <h:outputText rendered="#{feildConfig.oneOfTheseRequired}" >
-												     <span style="font-size:9px;color:blue;verticle-align:top">&dagger;&nbsp;</span>
- 												</h:outputText>
-                                                <h:outputText rendered="#{feildConfig.required}">
-												     <span style="font-size:9px;color:red;verticle-align:top">*&nbsp;</span>
- 												</h:outputText>
-                                                <h:outputText value="#{feildConfig.displayName}" />
-                                            </nobr>
-                                        </h:column>
-                                        <!--Rendering HTML Select Menu List-->
-                                        <h:column rendered="#{feildConfig.guiType eq 'MenuList'}" >
-                                            <nobr>
-                                                <h:selectOneMenu title='#{feildConfig.name}'
-                                                                 rendered="#{feildConfig.name ne 'SystemCode'}"
-	                                                             value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.name]}">
-                                                    <f:selectItem itemLabel="" itemValue="" />
-                                                    <f:selectItems  value="#{feildConfig.selectOptions}" />
-                                                </h:selectOneMenu>
-                                                
-                                                <h:selectOneMenu  onchange="javascript:setLidMaskValue(this,'advancedformData')"
-												                  title='#{feildConfig.name}'  
-                                                                  id="SystemCode" 
-    															  value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.name]}"
-                                                                  rendered="#{feildConfig.name eq 'SystemCode'}">
-                                                    <f:selectItem itemLabel="" itemValue="" />
-                                                    <f:selectItems  value="#{feildConfig.selectOptions}" />
-                                                </h:selectOneMenu>
-                                            </nobr>
-                                        </h:column>
-                                        <!--Rendering Updateable HTML Text boxes-->
-                                        <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType ne 6 }" >
-                                            <nobr>
-                                                <h:inputText   required="#{feildConfig.required}" 
-												               title='#{feildConfig.name}'
-                                                               label="#{feildConfig.displayName}" 
-                                                               onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
-                                                               onkeyup="javascript:qws_field_on_key_up(this)"
-                                                               maxlength="#{feildConfig.maxSize}" 
-															   size="#{feildConfig.maxLength}"
-															   value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.name]}"
-                                                               rendered="#{feildConfig.name ne 'LID' && feildConfig.name ne 'EUID'}"/>
-                                                
-                                                <h:inputText   required="#{feildConfig.required}" 
-												               id="LID"
-															   title='#{feildConfig.name}'
-                                                               label="#{feildConfig.displayName}" 
-															   readonly="true"
-															   onkeydown="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value)"
-                                                               onkeyup="javascript:qws_field_on_key_up(this)"
-															   maxlength="#{feildConfig.maxSize}" 
-															   size="#{feildConfig.maxLength}"
-                                                               onblur="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value)"
-															   value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.name]}"
-                                                               rendered="#{feildConfig.name eq 'LID'}"/>
-                                                               
-                                                <h:inputText   required="#{feildConfig.required}" 
-                                                               label="#{feildConfig.displayName}" 
-															   title='#{feildConfig.name}'
-                                                               onkeydown="javascript:qws_field_on_key_down(this, '#{feildConfig.inputMask}')"
-                                                               onkeyup="javascript:qws_field_on_key_up(this)"
-                                                               maxlength="#{SourceHandler.euidLength}" 
-															   value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.name]}"
-                                                               rendered="#{feildConfig.name eq 'EUID'}"/>
-                                                                   
-                                                               
-                                            </nobr>
-                                        </h:column>
-                                        
-                                        <!--Rendering Updateable HTML Text Area-->
-                                        <h:column rendered="#{feildConfig.guiType eq 'TextArea'}" >
-                                            <nobr>
-                                                <h:inputTextarea label="#{feildConfig.displayName}"  title='#{feildConfig.name}'
-												id="fieldConfigIdTextArea"   required="#{feildConfig.required}"/>
-                                            </nobr>
-                                        </h:column>
-                                        
-                                        <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType eq 6}" >
+   <h:form id="advancedformData" >
+                            <input id='lidmask' type='hidden' title='lidmask' name='lidmask' value='' />
+                <input type="hidden" id="selectedSearchType" title='selectedSearchType' 
+				value='<%=searchDuplicatesHandler.getSelectedSearchType()%>' />
+
+             <table border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td colspan="2">
+                           <div id="SearchCriteria">
+							<table width="100%" cellpadding="0" cellspacing="0">
+					 <tr><td colspan="2">&nbsp;</td></tr>
+					 <tr><td colspan="2">&nbsp;</td></tr>
+							<%if(searchDuplicatesHandler.getInstructionLine() != null ) {%>
+						   <tr>
+							 <td colspan="2" align="left"><p><nobr><%=searchDuplicatesHandler.getInstructionLine()%></nobr></p>
+							 </td>
+						   </tr>
+						   <%}%>
+							<%
+							  for(int i = 0 ; i < searchDuplicatesHandler.getSearchScreenFieldGroupArray().size(); i++) {
+                                 FieldConfigGroup basicSearchFieldGroup = (FieldConfigGroup) searchDuplicatesHandler.getSearchScreenFieldGroupArray().get(i);
+
+							%>
+							   <tr><td>&nbsp;</td></tr>
+							   <%if( basicSearchFieldGroup.getDescription() != null ) { %>
+							   <tr>
+							     <td colspan="2">
+							      <font style="color:blue"><%=basicSearchFieldGroup.getDescription()%></font>
+							     </td>
+							   </tr>
+							   <%}%>
+                               <%
+								 ArrayList fieldGroupArrayList  = (ArrayList)searchDuplicatesHandler.getSearchScreenHashMap().get(basicSearchFieldGroup.getDescription());
+								%>
+							   <%for(int j = 0 ; j < fieldGroupArrayList.size() ; j++) {
+								  ArrayList fieldConfigArrayList = (ArrayList) fieldGroupArrayList.get(j);
+								  ValueExpression fieldConfigArrayListVar = ExpressionFactory.newInstance().createValueExpression( fieldConfigArrayList,  fieldConfigArrayList.getClass()); 	
+
+								%>
+								<tr>
+								<%for(int k = 0 ; k < fieldConfigArrayList.size() ; k++) {
+								  FieldConfig fieldConfig = (FieldConfig) fieldConfigArrayList.get(k);
+									   String title =  fieldConfig.getName();
+									   int maxlength = (fieldConfig.getName().equalsIgnoreCase("EUID")) ? sourceHandler.getEuidLength(): fieldConfig.getMaxSize();
+								%>
+							     <td>
+									<nobr>											
+										<%if(fieldConfig.isOneOfTheseRequired()) {%>
+											 <span style="font-size:9px;color:blue;verticle-align:top">&dagger;&nbsp;</span>
+										<%}%>
+										<%if(fieldConfig.isRequired()) {%>
+											 <span style="font-size:9px;color:red;verticle-align:top">*&nbsp;</span>
+										<%}%>
+										<%=fieldConfig.getDisplayName()%>
+									</nobr>
+								 
+								 </td>
+							      <td>
+								  <%if(fieldConfig.getGuiType().equalsIgnoreCase("MenuList")) {%>
+								             <% if( "SystemCode".equalsIgnoreCase(fieldConfig.getName()))  {%>
+                                                <select title="<%=fieldConfig.getName()%>"
+												        name="<%=fieldConfig.getName()%>" 
+                                                        onchange="javascript:setLidMaskValue(this,'advancedformData')"
+												        id="SystemCode">	
+											 <%} else {%>
+                                               <select title="<%=fieldConfig.getName()%>"
+												     name="<%=fieldConfig.getName()%>" >	
+											<%}%>
+                                              <%PullDownListItem[]   pullDownListItemArray = fieldConfig.getPossibleValues();%>
+											    <option value=""></option>
+											    <%for(int p = 0; p <pullDownListItemArray.length;p++) {%>
+											     	<option value="<%=pullDownListItemArray[p].getName()%>"><%=pullDownListItemArray[p].getDescription()%></option>
+												<%}%>
+											</select>
+
+								  <%}%>
+								  <%if(fieldConfig.getGuiType().equalsIgnoreCase("TextArea")) {%>
+                                      <textarea 
+									            id="<%=fieldConfig.getName()%>" 
+												title="<%=title%>"
+												name="<%=fieldConfig.getName()%>" ></textarea>
+                                <%}%>
+
+								  <%if(fieldConfig.getGuiType().equalsIgnoreCase("TextBox")) {
+									  %>
+									  <%if(fieldConfig.getName().equalsIgnoreCase("LID")) {%>
+                                                 <input type="text" 
+												       id="LID"
+												       title="<%=title%>"
+												       name="<%=fieldConfig.getName()%>" 
+													   maxlength="<%=maxlength%>" 
+                                                       readonly="true"
+													   onkeydown="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value)"
+                                                       onkeyup="javascript:qws_field_on_key_up(this)"
+                                                       onblur="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value)"/>
+ 
+									  <%} else {%>
+									   <%if(fieldConfig.getValueType() == 6 ) {%>
                                           <nobr>
                                             <input type="text" 
-                                                   id = "<h:outputText value="#{feildConfig.name}"/>"  
-												   title="<h:outputText value="#{feildConfig.name}"/>"  
-                                                   value="<h:outputText value="#{SearchDuplicatesHandler.updateableFeildsMap[feildConfig.name]}"/>"
-                                                   required="<h:outputText value="#{feildConfig.required}"/>" 
-                                                   maxlength="<h:outputText value="#{feildConfig.maxSize}"/>"
-                                                   size="<h:outputText value="#{feildConfig.maxLength}"/>"
-                                                   onkeydown="javascript:qws_field_on_key_down(this, '<h:outputText value="#{feildConfig.inputMask}"/>')"
-                                                   onkeyup="javascript:qws_field_on_key_up(this)" 
-                                                   onblur="javascript:validate_date(this,'<%=dateFormat%>')">
-                                                 <a href="javascript:void(0);" 
-												     title="<h:outputText value="#{feildConfig.displayName}"/>"
+												   id="<%=title%>"
+												   title="<%=title%>"
+												   name="<%=fieldConfig.getName()%>" 
+												   maxlength="<%=maxlength%>" 
+ 												   size="<%=fieldConfig.getMaxLength()%>"
+													onkeydown="javascript:qws_field_on_key_down(this, '<%=(fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0)?fieldConfig.getInputMask():""%>')"
+													onkeyup="javascript:qws_field_on_key_up(this)"                                          onblur="javascript:validate_date(this,'<%=dateFormat%>')">
+                                                  <a href="javascript:void(0);" 
+												     title="<%=title%>"
                                                      onclick="g_Calendar.show(event,
-												          '<h:outputText value="#{feildConfig.name}"/>',
+												          '<%=title%>',
 														  '<%=dateFormat%>',
 														  '<%=global_daysOfWeek%>',
 														  '<%=global_months%>',
@@ -311,18 +318,37 @@ function align(thisevent,divID) {
 														  '<%=cal_today_text%>',
 														  '<%=cal_month_text%>',
 														  '<%=cal_year_text%>')" 
-														  ><img  border="0"  title="<h:outputText value="#{feildConfig.displayName}"/> (<%=dateFormat%>)"  src="./images/cal.gif"/></a>
+														  ><img  border="0"  title="<%=title%> (<%=dateFormat%>)"  src="./images/cal.gif"/></a>
 												  <font class="dateFormat">(<%=dateFormat%>)</font>
                                           </nobr>
-                                        </h:column>
-                             
-                            </h:dataTable> <!--Field config loop-->
-					</h:column>
-                            </h:dataTable> <!--Field groups loop-->
-                            <table  cellpadding="0" cellspacing="0" style="	border:0px none solid;padding-left:20px">
+                                       <%} else {%>
+
+                                                <input type="text" 
+												       title="<%=title%>"
+												       name="<%=fieldConfig.getName()%>" 
+													   maxlength="<%=maxlength%>" 
+ 													   size="<%=fieldConfig.getMaxLength()%>"
+													   onkeydown="javascript:qws_field_on_key_down(this, '<%=(fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0)?fieldConfig.getInputMask():""%>')"
+													   onkeyup="javascript:qws_field_on_key_up(this)" />
+
+                                       <%}%>
+
+									  <%}%>
+ 								  <%}%>
+								  </td>
+  							   <%}%>
+							   </tr>
+							   <%}%>
+
+							<%}%>
+							 <tr><td colspan="2">&nbsp;</td></tr>
+							</table>
+                           </div> <!-- Search div ends here -->
+                            <table  cellpadding="0" cellspacing="0" style="	border:0px red solid;padding-left:20px">
                                 <tr>
                                     <td align="left">
                                         <nobr>
+										<% if(operations.isPotDup_SearchView()){%>	
                                            <a  class="button" title="<h:outputText value="#{msgs.search_button_label}"/>"
 										       href="javascript:void(0)"
                                                onclick="javascript:getFormValues('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?random='+rand+'&'+queryStr,'outputdiv','')">  
@@ -330,19 +356,28 @@ function align(thisevent,divID) {
                                                  <h:outputText value="#{msgs.search_button_label}"/>
                                                </span>
                                            </a>
+										 <%}%>
                                         </nobr>
-                                        <nobr>
-                                          <h:outputLink  title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:
-										  document.getElementById('messages').innerHTML='';
-										  ClearContents('advancedformData')">
-                                           <span><h:outputText value="#{msgs.clear_button_label}"/></span></h:outputLink>
-                                      </nobr>
+									    <nobr>
+										    <h:outputLink  title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:
+										    document.getElementById('messages').innerHTML='';
+											ClearContents('advancedformData')">
+                                                <span><h:outputText value="#{msgs.clear_button_label}"/></span>
+                                            </h:outputLink>
+                                        </nobr>                                        
                                     </td>
-				              </tr>
+                                </tr>
                             </table>
-                         </h:form>
-                        </td>				
+                        </td>
                     </tr><tr><td>&nbsp</td></tr>
+				   <tr>
+					 <td><div id="messages" class="ajaxalert" valign="bottom"></div></td>
+				   </tr>
+                </table>
+            </h:form>
+                        </td>				
+                    </tr>
+					<tr><td>&nbsp</td></tr>
 					<tr><td align="left"><div id="messages" class="ajaxalert"></div></td></tr>					
                 </table>
 
@@ -425,7 +460,6 @@ function align(thisevent,divID) {
 </body>        
 
         <%
-		 SearchDuplicatesHandler searchDuplicatesHandler = new  SearchDuplicatesHandler(); 
          String[][] lidMaskingArray = searchDuplicatesHandler.getAllSystemCodes();
          
         %>
@@ -472,7 +506,7 @@ function align(thisevent,divID) {
             formNameValue.lidmask.value  = getLidMask(selectedValue,systemCodes,lidMasks);
          }  
          
-     var selectedSearchValue = document.getElementById("searchTypeForm:searchType").options[document.getElementById("searchTypeForm:searchType").selectedIndex].value;
+     var selectedSearchValue = document.getElementById("searchTypeList").options[document.getElementById("searchTypeList").selectedIndex].value;
      document.getElementById("selectedSearchType").value = selectedSearchValue;
       if( document.advancedformData.elements[0]!=null) {
 		var i;
@@ -520,7 +554,7 @@ function align(thisevent,divID) {
 	     populateContents('advancedformData','create_start_time','<%=startTimeField%>');
 	     populateContents('advancedformData','create_end_date','<%=startDateField%>');
 	     populateContents('advancedformData','create_end_time','<%=endTimeField%>');
-         var selectedSearchTypeVal = document.getElementById("searchTypeForm:searchType").options[document.getElementById("searchTypeForm:searchType").selectedIndex].value;
+         var selectedSearchTypeVal = document.getElementById("searchTypeList").options[document.getElementById("searchTypeList").selectedIndex].value;
   	    ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?random=<%=rand%>&<%=queryStr%>&selectedSearchType='+selectedSearchTypeVal,'outputdiv','')
      </script>
 <% }  %>
@@ -528,7 +562,7 @@ function align(thisevent,divID) {
 <% if(request.getParameter("back") != null )  {%>
 <script>
     var queryStr = '<%=request.getQueryString()%>'
-	setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?random='+rand+'&'+queryStr,'outputdiv','');
+	setRand(Math.random());
   <% while(parameterNames.hasMoreElements())   { 
         String attributeName = (String) parameterNames.nextElement();
         String attributeValue = (String) request.getParameter(attributeName);%>
@@ -639,7 +673,6 @@ function align(thisevent,divID) {
              </form>
          </div>
 				<!-- Modified  on 27-11-2008, fix of bug 275 added banner and close link to confirmation pop up window -->
-         <%Operations operations  = new Operations();%>
                          <div id="mergeDiv" class="confirmPreview" style="top:400px;left:500px;visibility:hidden;display:none;">
                              <table cellspacing="0" cellpadding="0" border="0">
                                 <tr>
@@ -694,8 +727,8 @@ function align(thisevent,divID) {
 												 <%}%>
 												  <input type="hidden" id="mergeFinalForm:rowCnt" title="rowCount">
                                                   <input type="hidden" id="mergeFinalForm:srcDestnEuids" title="MERGE_SRC_DESTN_EUIDS" />
-                                                <h:inputHidden id="destinationEO" value="#{RecordDetailsHandler.destnEuid}" />
-                                                <h:inputHidden id="selectedMergeFields" value="#{RecordDetailsHandler.selectedMergeFields}" />
+                                                <h:inputHidden id="destinationEO" value="#{SearchDuplicatesHandler.destnEuid}" />
+                                                <h:inputHidden id="selectedMergeFields" value="#{SearchDuplicatesHandler.selectedMergeFields}" />
                                             </h:form>
                                         </td>
                                     </tr>
@@ -709,4 +742,17 @@ function align(thisevent,divID) {
   makeDraggable("activeDiv");
   makeDraggable("mergeDiv");
   </script>
+         <%if(request.getParameter("back")!=null){%>
+	   	<% 
+		  String qryString  = request.getQueryString();
+	      qryString  = qryString.replaceAll("collectEuids=true","");
+		%>
+
+    <script>
+            var queryStrVar = '<%=qryString%>';
+		    getRecordDetailsFormValues('searchTypeForm');
+			ajaxURL('/<%=URI%>/ajaxservices/searchscreenservices.jsf?random='+rand+'&'+queryStr+'&myStrVar='+queryStrVar,'SearchCriteria','');
+   </script>
+   <%}%>
+
 </f:view>
