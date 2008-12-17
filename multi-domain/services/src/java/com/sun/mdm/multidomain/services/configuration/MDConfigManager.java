@@ -110,7 +110,7 @@ public class MDConfigManager {
     private static HashMap<Integer, ScreenObject> mScreens;
     private static HashMap<String, RelationshipScreenConfig> mRelationshipScreenConfigs;
     private static HashMap<String, DomainScreenConfig> mDomainScreenConfigs;       // Screen configurations for all domains
-    private static HashMap<String, HashMap> mDomainObjNodeConfigMap;  // hashmap of domains and subhashmaps
+    private static HashMap<String, HashMap> mDomainObjNodeConfigMap;  // hashmap of domains and objNodeConfigMaps
     private static DocumentBuilder builder;
     private static String DEFAULT_MDWM_DATEFORMAT = "MM/dd/yyyy";    // default value
     private static String mDateFormat = null;
@@ -123,6 +123,10 @@ public class MDConfigManager {
     private static boolean TBD = true;
 
 
+    /** Constructor for MDConfigManager
+     * 
+     * @throws ConfigException if an error is encountered.
+     */
     private MDConfigManager() throws ConfigException {
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -141,8 +145,8 @@ public class MDConfigManager {
      * @return the initialized instance of the MDConfigManager
      * @throws ConfigException if an error is encountered
      */
-	public static MDConfigManager init() throws ConfigException {
-	    try {
+    public static MDConfigManager init() throws ConfigException {
+        try {
             synchronized (MDConfigManager.class) {
                 if (mInstance != null) {
                     return mInstance;
@@ -155,6 +159,7 @@ public class MDConfigManager {
                 mScreens = new HashMap<Integer, ScreenObject>();
                 mRelationshipScreenConfigs = new HashMap<String, RelationshipScreenConfig>();
                 mDomainScreenConfigs = new HashMap<String, DomainScreenConfig>();       
+                mDomainObjNodeConfigMap = new HashMap<String, HashMap>();
 
 
                 configureDomains();
@@ -183,8 +188,8 @@ public class MDConfigManager {
      * @return the initialized instance of the MDConfigManager
      * @throws ConfigException if an error is encountered
      */
-	public static MDConfigManager reinitialize() throws ConfigException {  
-	    try {
+    public static MDConfigManager reinitialize() throws ConfigException {  
+        try {
             synchronized (MDConfigManager.class) {
                 if (mInstance != null) {
                     return mInstance;
@@ -306,9 +311,8 @@ public class MDConfigManager {
             domainScreenConfig.setDomain(domain);
 
             // read the nodes from domain_midm.xml
-//            convertDomainMIDMConfig(domainName);
-            
-            SummaryLabel summaryLabel = convertSummaryLabel(domainFWM.getRecordID());
+            convertDomainMIDMConfig(domainName);
+            SummaryLabel summaryLabel = convertSummaryLabel(domainName, domainFWM.getRecordID());
             domainScreenConfig.setSummaryLabel(summaryLabel);
 
             ArrayList<SearchScreenConfig> sSC = 
@@ -347,9 +351,7 @@ public class MDConfigManager {
         
         // open the copied portion of the MIDM.xml file for this domain.
         
-        // RESUME HERE
-        // need a better way to handle the path separator (see File class).
-        String fileName = DOMAIN_CONFIG_DIR + "//" + domainName + DOMAIN_FILE_SUFFIX;
+        String fileName = DOMAIN_CONFIG_DIR + "/" + domainName + DOMAIN_FILE_SUFFIX;
         InputStream input;
         BufferedReader rdr;
         try {
@@ -498,7 +500,7 @@ public class MDConfigManager {
                     }
 
                     int valueType = getMetaType(valueTypeStr);
-                    FieldConfig fieldConfig = new FieldConfig(null, objName, fieldName,
+                    FieldConfig fieldConfig = new FieldConfig(domainName, objName, fieldName,
                             displayName, guiType, imaxLength, valueType);
                     fieldConfig.setDisplayOrder(idisplayOrder);
                     fieldConfig.setKeyType(keyType);
@@ -532,15 +534,15 @@ public class MDConfigManager {
      * @throws ConfigException if an error is encountered
      */
      
-    private static SummaryLabel convertSummaryLabel(DomainRecordID domainRecordID) 
+    private static SummaryLabel convertSummaryLabel(String domainName, DomainRecordID domainRecordID ) 
             throws ConfigException {
         
-        if (domainRecordID == null) {
+        if (domainRecordID == null || domainName == null || domainName.length() == 0) {
             return null;
         }
         boolean showEUID = domainRecordID.isMShowEUID();
         FieldGroup fg = domainRecordID.getFieldGroup();
-        ArrayList<FieldConfig> fieldConfigs = createFieldConfig(fg.getFieldRefs());
+        ArrayList<FieldConfig> fieldConfigs = createFieldConfig(domainName, fg.getFieldRefs());
         SummaryLabel summaryLabel = new SummaryLabel(showEUID, fieldConfigs);
         return summaryLabel;
     }
@@ -573,12 +575,11 @@ public class MDConfigManager {
             boolean showLID = false;
             ArrayList<FieldGroup> sSTObjObjFieldGroup = sSTObj.getFieldGroups();
             SearchOptions sSTObjSearchOpt = sSTObj.getSearchOption();
-            ArrayList<FieldConfigGroup> fieldConfigGroups = convertFieldGroups(sSTObjObjFieldGroup);
+            ArrayList<FieldConfigGroup> fieldConfigGroups = convertFieldGroups(domainName, sSTObjObjFieldGroup);
             SearchScreenOptions options  = convertSearchOptions(sSTObjSearchOpt);
             
             // retrieve the root object
             HashMap<String, ObjectNodeConfig> objNodeConfigs = null;
-            if (!TBD) {
             objNodeConfigs = mDomainObjNodeConfigMap.get(domainName);
             
             if (objNodeConfigs == null) {
@@ -587,12 +588,9 @@ public class MDConfigManager {
                                                        "this domain ({0})", 
                                                        domainName));
             }
-            }
             ObjectNodeConfig rootObj = null;
-            if (!TBD) {
             String rootObjName = retrieveRootObjectName(fieldConfigGroups);
             rootObj = objNodeConfigs.get(rootObjName);
-            }
             
             SearchScreenConfig sSCObj = new SearchScreenConfig(rootObj, screenTitle, 
                                                                instruction, searchResultID, 
@@ -606,12 +604,14 @@ public class MDConfigManager {
 
     /**
      * Converts an ArrayList of FieldGroup objects to an ArrayList of FieldConfigGroup 
-     * objects.  The FieldConfigGroup objects are retrieved from the parser.
+     * objects.  The FieldConfigGroup objects are retrieved from the parser.  Domain name
+     * may be null if this is invoked from the page definition handling code.
      *
+     * @param domainName  Domain name.
      * @param fieldGroups An ArrayList of FieldGroup objects to convert.
      * @throws ConfigException if an error is encountered
      */    
-    private static ArrayList<FieldConfigGroup> convertFieldGroups(ArrayList<FieldGroup> fieldGroups) 
+    private static ArrayList<FieldConfigGroup> convertFieldGroups(String domainName, ArrayList<FieldGroup> fieldGroups) 
             throws ConfigException {
         if (fieldGroups == null || fieldGroups.size() == 0) {
             return null;
@@ -619,7 +619,7 @@ public class MDConfigManager {
         ArrayList<FieldConfigGroup> fieldConfigGroups = new ArrayList<FieldConfigGroup>();
         
         for (FieldGroup fg : fieldGroups) {
-            FieldConfigGroup fcg = convertFieldGroup(fg);
+            FieldConfigGroup fcg = convertFieldGroup(domainName, fg);
             fieldConfigGroups.add(fcg);
         }
         return fieldConfigGroups;
@@ -628,11 +628,12 @@ public class MDConfigManager {
     /**
      * Converts a FieldGroup object to a FieldConfigGroup object
      *
+     * @param domainName  Domain name.
      * @param fieldGroups A FieldGroup objects to convert.
      * @throws ConfigException if an error is encountered
      */    
      
-    private static FieldConfigGroup convertFieldGroup(FieldGroup fieldGroup) 
+    private static FieldConfigGroup convertFieldGroup(String domainName, FieldGroup fieldGroup) 
             throws ConfigException {
         if (fieldGroup == null) {
             return null;
@@ -644,7 +645,7 @@ public class MDConfigManager {
         
         
         // pass field refs
-        ArrayList<FieldConfig> fieldConfigs = createFieldConfig(fieldGroup.getFieldRefs());
+        ArrayList<FieldConfig> fieldConfigs = createFieldConfig(domainName, fieldGroup.getFieldRefs());
         FieldConfigGroup fieldConfigGroup = new FieldConfigGroup(description, fieldConfigs);
         return fieldConfigGroup;
     }
@@ -672,19 +673,18 @@ public class MDConfigManager {
     
     /**
      * Converts an ArrayList of FieldRef objects to an ArrayList of FieldConfig objects.
+     * Domain name may be null if this is invoked from the page definition handling code.
      *
+     * @param domainName  Domain name.
      * @param fieldRefs An ArrayList of FieldCodeRef objects to convert.
      * @throws ConfigException if an error is encountered
      */    
-    // RESUME HERE
-    // need to pass in ObjectConfig
-    private static ArrayList<FieldConfig> createFieldConfig(ArrayList<FieldGroup.FieldRef> fieldRefs) throws ConfigException {
+    private static ArrayList<FieldConfig> createFieldConfig(String domainName, ArrayList<FieldGroup.FieldRef> fieldRefs) throws ConfigException {
         if (fieldRefs == null) { 
             return null;
         }
         ArrayList<FieldConfig> fieldConfigs = new ArrayList<FieldConfig>();
         for (FieldGroup.FieldRef field : fieldRefs) {
-            String rootObj = null;
             String objRef = null;
             String name = field.getFieldName();
             String displayName = null;
@@ -698,7 +698,7 @@ public class MDConfigManager {
             boolean isSensitive = false;
             int displayOrder = 0;
                   
-            FieldConfig fieldConfig = new FieldConfig(rootObj, objRef, name, 
+            FieldConfig fieldConfig = new FieldConfig(domainName, objRef, name, 
                                                       displayName, guiType, maxLength, 
                                                       valueList, inputMask, valueMask,
                                                       valueType, keyType, isSensitive,
@@ -820,11 +820,10 @@ public class MDConfigManager {
             boolean showEUID = false;
             boolean showLID = false;
             ArrayList<FieldGroup> searchDetailsFieldGroup = searchDetail.getFieldGroups();
-            ArrayList<FieldConfigGroup> fieldConfigGroups = convertFieldGroups(searchDetailsFieldGroup);
+            ArrayList<FieldConfigGroup> fieldConfigGroups = convertFieldGroups(domainName, searchDetailsFieldGroup);
             
             // retrieve the root object
             HashMap<String, ObjectNodeConfig> objNodeConfigs = null;
-            if (!TBD) {
             objNodeConfigs = mDomainObjNodeConfigMap.get(domainName);
             if (objNodeConfigs == null) {
                 throw new ConfigException(mLocalizer.t("CFG565: Could not retrieve the " +
@@ -832,12 +831,9 @@ public class MDConfigManager {
                                                        "this domain ({0})", 
                                                        domainName));
             }
-            }
             ObjectNodeConfig rootObj = null;
-            if (!TBD) {
             String rootObjName = retrieveRootObjectName(fieldConfigGroups);
             rootObj = objNodeConfigs.get(rootObjName);
-            }
             try {
                 SearchResultsConfig sRC = new SearchResultsConfig(rootObj, displayName, 
                                                    searchResultsID, searchResultsSummaryID, 
@@ -886,11 +882,10 @@ public class MDConfigManager {
             boolean showLID = false;
             
             ArrayList<FieldGroup> recordDetailsFieldGroup = recordDetail.getFieldGroups();
-            ArrayList<FieldConfigGroup> fieldConfigGroups = convertFieldGroups(recordDetailsFieldGroup);
+            ArrayList<FieldConfigGroup> fieldConfigGroups = convertFieldGroups(domainName, recordDetailsFieldGroup);
             
             // retrieve the root object
             HashMap<String, ObjectNodeConfig> objNodeConfigs = null;
-            if (!TBD) {
             objNodeConfigs = mDomainObjNodeConfigMap.get(domainName);
             if (objNodeConfigs == null) {
                 throw new ConfigException(mLocalizer.t("CFG567: Could not retrieve the " +
@@ -898,12 +893,9 @@ public class MDConfigManager {
                                                        "this domain ({0})", 
                                                        domainName));
             }
-            }
             ObjectNodeConfig rootObj = null;
-            if (!TBD) {
             String rootObjName = retrieveRootObjectName(fieldConfigGroups);
             rootObj = objNodeConfigs.get(rootObjName);
-            }
     
             SearchResultDetailsConfig sRDC = 
                         new SearchResultDetailsConfig(rootObj, displayName, searchResultDetailID, 
@@ -937,14 +929,13 @@ public class MDConfigManager {
         // This ArrayList will have exactly one element
         ArrayList<SearchResultsSummaryConfig> searchResultsSummaryConfig
                                                          = new ArrayList<SearchResultsSummaryConfig> (1);
-        ArrayList<FieldConfigGroup> fieldConfigGroups = convertFieldGroups(searchResultSummaries);
+        ArrayList<FieldConfigGroup> fieldConfigGroups = convertFieldGroups(domainName, searchResultSummaries);
         
         boolean showEUID = false;
         boolean showLID = false;
         
         // retrieve the root object
         HashMap<String, ObjectNodeConfig> objNodeConfigs = null;
-        if (!TBD) {
         objNodeConfigs = mDomainObjNodeConfigMap.get(domainName);
         if (objNodeConfigs == null) {
             throw new ConfigException(mLocalizer.t("CFG566: Could not retrieve the " +
@@ -952,12 +943,9 @@ public class MDConfigManager {
                                                    "this domain ({0})", 
                                                    domainName));
         }
-        }
         ObjectNodeConfig rootObj = null;
-        if (!TBD) {
         String rootObjName = retrieveRootObjectName(fieldConfigGroups);
         rootObj = objNodeConfigs.get(rootObjName);
-        }
         SearchResultsSummaryConfig sRSC 
                 = new SearchResultsSummaryConfig(rootObj, DEFAULT_RECORD_SUMMARY_ID, 
                                                  DEFAULT_RECORD_DETAILS_ID,
@@ -1109,7 +1097,7 @@ public class MDConfigManager {
         if (mDateFormat == null) {
             mDateFormat = DEFAULT_MDWM_DATEFORMAT;
             mLogger.info(mLocalizer.x("CFG001: The date format is not defined in " + 
-                                      "the MultiDomainModel configuration file."  +
+                                      "the MultiDomainModel configuration file. "  +
                                       "The date format is set to the default format: {0} ", 
                                       DEFAULT_MDWM_DATEFORMAT));
         }
@@ -1206,7 +1194,7 @@ public class MDConfigManager {
             boolean showCreateTime = false;
             boolean showStatus = false;
             SearchScreenOptions options = null;
-            ArrayList<FieldConfigGroup> fieldConfigGroups = convertFieldGroups(pageRelType.getFieldGroups());
+            ArrayList<FieldConfigGroup> fieldConfigGroups = convertFieldGroups(null, pageRelType.getFieldGroups());
             SearchScreenConfig sSC = new SearchScreenConfig(rootObj, screenTitle, 
                                                             instruction, searchResultID, 
                                                             screenOrder, showEUID, 
@@ -1529,13 +1517,13 @@ public class MDConfigManager {
                                                        relationshipName, targetDomainName,
                                                        sourceDomainName));
     	    }
-    	} catch (Exception e) {
-            throw new ConfigException(mLocalizer.t("CFG539: Relationship ({0}) " +
-                                                   "not found for Source Domain ({1}), " +
-                                                   "Target Domain ({2}).", 
-                                                   relationshipName, targetDomainName,
-                                                   sourceDomainName));
-    	}
+            } catch (Exception e) {
+                throw new ConfigException(mLocalizer.t("CFG539: Relationship ({0}) " +
+                                                       "not found for Source Domain ({1}), " +
+                                                       "Target Domain ({2}).", 
+                                                       relationshipName, targetDomainName,
+                                                       sourceDomainName));
+            }
 	}
 	
     /**
@@ -1616,7 +1604,18 @@ public class MDConfigManager {
                                                  hierarchyName, domainName, e.getMessage()));
         }
     }
-	
+
+    /** 
+     * Retrieve the ObjectNodeConfig hashmap for a domain.  
+     * 
+     * @return The ObjectNodeConfig hashmap for a domain.
+     */
+    public static HashMap<String, ObjectNodeConfig> getObjectNodeConfig(String domainName) {
+        if (domainName == null || domainName.length() == 0) {
+            return null;
+        }
+        return (mDomainObjNodeConfigMap.get(domainName));
+    }
     
     /**
      * Add a screen configuration.
@@ -1789,7 +1788,7 @@ public class MDConfigManager {
         if (dateFormat == null || dateFormat.length() == 0) {
             dateFormat = DEFAULT_MDWM_DATEFORMAT;
             mLogger.info(mLocalizer.x("CFG002: The date format is not defined in " + 
-                                      "the MultiDomainModel configuration file."  +
+                                      "the MultiDomainModel configuration file. "  +
                                       "The date format is set to the default format: {0} ", 
                                       DEFAULT_MDWM_DATEFORMAT));
         }
