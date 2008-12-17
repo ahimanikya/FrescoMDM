@@ -10,21 +10,21 @@ dojo.declare("dijit.Paginator",
 	
 	templateString: '<div class="${baseClass}">' +
 			'		<div dojoAttachPoint="containerNode" class="Paginator"><table cellspacing="0" border="0"><tr>' +
-			'			<td valign="top"><span dojoAttachEvent="onclick:firstClick" title="Go to First Page">' +
-                        '                         <img dojoAttachPoint="firstPageIconNode" src="${_blankGif}" alt="" class="firstPageIcon_Disabled">' +
+			'			<td valign="top"><span dojoAttachEvent="onclick:firstClick" title="Go to First Page" vspace="2">' +
+                        '                         <img dojoAttachPoint="firstPageIconNode" src="${_blankGif}" alt="" class="firstPageIcon_Disabled" vspace="2">' +
 			'			</span>' +
 			'			<span dojoAttachEvent="onclick:prevClick">' +
-			'                         <img dojoAttachPoint="prevPageIconNode" src="${_blankGif}" alt="" class="prevPageIcon">' +
+			'                         <img dojoAttachPoint="prevPageIconNode" src="${_blankGif}" alt="" class="prevPageIcon_Disabled" vspace="2">' +
 			'			</span>' +
 			'			</td><td valign="top" class="infoDisplay">'+
                         '                       <b>Page: </b><input type="text" class="pageNumberTextField" dojoAttachPoint="currentPageNode" size="2"> <b>of</b>' +
                         '                       <span dojoAttachPoint="totalPageDisplayNode" class="TotalPageInfo"></span><input dojoAttachEvent="onclick:goToPage" type="button" value="Go" class="pageGoToButton"> ' +
                         '                       </td><td valign="top">' +
 			'			<span dojoAttachEvent="onclick:nextClick">' +
-			'                         <img dojoAttachPoint="nextPageIconNode" src="${_blankGif}" alt="" class="nextPageIcon">' +
+			'                         <img dojoAttachPoint="nextPageIconNode" src="${_blankGif}" alt="" class="nextPageIcon" vspace="2">' +
 			'			</span>' +
 			'			<span dojoAttachEvent="onclick:lastClick">' +
-			'                         <img dojoAttachPoint="lastPageIconNode" src="${_blankGif}" alt="" class="lastPageIcon">' +
+			'                         <img dojoAttachPoint="lastPageIconNode" src="${_blankGif}" alt="" class="lastPageIcon" vspace="2">' +
 			'			</span> ' +
 			'		</td></tr></table></div>' +
 			'	</div>',
@@ -32,7 +32,12 @@ dojo.declare("dijit.Paginator",
 	pagingNode:null,
 	currentPage: 1,
 	totalPages: 0,
-
+        
+        firstPageTooltip: "Go to First Page",
+        previousPageTooltip: "Go to Previous Page",
+        nextPageTooltip: "Go to Next Page",
+        lastPageTooltip: "Go to Last Page",
+        
         goToPage: function () {
             var tempNum = this.currentPageNode.value;
             if (! isNaN(tempNum)) {
@@ -81,32 +86,29 @@ dojo.declare("dijit.Paginator",
 		if(this.currentPage <= 1) {
 			this.prevPageIconNode.className = "prevPageIcon_Disabled";
 			this.firstPageIconNode.className = "firstPageIcon_Disabled";
-                        this.prevPageIconNode.title = "";
-                        this.firstPageIconNode.title = "";
 		} else {
 			this.prevPageIconNode.className = "prevPageIcon";
 			this.firstPageIconNode.className = "firstPageIcon";
-                        this.prevPageIconNode.title = "Go to Previous Page";
-                        this.firstPageIconNode.title = "Go to First Page";
 		}
 
 		if(this.currentPage >= this.totalPages) {
 			this.nextPageIconNode.className = "nextPageIcon_Disabled";
 			this.lastPageIconNode.className = "lastPageIcon_Disabled";
-                        this.nextPageIconNode.title = "";
-                        this.lastPageIconNode.title = "";
 		} else {
 			this.nextPageIconNode.className = "nextPageIcon";
 			this.lastPageIconNode.className = "lastPageIcon";
-                        this.nextPageIconNode.title = "Go to Next Page";
-                        this.lastPageIconNode.title = "Go to Last Page";
 		}
 		
 	},
 	
 	postCreate: function(){
-		this.refresh();
-		this.inherited(arguments);
+            this.refresh();
+                
+            this.firstPageIconNode.title = this.firstPageTooltip;
+            this.prevPageIconNode.title = this.previousPageTooltip;
+            this.nextPageIconNode.title = this.nextPageTooltip;
+            this.lastPageIconNode.title = this.lastPageTooltip;
+            this.inherited(arguments);
 	}
 
 });

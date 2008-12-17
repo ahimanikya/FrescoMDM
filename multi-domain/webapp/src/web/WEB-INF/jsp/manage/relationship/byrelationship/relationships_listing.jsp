@@ -117,7 +117,9 @@
                             </tbody>
                       </table>
                       <div dojoType="dijit.Paginator" id="relationshipsSearchResultPaginator"
-                        totalPages="0" currentPage="0" navigationFunction="searchResultsRefresh"></div>
+                        totalPages="0" currentPage="0" navigationFunction="searchResultsRefresh"
+                        firstPageTooltip="Go to First Page" previousPageTooltip="Go To Previous Page"
+                        nextPageTooltip="Go to Next Page" lastPageTooltip="Go to Last Page" >
                       </div>
                    </td>
                </tr>
