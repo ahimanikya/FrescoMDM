@@ -47,13 +47,10 @@ import com.sun.mdm.multidomain.hierarchy.service.HierarchyDefService;
 import com.sun.mdm.multidomain.relationship.RelationshipDef;
 import com.sun.mdm.multidomain.relationship.Domain;
 import com.sun.mdm.multidomain.relationship.service.DomainService;
-
-
 import com.sun.mdm.multidomain.relationship.service.RelationshipDefService;
 
 import java.sql.Connection;
-import java.util.List;
-
+import java.sql.SQLException;
 
 /**
  * The enterprise beans implementation of MultiDomainMetaService that is explpsed to the clients.
@@ -71,7 +68,6 @@ import java.util.List;
 public class MultiDomainMetaServiceBean implements MultiDomainMetaServiceRemote, MultiDomainMetaServiceLocal {
     
     private SessionContext sessionContext;
-    private HierarchyDefService hierarchyDefService;
     
     @Resource(  name="jdbc/MULTIDOMAIN_DATASOURCE",
                 type=javax.sql.DataSource.class,
@@ -237,7 +233,11 @@ public class MultiDomainMetaServiceBean implements MultiDomainMetaServiceRemote,
         throws ProcessingException, UserException {
         
         try {
+            Connection con = dataSource.getConnection();            
+            HierarchyDefService hierarchyDefService = new HierarchyDefService(con);            
             return hierarchyDefService.search(domain);
+        } catch(SQLException sqlEx) {
+            throw new ProcessingException(sqlEx);            
         } catch (HierarchyDefDaoException e) {
             throw new ProcessingException(e);
         }
@@ -249,10 +249,13 @@ public class MultiDomainMetaServiceBean implements MultiDomainMetaServiceRemote,
     public HierarchyDef getHierarchyDefByName(String name, String domain)
         throws ProcessingException, UserException {
         
-        List<HierarchyDef> hierarchyDefs = null;
-        
+        List<HierarchyDef> hierarchyDefs = null;        
         try {
+            Connection con = dataSource.getConnection();            
+            HierarchyDefService hierarchyDefService = new HierarchyDefService(con);                        
             hierarchyDefs = hierarchyDefService.search(domain);
+        } catch(SQLException sqlEx) {
+            throw new ProcessingException(sqlEx);                        
         } catch (HierarchyDefDaoException e) {
             throw new ProcessingException(e);
         }
@@ -273,7 +276,11 @@ public class MultiDomainMetaServiceBean implements MultiDomainMetaServiceRemote,
         throws ProcessingException, UserException {
         
         try {
+            Connection con = dataSource.getConnection();            
+            HierarchyDefService hierarchyDefService = new HierarchyDefService(con);                        
             return hierarchyDefService.searchById(hierarchyId);
+        } catch(SQLException sqlEx) {
+            throw new ProcessingException(sqlEx);                        
         } catch (HierarchyDefDaoException e) {
             throw new ProcessingException(e);
         }
@@ -286,6 +293,8 @@ public class MultiDomainMetaServiceBean implements MultiDomainMetaServiceRemote,
         throws ProcessingException, UserException {
         
         try {
+            Connection con = dataSource.getConnection();            
+            HierarchyDefService hierarchyDefService = new HierarchyDefService(con);                        
             long pk = hierarchyDefService.create(hierarchyDef);
             return Long.toString(pk);
         } catch (Exception e) {
@@ -300,7 +309,11 @@ public class MultiDomainMetaServiceBean implements MultiDomainMetaServiceRemote,
         throws ProcessingException, UserException {
         
         try {
+            Connection con = dataSource.getConnection();            
+            HierarchyDefService hierarchyDefService = new HierarchyDefService(con);                        
             hierarchyDefService.update(hierarchyDef);
+        } catch(SQLException sqlEx) {
+            throw new ProcessingException(sqlEx);                        
         } catch (HierarchyDefDaoException e) {
             throw new ProcessingException(e);
         }
@@ -313,7 +326,11 @@ public class MultiDomainMetaServiceBean implements MultiDomainMetaServiceRemote,
         throws ProcessingException, UserException {
         
         try {
+            Connection con = dataSource.getConnection();            
+            HierarchyDefService hierarchyDefService = new HierarchyDefService(con);                        
             hierarchyDefService.delete(hierarchyDef);
+        } catch(SQLException sqlEx) {
+            throw new ProcessingException(sqlEx);                        
         } catch (HierarchyDefDaoException e) {
             throw new ProcessingException(e);
         }
@@ -328,7 +345,11 @@ public class MultiDomainMetaServiceBean implements MultiDomainMetaServiceRemote,
         List<HierarchyDef> hierarchyDefs = null;
         
         try {
+            Connection con = dataSource.getConnection();            
+            HierarchyDefService hierarchyDefService = new HierarchyDefService(con);                        
             hierarchyDefs = hierarchyDefService.search(domain);
+        } catch(SQLException sqlEx) {
+            throw new ProcessingException(sqlEx);                        
         } catch (HierarchyDefDaoException e) {
             throw new ProcessingException(e);
         }
@@ -336,7 +357,11 @@ public class MultiDomainMetaServiceBean implements MultiDomainMetaServiceRemote,
         for (HierarchyDef hierarchyDef : hierarchyDefs) {
             if (hierarchyDef.getName().equals(name)) {
                 try {
+                    Connection con = dataSource.getConnection();            
+                    HierarchyDefService hierarchyDefService = new HierarchyDefService(con);                                
                     hierarchyDefService.delete(hierarchyDef);
+                } catch(SQLException sqlEx) {
+                    throw new ProcessingException(sqlEx);                                
                 } catch (HierarchyDefDaoException e) {
                     throw new ProcessingException(e);
                 }
