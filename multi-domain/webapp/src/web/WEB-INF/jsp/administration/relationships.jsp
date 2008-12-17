@@ -67,7 +67,7 @@
         dwr.util.removeAllRows("relListing");
         if(data == null || data.length<=0) {
             //alert("no relationship definitions found");
-            dwr.util.addRows("relListing", [''], [function(data){return "No Relationship definitions found.";}], {
+            dwr.util.addRows("relListing", [''], [function(data){return getMessageForI18N("no_relationship_definition_found");}], {
                   cellCreator:function(options) {
                     var td = document.createElement("td");
                     td.colSpan="7"; td.align="center";
@@ -117,7 +117,7 @@
             output += fixedAttributesCount + " Predefined | " + data.extendedAttributes.length + " Custom"; 
             return output; //return data.attributes; 
         },
-        function(data) { return '<img src="images/icons/edit-button.png" title="Edit..." class="palleteButton" onclick="prepareEditRelationshipDef(\''+data.name+'\'); " >'; },
+        function(data) { return '<img src="images/icons/edit-button.png" alt="<f:message key='edit_text' />" title="<f:message key='edit_text' />..." class="palleteButton" onclick="prepareEditRelationshipDef(\''+data.name+'\'); " >'; },
              
     ];
 
@@ -171,13 +171,13 @@
                         <td valign="bottom">
                             <table cellspacing="0" cellpadding="0" border="0">
                                 <tr>
-                                    <td><a href="javascript:void(0);" title="Select all" onclick="selectAllRelationshipDefs();" ><img id="imgSelectAllRelationshipDef" src="images/icons/select_multiple.png" class="palleteButton"  border="0"></a></td>
+                                    <td><a href="javascript:void(0);" title="<f:message key='select_all_text' />" onclick="selectAllRelationshipDefs();" ><img id="imgSelectAllRelationshipDef" src="images/icons/select_multiple.png" class="palleteButton" alt="<f:message key='select_all_text' />"  border="0"></a></td>
                                     <td><img src="images/spacer.gif" height="1" width="6"></td>
-                                    <td><a href="javascript:void(0);" title="De-select all" onclick="deselectAllRelationshipDefs();"><img id="imgDeselectAllRelationshipDef" src="images/icons/deselect_multiple.png" border="0"></a></td>
+                                    <td><a href="javascript:void(0);" title="<f:message key='de_select_all_text' />" onclick="deselectAllRelationshipDefs();"><img id="imgDeselectAllRelationshipDef" src="images/icons/deselect_multiple.png" alt="<f:message key='de_select_all_text' />" border="0"></a></td>
                                     <td><img src="images/icons/actions_separator.gif" border="0"></td>
-                                    <td><a href="javascript:void(0);" onclick="showRelationshipDialog('addrelationship');" title="<f:message key="add_text" />..."><img id="imgAddRelationshipDef" src="images/icons/add_button.png" border="0"></a></td>
+                                    <td><a href="javascript:void(0);" onclick="showRelationshipDialog('addrelationship');" title="<f:message key="add_text" />..."><img id="imgAddRelationshipDef" src="images/icons/add_button.png" alt="<f:message key="add_text" />" border="0"></a></td>
                                     <td><img src="images/spacer.gif" height="1" width="6"></td>
-                                    <td><a href="javascript:void(0);" title="<f:message key="delete_text" />" onclick="deleteRelationshipDefs();" ><img id="imgDeleteRelationshipDef" src="images/icons/delete_button.png" border="0"></a></td>
+                                    <td><a href="javascript:void(0);" title="<f:message key="delete_text" />" onclick="deleteRelationshipDefs();" ><img id="imgDeleteRelationshipDef" src="images/icons/delete_button.png" alt="<f:message key="delete_text" />" border="0"></a></td>
                                 </tr>
                             </table>
                            <!--
@@ -198,19 +198,19 @@
                                             &nbsp;
                                         </th>                                        
                                         <th width="20%" valign="bottom" class="label">
-                                            Name
+                                            <f:message key="name_text" />
                                         </th>
                                         <th width="20%" valign="bottom" class="label">
-                                            Descrpition
+                                            <f:message key="desctription_text" />
                                         </th>                                        
                                         <th width="10%" valign="bottom" class="label">
-                                            Direction
+                                            <f:message key="direction_text" />
                                         </th>                                        
                                         <th width="10%" valign="bottom" class="label">
-                                            Plugin 
+                                            <f:message key="plugin_text" />  
                                         </th>                                        
                                         <th width="25%" valign="bottom" class="label">
-                                            Attributes
+                                            <f:message key="attributes_text" />
                                         </th>                                         
                                         <th width="10%">&nbsp;</th>                                        
                                         </tr>
@@ -236,7 +236,7 @@
                                     </tr>
                                     
                                     -->
-                                    <tr><td class="textdata" colspan="6" align="center"> Loading... </td></tr>
+                                    <tr><td class="textdata" colspan="6" align="center"><f:message key="loading_text" /> </td></tr>
                                 </table>
                             <!-- <END> List of available Relationships shown between the selected Source & Target Domains -->
                         </td>
@@ -253,14 +253,14 @@
 
 
 <!-- Content for Add relationship -->
-<div id="addrelationship" dojoType="dijit.Dialog" title="Add Relationship" style="display:none;" >
+<div id="addrelationship" dojoType="dijit.Dialog" title="<f:message key="add_relationship_text" />" style="display:none;" >
     <div dojoType="dijit.layout.ContentPane" style="width:820px;padding:5px;"
         href="administer_add_relationshipdef.htm" onload="refreshCustomAttributesButtonsPalette (addrelationship_attributesArray, 'addrelationship');">
     </div>
 </div>
 
 <!-- Content for Edit relationship -->
-<div id="editrelationship" dojoType="dijit.Dialog" title="Edit Relationship" style="display:none;" >
+<div id="editrelationship" dojoType="dijit.Dialog" title="<f:message key="edit_relationship_text" />" style="display:none;" >
     <div dojoType="dijit.layout.ContentPane" style="width:820px;padding:5px;">
         <jsp:include page="/WEB-INF/jsp/administration/edit_relationship.jsp" flush="true" />
     </div>      
@@ -325,7 +325,7 @@ function deleteRelationshipDefs () {
         if(chkboxes[i].checked) anySelected = true;
     }
     if(!anySelected) return;
-    if(! confirm("Are you sure you want to delete the selected Relatioship Definitions?")) {
+    if(! confirm(getMessageForI18N("selcted_relationship_delete_confirmation"))) {
         return ;
     }
     

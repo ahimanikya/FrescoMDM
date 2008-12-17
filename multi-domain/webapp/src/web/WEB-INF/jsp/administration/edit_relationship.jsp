@@ -25,24 +25,24 @@
             <table  cellspacing="0" cellpadding="0">
                 <tr>
                     <td>
-                       <input id="relationship_edit_id" name="id" value="" style="display:none;width:0px"/>
+                       <input id="relationship_edit_id" name="id"  style="display:none;width:0px"/>
                    </td>
                    <td>
-                       <input id="relationship_edit_name" name="Name" value="" dojoType="dijit.form.TextBox" style="width:150px"/>
+                       <input id="relationship_edit_name" name="<f:message key="name_text" />" value="" dojoType="dijit.form.TextBox" style="width:150px"/>
                    </td>
                    <td><img src="images/spacer.gif" height="1" width="15"></td>
                    <td class="formLabel">
                     <f:message key="direction_text" /><f:message key="colon_symbol" />&nbsp;<f:message key="mandatory_symbol" />
 
-                        <a href="javascript:void(0);" onclick="refreshDirection(false,'relationship_edit_direction','editRelationship_oneDirectionImg','editRelationship_biDirectionImg');"><img id="editRelationship_oneDirectionImg" src="images/icons/relationship-button_right.png" border="0"></a>
-                        <a href="javascript:void(0);" onclick="refreshDirection(true,'relationship_edit_direction','editRelationship_oneDirectionImg','editRelationship_biDirectionImg');"><img id="editRelationship_biDirectionImg" src="images/icons/relationship-button_both.png" border="0"></a>
+                        <a href="javascript:void(0);" title="<f:message key='one_direction_text' />" onclick="refreshDirection(false,'relationship_edit_direction','editRelationship_oneDirectionImg','editRelationship_biDirectionImg');"><img id="editRelationship_oneDirectionImg" src="images/icons/relationship-button_right.png" alt="<f:message key='one_direction_text' />" border="0"></a>
+                        <a href="javascript:void(0);" title="<f:message key='bi_direction_text' />" onclick="refreshDirection(true,'relationship_edit_direction','editRelationship_oneDirectionImg','editRelationship_biDirectionImg');"><img id="editRelationship_biDirectionImg" src="images/icons/relationship-button_both.png" alt="<f:message key='bi_direction_text' />" border="0"></a>
 
                          <input type="hidden" value="false" id="relationship_edit_direction">
                    </td>
                    <td><img src="images/spacer.gif" height="1" width="15"></td>
                    <td class="formLabel">
                         <f:message key="plugin_text" /><f:message key="colon_symbol" />&nbsp;<f:message key="mandatory_symbol" />
-                         <select id="relationship_edit_plugin" name="Plugin" title="<f:message key="plugin_text" />" hasDownArrow="true" style="width:150px">
+                         <select id="relationship_edit_plugin" name="<f:message key="plugin_text" />" title="<f:message key="plugin_text" />" hasDownArrow="true" style="width:150px">
                            <option value=""></option>
                            <option value="RelSpecialistPlugin">RelSpecialistPlugin</option>
                          </select>
@@ -55,14 +55,14 @@
     <tr><td colspan="2"><img src="images/spacer.gif" height="5" width="1"></td></tr>
     <tr> 
         <td valign="top" class="formLabel"><f:message key="desctription_text" /><f:message key="colon_symbol" /></td> 
-        <td> <textarea id="relationship_edit_description" name="Description" rows="3" cols="70" title="<f:message key="desctription_text" />"></textarea></td> 
+        <td> <textarea id="relationship_edit_description" name="<f:message key="desctription_text" />" rows="3" cols="70" title="<f:message key="desctription_text" />"></textarea></td> 
     </tr>
     <tr><td colspan="2"><img src="images/spacer.gif" height="10" width="1"></td></tr>
     
     <tr>
         <td colspan="2">
             <div dojoType="dijit.layout.ContentPane" class="MainBox" hasShadow="true" style="width:100%;">
-                <div class="TitleBar">RelationShip Attributes</div>
+                <div class="TitleBar"><f:message key="relationship_attributes_text" /></div>
                 <div class="Content">
                     <table cellpadding="0" cellspacing="0" border="0" width="100%">
                         <tr>
@@ -87,8 +87,8 @@
     <tr><td colspan="2"><img src="images/spacer.gif" height="10" width="1"></td></tr>
     <tr>
         <td align="right" colspan="2">
-            <input type="submit" name="save_edit_relations" onclick="return validateEditRelationshipForm();" title="<f:message key="save_text" />" value="<f:message key="save_text" />"/>
-            <input type="button" name="cancel_edit_relations" title="<f:message key="cancel_text" />" value="<f:message key="cancel_text" />" onclick="dijit.byId('editrelationship').hide();"/>
+            <input type="submit" name="<f:message key="save_text" />" onclick="return validateEditRelationshipForm();" title="<f:message key="save_text" />" value="<f:message key="save_text" />"/>
+            <input type="button" name="<f:message key="cancel_text" />" title="<f:message key="cancel_text" />" value="<f:message key="cancel_text" />" onclick="dijit.byId('editrelationship').hide();"/>
         </td>
     </tr>
     
@@ -168,12 +168,12 @@ function validateEditRelationshipForm() {
             tempAttr.defaultValue = attr.DefaultValueField.value;
         }
         if(isEmpty (tempAttr.name)) {
-            alert("Enter name of the attribute.");
+            alert(getMessageForI18N("enter_attribute_name"));
             attr.AttributeNameField.focus();
             return false;
         }
         if( !isValidCustomAttribute (tempAttr.dataType, tempAttr.defaultValue) ) {
-            alert(tempAttr.defaultValue + " is not a valid value for attribute " + tempAttr.name );
+            alert(tempAttr.defaultValue + " " + getMessageForI18N("isnotavalidvaluefor")+ " " + tempAttr.name + " " + getMessageForI18N("attribute")+ " " +getMessageForI18N("attributeTypeFor")+ " " +tempAttr.defaultValue + " " +getMessageForI18N("is")+ " " +"'"+tempAttr.dataType+"'");
             return false;
         }
         customAttributes.push(tempAttr);

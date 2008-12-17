@@ -35,18 +35,19 @@ JSP files loads all the messages from message.properties, which will be used in 
     messages ["colon"] = '<f:message key="colon_symbol" />';
     messages ["relationship_Attributes"] = '<f:message key="relationship_attributes_text" />';
     messages ["no_Relationships_found"] = '<f:message key="no_relatonship_found" />';
+    messages ["no_hierarchy_definition_found"] = '<f:message key="no_hierarchy_definistion_found" />';
+    messages ["no_relationship_definition_found"] = '<f:message key="no_relationship_definistion_found" />';
+    messages ["selected_hierarchy_delete_confirmation"] = '<f:message key="selected_hierarchy_delete_confirmation" />';
+    messages ["selcted_relationship_delete_confirmation"] = '<f:message key="selcted_relationship_delete_confirmation" />';
     
     
-    //Validation messages
+    //Validation prompts for Manage Screens
     messages ["enterValueFor_effectiveFrom"] = '<f:message key="enter_value_for_effective_from" />';
     messages ["enter_ValueFor"] = '<f:message key="enter_value_for_text" />';
     messages ["enterValueFor_effectiveTo"] = '<f:message key="enter_value_for_effective_to" />';
     messages ["enterValueFor_purgeDate"] = '<f:message key="enter_value_for_purgedate" />';
     messages ["isnotavalidvaluefor"] = '<f:message key="is_not_valid_value_for" />';
     messages ["attributeTypeFor"] = '<f:message key="attribute_type_for" />';
-    messages ["enter_name"] = '<f:message key="enter_name" />';
-    messages ["select_direction"] = '<f:message key="select_direction" />';
-    messages ["select_plugin"] = '<f:message key="select_plugin" />';
     messages ["select_source_domain"] = '<f:message key="select_source_domain" />';
     messages ["select_destination_domain"] = '<f:message key="select_destination_domain" />';
     messages ["select_relationshipDef"] = '<f:message key="select_relationshipDef" />';
@@ -54,6 +55,14 @@ JSP files loads all the messages from message.properties, which will be used in 
     messages ["select_atleast_one_destination_record"] = '<f:message key="select_atleast_one_destination_record" />';
     messages ["date_Format"] = '<f:message key="date_formate" />';
     messages ["invalid_date"] = '<f:message key="invalid_date" />';
+    
+    
+   // Validation prompts for Administer Screens
+   
+    messages ["enter_name"] = '<f:message key="enter_name" />';
+    messages ["select_direction"] = '<f:message key="select_direction" />';
+    messages ["select_plugin"] = '<f:message key="select_plugin" />';
+    messages ["enter_attribute_name"] = '<f:message key="enter_attribute_name" />';
     
 
     // Exception messages

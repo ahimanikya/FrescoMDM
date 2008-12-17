@@ -13,13 +13,13 @@
             <f:message key="name_text" /><f:message key="colon_symbol" />&nbsp;<f:message key="mandatory_symbol" />
         </td>
         <td>
-            <input id="hierarchy_add_name"  name="Name" value="" title="<f:message key="name_text" />" dojoType="dijit.form.TextBox" style="width:150px"/> 
+            <input id="hierarchy_add_name"  name="<f:message key="name_text" />" value="" title="<f:message key="name_text" />" dojoType="dijit.form.TextBox" style="width:150px"/> 
         </td> 
         <td class="formLabel">
            <f:message key="plugin_text" /><f:message key="colon_symbol" />&nbsp;<f:message key="mandatory_symbol" />
         </td>
         <td>
-           <select id="hierarchy_add_plugin" name="Plugin" title="<f:message key="plugin_text" />" hasDownArrow="true" style="width:150px">
+           <select id="hierarchy_add_plugin" name="<f:message key="plugin_text" />" title="<f:message key="plugin_text" />" hasDownArrow="true" style="width:150px">
                <option value=""></option>
                 <option value="HierPrunePlugin">HierPrunePlugin</option>
            </select>
@@ -30,19 +30,19 @@
             <f:message key="effective_from_text" /><f:message key="colon_symbol" />
         </td>
         <td>
-            <input id="hierarchy_add_effectiveFrom"  name="EffectiveFrom" value="" title="<f:message key="effective_from_text" />" dojoType="dijit.form.DateTextBox" style="width:150px"/>
+            <input id="hierarchy_add_effectiveFrom"  name="<f:message key="effective_from_text" />" value="" title="<f:message key="effective_from_text" />" dojoType="dijit.form.DateTextBox" style="width:150px"/>
         </td> 
         <td class="formLabel">
            <f:message key="effective_to_text" /><f:message key="colon_symbol" />
        </td>
         <td>
-           <input id="hierarchy_add_effectiveTo"  name="EffectiveTo" value="" title="<f:message key="effective_to_text" />" dojoType="dijit.form.DateTextBox" style="width:150px"/>
+           <input id="hierarchy_add_effectiveTo"  name="<f:message key="effective_to_text" />" value="" title="<f:message key="effective_to_text" />" dojoType="dijit.form.DateTextBox" style="width:150px"/>
          </td>
     </tr>
     <tr><td colspan="4"><img src="images/spacer.gif" height="5" width="1"></td></tr>
     <tr> 
         <td valign="top" class="formLabel"><f:message key="desctription_text" /><f:message key="colon_symbol" /></td> 
-        <td colspan="3"><textarea id="hierarchy_add_description" name="Description" rows="3" cols="70" title="<f:message key="desctription_text" />"></textarea></td>
+        <td colspan="3"><textarea id="hierarchy_add_description" name="<f:message key="desctription_text" />" rows="3" cols="70" title="<f:message key="desctription_text" />"></textarea></td>
     </tr>
     <tr><td colspan="4"><img src="images/spacer.gif" height="10" width="1"></td></tr>
     

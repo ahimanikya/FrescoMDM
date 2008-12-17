@@ -120,12 +120,12 @@ function validateRelationshipForm() {
         tempAttr.id = attr.IdField.value;
         
         if(isEmpty (tempAttr.name)) {
-            alert("Enter name of the attribute.");
+            alert(getMessageForI18N("enter_attribute_name"));
             attr.AttributeNameField.focus();
             return false;
         }
         if( !isValidCustomAttribute (tempAttr.dataType, tempAttr.defaultValue) ) {
-            alert(tempAttr.defaultValue + " is not a valid value for attribute " + tempAttr.name );
+            alert(tempAttr.defaultValue + " " + getMessageForI18N("isnotavalidvaluefor")+ " " + tempAttr.name + " " + getMessageForI18N("attribute")+ " " +getMessageForI18N("attributeTypeFor")+ " " +tempAttr.defaultValue + " " +getMessageForI18N("is")+ " " +"'"+tempAttr.dataType+"'");
             return false;
         }
         customAttributes.push(tempAttr);      

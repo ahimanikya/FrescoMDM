@@ -28,7 +28,7 @@
             <table  cellspacing="0" cellpadding="0">
                 <tr>
                     <td>
-                       <input id="relationship_add_name" type="text" name="Name" value="" title="<f:message key="name_text" />" style="width:150px"/>
+                       <input id="relationship_add_name" type="text" name="<f:message key="name_text" />" value="" title="<f:message key="name_text" />" style="width:150px"/>
                    </td>
                    <td><img src="images/spacer.gif" height="1" width="15"></td>
                    <td class="formLabel">
@@ -39,15 +39,15 @@
                             <option value="true"><-></option>
                          </select>
                        -->
-                        <a href="javascript:void(0);" onclick="refreshDirection(false,'relationship_add_direction','addRelationship_oneDirectionImg','addRelationship_biDirectionImg');"><img id="addRelationship_oneDirectionImg" src="images/icons/relationship-button_right.png" border="0"></a>
-                        <a href="javascript:void(0);" onclick="refreshDirection(true,'relationship_add_direction','addRelationship_oneDirectionImg','addRelationship_biDirectionImg');"><img id="addRelationship_biDirectionImg" src="images/icons/relationship-button_both.png" border="0"></a>
+                        <a href="javascript:void(0);" title="<f:message key="one_direction_text" />" onclick="refreshDirection(false,'relationship_add_direction','addRelationship_oneDirectionImg','addRelationship_biDirectionImg');"><img id="addRelationship_oneDirectionImg" src="images/icons/relationship-button_right.png" alt="<f:message key="one_direction_text" />" border="0"></a>
+                        <a href="javascript:void(0);" title="<f:message key="bi_direction_text" />" onclick="refreshDirection(true,'relationship_add_direction','addRelationship_oneDirectionImg','addRelationship_biDirectionImg');"><img id="addRelationship_biDirectionImg" src="images/icons/relationship-button_both.png" alt="<f:message key="bi_direction_text" />" border="0"></a>
                          
                          <input type="hidden" value="false" id="relationship_add_direction" >
                    </td>
                    <td><img src="images/spacer.gif" height="1" width="15"></td>
                    <td class="formLabel">
                         <f:message key="plugin_text" /><f:message key="colon_symbol" />&nbsp;<f:message key="mandatory_symbol" />
-                         <select id="relationship_add_plugin"  name="Plugin" title="<f:message key="plugin_text" />"  style="width:150px">
+                         <select id="relationship_add_plugin"  name="<f:message key="plugin_text" />" title="<f:message key="plugin_text" />"  style="width:150px">
                            <option value=""></option>
                            <option value="RelSpecialistPlugin">RelSpecialistPlugin</option>
                          </select>
@@ -60,7 +60,7 @@
     <tr><td colspan="2"><img src="images/spacer.gif" height="5" width="1"></td></tr>
     <tr> 
         <td valign="top" class="formLabel"><f:message key="desctription_text" /><f:message key="colon_symbol" /></td> 
-        <td><textarea id="relationship_add_description" name="Description" rows="3" cols="70" title="<f:message key="desctription_text" />"></textarea></td> 
+        <td><textarea id="relationship_add_description" name="<f:message key="desctription_text" />" rows="3" cols="70" title="<f:message key="desctription_text" />"></textarea></td> 
     </tr>
     <tr><td colspan="2"><img src="images/spacer.gif" height="10" width="1"></td></tr>
     
@@ -93,8 +93,8 @@
     <tr><td colspan="2"><img src="images/spacer.gif" height="10" width="1"></td></tr>
     <tr>
         <td align="right" colspan="2">
-            <input type="submit" name="save_add_relations" onclick=" return validateRelationshipForm()" title="<f:message key="save_text" />" value="<f:message key="save_text" />" />
-            <input type="button" name="cancel_add_relations" title="<f:message key="cancel_text" />" value="<f:message key="cancel_text" />" onclick="dijit.byId('addrelationship').hide(); clearAddRelationshipForm (); "/>
+            <input type="submit" name="<f:message key="save_text" />" onclick=" return validateRelationshipForm()" title="<f:message key="save_text" />" value="<f:message key="save_text" />" />
+            <input type="button" name="<f:message key="cancel_text" />" title="<f:message key="cancel_text" />" value="<f:message key="cancel_text" />" onclick="dijit.byId('addrelationship').hide(); clearAddRelationshipForm (); "/>
         </td>
     </tr>
     

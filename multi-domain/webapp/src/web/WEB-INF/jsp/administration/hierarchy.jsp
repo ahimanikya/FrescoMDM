@@ -48,7 +48,7 @@
         dwr.util.removeAllRows("hierachyListing");
         if(data == null || data.length<=0) {
             //alert("no relationship definitions found");
-            dwr.util.addRows("hierachyListing", [''], [function(data){return "No Hierarchy definitions found.";}], {
+            dwr.util.addRows("hierachyListing", [''], [function(data){return getMessageForI18N("no_hierarchy_definition_found");}], {
                   cellCreator:function(options) {
                     var td = document.createElement("td");
                     td.colSpan="6"; td.align="center";
@@ -96,7 +96,7 @@
             output += fixedAttributesCount + " Predefined | " + data.extendedAttributes.length + " Custom"; 
             return output; //return data.attributes; 
         },
-        function(data) { return '<img src="images/icons/edit-button.png" title="Edit..." class="palleteButton" onclick="prepareEditHierachyDef(\''+data.name+'\'); " >'; },
+        function(data) { return '<img src="images/icons/edit-button.png" alt="<f:message key='edit_text' />" title="<f:message key='edit_text' />..." class="palleteButton" onclick="prepareEditHierachyDef(\''+data.name+'\'); " >'; },
         //function(data) { return '<input type="button" value="Edit..." class="editButton" onclick="prepareEditHierachyDef(\''+data.name+'\'); " >'; },
              
     ];
@@ -126,7 +126,7 @@
                     <tr>
                         <td class="mainLabel"><f:message key="domain_text" /><f:message key="colon_symbol" />&nbsp;<f:message key="mandatory_symbol" />&nbsp;</td>
                         <td>
-                            <select id="domain" name="Domain" title="<f:message key="domain_text" />" onchange="loadHierarchyDefs();">
+                            <select id="domain" name="<f:message key="domain_text" />" title="<f:message key="domain_text" />" onchange="loadHierarchyDefs();">
                             </select>        
                         </td>
                         <td>&nbsp;</td>
@@ -147,13 +147,13 @@
                         <td valign="bottom">
                             <table cellspacing="0" cellpadding="0" border="0">
                                 <tr>
-                                    <td><a href="javascript:void(0);" title="Select all" onclick="selectAllHierarchyDefs();" ><img id="imgSelectAllHierarchyDef" src="images/icons/select_multiple.png" class="palleteButton"  border="0"></a></td>
+                                    <td><a href="javascript:void(0);" title="<f:message key='select_all_text' />" onclick="selectAllHierarchyDefs();" ><img id="imgSelectAllHierarchyDef" src="images/icons/select_multiple.png" class="palleteButton" alt="<f:message key='select_all_text' />" border="0"></a></td>
                                     <td><img src="images/spacer.gif" height="1" width="6"></td>
-                                    <td><a href="javascript:void(0);" title="De-select all" onclick="deselectAllHierarchyDefs();"><img id="imgDeselectAllHierarchyDef" src="images/icons/deselect_multiple.png" border="0"></a></td>
+                                    <td><a href="javascript:void(0);" title="<f:message key='de_select_all_text' />" onclick="deselectAllHierarchyDefs();"><img id="imgDeselectAllHierarchyDef" src="images/icons/deselect_multiple.png" alt="<f:message key='de_select_all_text' />" border="0"></a></td>
                                     <td><img src="images/icons/actions_separator.gif" border="0"></td>
-                                    <td><a href="javascript:void(0);" onclick="showHierarchyDialog('addhierarchy');" title="<f:message key="add_text" />..."><img id="imgAddHierarchyDef" src="images/icons/add_button.png" border="0"></a></td>
+                                    <td><a href="javascript:void(0);" onclick="showHierarchyDialog('addhierarchy');" title="<f:message key="add_text" />..."><img id="imgAddHierarchyDef" src="images/icons/add_button.png" alt="<f:message key="add_text" />" border="0"></a></td>
                                     <td><img src="images/spacer.gif" height="1" width="6"></td>
-                                    <td><a href="javascript:void(0);" title="<f:message key="delete_text" />" onclick="deleteHierarchyDefs();" ><img id="imgDeleteHierarchyDef" src="images/icons/delete_button.png" border="0"></a></td>
+                                    <td><a href="javascript:void(0);" title="<f:message key="delete_text" />" onclick="deleteHierarchyDefs();" ><img id="imgDeleteHierarchyDef" src="images/icons/delete_button.png" alt="<f:message key="delete_text" />" border="0"></a></td>
                                 </tr>
                             </table>
                             <!--<input type="button" id="selectallbutton" onclick="selectAllHierarchyDefs(this.form);" title="Select all"  />&nbsp;
@@ -174,19 +174,19 @@
                                     </th>
 
                                     <th width="25%" valign="bottom" class="label">
-                                        Name
+                                        <f:message key="name_text" />
                                     </th>
 
                                     <th width="25%" valign="bottom" class="label">
-                                        Description
+                                        <f:message key="desctription_text" />
                                     </th>
 
                                     <th width="15%" valign="bottom" class="label">
-                                        Plugin 
+                                        <f:message key="plugin_text" /> 
                                     </th>
 
                                     <th width="20%" valign="bottom" class="label">
-                                        Attributes
+                                        <f:message key="attributes_text" />
                                     </th> 
 
                                     <th width="10%">&nbsp;</th>
@@ -210,14 +210,14 @@
     </tr>
 </table>
 <!-- Content for Add Hierarchy -->
-<div id="addhierarchy" dojoType="dijit.Dialog" title="Add Hierarchy" style="display:none;" >
+<div id="addhierarchy" dojoType="dijit.Dialog" title="<f:message key="add_hierarchy_text" />" style="display:none;" >
         <div dojoType="dijit.layout.ContentPane" style="width:820px;padding:5px;"
             href="administer_add_hierarchydef.htm" onload="refreshCustomAttributesButtonsPalette (addhierarchy_attributesArray, 'addhierarchy');">
         </div>
 </div>
 
 <!-- Content for Edit Hierarchy -->
-<div id="edithierarchy" dojoType="dijit.Dialog" title="Edit Hierarchy" style="display:none;">
+<div id="edithierarchy" dojoType="dijit.Dialog" title="<f:message key="edit_hierarchy_text" />" style="display:none;">
     <div dojoType="dijit.layout.ContentPane" style="width:820px;padding:5px;">
         <jsp:include page="/WEB-INF/jsp/administration/edit_hierarchy.jsp" flush="true" />
     </div>    
@@ -281,7 +281,7 @@ function deleteHierarchyDefs () {
         if(chkboxes[i].checked) anySelected = true;
     }
     if(!anySelected) return;
-    if(! confirm("Are you sure you want to delete the selected Hierarchy Definitions?")) {
+    if(! confirm(getMessageForI18N("selected_hierarchy_delete_confirmation"))) {
         return ;
     }
     var domain=document.getElementById("domain").value;
