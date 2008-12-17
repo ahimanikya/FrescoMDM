@@ -276,7 +276,7 @@ public class TabHierarchyDef extends javax.swing.JPanel {
         jButtonAddExtendedAttribute.setText(org.openide.util.NbBundle.getMessage(TabHierarchyDef.class, "LBL_Add")); // NOI18N
         jButtonAddExtendedAttribute.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonAddExtendedAttributeonAddExtendedAttribute(evt);
+                onAddExtendedAttribute(evt);
             }
         });
 
@@ -284,7 +284,7 @@ public class TabHierarchyDef extends javax.swing.JPanel {
         jButtonDeleteExtendedAttribute.setEnabled(false);
         jButtonDeleteExtendedAttribute.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonDeleteExtendedAttributeonRemoveExtendedAttribute(evt);
+                onRemoveExtendedAttribute(evt);
             }
         });
 
@@ -292,7 +292,7 @@ public class TabHierarchyDef extends javax.swing.JPanel {
         jButtonEditExtendedAttribute.setEnabled(false);
         jButtonEditExtendedAttribute.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonEditExtendedAttributeonEditExtendedAttribute(evt);
+                onEditExtendedAttribute(evt);
             }
         });
 
@@ -455,7 +455,7 @@ TableModelPredefinedAttribute model = (TableModelPredefinedAttribute) this.jTabl
         }
 }//GEN-LAST:event_jButtonEditPredefinedAttributeonEditPredefinedAttribute
 
-private void jButtonAddExtendedAttributeonAddExtendedAttribute(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddExtendedAttributeonAddExtendedAttribute
+private void onAddExtendedAttribute(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddExtendedAttribute
 final ExtendedAttributeDialog dialog = new ExtendedAttributeDialog();
             dialog.setVisible(true);
             if (dialog.isModified()) {
@@ -477,9 +477,9 @@ final ExtendedAttributeDialog dialog = new ExtendedAttributeDialog();
                 model.fireTableDataChanged();
                 mEditorMainApp.enableSaveAction(true);
             }
-}//GEN-LAST:event_jButtonAddExtendedAttributeonAddExtendedAttribute
+}//GEN-LAST:event_onAddExtendedAttribute
 
-private void jButtonDeleteExtendedAttributeonRemoveExtendedAttribute(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteExtendedAttributeonRemoveExtendedAttribute
+private void onRemoveExtendedAttribute(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveExtendedAttribute
 TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtendedAttr.getModel();
         int rs[] = jTableExtendedAttr.getSelectedRows();
         int length = rs.length;
@@ -504,9 +504,9 @@ TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtended
             jButtonDeleteExtendedAttribute.setEnabled(false);
             jButtonEditExtendedAttribute.setEnabled(false);
         }
-}//GEN-LAST:event_jButtonDeleteExtendedAttributeonRemoveExtendedAttribute
+}//GEN-LAST:event_onRemoveExtendedAttribute
 
-private void jButtonEditExtendedAttributeonEditExtendedAttribute(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditExtendedAttributeonEditExtendedAttribute
+private void onEditExtendedAttribute(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onEditExtendedAttribute
 TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtendedAttr.getModel();
         int idx = this.jTableExtendedAttr.getSelectedRow();
         ExtendedAttributeRow row = model.getRow(idx);
@@ -534,7 +534,7 @@ TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtended
             jTableExtendedAttr.setRowSelectionInterval(idx, idx);
             mEditorMainApp.enableSaveAction(true);
         }
-}//GEN-LAST:event_jButtonEditExtendedAttributeonEditExtendedAttribute
+}//GEN-LAST:event_onEditExtendedAttribute
 
 private void onButtonEffectiveFrom(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onButtonEffectiveFrom
     performDatePicker(true);
@@ -543,37 +543,6 @@ private void onButtonEffectiveFrom(java.awt.event.ActionEvent evt) {//GEN-FIRST:
 private void onButtonEffectiveTo(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onButtonEffectiveTo
     performDatePicker(false);
 }//GEN-LAST:event_onButtonEffectiveTo
-
-    private void onEditExtendedAttribute(java.awt.event.ActionEvent evt) {                                         
-        TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtendedAttr.getModel();
-        int idx = this.jTableExtendedAttr.getSelectedRow();
-        ExtendedAttributeRow row = model.getRow(idx);
-        String oldName = row.getName();
-        final ExtendedAttributeDialog dialog = new ExtendedAttributeDialog(row.getName(), row.getDataType(), 
-                                                    row.getDefaultValue(), row.getSearchable(), row.getRequired());
-        dialog.setVisible(true);
-        if (dialog.isModified()) {
-            String attrName = dialog.getAttributeName();
-            String dataType = dialog.getDataType();
-            String defaultValue = dialog.getDefaultValue();
-            String searchable = dialog.getSearchable() == true ? "true" : "false";
-            String required = dialog.getRequired() == true ? "true" : "false";
-            // Replace Attribute
-            Attribute attr = new Attribute(attrName, "", dataType, defaultValue,
-                                           searchable, required);
-            mDefinitionNode.updateExtendedAttribute(oldName, attr);
-            // update row
-            row.setName(attrName);
-            row.setDataType(dataType);
-            row.setDefaultValue(defaultValue);
-            row.setSearchable(searchable);
-            row.setRequired(required);
-            model.fireTableDataChanged();
-            jTableExtendedAttr.setRowSelectionInterval(idx, idx);
-            mEditorMainApp.enableSaveAction(true);
-        }
-    }                                        
-
     private void onEditPredefinedAttribute(java.awt.event.ActionEvent evt) {                                           
         TableModelPredefinedAttribute model = (TableModelPredefinedAttribute) this.jTablePredefinedAttr.getModel();
         int idx = this.jTablePredefinedAttr.getSelectedRow();

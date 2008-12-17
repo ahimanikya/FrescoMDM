@@ -217,7 +217,7 @@
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonEditPredefinedAttributeonEditPredefinedAttribute"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="onEditPredefinedAttribute"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelExtendedAttributes">
@@ -255,7 +255,7 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAddExtendedAttributeonAddExtendedAttribute"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="onAddExtendedAttribute"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jButtonDeleteExtendedAttribute">
@@ -266,7 +266,7 @@
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonDeleteExtendedAttributeonRemoveExtendedAttribute"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="onRemoveExtendedAttribute"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jButtonEditExtendedAttribute">
@@ -277,7 +277,7 @@
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonEditExtendedAttributeonEditExtendedAttribute"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="onEditExtendedAttribute"/>
       </Events>
     </Component>
   </SubComponents>
