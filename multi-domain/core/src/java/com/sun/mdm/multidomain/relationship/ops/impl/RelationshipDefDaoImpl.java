@@ -42,6 +42,7 @@ import com.sun.mdm.multidomain.sql.Criteria;
 import com.sun.mdm.multidomain.sql.DeleteBuilder;
 import com.sun.mdm.multidomain.sql.SQLBuilder;
 import com.sun.mdm.multidomain.sql.InsertBuilder;
+import com.sun.mdm.multidomain.sql.JoinCriteria;
 import com.sun.mdm.multidomain.sql.MatchCriteria;
 import com.sun.mdm.multidomain.sql.OrderBy;
 import com.sun.mdm.multidomain.sql.SelectBuilder;
@@ -251,18 +252,21 @@ public class RelationshipDefDaoImpl extends AbstractDAO implements RelationshipD
         PreparedStatement stmt = null;
         ResultSet rs = null;
         SelectBuilder selBuilder = new SelectBuilder();
+        // Assign SELECT tables
         selBuilder.setTable(RELATIONSHIP_DEF.getTableName(), RELATIONSHIP_EA.getTableName());
 
-        // Build  SELECT SQL
+        // Assign column list
         for (RELATIONSHIP_DEF relDef : RELATIONSHIP_DEF.values()) {
             selBuilder.addColumns(relDef.prefixedColumnName);
         }
-        // Build  SELECT SQL
+        // Assign column list
         for (RELATIONSHIP_EA relEa : RELATIONSHIP_EA.values()) {
             selBuilder.addColumns(relEa.prefixedColumnName);
         }
+        //Add WHERE criteria
         Criteria c1 = new MatchCriteria(RELATIONSHIP_DEF.RELATIONSHIP_DEF_ID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, RELATIONSHIP_EA.RELATIONSHIP_DEF_ID.prefixedColumnName);
         selBuilder.addCriteria(c1);
+        // Build a complete SELECT SQL
         String sqlStr = SQLBuilder.buildSQL(selBuilder);
         try {
             // prepare statement
@@ -280,21 +284,28 @@ public class RelationshipDefDaoImpl extends AbstractDAO implements RelationshipD
 
     private String BuildSelectByDomains() {
         SelectBuilder selectBld = new SelectBuilder();
-        selectBld.setTable(RELATIONSHIP_DEF.getTableName(), RELATIONSHIP_EA.getTableName());
+        // Assign SELECT tables
+        selectBld.setTable(RELATIONSHIP_DEF.getTableName());
+        // Assign JOIN tables
+        String[] joinTables = new String[]{RELATIONSHIP_EA.getTableName()};
 
+        // Assign column list
         for (RELATIONSHIP_DEF rel : RELATIONSHIP_DEF.values()) {
             selectBld.addColumns(rel.prefixedColumnName);
         }
         for (RELATIONSHIP_EA ea : RELATIONSHIP_EA.values()) {
             selectBld.addColumns(ea.prefixedColumnName);
         }
-        Criteria c1 = new MatchCriteria(RELATIONSHIP_DEF.RELATIONSHIP_DEF_ID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, RELATIONSHIP_EA.RELATIONSHIP_DEF_ID.prefixedColumnName);
-        //Criteria c2 = new MatchCriteria(RELATIONSHIP_DEF.SOURCE_DOMAIN.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, "?");
-        //Criteria c3 = new MatchCriteria(RELATIONSHIP_DEF.TARGET_DOMAIN.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, "?");
-        Criteria c2 = new Parameter(RELATIONSHIP_DEF.SOURCE_DOMAIN.prefixedColumnName);
-        Criteria c3 = new Parameter(RELATIONSHIP_DEF.TARGET_DOMAIN.prefixedColumnName);
-        selectBld.addCriteria(new AND(c1, c2, c3));
+        //Add WHERE criteria
+        Criteria c1 = new Parameter(RELATIONSHIP_DEF.SOURCE_DOMAIN.prefixedColumnName);
+        Criteria c2 = new Parameter(RELATIONSHIP_DEF.TARGET_DOMAIN.prefixedColumnName);
+        selectBld.addCriteria(new AND(c1, c2));
+        //Add JOIN criteria
+        Criteria j1 = new JoinCriteria(RELATIONSHIP_DEF.RELATIONSHIP_DEF_ID.prefixedColumnName, JoinCriteria.OPERATOR.EQUALS, RELATIONSHIP_EA.RELATIONSHIP_DEF_ID.prefixedColumnName);
+        selectBld.addJoin(joinTables, JoinCriteria.JOIN_TYPE.LEFTJOIN, j1);
+        // Add Order By Clause
         selectBld.addOrderBy(new OrderBy(RELATIONSHIP_DEF.RELATIONSHIP_DEF_ID.prefixedColumnName, OrderBy.ORDER.ASC));
+        // Build a complete SELECT SQL
         String sqlStr = SQLBuilder.buildSQL(selectBld);
         return sqlStr;
     }
@@ -362,14 +373,26 @@ public class RelationshipDefDaoImpl extends AbstractDAO implements RelationshipD
      * Populates a Relationship Extended Attributes with data from a ResultSet
      */
     private void populateRelEa(RelationshipDef relDef, ResultSet rs) throws SQLException {
+        String strVal = null;
         Attribute att = new Attribute();
         att.setId(rs.getLong(RELATIONSHIP_DEF.RELATIONSHIP_DEF_ID.columnName));
         att.setName(rs.getString(RELATIONSHIP_EA.ATTRIBUTE_NAME.columnName));
         att.setColumnName(rs.getString(RELATIONSHIP_EA.COLUMN_NAME.columnName));
-        att.setType(AttributeType.valueOf(rs.getString(RELATIONSHIP_EA.COLUMN_TYPE.columnName).toUpperCase()));
+        strVal = rs.getString(RELATIONSHIP_EA.COLUMN_TYPE.columnName);
+        if (strVal != null) {
+            att.setType(AttributeType.valueOf(strVal.toUpperCase()));
+        }
         att.setDefaultValue(rs.getString(RELATIONSHIP_EA.DEFAULT_VALUE.columnName));
-        att.setIsSearchable(rs.getString(RELATIONSHIP_EA.IS_SEARCHABLE.columnName).equalsIgnoreCase("T") ? true : false);
-        att.setIsRequired(rs.getString(RELATIONSHIP_EA.IS_REQUIRED.columnName).equalsIgnoreCase("T") ? true : false);
-        relDef.getAttributes().add(att);
+        strVal = rs.getString(RELATIONSHIP_EA.IS_SEARCHABLE.columnName);
+        if (strVal != null) {
+            att.setIsSearchable(strVal.equalsIgnoreCase("T") ? true : false);
+        }
+        strVal = rs.getString(RELATIONSHIP_EA.IS_REQUIRED.columnName);
+        if (strVal != null) {
+            att.setIsRequired(strVal.equalsIgnoreCase("T") ? true : false);
+        }
+        if (att.getName() != null) {
+            relDef.getAttributes().add(att);
+        }
     }
 }
