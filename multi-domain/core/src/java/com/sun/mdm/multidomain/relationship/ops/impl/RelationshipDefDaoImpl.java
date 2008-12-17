@@ -175,8 +175,13 @@ public class RelationshipDefDaoImpl extends AbstractDAO implements RelationshipD
                 attDto.setColumnType(att.getType().name());
                 attDto.setDefaultValue(att.getDefaultValue());
                 attDto.setIsRequired(att.getIsRequired());
-                attDto.setIsSearchable(att.getIsSearchable());
-                relEaDao.update(attDto);
+                attDto.setIsSearchable(att.getIsSearchable());                
+                List<RelationshipEaDto> attrs = relEaDao.search(attDto);
+                if (!attrs.isEmpty()) {
+                    relEaDao.update(attDto);
+                } else {
+                    relEaDao.insert(attDto);
+                }
             }
             return rows;
         } catch (Exception _e) {

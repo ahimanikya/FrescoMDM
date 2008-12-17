@@ -31,14 +31,20 @@ import com.sun.mdm.multidomain.sql.DeleteBuilder;
 import static com.sun.mdm.multidomain.sql.DBSchema.*;
 import com.sun.mdm.multidomain.sql.InsertBuilder;
 import com.sun.mdm.multidomain.sql.Parameter;
+import com.sun.mdm.multidomain.sql.Criteria;
+import com.sun.mdm.multidomain.sql.OrderBy;
 import com.sun.mdm.multidomain.sql.SQLBuilder;
+import com.sun.mdm.multidomain.sql.SelectBuilder;
 import com.sun.mdm.multidomain.sql.UpdateBuilder;
+
 import java.sql.Connection;
 import java.util.Collection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Arrays;
 
 /**
  *
@@ -102,6 +108,51 @@ public class RelationshipEaDaoImpl extends AbstractDAO implements RelationshipEa
         return mPrimaryKey;
     }
 
+    /**
+     * Search Relationship extended attributes.
+     * @param dto RelationshipEaDto.
+     * @return List<Attribute> List of Attribute.
+     * @throws RelationshipEaDaoException
+     */
+    public List<RelationshipEaDto> search(RelationshipEaDto dto) 
+        throws RelationshipEaDaoException {
+        List<RelationshipEaDto> attributes = new ArrayList<RelationshipEaDto>();        
+        PreparedStatement stmt = null;
+        try {
+            //Build SELECT SQL
+            SelectBuilder selectBld = new SelectBuilder();
+            selectBld.setTable(RELATIONSHIP_EA.getTableName());     
+            
+            for (RELATIONSHIP_EA ea : RELATIONSHIP_EA.values()) {
+                selectBld.addColumns(ea.prefixedColumnName);
+            }
+            
+            //Add WHERE criteria
+            Criteria c1 = new Parameter(RELATIONSHIP_EA.RELATIONSHIP_DEF_ID.prefixedColumnName);
+            Criteria c2 = new Parameter(RELATIONSHIP_EA.ATTRIBUTE_NAME.prefixedColumnName);
+            Criteria c3 = new Parameter(RELATIONSHIP_EA.COLUMN_NAME.prefixedColumnName);            
+            selectBld.addCriteria(new AND(c1, c2, c3));
+            // Add Order By Clause
+            selectBld.addOrderBy(new OrderBy(RELATIONSHIP_EA.EA_ID.prefixedColumnName, OrderBy.ORDER.ASC));
+            // Build a complete SELECT SQL
+            String sqlStr = SQLBuilder.buildSQL(selectBld);
+            stmt = mConn.prepareStatement(sqlStr);
+            
+            int index = 1;
+            stmt.setLong(index++, dto.getRelationshipDefId());
+            stmt.setString(index++, dto.getAttributeName());            
+            stmt.setString(index, dto.getColumnName());
+            ResultSet rs = stmt.executeQuery();     
+            RelationshipEaDto[] rEaDtos = fetchMultiResults(rs);
+            attributes = Arrays.asList(rEaDtos);
+            
+        } catch (Exception _e) {
+            _e.printStackTrace();
+            throw new RelationshipEaDaoException("Exception: " + _e.getMessage(), _e);
+        }
+        return attributes;
+    }
+                        
     /**
      * Updates a single row in the relationship_ea table.
      */
