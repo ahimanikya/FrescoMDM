@@ -50,6 +50,7 @@ import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
 import com.sun.mdm.index.edm.services.configuration.ConfigManager;
 import com.sun.mdm.index.edm.services.masterController.MasterControllerService;
+import java.util.Enumeration;
 public class RecordDetailsHandler extends ScreenConfiguration {
 
     private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.handlers.RecordDetailsHandler");
@@ -1144,46 +1145,45 @@ public class RecordDetailsHandler extends ScreenConfiguration {
         try {
             EnterpriseObject eo = masterControllerService.getEnterpriseObject(euid);
             //if EO is found
-            if(eo != null) {
-			HashMap eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(eo, screenObject);
-			euidsMapList.add(eoMap);
-           //String userName, String euid1, String euid2, String function, int screeneID, String detail
-           masterControllerService.insertAuditLog((String) session.getAttribute("user"),
-                                               eo.getEUID(), 
-                                               "",
-                                               "EO View/Edit",
-                                               new Integer(screenObject.getID()).intValue(),
-                                               "View/Edit detail of enterprise object");
-			} else {
-                                String mergeEuid = midmUtilityManager.getMergedEuid(euid);
-                                if ("Invalid EUID".equalsIgnoreCase(mergeEuid)) { //if EO is not found
-                                     String errorMessage = euid + " : ";
-                                    errorMessage += bundle.getString("enterprise_object_not_found_error_message");
-                                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
-                                return null;
-                             } else if (mergeEuid != null) { //if its merged
-				String errorMessage = euid +" : ";
-				errorMessage +=	bundle.getString("enterprise_object_not_found_error_message");
-                                 FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,errorMessage,errorMessage));
-                                 //Set the merged euid for the user to search in the duplicates screen
+            if (eo != null) {
+                HashMap eoMap = midmUtilityManager.getEnterpriseObjectAsHashMap(eo, screenObject);
+                euidsMapList.add(eoMap);
+                //String userName, String euid1, String euid2, String function, int screeneID, String detail
+                masterControllerService.insertAuditLog((String) session.getAttribute("user"),
+                        eo.getEUID(),
+                        "",
+                        "EO View/Edit",
+                        new Integer(screenObject.getID()).intValue(),
+                        "View/Edit detail of enterprise object");
+            } else {
+                String mergeEuid = midmUtilityManager.getMergedEuid(euid);
+                if ("Invalid EUID".equalsIgnoreCase(mergeEuid)) { //if EO is not found
+                    String errorMessage = euid + " : ";
+                    errorMessage += bundle.getString("enterprise_object_not_found_error_message");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                    return null;
+                } else if (mergeEuid != null) { //if its merged
+                    String errorMessage = euid + " : ";
+                    errorMessage += bundle.getString("enterprise_object_not_found_error_message");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage));
+                    //Set the merged euid for the user to search in the duplicates screen
 
-                                //Insert audit log here for merged EUID search here
-                                masterControllerService.insertAuditLog((String) session.getAttribute("user"),
-                                    mergeEuid,
-                                    euid,
-                                    "EO View/Edit",
-                                    new Integer(screenObject.getID()).intValue(),
-                                    "View/Edit detail of enterprise object");
-                                    //If merged EUID found
-                                   HashMap mergedMap = new HashMap();
-                                   mergedMap.put("Merged_EUID_Message", mergeEuid  + " "+ bundle.getString("active_euid_text") + " " + euid);
-                                   mergedMap.put("Merged_EUID", mergeEuid );
-                                   euidsMapList.add(mergedMap);
-                                   return euidsMapList;
-			}
-            } 
-        } // modified exceptional handling logic
-        catch (Exception ex) {
+                    //Insert audit log here for merged EUID search here
+                    masterControllerService.insertAuditLog((String) session.getAttribute("user"),
+                            mergeEuid,
+                            euid,
+                            "EO View/Edit",
+                            new Integer(screenObject.getID()).intValue(),
+                            "View/Edit detail of enterprise object");
+                    //If merged EUID found
+                    HashMap mergedMap = new HashMap();
+                    mergedMap.put("Merged_EUID_Message", mergeEuid + " " + bundle.getString("active_euid_text") + " " + euid);
+                    mergedMap.put("Merged_EUID", mergeEuid);
+                    euidsMapList.add(mergedMap);
+                    return euidsMapList;
+                }
+            }
+        } catch (Exception ex) {// modified exceptional handling logic
             if (ex instanceof ValidationException) {
                 mLogger.error(mLocalizer.x("RDH048: Encountered the ValidationException :{0} ", ex.getMessage()), ex);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));

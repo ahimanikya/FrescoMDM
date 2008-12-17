@@ -165,7 +165,10 @@ boolean isSessionActive = true;
             HashMap unmergePreviewHashMap  = new HashMap();
 			if(isUnMergePreview) {
                 //eoArrayList = transactionHandler.getTranscationDetails(unmergeTransactionId);
- 				unmergePreviewHashMap  = transactionHandler.previewUnmergeEnterpriseObject(unmergeTransactionId, mainEuid);
+ 				eoArrayList  = transactionHandler.previewUnmergeEnterpriseObject(unmergeTransactionId, mainEuid); // fix for 124
+				if(eoArrayList!=null && eoArrayList.size()>0 &&  eoArrayList.get(0) instanceof HashMap){
+						unmergePreviewHashMap = (HashMap)eoArrayList.get(0);
+				}
 				messagesIter = FacesContext.getCurrentInstance().getMessages(); 
                 if(unmergePreviewHashMap != null ) {
 				  if(unmergePreviewHashMap.get("CONCURRENT_MOD_ERROR") != null ) {%> <!-- If concurrent modification-->
@@ -182,11 +185,6 @@ boolean isSessionActive = true;
 				 </td>
 				 </table>
 
-				<%} else {
-					eoArrayList.add(unmergePreviewHashMap);
-
- 					%>
- 
 				<%}%>
 
 				<%} else {%> <!-- If unmerge fails modification-->
@@ -243,7 +241,7 @@ boolean isSessionActive = true;
                <table cellspacing="0" cellpadding="0" border="0">
                          <tr>
                             <td>
-                                <div>
+                                <div style="height:500px;overflow:scroll;">
                     
                                     <table cellspacing="0" cellpadding="0" border="0">
                                         <tr>
@@ -333,7 +331,7 @@ boolean isSessionActive = true;
                                                     <div id="mainEuidContent<%=personfieldValuesMapEO.get("EUID")%>" class="blue" >
                                                         <table border="0" cellspacing="0" cellpadding="0" >
                                                             <tr>
-                                                                <td class="menutop"><h:outputText  value="#{msgs.Unmerge_but_text}"/>&nbsp;<h:outputText  value="#{msgs.preview_column_text}"/></td>
+                                                                <td class="menutop">Source EO</td>
                                                             </tr> 
                                                                  <tr>
                                                                     <td>
@@ -518,8 +516,17 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                               <!--Start displaying the sources-->
                                                <% 
                                                eoSources = (ArrayList) eoHashMapValues.get("ENTERPRISE_OBJECT_SOURCES");
-
+ 
                                               if(eoSources.size() > 0 ) {
+												  if(countEnt == 0 ) {%>
+												     <script>
+												     EO1SrcCount = "<%=eoSources.size()%>";
+												     </script>
+												  <%} else {%>
+												     <script>
+											        EO2SrcCount = "<%=eoSources.size()%>";
+												     </script>
+												  <%}
                                                 //ArrayList soArrayList = (ArrayList) request.getAttribute("eoSources"+(String)personfieldValuesMapEO.get("EUID"));
                                                 HashMap soHashMap = new HashMap();
                                                 for(int i=0;i<eoSources.size();i++) {
@@ -530,9 +537,8 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                               
                                                <td  valign="top">
 
-                                                <div id="unmergepreviewmainDupSources<%=i%>" style="visibility:hidden;display:none">
-                                                    <div style="width:170px;overflow:hidden;">
-                                                    
+                                      <div id='unmergepreviewmainDupSources<%=countEnt%><%=i%>' style='visibility:hidden;display:none;' >
+                                          <div style="width:170px;overflow:hidden;">   
 											   <%if("inactive".equalsIgnoreCase(soStatus)) {%>
                                                     <div id="mainEuidContent<%=soHashMap.get("LID")%>" class="deactivate" >
 												<%} else if("merged".equalsIgnoreCase(soStatus)) {%>
@@ -697,7 +703,70 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                     </table>
                                 </div>
                             </td>
-                        </tr>   
+                        </tr> 
+                        <tr>
+                            <td>
+                                <table width="100%" cellpadding="0" cellspacing="0">
+                                    <tr>
+                                        <td colspan="<%=eoArrayListObjects.length * 2 + 3%>">
+                                            <div class="blueline">&nbsp;</div>
+                                        </td>   
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+						<tr>
+						   <td>
+										  <table cellspacing="0" cellpadding="0" border="0">
+											   <tr>
+									       <% for (countEnt = 0; countEnt < eoArrayListObjects.length; countEnt++) {
+                                                HashMap eoHashMapValues = (HashMap) eoArrayListObjects[countEnt];
+                                                eoSources = (ArrayList) eoHashMapValues.get("ENTERPRISE_OBJECT_SOURCES");
+                                            %>
+
+                                            <td align="left" width="172px">
+											<div id="dynamicMainEuidButtonContent<%=countEnt%>" style="padding-left:0px;visibility:visible;display:block;">
+                                              <table border="0" cellspacing="0" cellpadding="0" border="0">
+                                              <tr> 
+                                                      <td valign="top">
+                                                        <a title="<h:outputText value="#{msgs.view_sources_text}"/>" onclick="javascript:showUnmergeViewSources('<%=countEnt%>','<%=eoSources.size()%>');"href="javascript:void(0)"  class="viewbtn">
+ 														  <%=bundle.getString("view_sources_text")%>
+														</a> 
+                                                      </td>                                              
+                                              </tr>
+											  <tr><td>&nbsp;</td></tr>
+
+											</table>
+											</div>
+											</td> <!-- outer TD-->
+                                              <!--START  Extra tds for the sources for -->
+                                                 <% for (int sCount = 0; sCount < eoSources.size(); sCount++) {%>
+												 <td>
+												  <div id='spacers<%=sCount%><%=countEnt%>'  style='visiblity:hidden;display:none;'>
+												   <table>
+													 <tr>
+													   <td>
+														  <img src="images/spacer.gif" width="172px" height="1px" border="0">
+													   </td>
+													   </tr>
+													 </table>
+													</div>
+												</td>
+												<%}%>
+										 <%}%>
+										 </tr>
+										<tr>
+												 <td>
+												  <a href="Javascript:void(0)"
+													class="button" 
+													onclick="Javascript:showExtraDivs('unmergePopupDiv',event)"
+													title="<h:outputText  value="#{msgs.Unmerge_but_text}"/>">
+													 <span><h:outputText  value="#{msgs.Unmerge_but_text}"/></span></a>
+												 </td>
+												</tr>
+										   </table>
+							</td>
+						</tr>
                        <!-- eo ArrayList NOT NULL CONDITION  -->  
                     </table>
                     <%} else {%> <!-- If the transaction details are not found -->

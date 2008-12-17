@@ -907,7 +907,6 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                             <td  valign="top">
                                                  <div id="mainDupHistory" style="visibility:hidden;display:none"></div>
                                             </td>
-                                            <td valign="top"><div id="unmergePreviewPane"></div></td>                              
 
 <!--Next Navigation -->
 <td valign="top" align="left" height="100%">
@@ -1012,7 +1011,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                             <div id="unMergePreviewButtons" >
    
 															<a href="javascript:void(0)" 
-															   onclick="javascript:document.getElementById('unmergeTransactionId').value='<%=transactionId%>';document.getElementById('mainEuid').value='<%=mainEuid%>';getFormValues('unmergeForm');ajaxURL('/<%=URI%>/ajaxservices/unmergepreview.jsf?'+queryStr+'&unMergePreview=true&rand=<%=rand%>','unmergePreviewPane','');document.getElementById('previewSourcesButton').style.visibility='visible';document.getElementById('previewSourcesButton').style.display='block';document.getElementById('unMergePreviewButtons').style.visibility='hidden';document.getElementById('unMergePreviewButtons').style.display='none';" 
+															   onclick="javascript:document.getElementById('unmergeTransactionId').value='<%=transactionId%>';document.getElementById('mainEuid').value='<%=mainEuid%>';getFormValues('unmergeForm');ajaxURL('/<%=URI%>/ajaxservices/unmergepreview.jsf?'+queryStr+'&unMergePreview=true&rand=<%=rand%>','unmergePreviewPane','');document.getElementById('unMergePreviewButtons').style.visibility='hidden';document.getElementById('unMergePreviewButtons').style.display='none';" 
 															   class="button" title="<h:outputText  value="#{msgs.preview_column_text}"/>&nbsp;<%=("euidMerge".equalsIgnoreCase(function))?"EUID":localIdDesignation%>&nbsp;<h:outputText  value="#{msgs.Unmerge_but_text}"/>"><span><h:outputText  value="#{msgs.preview_column_text}"/>&nbsp;<h:outputText  value="#{msgs.Unmerge_but_text}"/></span>
 															</a>   
 														</div>
@@ -1043,25 +1042,6 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
 										<!--END Extra tds for the sources-->
                                          <%}%>
 										  <td>
-										  <div id="previewSourcesButton" style="visibility:hidden;display:none;">
-										  <table cellspacing="0" cellpadding="0">
-										   <tr>
-										     <td>
-										   <a class="viewbtn" href="javascript:showUnmergeViewSources('<%=unmergeSourcesSize%>')"><h:outputText value="#{msgs.view_sources_text}"/></a>
-										   </td>
-										   </tr>
-                                            <tr>
-											 <td>
-										     <a href="Javascript:void(0)"
-												class="button" 
-                                                onclick="Javascript:showExtraDivs('unmergePopupDiv',event)"
-												title="<h:outputText  value="#{msgs.Unmerge_but_text}"/>">
-                                                 <span><h:outputText  value="#{msgs.Unmerge_but_text}"/></span></a>
-											</td>
-                                             </tr>
-											 </table>
-
-										   </div>
 										   </td>
                                        </tr>
                     					      </table>

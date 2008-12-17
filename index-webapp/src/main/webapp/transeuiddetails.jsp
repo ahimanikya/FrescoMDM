@@ -105,6 +105,10 @@ var pages =[];
 var functions =[];
 var functionDesc =[];
 var thisIdx=0;
+
+var EO1SrcCount = "";
+var EO2SrcCount = "";
+
   <%for (int i=0; i<transactionIds.length;i++)    { %>
          pages.push("<%=transactionIds[i]%>");
          functions.push("<%=functions[i]%>");
@@ -185,6 +189,8 @@ var thisIdx=0;
 				                  <td valign="top" colspan="2">
                                       <div id="mainDupSource" class="duplicateresults"></div>                                       
 				                  </td>
+								  <td valign="top"><div id="unmergePreviewPane"></div></td>                              
+
 				               </tr>
 			             </table>
                     </div>
