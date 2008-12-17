@@ -1,7 +1,24 @@
 /*
- * DomainSearchResultDialog.java
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- * Created on October 15, 2008, 3:42 PM
+ * Copyright 2003-2007 Sun Microsystems, Inc. All Rights Reserved.
+ *
+ * The contents of this file are subject to the terms of the Common 
+ * Development and Distribution License ("CDDL")(the "License"). You 
+ * may not use this file except in compliance with the License.
+ *
+ * You can obtain a copy of the License at
+ * https://open-dm-mi.dev.java.net/cddl.html
+ * or open-dm-mi/bootstrap/legal/license.txt. See the License for the 
+ * specific language governing permissions and limitations under the  
+ * License.  
+ *
+ * When distributing the Covered Code, include this CDDL Header Notice 
+ * in each file and include the License file at
+ * open-dm-mi/bootstrap/legal/license.txt.
+ * If applicable, add the following below this CDDL Header, with the 
+ * fields enclosed by brackets [] replaced by your own identifying 
+ * information: "Portions Copyrighted [year] [name of copyright owner]"
  */
 
 package com.sun.mdm.multidomain.project.editor;
@@ -11,7 +28,6 @@ import com.sun.mdm.multidomain.parser.RecordDetail;
 import com.sun.mdm.multidomain.parser.SearchDetail;
 import com.sun.mdm.multidomain.project.editor.nodes.DomainNode;
 import java.util.ArrayList;
-import java.util.HashMap;
 import javax.swing.InputVerifier;
 import javax.swing.JComponent;
 import javax.swing.JTextField;
@@ -218,26 +234,30 @@ public class DomainSearchResultDialog extends javax.swing.JDialog {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanel1Layout.createSequentialGroup()
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                    .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
+                    .add(jPanel1Layout.createSequentialGroup()
                         .add(jBtnAddGroup, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 79, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(32, 32, 32)
-                        .add(jBtnRemoveGroup, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 79, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jBtnRemoveGroup, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 79, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
+
+        jPanel1Layout.linkSize(new java.awt.Component[] {jBtnAddGroup, jBtnRemoveGroup}, org.jdesktop.layout.GroupLayout.HORIZONTAL);
+
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jBtnAddGroup)
-                    .add(jBtnRemoveGroup))
-                .addContainerGap())
+                    .add(jBtnRemoveGroup)
+                    .add(jBtnAddGroup)))
         );
+
+        jPanel1Layout.linkSize(new java.awt.Component[] {jBtnAddGroup, jBtnRemoveGroup}, org.jdesktop.layout.GroupLayout.VERTICAL);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(DomainSearchResultDialog.class, "LBL_FIELDS"))); // NOI18N
 
@@ -273,9 +293,9 @@ public class DomainSearchResultDialog extends javax.swing.JDialog {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(42, Short.MAX_VALUE)
+                .addContainerGap(46, Short.MAX_VALUE)
                 .add(jBtnAddField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 72, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jBtnRemoveField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 79, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -289,18 +309,19 @@ public class DomainSearchResultDialog extends javax.swing.JDialog {
 
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(128, Short.MAX_VALUE)
+            .add(jPanel2Layout.createSequentialGroup()
+                .addContainerGap(144, Short.MAX_VALUE)
                 .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jBtnAddField)
-                    .add(jBtnRemoveField))
-                .addContainerGap())
+                    .add(jBtnRemoveField)))
             .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 .add(jPanel2Layout.createSequentialGroup()
                     .add(1, 1, 1)
-                    .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 122, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(39, Short.MAX_VALUE)))
+                    .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 133, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(33, Short.MAX_VALUE)))
         );
+
+        jPanel2Layout.linkSize(new java.awt.Component[] {jBtnAddField, jBtnRemoveField}, org.jdesktop.layout.GroupLayout.VERTICAL);
 
         jBtnOK.setText(org.openide.util.NbBundle.getMessage(DomainSearchResultDialog.class, "LBL_OK")); // NOI18N
         jBtnOK.addActionListener(new java.awt.event.ActionListener() {
@@ -324,30 +345,33 @@ public class DomainSearchResultDialog extends javax.swing.JDialog {
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(layout.createSequentialGroup()
                         .add(19, 19, 19)
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
-                            .add(org.jdesktop.layout.GroupLayout.LEADING, jLabelItemPerPage, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .add(org.jdesktop.layout.GroupLayout.LEADING, jLabelSearchResultName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .add(org.jdesktop.layout.GroupLayout.LEADING, jLabelMaxItems))
-                        .add(35, 35, 35)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(jTxtResultName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 267, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(layout.createSequentialGroup()
+                                .add(jLabelSearchResultName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 153, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED))
+                            .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                .add(layout.createSequentialGroup()
+                                    .add(jLabelMaxItems, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
+                                    .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED))
+                                .add(jLabelItemPerPage, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)))
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
                                 .add(org.jdesktop.layout.GroupLayout.LEADING, jSpinnerMaxItems)
-                                .add(org.jdesktop.layout.GroupLayout.LEADING, jSpinnerItemPerPage, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 61, Short.MAX_VALUE)))
-                        .add(87, 87, 87))
+                                .add(org.jdesktop.layout.GroupLayout.LEADING, jSpinnerItemPerPage, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE))
+                            .add(jTxtResultName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 316, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .add(22, 22, 22))
                     .add(layout.createSequentialGroup()
                         .addContainerGap()
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
                             .add(layout.createSequentialGroup()
                                 .add(jBtnOK)
-                                .add(18, 18, 18)
-                                .add(jBtnCancel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 75, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                            .add(org.jdesktop.layout.GroupLayout.LEADING, layout.createSequentialGroup()
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(jBtnCancel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 75, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                            .add(layout.createSequentialGroup()
                                 .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .add(18, 18, 18)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                                 .add(jPanel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         layout.linkSize(new java.awt.Component[] {jBtnCancel, jBtnOK}, org.jdesktop.layout.GroupLayout.HORIZONTAL);
@@ -355,33 +379,31 @@ public class DomainSearchResultDialog extends javax.swing.JDialog {
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .add(20, 20, 20)
+                .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabelSearchResultName)
                     .add(jTxtResultName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(18, 18, 18)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jLabelItemPerPage)
-                    .add(jSpinnerItemPerPage, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(18, 18, 18)
+                    .add(jSpinnerItemPerPage, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jLabelItemPerPage))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabelMaxItems)
                     .add(jSpinnerMaxItems, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                    .add(jPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .add(18, 18, 18)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jPanel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jBtnCancel)
                     .add(jBtnOK))
-                .addContainerGap(47, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
-        layout.linkSize(new java.awt.Component[] {jPanel1, jPanel2}, org.jdesktop.layout.GroupLayout.VERTICAL);
-
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-522)/2, (screenSize.height-428)/2, 522, 428);
+        setBounds((screenSize.width-522)/2, (screenSize.height-375)/2, 522, 375);
     }// </editor-fold>//GEN-END:initComponents
 
 private void jTxtResultNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTxtResultNameActionPerformed
