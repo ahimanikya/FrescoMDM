@@ -160,7 +160,7 @@ function populateAddRelationshipDefAttributes(data){
     //dwr.util.removeAllRows("byrel_add_customAttributes");
     dwr.util.removeAllRows("byrel_add_predefinedAttributes");
        if(data.extendedAttributes.length>0 ){
-           createCustomAttributesSection ("byrel_add_customAttributes", data.extendedAttributes, "add_custom", true);
+           createCustomAttributesSection ("byrel_add_customAttributes", data.extendedAttributes, "add_custom", true,false);
            displayDiv ("add_Relationship_CustomAtrributes", true);
        }else{
            displayDiv ("add_Relationship_CustomAtrributes", false);
@@ -191,13 +191,14 @@ function selectRecordRow (objSelRow) {
 
 // Function to create the UI for custom attributes section.
 // Can be used for Add, select & edit relationship attributes screens   
-function createCustomAttributesSection (tableId, attributesArray, prefixToUse, showRequiredSymbol ) {
+function createCustomAttributesSection (tableId, attributesArray, prefixToUse, showRequiredSymbol, showByRange ) {
    // alert("CREATING custom attributes section for: " + tableId);
      var editCustomAttrFuncs = [
       function(data) { return data; },
       function(data) { return data; }
     ];
     if(showRequiredSymbol == null) showRequiredSymbol = true;
+    if(showByRange == null) showByRange = false;
     // Destroy previously created widgets.
     if(attributesArray != null && attributesArray.length > 0) {
         for(i=0; i<attributesArray.length; i++) {            
@@ -219,9 +220,40 @@ function createCustomAttributesSection (tableId, attributesArray, prefixToUse, s
           cellCreator:function(options) {
             var td = document.createElement("td");
             var tempData = options.data;
+
             if(options.cellNum == 1) {
-               if(tempData.dataType=="date"){
-                   var datefield = document.createElement("input");
+                var byRangeDiv = null;
+                var byRangeCheckbox = null;
+                var labelByRange = null;
+                var field_To = null;
+                if(showByRange) {
+                    byRangeDiv = document.createElement("span");
+                    byRangeDiv.id = prefixToUse + "_" + tempData.name + "_TO_DIV";
+                    byRangeDiv.style.display = "none";
+                    var labelTo = document.createElement ("label");
+                    labelTo.id = "label_TO"; labelTo.innerHTML =" to ";
+                    byRangeDiv.appendChild (labelTo);
+                    field_To = document.createElement("input");
+                    field_To.type ="text";
+                    field_To.name = prefixToUse + "_" + tempData.name + "_TO";
+                    field_To.id = prefixToUse + "_" + tempData.name + "_TO";
+                    byRangeDiv.appendChild (field_To);     
+                    //td.appendChild(byRangeDiv);
+
+                    byRangeCheckbox = document.createElement("input");
+                    byRangeCheckbox.type = "checkbox";
+                    byRangeCheckbox.name = "showbyRangeChk";
+                    byRangeCheckbox.value = byRangeDiv.id;
+                    byRangeCheckbox.onclick = function () {
+                        displayDiv(this.value, this.checked);
+                    }
+                    //td.appendChild (byRangeCheckbox);
+                    labelByRange = document.createElement ("label");
+                    labelByRange.innerHTML = "By Range";
+                    //td.appendChild (labelByRange);
+                }
+                if(tempData.dataType=="date"){
+                    var datefield = document.createElement("input");
                     // This should be date field...
                     datefield.type = "text";
                     datefield.name = prefixToUse + "_" + tempData.name;
@@ -231,36 +263,59 @@ function createCustomAttributesSection (tableId, attributesArray, prefixToUse, s
                     td.appendChild(datefield);
                     var props = {
                           name: "custom_date_attr",
-                          promptMessage: "mm/dd/yyyy",
-                          invalidMessage: "Invalid date.",
+                          promptMessage: getMessageForI18N("date_Format"),
+                          invalidMessage: getMessageForI18N("invalid_date"),
                           //constraints: "{selector:'date', datePattern:'mm/dd/yyyy'}",
                           width:"150px"
                     }; 
                     datefield = new dijit.form.DateTextBox(props, datefield);
-                    
-               }else if(tempData.dataType == "boolean"){
-                var booleanField = document.createElement("select");
-                var tOption = document.createElement ("option");
-                tOption.text = "true"; 
-                tOption.value = "true";
-                var fOption = document.createElement ("option");
-                fOption.text = "false"; 
-                fOption.value = "false";
-                booleanField.options[0] = tOption;
-                booleanField.options[1] = fOption;
-                booleanField.name = prefixToUse + "_" + tempData.name;
-                booleanField.id = prefixToUse + "_" + tempData.name;
-                td.appendChild(booleanField);
+                    if(showByRange) { 
+                      field_To.type = "text";
+                      field_To.name = prefixToUse + "_" + tempData.name + "_TO";
+                      field_To.id = prefixToUse + "_" + tempData.name + "_TO";
+                      field_To.size = 5; 
+                      field_To.style.width = "100px";
+                      var dateProps = {
+                          name: "custom_date_attr",
+                          promptMessage: getMessageForI18N("date_Format"),
+                          invalidMessage: getMessageForI18N("invalid_date"),
+                          width:"150px"
+                      }; 
+                      field_To = new dijit.form.DateTextBox(dateProps, field_To);
+                      td.appendChild(byRangeDiv);                    
+                      td.appendChild(byRangeCheckbox);
+                      td.appendChild(labelByRange);
+                    }
+
+                }else if(tempData.dataType == "boolean"){
+                    var booleanField = document.createElement("select");
+                    var tOption = document.createElement ("option");
+                    tOption.text = "true"; 
+                    tOption.value = "true";
+                    var fOption = document.createElement ("option");
+                    fOption.text = "false"; 
+                    fOption.value = "false";
+                    booleanField.options[0] = tOption;
+                    booleanField.options[1] = fOption;
+                    booleanField.name = prefixToUse + "_" + tempData.name;
+                    booleanField.id = prefixToUse + "_" + tempData.name;
+                    td.appendChild(booleanField);
                }
                else{
-                  var field = document.createElement("input");
-                  field.type ="text";
-                  field.name = prefixToUse + "_" + tempData.name;
-                  field.id = prefixToUse + "_" + tempData.name;
-                  td.appendChild (field);
+                    var field = document.createElement("input");
+                    field.type ="text";
+                    field.name = prefixToUse + "_" + tempData.name;
+                    field.id = prefixToUse + "_" + tempData.name;
+                    td.appendChild (field);                          
+                    if(showByRange) { 
+                        td.appendChild(byRangeDiv);                    
+                        td.appendChild(byRangeCheckbox);
+                        td.appendChild(labelByRange);
+                    }
                }
+               td.className = "label";
                options.data = null;
-            } else {
+            }else {
                 if(getBoolean(tempData.isRequired) == true && showRequiredSymbol){
                    options.data = "<span class='label'>" + tempData.name + getMessageForI18N("mandatorySymbol") +  "</span>"; 
                 }else{
@@ -338,8 +393,8 @@ function createPredefinedAttributesSection (tableId, dataObj, prefixToUse, showR
         //alert("fine till here");
         var startProps = {
             name: "start_date_textbox",
-            promptMessage: "mm/dd/yyyy",
-            invalidMessage: "Invalid date.",
+            promptMessage: getMessageForI18N("date_Format"),
+            invalidMessage: getMessageForI18N("invalid_date"),
             width:"100px"
         }
         startDate_textBox = new dijit.form.DateTextBox(startProps, startDate_textBox);
@@ -358,8 +413,8 @@ function createPredefinedAttributesSection (tableId, dataObj, prefixToUse, showR
         SecondRow.cells[4].appendChild(endDate_textBox);
         var endProps = {
             name: "end_date_textbox",
-            promptMessage: "mm/dd/yyyy",
-            invalidMessage: "Invalid date.",
+            promptMessage: getMessageForI18N("date_Format"),
+            invalidMessage: getMessageForI18N("invalid_date"),
             width:"100px"
         }
         endDate_textBox = new dijit.form.DateTextBox(endProps, endDate_textBox); 
@@ -384,8 +439,8 @@ function createPredefinedAttributesSection (tableId, dataObj, prefixToUse, showR
         SecondRowStart.cells[2].appendChild(start_date);
         var start_date_Props = {
             name: "start_date",
-            promptMessage: "mm/dd/yyyy",
-            invalidMessage: "Invalid date.",
+            promptMessage: getMessageForI18N("date_Format"),
+            invalidMessage: getMessageForI18N("invalid_date"),
             width:"100px"
         }
         start_date = new dijit.form.DateTextBox(start_date_Props, start_date);
@@ -412,8 +467,8 @@ function createPredefinedAttributesSection (tableId, dataObj, prefixToUse, showR
         SecondRowEnd.cells[2].appendChild(end_date);
         var end_date_Props = {
             name: "end_date",
-            promptMessage: "mm/dd/yyyy",
-            invalidMessage: "Invalid date.",
+            promptMessage: getMessageForI18N("date_Format"),
+            invalidMessage: getMessageForI18N("invalid_date"),
             width:"100px"
         }
         end_date = new dijit.form.DateTextBox(end_date_Props, end_date);
@@ -441,8 +496,8 @@ function createPredefinedAttributesSection (tableId, dataObj, prefixToUse, showR
         ThirdRow.cells[2].appendChild(Purge_date);
         var purge_date_Props = {
             name: "purge_date",
-            promptMessage: "mm/dd/yyyy",
-            invalidMessage: "Invalid date.",
+            promptMessage: getMessageForI18N("date_Format"),
+            invalidMessage: getMessageForI18N("invalid_date"),
             width:"100px"
         }
         Purge_date = new dijit.form.DateTextBox(purge_date_Props, Purge_date);

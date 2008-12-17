@@ -6,7 +6,7 @@
 <%@ include file="/WEB-INF/jsp/include.jsp" %>
 <html>
     <head>
-        <title>Manage</title>
+        <title><f:message key="manage_text" /></title>
 <script type='text/javascript' src='dwr/engine.js'></script>    
 <script type='text/javascript' src='dwr/util.js'></script>    
 <script type='text/javascript' src='dwr/local.js'></script>
@@ -51,10 +51,10 @@
 
 <div id="mainManageContainer" dojoType="dijit.layout.TabContainer" style="width:98%;height:800px;">
             
-    <div id="mHierarchyTab" dojoType="dijit.layout.ContentPane" title="Hierarchy"  selected="true" >
+    <div id="mHierarchyTab" dojoType="dijit.layout.ContentPane" title="<f:message key='hierarchy_tab_text' />"  selected="true" >
         Under construction!
     </div>
-    <div id="mRelatioshipTab" dojoType="dijit.layout.ContentPane" title="Relationships" 
+    <div id="mRelatioshipTab" dojoType="dijit.layout.ContentPane" title="<f:message key='relationship_text' />" 
             href="m_byrelationship_main.htm" parseOnLoad="true" onLoad="showSelectDialog();">
         
     </div>

@@ -49,10 +49,10 @@
 
 <table cellpadding="3" width="100%" border="0">
     <tr>
-        <td align="left"><img src='images/banner-logo.png' alt="MultiDomain Web Manager" title="MultiDomain Web Manager" /> </td>
+        <td align="left"><img src='images/banner-logo.png' alt="<f:message key="login_heading" />" title="<f:message key="login_heading" />" /> </td>
         <td class="greetingsmall"><f:message key="logged_in_as_text" /> <%=LoggedUser%></td>
         <td style="width:130px;" title="<f:message key="logout_text" />"><a href="logout.jsp?logout=success" class="logoutButton" ><span> <f:message key="logout_text" /></span></a></td>
-        <td align="right" style="width:120px;"><img src='images/sun-logo.png' alt="Sun Microsystems" title="Sun Microsystems"/></td>
+        <td align="right" style="width:120px;"><img src='images/sun-logo.png' alt="<f:message key="sun_microsystems" />" title="<f:message key="sun_microsystems" />"/></td>
     </tr>
     <tr>
          <td colspan="4">

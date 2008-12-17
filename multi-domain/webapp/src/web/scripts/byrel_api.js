@@ -96,7 +96,7 @@ function populateSelectRelationshipDefAttributes(data){
                   searchableCustomAttributes.push(data.extendedAttributes[i]);
               }
           }
-           createCustomAttributesSection ("byrel_select_customAttributes", searchableCustomAttributes, "select_custom", false);
+           createCustomAttributesSection ("byrel_select_customAttributes", searchableCustomAttributes, "select_custom", false,true);
            displayDiv ("select_Relationship_CustomAtrributes", true);
        }
        else{
@@ -275,6 +275,17 @@ function searchRelationships() {
           attributeId.focus(); 
           return;
       }
+      var byRangeObj =document.getElementById("select_custom_" + relationshipDefObj.extendedAttributes[c].name+"_TO");
+      var byRangeName = byRangeObj.name;
+      var byRangeValue = byRangeObj.value;
+      if(byRangeObj != null){
+          //alert("byRangeName---"+byRangeName +"  byRangeValue----"+byRangeValue);
+          if( ! isValidCustomAttribute( attributeType, byRangeObj.value) ) {
+          alert(byRangeValue + " " + getMessageForI18N("isnotavalidvaluefor")+ " " + byRangeName + " " + getMessageForI18N("attribute")+ " " +getMessageForI18N("attributeTypeFor")+ " " +byRangeValue + " " +getMessageForI18N("is")+ " " +"'"+attributeType+"'");
+          byRangeObj.focus(); 
+          return;
+         }
+      }         
      }
      
     var sourceDomainSearch = {name: sourceDomain}; 
@@ -562,6 +573,8 @@ function populateRelationshipDetails_Callback (data) {
     var sourceRecordDetails =  data.sourceRecord.attributes;
     dwr.util.removeAllRows("sourceRecordInSummary");    
     dwr.util.removeAllRows("sourceRecordInDetail");
+    showRecordFullDetails('sourceRecordSummaryDiv','sourceRecordDetailDiv',false);
+    showRecordFullDetails('targetRecordSummaryDiv','targetRecordDetailDiv',false);
     summaryFieldCount = 0;
     for(i=0; i<sourceRecordDetails.length; i++) {
         fieldName = sourceRecordDetails[i].name;
@@ -593,6 +606,7 @@ function populateRelationshipDetails_Callback (data) {
     var targetRecordDetails =  data.targetRecord.attributes;
     dwr.util.removeAllRows("targetRecordInSummary");    
     dwr.util.removeAllRows("targetRecordInDetail");
+    
     summaryFieldCount = 0;
     for(i=0; i<targetRecordDetails.length; i++) {
         fieldName = targetRecordDetails[i].name;
@@ -631,7 +645,7 @@ function populateRelationshipDetails_Callback (data) {
     var blnShowEditAttributesSection = false;
     
     if(customAttributes != null && customAttributes.length > 0) {
-        createCustomAttributesSection ("editCustomAttributesTable", customAttributes, "edit_custom", true);
+        createCustomAttributesSection ("editCustomAttributesTable", customAttributes, "edit_custom", true,false);
         populateCustomAttributesValues (customAttributes, recordCustomAttributes, "edit_custom");
         displayDiv("editCustomAttributesDiv", true);
         blnShowEditAttributesSection = true;

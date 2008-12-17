@@ -118,8 +118,8 @@
                       </table>
                       <div dojoType="dijit.Paginator" id="relationshipsSearchResultPaginator"
                         totalPages="0" currentPage="0" navigationFunction="searchResultsRefresh"
-                        firstPageTooltip="Go to First Page" previousPageTooltip="Go To Previous Page"
-                        nextPageTooltip="Go to Next Page" lastPageTooltip="Go to Last Page" >
+                        firstPageTooltip="<f:message key='go_to_first_page' />" previousPageTooltip="<f:message key='go_to_previous_page' />"
+                        nextPageTooltip="<f:message key='go_to_next_page' />" lastPageTooltip="<f:message key='go_to_last_page' />" >
                       </div>
                    </td>
                </tr>

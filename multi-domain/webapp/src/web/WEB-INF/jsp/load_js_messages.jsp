@@ -21,14 +21,10 @@ JSP files loads all the messages from message.properties, which will be used in 
     }
 
     var messages = {};
-    messages ["enterValueFor_effectiveFrom"] = '<f:message key="enter_value_for_effective_from" />';
-    messages ["enter_ValueFor"] = '<f:message key="enter_value_for_text" />';
-    messages ["enterValueFor_effectiveTo"] = '<f:message key="enter_value_for_effective_to" />';
-    messages ["enterValueFor_purgeDate"] = '<f:message key="enter_value_for_purgedate" />';
-    messages ["isnotavalidvaluefor"] = '<f:message key="is_not_valid_value_for" />';
+    
+    //General messages
     messages ["attribute"] = '<f:message key="lower_attribute_text" />';
     messages ["is"] = '<f:message key="is_text" />';
-    messages ["attributeTypeFor"] = '<f:message key="attribute_type_for" />';
     messages ["add_Relationship"] = '<f:message key="add_relationship_text" />';
     messages ["effective"] = '<f:message key="effective_text" />';
     messages ["from"] = '<f:message key="from_text" />';
@@ -39,6 +35,15 @@ JSP files loads all the messages from message.properties, which will be used in 
     messages ["colon"] = '<f:message key="colon_symbol" />';
     messages ["relationship_Attributes"] = '<f:message key="relationship_attributes_text" />';
     messages ["no_Relationships_found"] = '<f:message key="no_relatonship_found" />';
+    
+    
+    //Validation messages
+    messages ["enterValueFor_effectiveFrom"] = '<f:message key="enter_value_for_effective_from" />';
+    messages ["enter_ValueFor"] = '<f:message key="enter_value_for_text" />';
+    messages ["enterValueFor_effectiveTo"] = '<f:message key="enter_value_for_effective_to" />';
+    messages ["enterValueFor_purgeDate"] = '<f:message key="enter_value_for_purgedate" />';
+    messages ["isnotavalidvaluefor"] = '<f:message key="is_not_valid_value_for" />';
+    messages ["attributeTypeFor"] = '<f:message key="attribute_type_for" />';
     messages ["enter_name"] = '<f:message key="enter_name" />';
     messages ["select_direction"] = '<f:message key="select_direction" />';
     messages ["select_plugin"] = '<f:message key="select_plugin" />';
@@ -47,7 +52,11 @@ JSP files loads all the messages from message.properties, which will be used in 
     messages ["select_relationshipDef"] = '<f:message key="select_relationshipDef" />';
     messages ["select_atleast_one_source_record"] = '<f:message key="select_atleast_one_source_record" />';
     messages ["select_atleast_one_destination_record"] = '<f:message key="select_atleast_one_destination_record" />';
+    messages ["date_Format"] = '<f:message key="date_formate" />';
+    messages ["invalid_date"] = '<f:message key="invalid_date" />';
     
-   messages ["exception"] = '<f:message key="exception_text" />';
+
+    // Exception messages
+    messages ["exception"] = '<f:message key="exception_text" />';
 
 </script>
