@@ -29,41 +29,56 @@ import java.io.IOException;
 import java.util.ArrayList;
 import com.sun.mdm.multidomain.project.generator.TemplateWriter;
 import com.sun.mdm.multidomain.project.generator.exception.TemplateWriterException;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 
 /**
  * AppXmlWriter class.
  * @author mdm team.
  */
 public class AppXmlWriter {
-    private final String mFileName = "application.xml";
+    private static final String APPLICATION_XML_TEMPLATE = "com/sun/mdm/multidomain/project/generator/descriptor/application.xml.tmpl";
+    private static final String SUN_APPLICATION_XML_TEMPLATE = "com/sun/mdm/multidomain/project/generator/descriptor/sun-application.xml.tmpl"; 
+    private static final String APPLICATION_XML = "application.xml";
+    private static final String SUN_APPLICATION_XML = "sun-application.xml";
    
-    private File mPath;
+    private File mOutputDir;
     private String mAppName;    
     private String mEjbName;
     private String mWarName;  
    
 
-    public AppXmlWriter(File path, String appName, String ejbName, String warName){        
-        mPath = path; 
+    public AppXmlWriter(File outputDir, String appName, String ejbName, String warName){        
+        mOutputDir = outputDir; 
         mAppName = appName;
         mEjbName = ejbName;
         mWarName = warName;        
     }
-
-    public void write()
-        throws TemplateWriterException {
-        try {                  
-            String templateFileName = "com/sun/mdm/multidomain/project/generator/descriptor/application.xml.tmpl";   
-            
-            File appFile = new File(mPath, mFileName);
-            mPath.mkdirs();
-            writeStringToFile(appFile, writeProject(templateFileName));            
+    
+    public void write() throws TemplateWriterException{
+        writeApplicationXml();
+        writeSunApplicationXml();        
+    }
+    
+    public void writeApplicationXml() throws TemplateWriterException {
+        try {
+            File appFile = new File(mOutputDir, APPLICATION_XML);
+            writeStringToFile(appFile, templateWrite(APPLICATION_XML_TEMPLATE));            
         } catch (IOException ioe) {
             new TemplateWriterException(ioe.getMessage());
         } 
     }
     
-    public String writeProject(String templateFileName )
+    public void writeSunApplicationXml() throws TemplateWriterException {
+        try {
+            File appFile = new File(mOutputDir, SUN_APPLICATION_XML);
+            writeStringToFile(appFile, templateWrite(SUN_APPLICATION_XML_TEMPLATE));            
+        } catch (IOException ioe) {
+            new TemplateWriterException(ioe.getMessage());
+        } 
+    }
+    
+    public String templateWrite(String templateFileName )
         throws TemplateWriterException {
         String strRet = null;
         try {
@@ -80,16 +95,11 @@ public class AppXmlWriter {
         return strRet;
     } 
     
-    private void writeStringToFile(File outFile, String content) 
-        throws IOException{
-        BufferedWriter output = new BufferedWriter(new FileWriter(outFile));
-        byte[] utf8Bytes = content.getBytes("UTF-8");
-        String utf8String = new String(utf8Bytes, "UTF-8");        
-        try{
-          output.write( utf8String );
-        }finally {
-          output.close();
-        }
+    private void writeStringToFile(File outFile, String content) throws IOException{
+        BufferedWriter output = new BufferedWriter(
+                new OutputStreamWriter(new FileOutputStream(outFile), "UTF-8"));
+        output.write( content );
+        output.close();
     }
     
 }

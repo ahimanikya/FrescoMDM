@@ -1,0 +1,48 @@
+[SBYNTAG:DEFINE:appname,ejbname,warname]
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sun-application PUBLIC "-//Sun Microsystems, Inc.//DTD Application Server 9.0 Java EE Application 5.0//EN" "http://www.sun.com/software/appserver/dtds/sun-application_5_0-0.dtd">
+<sun-application>
+    <web>
+        <web-uri>[sbyntag:warname]</web-uri>
+        <context-root>/[sbyntag:appname]MDWM</context-root>
+    </web>
+    
+    <pass-by-reference>false</pass-by-reference> 
+    
+    <security-role-mapping>
+        <role-name>MultiDomain.Admin</role-name>
+        <group-name>MultiDomain.Admin</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>MultiDomain.User</role-name>
+        <group-name>MultiDomain.User</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>MultiDomain.View</role-name>
+        <group-name>MultiDomain.View</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>MultiDomain.Relationship.Admin</role-name>
+        <group-name>MultiDomain.Relationship.Admin</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>MultiDomain.Relationship.User</role-name>
+        <group-name>MultiDomain.Relationship.User</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>MultiDomain.Relationship.View</role-name>
+        <group-name>MultiDomain.Relationship.View</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>MultiDomain.Hierarchy.Admin</role-name>
+        <group-name>MultiDomain.Hierarchy.Admin</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>MultiDomain.Hierarchy.User</role-name>
+        <group-name>MultiDomain.Hierarchy.User</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>MultiDomain.Hierarchy.View</role-name>
+        <group-name>MultiDomain.Hierarchy.View</group-name>
+    </security-role-mapping>
+</sun-application>

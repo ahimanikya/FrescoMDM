@@ -31,6 +31,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import com.sun.mdm.multidomain.project.generator.TemplateWriter;
 import com.sun.mdm.multidomain.project.generator.exception.TemplateWriterException;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 
 
 public class JbiXmlWriter {
@@ -85,13 +87,9 @@ public class JbiXmlWriter {
     
     private void writeStringToFile(File outFile, String content ) throws IOException{
 
-        BufferedWriter output = new BufferedWriter(new FileWriter(outFile));
-        byte[] utf8Bytes = content.getBytes("UTF-8");
-        String utf8String = new String(utf8Bytes, "UTF-8");        
-        try{
-          output.write( utf8String );
-        }finally {
-          output.close();
-        }
+        BufferedWriter output = new BufferedWriter(
+                new OutputStreamWriter(new FileOutputStream(outFile), "UTF-8"));
+        output.write( content );
+        output.close();
     }
 }
