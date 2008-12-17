@@ -315,9 +315,10 @@ public class MDConfigManager {
             SummaryLabel summaryLabel = convertSummaryLabel(domainName, domainFWM.getRecordID());
             domainScreenConfig.setSummaryLabel(summaryLabel);
 
-            ArrayList<SearchScreenConfig> sSC = 
-                    convertSearchType(domainName, domainFWM.getSearchType());
-            domainScreenConfig.setSearchScreenConfigs(sSC);
+            //fix me
+            //ArrayList<SearchScreenConfig> sSC = 
+            //         convertSearchType(domainName, domainFWM.getSearchType());
+            //domainScreenConfig.setSearchScreenConfigs(sSC);
             
             ArrayList<SearchResultsConfig> sRC = 
                     convertSearchDetail(domainName, domainFWM.getSearchDetail());
