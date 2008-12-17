@@ -441,12 +441,14 @@ private void jButtonDeleteExtendedAttributeonRemoveExtendedAttribute(java.awt.ev
 TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtendedAttr.getModel();
         int rs[] = jTableExtendedAttr.getSelectedRows();
         int length = rs.length;
-        String prompt = (length == 1) ? NbBundle.getMessage(TabRelationshipDef.class, "MSG_Confirm_Remove_Row_Prompt")
-                                        : NbBundle.getMessage(TabRelationshipDef.class, "MSG_Confirm_Remove_Rows_Prompt");
-
+        String type = (length == 1) ? NbBundle.getMessage(TabRelationshipDef.class, "TITLE_Extended_Attribute")
+                                    : NbBundle.getMessage(TabRelationshipDef.class, "TITLE_Extended_Attributes");
+        String prompt = (length == 1) ? NbBundle.getMessage(TabRelationshipDef.class, "MSG_Confirm_Remove_Prompt", type)
+                                      : NbBundle.getMessage(TabRelationshipDef.class, "MSG_Confirm_Remove_Multiple_Prompt", length, type);;
+        String title = NbBundle.getMessage(TabRelationshipDef.class, "MSG_Confirm_Remove_Title", type);
         NotifyDescriptor d = new NotifyDescriptor.Confirmation(
                                  prompt, 
-                                 NbBundle.getMessage(TabRelationshipDef.class, "MSG_Confirm_Remove_Row_Title"), 
+                                 title, 
                                  NotifyDescriptor.YES_NO_OPTION);
         if (DialogDisplayer.getDefault().notify(d) == NotifyDescriptor.YES_OPTION) {
             for (int i=length - 1; i>=0 && i < length; i--) {

@@ -138,7 +138,7 @@ public class EntityTreeDialog extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle(org.openide.util.NbBundle.getMessage(EntityTreeDialog.class, "LBL_DOMAIN_ENTITY")); // NOI18N
 
-        jLabel1.setText(org.openide.util.NbBundle.getMessage(EntityTreeDialog.class, "LBL_Domain")); // NOI18N
+        jLabel1.setText(org.openide.util.NbBundle.getMessage(EntityTreeDialog.class, "LBL_Domain_Colon")); // NOI18N
 
         jTextFieldDomain.setEditable(false);
 
@@ -209,7 +209,7 @@ public class EntityTreeDialog extends javax.swing.JDialog {
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jBtnOK)
                     .add(jBtnCancel))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();

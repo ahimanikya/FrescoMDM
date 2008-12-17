@@ -342,7 +342,7 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Overview"))); // NOI18N
 
-        jLabelDomainName.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Domains")); // NOI18N
+        jLabelDomainName.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Domains_Colon")); // NOI18N
 
         jTableDomains.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -373,7 +373,7 @@ public class TabOverview extends javax.swing.JPanel implements MouseListener, Mo
             }
         });
 
-        jLabelDefinition.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Definitions")); // NOI18N
+        jLabelDefinition.setText(org.openide.util.NbBundle.getMessage(TabOverview.class, "LBL_Definitions_Colon")); // NOI18N
 
         jTableDefinitions.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -483,11 +483,14 @@ private void onRemoveDomain(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_o
         TableModelDomains model = (TableModelDomains) jTableDomains.getModel();
         int rs[] = jTableDomains.getSelectedRows();
         int length = rs.length;
-        String prompt = (length == 1) ? NbBundle.getMessage(TabOverview.class, "MSG_Confirm_Remove_Row_Prompt")
-                                      : NbBundle.getMessage(TabOverview.class, "MSG_Confirm_Remove_Rows_Prompt");
+        String type = (length == 1) ? NbBundle.getMessage(TabOverview.class, "LBL_Domain")
+                                    : NbBundle.getMessage(TabOverview.class, "LBL_Domains");
+        String prompt = (length == 1) ? NbBundle.getMessage(TabOverview.class, "MSG_Confirm_Remove_Prompt", type)
+                                      : NbBundle.getMessage(TabOverview.class, "MSG_Confirm_Remove_Multiple_Prompt", length, type);;
+        String title = NbBundle.getMessage(TabOverview.class, "MSG_Confirm_Remove_Title", type);
         NotifyDescriptor d = new NotifyDescriptor.Confirmation(
                              prompt, 
-                             NbBundle.getMessage(TabOverview.class, "MSG_Confirm_Remove_Row_Title"), 
+                             title, 
                              NotifyDescriptor.YES_NO_OPTION);
         if (DialogDisplayer.getDefault().notify(d) == NotifyDescriptor.YES_OPTION) {
             for (int i=length - 1; i>=0 && i < length; i--) {
@@ -535,12 +538,14 @@ private void onRemoveDefinition(java.awt.event.ActionEvent evt) {//GEN-FIRST:eve
         TableModelDefinition model = (TableModelDefinition) jTableDefinitions.getModel();
         int rs[] = jTableDefinitions.getSelectedRows();
         int length = rs.length;
-        String prompt = (length == 1) ? NbBundle.getMessage(TabOverview.class, "MSG_Confirm_Remove_Row_Prompt")
-                                        : NbBundle.getMessage(TabOverview.class, "MSG_Confirm_Remove_Rows_Prompt");
-
+        String type = (length == 1) ? NbBundle.getMessage(TabOverview.class, "LBL_Definition")
+                                    : NbBundle.getMessage(TabOverview.class, "LBL_Definitions");
+        String prompt = (length == 1) ? NbBundle.getMessage(TabOverview.class, "MSG_Confirm_Remove_Prompt", type)
+                                      : NbBundle.getMessage(TabOverview.class, "MSG_Confirm_Remove_Multiple_Prompt", length, type);;
+        String title = NbBundle.getMessage(TabOverview.class, "MSG_Confirm_Remove_Title", type);
         NotifyDescriptor d = new NotifyDescriptor.Confirmation(
                                  prompt, 
-                                 NbBundle.getMessage(TabOverview.class, "MSG_Confirm_Remove_Row_Title"), 
+                                 title, 
                                  NotifyDescriptor.YES_NO_OPTION);
             if (DialogDisplayer.getDefault().notify(d) == NotifyDescriptor.YES_OPTION) {
                 for (int i=length - 1; i>=0 && i < length; i--) {
@@ -793,7 +798,7 @@ private void onAddHierarchy(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_o
     
     // Table model for link definitions
     class TableModelDomains extends AbstractTableModel {
-        private	String columnNames [] = {NbBundle.getMessage(TabOverview.class, "LBL_Domain_Name"), 
+        private	String columnNames [] = {NbBundle.getMessage(TabOverview.class, "LBL_Domain"), 
                                          NbBundle.getMessage(TabOverview.class, "LBL_Number_Of_Definitions"), 
                                         };
         ArrayList <DomainRow> rows;

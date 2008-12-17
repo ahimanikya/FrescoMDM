@@ -132,7 +132,7 @@ public class AddHierarchyDialog extends javax.swing.JDialog {
             }
         });
 
-        jLabelSourceDomain.setText(org.openide.util.NbBundle.getMessage(AddHierarchyDialog.class, "LBL_Domain")); // NOI18N
+        jLabelSourceDomain.setText(org.openide.util.NbBundle.getMessage(AddHierarchyDialog.class, "LBL_Domain_Colon")); // NOI18N
 
         jComboBoxDomains.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {

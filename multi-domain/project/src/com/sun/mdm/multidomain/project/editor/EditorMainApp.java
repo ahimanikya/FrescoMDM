@@ -366,7 +366,7 @@ public class EditorMainApp {
         boolean added = false;
         String domainName = fileDomain.getName();
         if (!mMapDomainObjectXmls.containsKey(domainName)) {
-            //Copy domain's object.xml
+            //Copy domain's object.xml, query.xml and midm.xml
             try {
                 FileObject objectXml = getDomainConfigurationFile(fileDomain, MultiDomainProjectProperties.OBJECT_XML);
                 FileObject queryXml = getDomainConfigurationFile(fileDomain, MultiDomainProjectProperties.QUERY_XML);
@@ -408,6 +408,7 @@ public class EditorMainApp {
                 if (mMultiDomainWebManager.getDomains().getDomain(domainNode.getName()) == null) {
                     mMultiDomainWebManager.getDomains().addDomain(domainNode.getMidmObject());
                 }
+                added = true;
             } catch (IOException ex) {
                 mLog.severe(ex.getMessage());
             }

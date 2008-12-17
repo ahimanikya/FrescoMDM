@@ -242,11 +242,16 @@ private void onBtnRemove(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onBt
     //int rs[] = jTableField.getSelectedRows();
    // int length = rs.length;
     int rs = jTableField.getSelectedRow();
-    String prompt = NbBundle.getMessage(FieldGroupDialog.class, "MSG_Confirm_Remove_Row_Prompt");
+    int length = jTableField.getSelectedRowCount();
+    String type = (length == 1) ? NbBundle.getMessage(FieldGroupDialog.class, "LBL_FIELD")
+                                : NbBundle.getMessage(FieldGroupDialog.class, "LBL_FIELDS");
+    String prompt = (length == 1) ? NbBundle.getMessage(FieldGroupDialog.class, "MSG_Confirm_Remove_Prompt", type)
+                                  : NbBundle.getMessage(FieldGroupDialog.class, "MSG_Confirm_Remove_Multiple_Prompt", length, type);;
+    String title = NbBundle.getMessage(FieldGroupDialog.class, "MSG_Confirm_Remove_Title", type);
 
     NotifyDescriptor d = new NotifyDescriptor.Confirmation(
             prompt,
-            NbBundle.getMessage(FieldGroupDialog.class, "MSG_Confirm_Remove_Row_Title"),
+            title,
             NotifyDescriptor.YES_NO_OPTION);
     if (DialogDisplayer.getDefault().notify(d) == NotifyDescriptor.YES_OPTION) {
         TableModelField model = (TableModelField) jTableField.getModel();

@@ -344,7 +344,6 @@ private void onAddSearchResult(java.awt.event.ActionEvent evt) {//GEN-FIRST:even
 }//GEN-LAST:event_onAddSearchResult
 
 private void onRemoveSearchResult(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveSearchResult
-// TODO add your handling code here:
     int rs[] = this.mTableSearchResult.getSelectedRows();
     int selectedRow = this.mTableSearchResult.getSelectedRow();
     TableModelSearchResult model = (TableModelSearchResult) mTableSearchResult.getModel();
@@ -358,11 +357,14 @@ private void onRemoveSearchResult(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
 
     } else {
         int length = rs.length;
-        String prompt = (length == 1) ? NbBundle.getMessage(TabDomainSearch.class, "MSG_Confirm_Remove_Row_Prompt")
-                : NbBundle.getMessage(TabDomainSearch.class, "MSG_Confirm_Remove_Rows_Prompt");
+        String type = (length == 1) ? NbBundle.getMessage(TabDomainSearch.class, "LBL_SEARCH_RESULT")
+                                    : NbBundle.getMessage(TabDomainSearch.class, "LBL_SEARCH_RESULTS");
+        String prompt = (length == 1) ? NbBundle.getMessage(TabDomainSearch.class, "MSG_Confirm_Remove_Prompt", type)
+                                      : NbBundle.getMessage(TabDomainSearch.class, "MSG_Confirm_Remove_Multiple_Prompt", length, type);;
+        String title = NbBundle.getMessage(TabDomainSearch.class, "MSG_Confirm_Remove_Title", type);
         NotifyDescriptor d = new NotifyDescriptor.Confirmation(
                 prompt,
-                NbBundle.getMessage(TabDomainSearch.class, "MSG_Confirm_Remove_Row_Title"),
+                title,
                 NotifyDescriptor.YES_NO_OPTION);
         if (DialogDisplayer.getDefault().notify(d) == NotifyDescriptor.YES_OPTION) {
             //TableModelSearchResult model = (TableModelSearchResult) mTableSearchResult.getModel();
@@ -407,15 +409,16 @@ private void onAddSearchPage(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_
 }//GEN-LAST:event_onAddSearchPage
 
 private void onRemoveSearchPage(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveSearchPage
-// TODO add your handling code here:
-    
     int rs[] = this.mTableSearchType.getSelectedRows();
     int length = rs.length;
-    String prompt = (length == 1) ? NbBundle.getMessage(TabDomainSearch.class, "MSG_Confirm_Remove_Row_Prompt")
-            : NbBundle.getMessage(TabDomainSearch.class, "MSG_Confirm_Remove_Rows_Prompt");
-        NotifyDescriptor d = new NotifyDescriptor.Confirmation(
+    String type = (length == 1) ? NbBundle.getMessage(TabDomainSearch.class, "LBL_SEARCH_PAGE")
+                                : NbBundle.getMessage(TabDomainSearch.class, "LBL_SEARCH_PAGES");
+    String prompt = (length == 1) ? NbBundle.getMessage(TabDomainSearch.class, "MSG_Confirm_Remove_Prompt", type)
+                                  : NbBundle.getMessage(TabDomainSearch.class, "MSG_Confirm_Remove_Multiple_Prompt", length, type);;
+    String title = NbBundle.getMessage(TabDomainSearch.class, "MSG_Confirm_Remove_Title", type);
+    NotifyDescriptor d = new NotifyDescriptor.Confirmation(
                                  prompt, 
-                                 NbBundle.getMessage(TabDomainSearch.class, "MSG_Confirm_Remove_Row_Title"), 
+                                 title, 
                                  NotifyDescriptor.YES_NO_OPTION);
         if (DialogDisplayer.getDefault().notify(d) == NotifyDescriptor.YES_OPTION) {
             TableModelSearchPage model = (TableModelSearchPage) mTableSearchType.getModel();

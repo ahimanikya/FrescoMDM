@@ -383,15 +383,17 @@ private void onAddGroup(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAdd
 }//GEN-LAST:event_onAddGroup
 
 private void onRemoveGroup(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveGroup
-// TODO add your handling code here:
-// TODO add your handling code here:
     int rs[] = this.jTableFieldGroup.getSelectedRows();
     int length = rs.length;
-    String prompt = (length == 1) ? NbBundle.getMessage(DomainRecordDetailDialog.class, "MSG_Confirm_Remove_Row_Prompt")
-            : NbBundle.getMessage(DomainRecordDetailDialog.class, "MSG_Confirm_Remove_Rows_Prompt");
+    String type = (length == 1) ? NbBundle.getMessage(DomainRecordDetailDialog.class, "LBL_FIELD_GROUP")
+                                : NbBundle.getMessage(DomainRecordDetailDialog.class, "LBL_FIELD_GROUPS");
+    String prompt = (length == 1) ? NbBundle.getMessage(DomainRecordDetailDialog.class, "MSG_Confirm_Remove_Prompt", type)
+                                  : NbBundle.getMessage(DomainRecordDetailDialog.class, "MSG_Confirm_Remove_Multiple_Prompt", length, type);;
+    String title = NbBundle.getMessage(DomainRecordDetailDialog.class, "MSG_Confirm_Remove_Title", type);
+
         NotifyDescriptor d = new NotifyDescriptor.Confirmation(
                                  prompt, 
-                                 NbBundle.getMessage(DomainRecordDetailDialog.class, "MSG_Confirm_Remove_Row_Title"), 
+                                 title, 
                                  NotifyDescriptor.YES_NO_OPTION);
         if (DialogDisplayer.getDefault().notify(d) == NotifyDescriptor.YES_OPTION) {
             TableModelFieldGroup model = (TableModelFieldGroup) jTableFieldGroup.getModel();
@@ -451,15 +453,16 @@ private void onAddField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAdd
 }//GEN-LAST:event_onAddField
 
 private void onRemoveField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveField
-// TODO add your handling code here:
-// TODO add your handling code here:
     int rs[] = jTableField.getSelectedRows();
     int length = rs.length;
-    String prompt = (length == 1) ? NbBundle.getMessage(DomainRecordDetailDialog.class, "MSG_Confirm_Remove_Row_Prompt")
-            : NbBundle.getMessage(DomainRecordDetailDialog.class, "MSG_Confirm_Remove_Rows_Prompt");
+    String type = (length == 1) ? NbBundle.getMessage(DomainRecordDetailDialog.class, "LBL_FIELD")
+                                : NbBundle.getMessage(DomainRecordDetailDialog.class, "LBL_FIELDS");
+    String prompt = (length == 1) ? NbBundle.getMessage(DomainRecordDetailDialog.class, "MSG_Confirm_Remove_Prompt", type)
+                                  : NbBundle.getMessage(DomainRecordDetailDialog.class, "MSG_Confirm_Remove_Multiple_Prompt", length, type);;
+    String title = NbBundle.getMessage(DomainRecordDetailDialog.class, "MSG_Confirm_Remove_Title", type);
         NotifyDescriptor d = new NotifyDescriptor.Confirmation(
                                  prompt, 
-                                 NbBundle.getMessage(DomainRecordDetailDialog.class, "MSG_Confirm_Remove_Row_Title"), 
+                                 title, 
                                  NotifyDescriptor.YES_NO_OPTION);
         if (DialogDisplayer.getDefault().notify(d) == NotifyDescriptor.YES_OPTION) {
             TableModelField model = (TableModelField) jTableField.getModel();

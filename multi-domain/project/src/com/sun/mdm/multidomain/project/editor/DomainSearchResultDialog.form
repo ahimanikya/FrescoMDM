@@ -95,7 +95,7 @@
                   <Component id="jBtnCancel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jBtnOK" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="47" max="32767" attributes="0"/>
+              <EmptySpace pref="44" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>

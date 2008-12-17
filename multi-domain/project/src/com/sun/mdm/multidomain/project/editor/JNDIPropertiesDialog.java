@@ -230,13 +230,11 @@ public class JNDIPropertiesDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
 private void onCancel(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onCancel
-// TODO add your handling code here:
     bModified = false;
     this.dispose();
 }//GEN-LAST:event_onCancel
 
 private void onOK(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onOK
-// TODO add your handling code here:
     bModified = true;
     mJNDIResources.getProperties().clear();
     TableModelProperties modelProperties = (TableModelProperties) jTableProperties.getModel();
@@ -248,7 +246,6 @@ private void onOK(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onOK
 }//GEN-LAST:event_onOK
 
 private void onAddProperty(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddProperty
-// TODO add your handling code here:
     TableModelProperties modelProperties = (TableModelProperties) jTableProperties.getModel();
     int iInsertRow = modelProperties.getRowCount();
     PropertyRow newProperty = new PropertyRow();
@@ -262,19 +259,21 @@ private void onAddProperty(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_on
 }//GEN-LAST:event_onAddProperty
 
 private void onRemoveProperty(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveProperty
-// TODO add your handling code here:
     int rs = jTableProperties.getSelectedRow();
-    String prompt = NbBundle.getMessage(JNDIPropertiesDialog.class, "MSG_Confirm_Remove_Row_Prompt");
-        NotifyDescriptor d = new NotifyDescriptor.Confirmation(
-                                 prompt, 
-                                 NbBundle.getMessage(JNDIPropertiesDialog.class, "MSG_Confirm_Remove_Row_Title"), 
-                                 NotifyDescriptor.YES_NO_OPTION);
-        if (DialogDisplayer.getDefault().notify(d) == NotifyDescriptor.YES_OPTION) {
-            TableModelProperties modelProperties = (TableModelProperties) jTableProperties.getModel();
-            modelProperties.removeRow(rs);
-            
-        }
-    
+    int length = jTableProperties.getSelectedRowCount();
+    String type = (length == 1) ? NbBundle.getMessage(JNDIPropertiesDialog.class, "LBL_FIELD")
+                                : NbBundle.getMessage(JNDIPropertiesDialog.class, "LBL_FIELDS");
+    String prompt = (length == 1) ? NbBundle.getMessage(JNDIPropertiesDialog.class, "MSG_Confirm_Remove_Prompt", type)
+                                  : NbBundle.getMessage(JNDIPropertiesDialog.class, "MSG_Confirm_Remove_Multiple_Prompt", length, type);;
+    String title = NbBundle.getMessage(JNDIPropertiesDialog.class, "MSG_Confirm_Remove_Title", type);
+    NotifyDescriptor d = new NotifyDescriptor.Confirmation(
+                             prompt, 
+                             title, 
+                             NotifyDescriptor.YES_NO_OPTION);
+    if (DialogDisplayer.getDefault().notify(d) == NotifyDescriptor.YES_OPTION) {
+        TableModelProperties modelProperties = (TableModelProperties) jTableProperties.getModel();
+        modelProperties.removeRow(rs);          
+    }
 }//GEN-LAST:event_onRemoveProperty
 
     public boolean isModified() {

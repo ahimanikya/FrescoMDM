@@ -436,14 +436,16 @@ private void onAddGroup(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAdd
 }//GEN-LAST:event_onAddGroup
 
 private void onRemoveGroup(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveGroup
-// TODO add your handling code here:
     int rs[] = this.jTableFieldGroup.getSelectedRows();
     int length = rs.length;
-    String prompt = (length == 1) ? NbBundle.getMessage(DomainSearchResultDialog.class, "MSG_Confirm_Remove_Row_Prompt")
-            : NbBundle.getMessage(DomainSearchResultDialog.class, "MSG_Confirm_Remove_Rows_Prompt");
+    String type = (length == 1) ? NbBundle.getMessage(DomainSearchResultDialog.class, "LBL_FIELD_GROUP")
+                                : NbBundle.getMessage(DomainSearchResultDialog.class, "LBL_FIELD_GROUPS");
+    String prompt = (length == 1) ? NbBundle.getMessage(DomainSearchResultDialog.class, "MSG_Confirm_Remove_Prompt", type)
+                                  : NbBundle.getMessage(DomainSearchResultDialog.class, "MSG_Confirm_Remove_Multiple_Prompt", length, type);;
+    String title = NbBundle.getMessage(DomainSearchResultDialog.class, "MSG_Confirm_Remove_Title", type);
         NotifyDescriptor d = new NotifyDescriptor.Confirmation(
                                  prompt, 
-                                 NbBundle.getMessage(DomainSearchResultDialog.class, "MSG_Confirm_Remove_Row_Title"), 
+                                 title, 
                                  NotifyDescriptor.YES_NO_OPTION);
         if (DialogDisplayer.getDefault().notify(d) == NotifyDescriptor.YES_OPTION) {
             TableModelFieldGroup model = (TableModelFieldGroup) jTableFieldGroup.getModel();

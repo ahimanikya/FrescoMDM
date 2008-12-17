@@ -379,13 +379,18 @@ private void onAddHighLightField(java.awt.event.ActionEvent evt) {//GEN-FIRST:ev
 }//GEN-LAST:event_onAddHighLightField
 
 private void onRemoveHighLightField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveHighLightField
-// TODO add your handling code here:
     int selectedRow = this.jTableRecordID.getSelectedRow();
     TableModelRecordId model = (TableModelRecordId) jTableRecordID.getModel();
-    FieldGroup.FieldRef selectedGroup = model.getRow(selectedRow);   
+    FieldGroup.FieldRef selectedGroup = model.getRow(selectedRow);
+    int length = this.jTableRecordID.getSelectedRowCount();
+    String type = (length == 1) ? NbBundle.getMessage(TabDomainView.class, "LBL_High_Light_Field")
+                                : NbBundle.getMessage(TabDomainView.class, "LBL_High_Light_Fields");
+    String prompt = (length == 1) ? NbBundle.getMessage(TabDomainView.class, "MSG_Confirm_Remove_Prompt", type)
+                                  : NbBundle.getMessage(TabDomainView.class, "MSG_Confirm_Remove_Multiple_Prompt", length, type);;
+    String title = NbBundle.getMessage(TabDomainView.class, "MSG_Confirm_Remove_Title", type);
     NotifyDescriptor d = new NotifyDescriptor.Confirmation(
-            NbBundle.getMessage(TabDomainView.class, "MSG_Confirm_Remove_Row_Prompt"),
-            NbBundle.getMessage(TabDomainView.class, "MSG_Confirm_Remove_Row_Title"),
+            prompt,
+            title,
             NotifyDescriptor.YES_NO_OPTION);
     if (DialogDisplayer.getDefault().notify(d) == NotifyDescriptor.YES_OPTION) {
         Object recordDetail = (Object) model.getValueAt(selectedRow, model.iColRecordDetailName);
@@ -425,10 +430,16 @@ private void onRemoveSummaryGroup(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
 // TODO add your handling code here:
     int selectedRow = jTableRecordSummay.getSelectedRow();
     TableModelRecordSummary model = (TableModelRecordSummary) jTableRecordSummay.getModel();
-    FieldGroup selectedGroup = model.getRow(selectedRow);   
+    FieldGroup selectedGroup = model.getRow(selectedRow);
+    int length = this.jTableRecordSummay.getSelectedRowCount();
+    String type = (length == 1) ? NbBundle.getMessage(TabDomainView.class, "LBL_Summary_Group")
+                                : NbBundle.getMessage(TabDomainView.class, "LBL_Summary_Groups");
+    String prompt = (length == 1) ? NbBundle.getMessage(TabDomainView.class, "MSG_Confirm_Remove_Prompt", type)
+                                  : NbBundle.getMessage(TabDomainView.class, "MSG_Confirm_Remove_Multiple_Prompt", length, type);;
+    String title = NbBundle.getMessage(TabDomainView.class, "MSG_Confirm_Remove_Title", type);
     NotifyDescriptor d = new NotifyDescriptor.Confirmation(
-            NbBundle.getMessage(TabDomainView.class, "MSG_Confirm_Remove_Row_Prompt"),
-            NbBundle.getMessage(TabDomainView.class, "MSG_Confirm_Remove_Row_Title"),
+            prompt,
+            title,
             NotifyDescriptor.YES_NO_OPTION);
     if (DialogDisplayer.getDefault().notify(d) == NotifyDescriptor.YES_OPTION) {
         Object recordDetail = (Object) model.getValueAt(selectedRow, model.iColRecordSummary);
@@ -491,9 +502,14 @@ private void onRemoveDetail(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_o
         DialogDisplayer.getDefault().notify(errorNotify);
 
     } else {
+        int length = this.jTableRecordDetail.getSelectedRowCount();
+        String type = NbBundle.getMessage(TabDomainView.class, "LBL_Record_Detail");
+        String prompt = (length == 1) ? NbBundle.getMessage(TabDomainView.class, "MSG_Confirm_Remove_Prompt", type)
+                                      : NbBundle.getMessage(TabDomainView.class, "MSG_Confirm_Remove_Multiple_Prompt", length, type);;
+        String title = NbBundle.getMessage(TabDomainView.class, "MSG_Confirm_Remove_Title", type);
         NotifyDescriptor d = new NotifyDescriptor.Confirmation(
-                NbBundle.getMessage(TabDomainView.class, "MSG_Confirm_Remove_Row_Prompt"),
-                NbBundle.getMessage(TabDomainView.class, "MSG_Confirm_Remove_Row_Title"),
+                prompt,
+                title,
                 NotifyDescriptor.YES_NO_OPTION);
         if (DialogDisplayer.getDefault().notify(d) == NotifyDescriptor.YES_OPTION) {
             Object recordDetail = (Object) model.getValueAt(selectedRow, model.iColRecordDetailName);

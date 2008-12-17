@@ -617,14 +617,16 @@ private void onAddFieldGroup(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_
 }//GEN-LAST:event_onAddFieldGroup
 
 private void onRemoveFieldGroup(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveFieldGroup
-// TODO add your handling code here:
     int rs[] = this.jTableFieldGroup.getSelectedRows();
     int length = rs.length;
-    String prompt = (length == 1) ? NbBundle.getMessage(DomainSearchTypePanel.class, "MSG_Confirm_Remove_Row_Prompt")
-            : NbBundle.getMessage(DomainSearchTypePanel.class, "MSG_Confirm_Remove_Rows_Prompt");
-        NotifyDescriptor d = new NotifyDescriptor.Confirmation(
+    String type = (length == 1) ? NbBundle.getMessage(DomainSearchTypePanel.class, "LBL_FIELD_GROUP")
+                                : NbBundle.getMessage(DomainSearchTypePanel.class, "LBL_FIELD_GROUPS");
+    String prompt = (length == 1) ? NbBundle.getMessage(DomainSearchTypePanel.class, "MSG_Confirm_Remove_Prompt", type)
+                                  : NbBundle.getMessage(DomainSearchTypePanel.class, "MSG_Confirm_Remove_Multiple_Prompt", length, type);;
+    String title = NbBundle.getMessage(DomainSearchTypePanel.class, "MSG_Confirm_Remove_Title", type);
+         NotifyDescriptor d = new NotifyDescriptor.Confirmation(
                                  prompt, 
-                                 NbBundle.getMessage(DomainSearchTypePanel.class, "MSG_Confirm_Remove_Row_Title"), 
+                                 title, 
                                  NotifyDescriptor.YES_NO_OPTION);
         if (DialogDisplayer.getDefault().notify(d) == NotifyDescriptor.YES_OPTION) {
             TableModelFieldGroup model = (TableModelFieldGroup) jTableFieldGroup.getModel();
@@ -643,14 +645,16 @@ private void onRemoveFieldGroup(java.awt.event.ActionEvent evt) {//GEN-FIRST:eve
 }//GEN-LAST:event_onRemoveFieldGroup
 
 private void onRemoveField(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveField
-// TODO add your handling code here:
     int rs[] = jTableFields.getSelectedRows();
     int length = rs.length;
-    String prompt = (length == 1) ? NbBundle.getMessage(DomainSearchTypePanel.class, "MSG_Confirm_Remove_Row_Prompt")
-            : NbBundle.getMessage(DomainSearchTypePanel.class, "MSG_Confirm_Remove_Rows_Prompt");
+    String type = (length == 1) ? NbBundle.getMessage(DomainSearchTypePanel.class, "LBL_FIELD")
+                                : NbBundle.getMessage(DomainSearchTypePanel.class, "LBL_FIELDS");
+    String prompt = (length == 1) ? NbBundle.getMessage(DomainSearchTypePanel.class, "MSG_Confirm_Remove_Prompt", type)
+                                  : NbBundle.getMessage(DomainSearchTypePanel.class, "MSG_Confirm_Remove_Multiple_Prompt", length, type);;
+    String title = NbBundle.getMessage(DomainSearchTypePanel.class, "MSG_Confirm_Remove_Title", type);
         NotifyDescriptor d = new NotifyDescriptor.Confirmation(
                                  prompt, 
-                                 NbBundle.getMessage(DomainSearchTypePanel.class, "MSG_Confirm_Remove_Row_Title"), 
+                                 title, 
                                  NotifyDescriptor.YES_NO_OPTION);
         if (DialogDisplayer.getDefault().notify(d) == NotifyDescriptor.YES_OPTION) {
             TableModelField model = (TableModelField) jTableFields.getModel();
@@ -676,7 +680,6 @@ private void jTxtScreenTitleActionPerformed(java.awt.event.ActionEvent evt) {//G
 }//GEN-LAST:event_jTxtScreenTitleActionPerformed
 
 private void onAddParameter(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddParameter
-// TODO add your handling code here:
     TableModelParameter model = (TableModelParameter) jTableQueryParameter.getModel();
     int iInsertRow = model.getRowCount();
     //Parameter newParam = mSearchType.getSearchOption().createParameter("", "");
@@ -694,11 +697,14 @@ private void onAddParameter(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_o
 private void onRemoveParameter(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveParameter
     int rs[] = jTableQueryParameter.getSelectedRows();
     int length = rs.length;
-    String prompt = (length == 1) ? NbBundle.getMessage(DomainSearchTypePanel.class, "MSG_Confirm_Remove_Row_Prompt")
-            : NbBundle.getMessage(DomainSearchTypePanel.class, "MSG_Confirm_Remove_Rows_Prompt");
+    String type = (length == 1) ? NbBundle.getMessage(DomainSearchTypePanel.class, "LBL_Parameter")
+                                : NbBundle.getMessage(DomainSearchTypePanel.class, "LBL_Parameters");
+    String prompt = (length == 1) ? NbBundle.getMessage(DomainSearchTypePanel.class, "MSG_Confirm_Remove_Prompt", type)
+                                  : NbBundle.getMessage(DomainSearchTypePanel.class, "MSG_Confirm_Remove_Multiple_Prompt", length, type);;
+    String title = NbBundle.getMessage(DomainSearchTypePanel.class, "MSG_Confirm_Remove_Title", type);
         NotifyDescriptor d = new NotifyDescriptor.Confirmation(
                                  prompt, 
-                                 NbBundle.getMessage(DomainSearchTypePanel.class, "MSG_Confirm_Remove_Row_Title"), 
+                                 title, 
                                  NotifyDescriptor.YES_NO_OPTION);
         if (DialogDisplayer.getDefault().notify(d) == NotifyDescriptor.YES_OPTION) {
             TableModelParameter model = (TableModelParameter) jTableQueryParameter.getModel();
