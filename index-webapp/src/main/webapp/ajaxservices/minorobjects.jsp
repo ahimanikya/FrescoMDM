@@ -308,7 +308,7 @@ if(isSave) {
 		window.location = "#top";
 	</script>
 	<%}%>
-	<div class="ajaxalert">
+	<div class="ajaxalert" id="errormessage11">
    	   	  <table>
 			<tr>
 				<td>  
@@ -430,7 +430,7 @@ if(isSave) {
     <%	if ("success".equalsIgnoreCase(isSuccess))  { %>
 	   <div class="ajaxsuccess">
     <%}else {%>
-         <div class="ajaxalert">
+         <div class="ajaxalert" id="errormessage22">
      <%}%>
 	  <table>
 			<tr>
@@ -634,7 +634,7 @@ if(isSave) {
 	Object[] keysValidations = valiadtions.keySet().toArray();
 	%>
 
-	<div class="ajaxalert">
+	<div class="ajaxalert" id="errormessage33">
    	   	  <table>
 			<tr>
 				<td>  
@@ -683,7 +683,7 @@ if(isSave) {
            String[] keysValueTemp = tempMinorObjectMap.get("keyTypeValue").toString().split(":");
 
 	%>
-		<div class="ajaxalert">
+		<div class="ajaxalert"id="errormessage44">
    	   	  <table>
 			<tr>
 				<td>  
@@ -876,7 +876,7 @@ if(isSave) {
          if(checkKeyTypes) {
 			 String[] keysValue  = thisMinorObject.get("keyTypeValue").toString().split(":");
 	%>
-	<div class="ajaxalert">
+	<div class="ajaxalert" id="errormessage5">
    	   <table>
 			<tr>
 				<td>  
@@ -1084,7 +1084,7 @@ if(isSave) {
 		 && (validateSystemCode != null && validateSystemCode.trim().length() > 0 )) {
 	    String lidmsg =  bundle.getString("LID_SysCode") + " " + localIdDesignation ;
 	%>
-	<div class="ajaxalert">
+	<div class="ajaxalert" id="errormessage6">
 	   	  <table>
 			<tr>
 				<td>
@@ -1101,7 +1101,7 @@ if(isSave) {
 	 } else if( (validateLID != null && validateLID.trim().length() == 0 )
 		 && (validateSystemCode != null && validateSystemCode.trim().length() == 0 )) {
 	%>
-	<div class="ajaxalert">
+	<div class="ajaxalert" id="errormessage7">
 	   	  <table>
 			<tr>
 				<td>
@@ -1118,7 +1118,7 @@ if(isSave) {
 	       <%
         	boolean isMaskingCorrect = sourceHandler.checkMasking(validateLID,request.getParameter("lidmask"));
          	if (!isMaskingCorrect)   { %>
-            <div class="ajaxalert">
+            <div class="ajaxalert" id="errormessage8">
         	  <table>
 	    		<tr>
 		    		<td>
@@ -1183,7 +1183,7 @@ if(isSave) {
 
 
 			   <%} else {%>			   
- 					   <div class="ajaxalert">
+ 					   <div class="ajaxalert" id="errormessage9">
 				 
 					  <table>
 							<tr>

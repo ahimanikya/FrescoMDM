@@ -375,7 +375,15 @@ onclick="g_Calendar.show(event,
 												    </td>
 												    <td>
 													   <nobr>
-														  <a class="button"  title="<h:outputText value="#{msgs.clear_button_label}"/>" href="javascript:void(0)" onclick="javascript:ClearContents('form<%=i%>')" >
+														  <a class="button"  title="<h:outputText value="#{msgs.clear_button_label}"/>" href="javascript:void(0)" onclick="javascript:
+							                              document.getElementById('messages').innerHTML='';
+														  if(document.getElementById('errormessages1')!=null){
+														  document.getElementById('errormessages1').innerHTML='';
+														  }
+														  if(document.getElementById('errormessages')!=null){
+														   document.getElementById('errormessages').innerHTML='';
+														  }
+														  ClearContents('form<%=i%>')" >
 															<span><h:outputText value="#{msgs.clear_button_label}"/> </span>
 														  </a>
 													   </nobr>
@@ -424,7 +432,7 @@ onclick="g_Calendar.show(event,
                                  <%}%>
 <%} else {%> 
 
-    <div class="ajaxalert">
+    <div class="ajaxalert" id="errormessages">
     <table cellpadding="0" cellspacing="0" border="0">	   
         <% int i=0;
            while (messagesIter.hasNext()) {

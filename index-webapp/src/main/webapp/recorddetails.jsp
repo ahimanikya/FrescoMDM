@@ -348,7 +348,9 @@ function align(thisevent,divID) {
 										 <%}%>
                                         </nobr>
 									    <nobr>
-										    <h:outputLink  title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('advancedformData')">
+										    <h:outputLink  title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:
+											document.getElementById('messages').innerHTML='';
+											ClearContents('advancedformData')">
                                                 <span><h:outputText value="#{msgs.clear_button_label}"/></span>
                                             </h:outputLink>
                                         </nobr>                                        

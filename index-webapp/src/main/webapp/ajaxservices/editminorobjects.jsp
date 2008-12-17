@@ -347,7 +347,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 		window.location = "#top";
 	</script>
 	<%}%>
-	<div class="ajaxalert">
+	<div class="ajaxalert" id="message1">
    	   	  <table>
 			<tr>
 				<td>  
@@ -454,7 +454,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
       <script>
 	   	 window.location = "#top";
 	  </script>
-	  <div class="ajaxalert">
+	  <div class="ajaxalert" id="message2">
 	    <table>
  			<tr>
 				<td>
@@ -823,7 +823,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 <%if (!valiadtions.isEmpty()) {
 	Object[] keysValidations = valiadtions.keySet().toArray();
 	%>
-	<div class="ajaxalert">
+	<div class="ajaxalert" id="message3">
    	   	  <table>
 			<tr>
 				<td>  
@@ -875,7 +875,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
            String[] keysValueAlready  = thisMinorObject.get("keyTypeValue").toString().split(":");
            String[] keysValueTemp = tempMinorObjectMap.get("keyTypeValue").toString().split(":");
 	%>
-	 <div class="ajaxalert">
+	 <div class="ajaxalert" id="message4">
 	  <table>
 			<tr>
 				<td>  
@@ -1088,7 +1088,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
          if(checkKeyTypes) {
 			 String[] keysValue  = thisMinorObject.get("keyTypeValue").toString().split(":");
 	%>
-	<div class="ajaxalert">
+	<div class="ajaxalert" id="message5">
    	   <table>
 			<tr>
 				<td>  
@@ -1408,7 +1408,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 	 if( (validateLID != null && validateLID.trim().length() == 0 )
 		 && (validateSystemCode != null && validateSystemCode.trim().length() == 0 )) {
 	%>
-		<div class="ajaxalert">
+		<div class="ajaxalert" id="message6">
 	   	  <table>
 			<tr>
 				<td>
@@ -1447,7 +1447,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
       </script>
     <%} else {%>
         
-				<div class="ajaxalert">
+				<div class="ajaxalert" id="message7">
 						  <table>
 							<tr>
 								<td>
@@ -1464,7 +1464,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 
 
 			   <%} else {%>			   
- 					   <div class="ajaxalert">
+ 					   <div class="ajaxalert" id="message8">
 				 
 					  <table>
 							<tr>

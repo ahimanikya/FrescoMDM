@@ -205,7 +205,7 @@ if(isShowEuid) {
 </table>
 
 <%  } else {%>
-    <div class="ajaxalert">
+    <div class="ajaxalert" id="lidmsg1">
 	  <table>
 			<tr>
 				<td>
@@ -252,7 +252,7 @@ if(  (request.getParameter(bundle.getString("transaction_source")) != null &&  r
  
 if (duplicateFound != null && duplicateFound.length() > 0 ) {
  	%>
-		<div class="ajaxalert">
+		<div class="ajaxalert" id="lidmsg2">
    	   	  <table>
  			<tr>
 				<td>  
@@ -450,7 +450,7 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
 </table>
   
 <%  } else {%>
-    <div class="ajaxalert">
+    <div class="ajaxalert" id="lidmsg3">
 	  <table>
 			<tr>
 				<td>
@@ -1291,7 +1291,7 @@ ValueExpression keepLid2ValueExpression = ExpressionFactory.newInstance().create
    <% 
      if(validationFailed) { //If validation fails display the error message here
     %>
-     <div class="ajaxalert">
+     <div class="ajaxalert" id="lidmsg4">
 	  <table>
 			<tr>
 				<td>
@@ -1303,7 +1303,7 @@ ValueExpression keepLid2ValueExpression = ExpressionFactory.newInstance().create
 		</table>
 	</div>
   <%} else {%>
-    <div class="ajaxalert">
+    <div class="ajaxalert" id="lidmsg5">
 	  <table>
 			<tr>
 				<td>

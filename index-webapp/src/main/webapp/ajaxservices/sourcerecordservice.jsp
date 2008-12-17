@@ -281,7 +281,7 @@ boolean isSessionActive = true;
 		</table>			
 	  </div><!-- minorobjects div -->
  	  <%}else{%>
- 		 			<div class="ajaxalert">				 
+ 		 			<div class="ajaxalert" id="erromessage3">				 
 					  <table>
 							<tr>
 								<td>
@@ -382,7 +382,7 @@ boolean isSessionActive = true;
 		<script>hideDivs('sourceViewBasicSearch');</script>
 		<%} else {%> <!-- if system object not found--->
 					<script>showDivs('sourceViewBasicSearch');</script>
-		 			<div class="ajaxalert">				 
+		 			<div class="ajaxalert" id="erromessage4">				 
 					  <table>
 							<tr>
 								<td>
@@ -1128,7 +1128,7 @@ boolean isSessionActive = true;
 				  </tr>
 				</table>
 				<%} else{ %>
- 					<div class="ajaxalert">				 
+ 					<div class="ajaxalert" id="erromessage1">				 
 					  <table>
 							<tr>
 								<td>
@@ -1167,7 +1167,7 @@ boolean isSessionActive = true;
 			  </table>
 
 				<%} else{ %>
- 					<div class="ajaxalert">				 
+ 					<div class="ajaxalert" id="erromessage2">				 
 					  <table>
 							<tr>
 								<td>

@@ -254,7 +254,7 @@ ArrayList fcArrayList  = new ArrayList();
     Iterator messagesIter = FacesContext.getCurrentInstance().getMessages(); 
      %> 
 	 <%if(results == null ) {%>
-     <div class="ajaxalert">
+     <div class="ajaxalert" id="errormessages1">
          <table>
              <tr>
              <td>

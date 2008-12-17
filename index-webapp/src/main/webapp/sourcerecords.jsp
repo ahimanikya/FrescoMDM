@@ -554,7 +554,23 @@ function showExtraTabDivs(divId,thisEvent)  {
 														<h:outputText value="#{msgs.patdetails_search_button2}" /></span>
 														</a> 
                                                                                                        
-																	<a title="<h:outputText value="#{msgs.patdetails_search_button1}"/>"  class="button" href="javascript:ClearContents('basicViewformData');">
+																	<a title="<h:outputText value="#{msgs.patdetails_search_button1}"/>"  class="button" href="javascript:
+																	if(document.getElementById('erromessage1')!=null){
+																		document.getElementById('erromessage1').innerHTML='';
+																	}
+																	if(document.getElementById('erromessage2')!=null){
+																		document.getElementById('erromessage2').innerHTML='';
+																	}
+																	if(document.getElementById('erromessage3')!=null){
+																		document.getElementById('erromessage3').innerHTML='';
+																	}
+																	if(document.getElementById('erromessage4')!=null){
+																		document.getElementById('erromessage4').innerHTML='';
+																	}
+																	document.getElementById('duplicateIdsDiv').innerHTML='';
+																	document.getElementById('errormessages').innerHTML='';
+																	document.getElementById('lidAlreadyfoundDiv').innerHTML='';
+																	ClearContents('basicViewformData');">
                                                                         <span><h:outputText value="#{msgs.patdetails_search_button1}"/></span>
                                                                     </a>
                                                                 </h:column>
@@ -985,7 +1001,41 @@ function showExtraTabDivs(divId,thisEvent)  {
                                                                 </nobr>
                                                             </td>
                                                             <td>
-                                                                <a title="<h:outputText value="#{msgs.patdetails_search_button1}"/>" class="button" href="javascript:ClearContents('basicValidateAddformData');">
+                                                                <a title="<h:outputText value="#{msgs.patdetails_search_button1}"/>" class="button" href="javascript:void(0);" onclick="javascript:
+																   if(document.getElementById('message5')!=null){
+																		document.getElementById('message5').innerHTML='';
+																	}
+																	if(document.getElementById('errormessage11')!=null){
+																		document.getElementById('errormessage11').innerHTML='';
+																	}
+																	if(document.getElementById('errormessage22')!=null){
+																		document.getElementById('errormessage22').innerHTML='';
+																	}
+																	if(document.getElementById('errormessage33')!=null){
+																		document.getElementById('errormessage33').innerHTML='';
+																	}
+																	if(document.getElementById('errormessage44')!=null){
+																		document.getElementById('errormessage44').innerHTML='';
+																	}
+																	if(document.getElementById('errormessage5')!=null){
+																		document.getElementById('errormessage5').innerHTML='';
+																	}																	 
+																	if(document.getElementById('errormessage6')!=null){
+																		document.getElementById('errormessage6').innerHTML='';
+																	}
+																	if(document.getElementById('errormessage7')!=null){
+																		document.getElementById('errormessage7').innerHTML='';
+																	}
+																	if(document.getElementById('errormessage8')!=null){
+																		document.getElementById('errormessage8').innerHTML='';
+																	}
+																	if(document.getElementById('errormessage9')!=null){
+																		document.getElementById('errormessage9').innerHTML='';
+																	}
+																	document.getElementById('duplicateIdsDiv').innerHTML='';
+																	document.getElementById('errormessages').innerHTML='';
+																	document.getElementById('lidAlreadyfoundDiv').innerHTML='';	
+																ClearContents('basicValidateAddformData');">
                                                                     <span><h:outputText value="#{msgs.patdetails_search_button1}"/></span>
                                                                 </a>
                                                             </td>
@@ -1135,7 +1185,26 @@ function showExtraTabDivs(divId,thisEvent)  {
                                                                            <span><h:outputText value="#{msgs.source_merge_button}"/></span>
                                                                        </a>                                     
                                                                 </nobr> 
-                                                             <h:outputLink title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:ClearContents('basicMergeformData')" >
+                                                             <h:outputLink title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:
+																	if(document.getElementById('lidmsg1')!=null){
+																		document.getElementById('lidmsg1').innerHTML='';
+																	}
+																	if(document.getElementById('lidmsg2')!=null){
+																		document.getElementById('lidmsg2').innerHTML='';
+																	}
+																	if(document.getElementById('lidmsg3')!=null){
+																		document.getElementById('lidmsg3').innerHTML='';
+																	}
+																	if(document.getElementById('lidmsg4')!=null){
+																		document.getElementById('lidmsg4').innerHTML='';
+																	}
+																	 if(document.getElementById('lidmsg5')!=null){
+																		document.getElementById('lidmsg5').innerHTML='';
+																	}
+																	document.getElementById('duplicateIdsDiv').innerHTML='';
+																	document.getElementById('errormessages').innerHTML='';
+																	document.getElementById('lidAlreadyfoundDiv').innerHTML='';	
+															        ClearContents('basicMergeformData')" >
                                                                <span><h:outputText value="#{msgs.clear_button_label}"/></span>
                                                               </h:outputLink>
                                                                </td>

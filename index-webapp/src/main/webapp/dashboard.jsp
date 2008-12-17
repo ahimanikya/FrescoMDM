@@ -197,7 +197,10 @@
                       </td>
                       <td>
                            <a href="javascript:void(0)" 
-							 onclick="javascript:getFormValues('QuickSearchForm');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/recorddetailsservice.jsf?pageName=dashboard.jsf&pageFrom=dashboard&singleEuidSearch=true&random='+rand+'&'+queryStr,'duplicateIdsDiv','')"						  class="button" 
+							 onclick="javascript:
+							 document.getElementById('duplicateIdsDiv').innerHTML='';
+							 document.getElementById('messages').innerHTML='';
+							 getFormValues('QuickSearchForm');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/recorddetailsservice.jsf?pageName=dashboard.jsf&pageFrom=dashboard&singleEuidSearch=true&random='+rand+'&'+queryStr,'duplicateIdsDiv','')"						  class="button" 
 						     title="<h:outputText value="#{msgs.search_button_label}"/>" >
 							 <span><h:outputText value="#{msgs.search_button_label}"/></span></a>
 
@@ -307,11 +310,11 @@
         
         <div id="qs" class="dashboardSummaryQS"> 
             <h:form id="compareform">
-            <table border="0" cellspacing="4" cellpadding="4" width="100%"> 
+            <table border="0" cellspacing="3" cellpadding="2" width="100%" align="left"> 
             <!--Caption included-->
                 <!--Caption class = "euidHeadMessage"> Compare EUID's </caption-->                
                 <tr>
-                     <td><h:outputText value="#{msgs.EUID1}"/></td>
+                     <td><nobr><h:outputText value="#{msgs.EUID1}"/></nobr></td>
                     <td><h:inputText  id="euid1Field" title="EUID 1" onblur="javascript:checkDuplicateFileds('compareform',this,'#{msgs.already_found_error_text}')" value="#{DashboardHandler.euid1}" maxlength="#{SourceHandler.euidLength}" /></td>
                      <td>&nbsp;</td>
                </tr>
@@ -328,14 +331,28 @@
                 <tr>
                     <td><h:outputText value="#{msgs.EUID4}"/></td>
                     <td><h:inputText  id="euid4Field"  title="EUID 4"  onblur="javascript:checkDuplicateFileds('compareform',this,'#{msgs.already_found_error_text}')" value="#{DashboardHandler.euid4}" maxlength="#{SourceHandler.euidLength}" /></td>
-                    <td align="left">
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td align="right">
+					    <nobr>
                             <a href="javascript:void(0)"   
-                             onclick="javascript:getFormValues('compareform');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/recorddetailsservice.jsf?collectEuids=true&pageFrom=dashboard&compareEuids=true&random='+rand+'&'+queryStr,'duplicateIdsDiv','')"
+                             onclick="javascript:
+							 document.getElementById('duplicateIdsDiv').innerHTML='';
+							 document.getElementById('messages').innerHTML='';
+							 getFormValues('compareform');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/recorddetailsservice.jsf?collectEuids=true&pageFrom=dashboard&compareEuids=true&random='+rand+'&'+queryStr,'duplicateIdsDiv','')"
 							 class="button" 
 						     title="<h:outputText value="#{msgs.dashboard_compare_but_text}"/>" >   
 							 <span><h:outputText value="#{msgs.dashboard_compare_but_text}"/></span>
-                      </a>
-                    </td>
+                          </a>
+ 						   <a title="<h:outputText value="#{msgs.clear_button_label}"/>" class="button"  href="javascript:void(0)" onclick="javascript:
+						   document.getElementById('duplicateIdsDiv').innerHTML='';
+						   document.getElementById('messages').innerHTML='';
+						   ClearContents('compareform');">
+						   <span><h:outputText value="#{msgs.clear_button_label}"/></span>
+						   </a>
+					    </nobr>
+				   </td>
                 </tr>
             </table>
             <input type="hidden" id="duplicateLid" title="duplicateLid" /> 
