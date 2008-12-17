@@ -176,7 +176,7 @@ public class DomainRecordDetailDialog extends javax.swing.JDialog {
         setTitle(org.openide.util.NbBundle.getMessage(DomainRecordDetailDialog.class, "LBL_DOMAIN_RECORD_DETAIL_PROPERTIES")); // NOI18N
         setResizable(false);
 
-        jLabel1.setText(org.openide.util.NbBundle.getMessage(DomainRecordDetailDialog.class, "LBL_DOMAIN_RECORD_DETAIL_FIELD")); // NOI18N
+        jLabel1.setText(org.openide.util.NbBundle.getMessage(DomainRecordDetailDialog.class, "LBL_DOMAIN_RECORD_DETAIL_FIELD_Colon")); // NOI18N
 
         jPanelFieldGroup.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(DomainRecordDetailDialog.class, "LBL_FIELD_GROUP_PROPERTIES"))); // NOI18N
 

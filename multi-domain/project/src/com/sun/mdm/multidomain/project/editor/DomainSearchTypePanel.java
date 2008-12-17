@@ -265,7 +265,7 @@ public class DomainSearchTypePanel extends javax.swing.JDialog {
 
         jLabel1.setText(org.openide.util.NbBundle.getMessage(DomainSearchTypePanel.class, "LBL_SEARCH_SCREEN_TITLE")); // NOI18N
 
-        jLabel2.setText(org.openide.util.NbBundle.getMessage(DomainSearchTypePanel.class, "LBL_DOMAIN_SEARCH_RESULT_FIELD")); // NOI18N
+        jLabel2.setText(org.openide.util.NbBundle.getMessage(DomainSearchTypePanel.class, "LBL_DOMAIN_SEARCH_RESULT_FIELD_Colon")); // NOI18N
 
         jLabelInstruction.setText(org.openide.util.NbBundle.getMessage(DomainSearchTypePanel.class, "LBL_DOMAIN_SEARCH_TYPE_INSTRUCTION")); // NOI18N
 
