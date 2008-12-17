@@ -29,7 +29,7 @@ package com.sun.mdm.multidomain.sql;
  */
 public abstract class AbstractBuilder {
 
-    protected String[] table;
+    protected String[] tables;
 
     public abstract String getCommand();
 
@@ -39,9 +39,9 @@ public abstract class AbstractBuilder {
 
     public String getTable() {
         StringBuffer ret = new StringBuffer();
-        for (int index = 0; index < table.length; index++) {
-            ret.append(table[index]);
-            if (index < table.length - 1) {
+        for (int index = 0; index < tables.length; index++) {
+            ret.append(tables[index]);
+            if (index < tables.length - 1) {
                 ret.append(",");
             }
         }
@@ -49,6 +49,6 @@ public abstract class AbstractBuilder {
     }
 
     public void setTable(String... tbl) {
-        this.table = tbl;
+        this.tables = tbl;
     }
 }

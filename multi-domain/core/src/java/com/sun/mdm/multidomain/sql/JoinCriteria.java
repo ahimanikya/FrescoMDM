@@ -26,42 +26,25 @@ package com.sun.mdm.multidomain.sql;
  *
  * @author David Peh
  */
-public class MatchCriteria extends Criteria {
+public class JoinCriteria extends MatchCriteria {
 
-    public static enum OPERATOR {
+    public static enum JOIN_TYPE {
 
-        EQUALS("="),
-        GREATER(">"),
-        GREATEREQUAL(">="),
-        LESS("<"),
-        LESSEQUAL("<="),
-        LIKE("LIKE"),
-        NOTEQUAL("<>"),;
-        private final String literal;
+        LEFTJOIN("LEFT JOIN"),
+        RIGHTJOIN("RIGHT JOIN"),;
+        private final String joinType;
 
-        OPERATOR(String operator) {
-            this.literal = operator;
+        JOIN_TYPE(String type) {
+            this.joinType = type;
+        }
+
+        @Override
+        public String toString() {
+            return joinType;
         }
     }
-   
-    private final String operator;
-    private final String left;
-    private final String right;
 
-    public MatchCriteria(String left, OPERATOR operator, String right) {
-        this.operator = operator.literal;
-        this.left = left;
-        this.right = right;
-
-    }
-
-    public String write() {
-        StringBuffer sb = new StringBuffer();
-        sb.append(left);
-        sb.append(' ');
-        sb.append(operator);
-        sb.append(' ');
-        sb.append(right);
-        return sb.toString();
+    public JoinCriteria(String left, OPERATOR operator, String right) {
+        super(left, OPERATOR.EQUALS, right);
     }
 }

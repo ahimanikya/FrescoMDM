@@ -27,13 +27,16 @@ import java.util.List;
 
 /**
  *
- * @author davidp
+ * @author David Peh
  */
 public class SelectBuilder extends AbstractBuilder {
 
     private final List<String> columns = new ArrayList<String>();
     private final List<OrderBy> orderBy = new ArrayList<OrderBy>();
     private final List<Criteria> criteria = new ArrayList<Criteria>();
+    private String[] joinTables = new String[0];
+    private Criteria joinConditions = null;
+    private JoinCriteria.JOIN_TYPE joinType = null;
 
     @Override
     public String getCommand() {
@@ -52,16 +55,20 @@ public class SelectBuilder extends AbstractBuilder {
                 what.append(',');
             }
         }
-        return what.toString() + " FROM ";
+
+        what.append(" FROM ");
+        return what.toString();
     }
 
     public String getCriteria() {
-        if (criteria.size() == 0) {
-            return "";
-        }
-        StringBuffer sb = new StringBuffer(" WHERE ");
-        for (Criteria crit : criteria) {
-            sb.append(crit.write());
+        StringBuffer sb = new StringBuffer();
+        sb.append(getJoin());
+        if (criteria.size() > 0) {
+
+            sb.append(" WHERE ");
+            for (Criteria crit : criteria) {
+                sb.append(crit.write());
+            }
         }
         sb.append(getOrderBy());
         return sb.toString();
@@ -82,6 +89,26 @@ public class SelectBuilder extends AbstractBuilder {
         return sb.toString();
     }
 
+    public String getJoin() {
+        if (joinTables.length == 0 || joinConditions == null) {
+            return "";
+        }
+        StringBuffer sb = new StringBuffer(" ");
+        sb.append(joinType.toString());
+        sb.append(" (");
+        for (int i = 0; i < joinTables.length; i++) {
+            String tbl = joinTables[i];
+            sb.append(tbl);
+            if (i < joinTables.length - 1) {
+                sb.append(',');
+            }
+        }
+        sb.append(')');
+        sb.append(" ON ");
+        sb.append(joinConditions.write());
+        return sb.toString();
+    }
+
     public void addCriteria(Criteria crit) {
         if (crit != null) {
             criteria.add(crit);
@@ -98,5 +125,11 @@ public class SelectBuilder extends AbstractBuilder {
         if (order != null) {
             orderBy.add(order);
         }
+    }
+
+    public void addJoin(String[] joinTables, JoinCriteria.JOIN_TYPE joinType, Criteria joinConditions) {
+        this.joinTables = joinTables;
+        this.joinConditions = joinConditions;
+        this.joinType = joinType;
     }
 }
