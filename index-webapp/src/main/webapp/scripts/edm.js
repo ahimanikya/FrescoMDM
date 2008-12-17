@@ -2365,33 +2365,27 @@ function enableallfields(thisForm)  {
  return;
 }
  
-
- function showUnmergeViewSources(totalSources)  {
+function showUnmergeViewSources(cnt,countEnt)  {
 	var divId;
-	for(var i = 0 ; i <totalSources ; i ++) {
-		divId = 'unmergepreviewmainDupSources'+i;
-	 	if (document.getElementById(divId).style.visibility == 'visible')    {
+	var spacerDiv;//spacer<%=sCount%><%=countEnt%>
+ 	for(var c = 0 ; c <countEnt ; c++) {
+ 		divId = 'unmergepreviewmainDupSources'+cnt+c;
+        spacerDiv = 'spacers'+c+cnt;
+ 		//var divID = document.getElementById(divId);
+		if (document.getElementById(divId).style.visibility == 'visible')    {
 			document.getElementById(divId).style.visibility = "hidden";
 			document.getElementById(divId).style.display = "none";
-		} else {
+		}else {
 			document.getElementById(divId).style.visibility = "visible";
 			document.getElementById(divId).style.display = "block";
 		}
-	}
 
-}
- 
-
- function showUnmergeViewSources(totalSources)  {
-	var divId;
-	for(var i = 0 ; i <totalSources ; i ++) {
-		divId = 'unmergepreviewmainDupSources'+i;
-	 	if (document.getElementById(divId).style.visibility == 'visible')    {
-			document.getElementById(divId).style.visibility = "hidden";
-			document.getElementById(divId).style.display = "none";
-		} else {
-			document.getElementById(divId).style.visibility = "visible";
-			document.getElementById(divId).style.display = "block";
+		if (document.getElementById(spacerDiv).style.visibility == 'visible')    {
+			document.getElementById(spacerDiv).style.visibility = "hidden";
+			document.getElementById(spacerDiv).style.display = "none";
+		}else {
+			document.getElementById(spacerDiv).style.visibility = "visible";
+			document.getElementById(spacerDiv).style.display = "block";
 		}
 	}
 
