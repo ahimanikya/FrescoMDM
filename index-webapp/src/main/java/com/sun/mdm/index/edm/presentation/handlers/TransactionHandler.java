@@ -1191,7 +1191,8 @@ public class TransactionHandler extends ScreenConfiguration {
      * 
      */
     
-    public HashMap previewUnmergeEnterpriseObject(String transactionNumber, String euid) {
+    public ArrayList previewUnmergeEnterpriseObject(String transactionNumber, String euid) {
+        ArrayList retHashMapArrayList = new ArrayList();// fix for 124
         HashMap retHashMap = new HashMap();
         try {
 
@@ -1209,7 +1210,8 @@ public class TransactionHandler extends ScreenConfiguration {
 
                 retHashMap.put(TransactionHandler.CONCURRENT_MOD_ERROR,
                         "'" + destinationEO.getEUID() + "' " + bundle.getString("concurrent_mod_text") + " " + bundle.getString("login_try_again_text"));
-                return retHashMap;
+                retHashMapArrayList.add(retHashMap);
+                return retHashMapArrayList;
             }
 
             MergeResult unMergeResult = masterControllerService.previewUnmerge(transactionNumber);
@@ -1217,7 +1219,8 @@ public class TransactionHandler extends ScreenConfiguration {
             
             if (unMergeResult.getDestinationEO() != null && unMergeResult.getSourceEO() != null) {
                  //retHashMap = midmUtilityManager.getEnterpriseObjectAsHashMap(unMergeResult.getDestinationEO(), screenObject);
-                 retHashMap = midmUtilityManager.getEnterpriseObjectAsHashMap(unMergeResult.getSourceEO(), screenObject);
+                 retHashMapArrayList.add(midmUtilityManager.getEnterpriseObjectAsHashMap(unMergeResult.getSourceEO(), screenObject));// fix for 124
+                 retHashMapArrayList.add(midmUtilityManager.getEnterpriseObjectAsHashMap(unMergeResult.getDestinationEO(), screenObject));
              }
         } catch (ProcessingException ex) {
             String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
@@ -1241,7 +1244,7 @@ public class TransactionHandler extends ScreenConfiguration {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessaage, ex.toString()));
             return null;
         }
-        return retHashMap;
+        return retHashMapArrayList;
     }
 
     

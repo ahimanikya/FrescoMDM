@@ -331,7 +331,11 @@ boolean isSessionActive = true;
                                                     <div id="mainEuidContent<%=personfieldValuesMapEO.get("EUID")%>" class="blue" >
                                                         <table border="0" cellspacing="0" cellpadding="0" >
                                                             <tr>
-                                                                <td class="menutop">Source EO</td>
+															   <%if(countEnt==0){%>
+                                                                 <td class="menutop"><%=bundle.getString("sourceeo")%></td>
+																<%}else{%>
+																  <td class="menutop"><%=bundle.getString("destneo")%></td>
+																<%}%>
                                                             </tr> 
                                                                  <tr>
                                                                     <td>

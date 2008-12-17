@@ -232,13 +232,13 @@ var EO2SrcCount = "";
 									      <tr>
 										    <td align="right">
                                             <a href="javascript:void(0)" 
-                                               onclick="javascript:getFormValues('unmergeForm');showExtraDivs('unmergePopupDiv',event);ajaxURL('/<%=URI%>/ajaxservices/transactiondetailsservice.jsf?'+queryStr+'&unMergeFinal=true&rand=<%=rand%>','mainDupSource','');document.getElementById('unmergePopupDiv').style.visibility='hidden';document.getElementById('unmergePopupDiv').style.display='none';" 
+                                               onclick="javascript:getFormValues('unmergeForm');showExtraDivs('unmergePopupDiv',event);ajaxURL('/<%=URI%>/ajaxservices/transactiondetailsservice.jsf?'+queryStr+'&unMergeFinal=true&rand=<%=rand%>','mainDupSource','');document.getElementById('unmergePreviewPane').innerHTML='';document.getElementById('unmergePopupDiv').style.visibility='hidden';document.getElementById('unmergePopupDiv').style.display='none';" 
 											   class="button" title="<h:outputText value="#{msgs.ok_text_button}" />">
                                                 <span><h:outputText value="#{msgs.ok_text_button}" /></span>
                                             </a>   
 											</td>
 										    <td>
-                                            <a href="javascript:void(0)" onclick="javascript:showExtraDivs('unmergePopupDiv',event);ajaxURL('/<%=URI%>/ajaxservices/transactiondetailsservice.jsf?'+queryStr+'&cancelUnmerge=true&rand=<%=rand%>','mainDupSource','');"  class="button" title="<h:outputText value="#{msgs.cancel_but_text}" />">
+                                            <a href="javascript:void(0)" onclick="javascript:showExtraDivs('unmergePopupDiv',event);document.getElementById('unmergePreviewPane').innerHTML='';ajaxURL('/<%=URI%>/ajaxservices/transactiondetailsservice.jsf?'+queryStr+'&cancelUnmerge=true&rand=<%=rand%>','mainDupSource','');"  class="button" title="<h:outputText value="#{msgs.cancel_but_text}" />">
                                                 <span><h:outputText value="#{msgs.cancel_but_text}" /></span>
                                             </a>   
 											</td>
