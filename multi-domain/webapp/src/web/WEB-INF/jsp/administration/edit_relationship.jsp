@@ -167,9 +167,17 @@ function validateEditRelationshipForm() {
         } else {
             tempAttr.defaultValue = attr.DefaultValueField.value;
         }
+        if(isEmpty (tempAttr.name)) {
+            alert("Enter name of the attribute.");
+            attr.AttributeNameField.focus();
+            return false;
+        }
+        if( !isValidCustomAttribute (tempAttr.dataType, tempAttr.defaultValue) ) {
+            alert(tempAttr.defaultValue + " is not a valid value for attribute " + tempAttr.name );
+            return false;
+        }
         customAttributes.push(tempAttr);
     }
-
     relationshipdef.extendedAttributes = customAttributes;
     //alert("Updating data now ............. extended attr: " + relationshipdef.extendedAttributes.length);
     

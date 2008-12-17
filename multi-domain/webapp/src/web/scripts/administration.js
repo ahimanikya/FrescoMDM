@@ -118,9 +118,18 @@ function validateRelationshipForm() {
         tempAttr.isRequired = attr.RequiredField.checked;
         tempAttr.searchable = attr.SearchableField.checked;
         tempAttr.id = attr.IdField.value;
+        
+        if(isEmpty (tempAttr.name)) {
+            alert("Enter name of the attribute.");
+            attr.AttributeNameField.focus();
+            return false;
+        }
+        if( !isValidCustomAttribute (tempAttr.dataType, tempAttr.defaultValue) ) {
+            alert(tempAttr.defaultValue + " is not a valid value for attribute " + tempAttr.name );
+            return false;
+        }
         customAttributes.push(tempAttr);      
     }
-
     relationshipdef.extendedAttributes = customAttributes;
     //alert("extended attr: " + relationshipdef.extendedAttributes);
 
