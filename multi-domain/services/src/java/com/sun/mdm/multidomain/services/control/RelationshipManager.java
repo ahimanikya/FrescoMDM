@@ -579,7 +579,6 @@ public class RelationshipManager {
      */
     public String addRelationship(RelationshipRecord relationshipRecord)
         throws ServiceException {
-        if (!TBD) {
         long id = 0;
         try {
             Relationship relationship = QueryBuilder.buildRelationship(relationshipRecord);
@@ -591,10 +590,7 @@ public class RelationshipManager {
         } catch (UserException uex) {
             throw new ServiceException(uex);
         }
-        return Long.toString(id);
-        }
-        //demo
-        return relationshipRecord.toString();  
+        return Long.toString(id); 
     }
     
     /**
