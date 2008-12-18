@@ -540,6 +540,8 @@ function populateRelationshipDetails(relationshipId, indexNum) {
     if(cachedSearchResults != null && cachedSearchResults[indexNum]!= null) {
         sourcePane.attr("title",cachedSearchResults[indexNum].sourceHighLight);
         targetPane.attr("title",cachedSearchResults[indexNum].targetHighLight);
+        sourcePane.toggleSummaryIcon(); // revert back the view to summary
+        targetPane.toggleSummaryIcon(); // revert back the view to summary
         var relationshipDef = cachedRelationshipDefs[relationshipDefName];
     
         var relationshipRecordPane = dijit.byId("relationshipRecordDetailsPane"); 
@@ -573,8 +575,6 @@ function populateRelationshipDetails_Callback (data) {
     var sourceRecordDetails =  data.sourceRecord.attributes;
     dwr.util.removeAllRows("sourceRecordInSummary");    
     dwr.util.removeAllRows("sourceRecordInDetail");
-    showRecordFullDetails('sourceRecordSummaryDiv','sourceRecordDetailDiv',false);
-    showRecordFullDetails('targetRecordSummaryDiv','targetRecordDetailDiv',false);
     summaryFieldCount = 0;
     for(i=0; i<sourceRecordDetails.length; i++) {
         fieldName = sourceRecordDetails[i].name;
