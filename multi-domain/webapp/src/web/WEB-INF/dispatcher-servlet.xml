@@ -49,7 +49,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
                 
                 
                 <prop key="/m_byrecord_select_record.htm">manage_byrecord_select_record</prop>
-                <prop key="/m_byrecord_add_relationship">manage_byrecord_add_relationship</prop>
+                <prop key="/m_byrecord_add_relationship.htm">manage_byrecord_add_relationship</prop>
                 
                 
                 
