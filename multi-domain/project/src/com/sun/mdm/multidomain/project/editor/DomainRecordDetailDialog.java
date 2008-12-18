@@ -113,10 +113,12 @@ public class DomainRecordDetailDialog extends javax.swing.JDialog {
         }
         TableModelFieldGroup fieldGroupModel = new TableModelFieldGroup(groups);
         jTableFieldGroup.setModel(fieldGroupModel);
+        /**
         if (groups.size() > 0) {
             TableModelField fieldModel = new TableModelField(groups.get(0));
             this.jTableField.setModel(fieldModel);
         }
+         */ 
         
         
     }
