@@ -393,14 +393,16 @@ public class EditorMainApp {
                 mMapDomainNodes.put(domainName, domainNode);
                 mMapDomainNodesSaved.put(domainName, domainNode);
                 mEditorMainPanel.addDomainNodeToOverview(domainNode, true);
+                /**
                 FileObject midmDomainFolder = configFolder.getFileObject(MultiDomainProjectProperties.MIDM_NODE_DOMAIN_FOLDER);
                 if (midmDomainFolder == null) {
                     midmDomainFolder = configFolder.createFolder(MultiDomainProjectProperties.MIDM_NODE_DOMAIN_FOLDER);
                 }
-                FileObject file = midmDomainFolder.getFileObject(domainName + MultiDomainProjectProperties.MIDM_NODE_DOMAIN_XML);
+                 */ 
+                FileObject file = newDomainFolder.getFileObject(MultiDomainProjectProperties.MIDM_NODE_DOMAIN_XML);
 
                 if (file == null) {
-                    file = midmDomainFolder.createData(domainName + MultiDomainProjectProperties.MIDM_NODE_DOMAIN_XML);
+                    file = newDomainFolder.createData(MultiDomainProjectProperties.MIDM_NODE_DOMAIN_XML);
                 }
 
                 String midmNodeXml = domainNode.writeDomainObject();
