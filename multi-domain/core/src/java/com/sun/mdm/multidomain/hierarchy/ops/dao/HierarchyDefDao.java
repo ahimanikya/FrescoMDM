@@ -7,7 +7,7 @@
  */
 package com.sun.mdm.multidomain.hierarchy.ops.dao;
 
-import com.sun.mdm.multidomain.hierarchy.ops.dto.HierarchyDefDto;
+import com.sun.mdm.multidomain.hierarchy.HierarchyDef;
 import com.sun.mdm.multidomain.hierarchy.ops.exceptions.*;
 
 public interface HierarchyDefDao {
@@ -15,12 +15,12 @@ public interface HierarchyDefDao {
     /**
      * Inserts a new row in the hierarchy_def table.
      */
-    public long insert(HierarchyDefDto dto) throws HierarchyDefDaoException;
+    public long insert(HierarchyDef dto) throws HierarchyDefDaoException;
 
     /**
      * Updates a single row in the hierarchy_def table.
      */
-    public int update(HierarchyDefDto dto) throws HierarchyDefDaoException;
+    public int update(HierarchyDef dto) throws HierarchyDefDaoException;
 
     /**
      * Deletes a single row in the hierarchy_def table.
