@@ -66,7 +66,7 @@ public class RelationshipEaDaoImpl extends AbstractDAO implements RelationshipEa
     /**
      * Method 'RelationshipEaDaoImpl'
      *
-     * @param userConn
+     * @param conn
      */
     public RelationshipEaDaoImpl(final Connection conn) {
         this.mConn = conn;
@@ -87,7 +87,7 @@ public class RelationshipEaDaoImpl extends AbstractDAO implements RelationshipEa
             String sqlStr = SQLBuilder.buildSQL(builder);
             stmt = mConn.prepareStatement(sqlStr);
             int index = 1;
-            stmt.setNull(index++, java.sql.Types.INTEGER);
+            stmt.setNull(index++, java.sql.Types.NULL);
             stmt.setLong(index++, dto.getRelationshipDefId());
             stmt.setString(index++, dto.getAttributeName());
             stmt.setString(index++, dto.getColumnName());
