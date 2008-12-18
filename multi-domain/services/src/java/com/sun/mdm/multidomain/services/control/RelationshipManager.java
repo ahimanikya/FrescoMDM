@@ -74,16 +74,12 @@ public class RelationshipManager {
     private MultiDomainService multiDomainService;
     private MultiDomainMetaService multiDomainMetaService;
 
-    // demo data
-    private List<RelationshipDef> rts = new ArrayList<RelationshipDef>(); 
     private boolean TBD = true;
 
     /**
      * Create a instance of RelationshipManager.
      */
     public RelationshipManager () {   
-        //TDB
-        init();
     }
 
     /**
@@ -260,64 +256,7 @@ public class RelationshipManager {
         }
     	return relationshipDefs;
     }
-        
-    private void init(){
-        // demo data
-    	RelationshipDef rt1 = new RelationshipDef();
-    	rt1.setName("worksfor");
-        rt1.setId(1);
-        rt1.setSourceDomain("Person");
-    	rt1.setTargetDomain("Company");    	
-    	Attribute a1 = new Attribute("salary", "yearly income", AttributeType.FLOAT, "500000.0");
-    	rt1.setAttribute(a1);
-    	
-    	RelationshipDef rt2 = new RelationshipDef();
-    	rt2.setName("employedby");
-        rt2.setId(1);
-        rt2.setSourceDomain("Person");
-    	rt2.setTargetDomain("Company");    	
-    	Attribute a2 = new Attribute("hiredDate", "hired date", AttributeType.DATE, "09/10/2008");
-    	rt2.setAttribute(a2);
-
-    	RelationshipDef rt3 = new RelationshipDef();
-        rt3.setName("contractwith");
-        rt3.setId(1);
-    	rt3.setSourceDomain("Person");
-    	rt3.setTargetDomain("Company");    	
-    	Attribute a3 = new Attribute("startDate", "date started", AttributeType.DATE, "09/10/2008");
-    	rt3.setAttribute(a3);
-        
-    	RelationshipDef rt4 = new RelationshipDef();
-    	rt4.setName("investon");
-        rt4.setId(2);
-        rt4.setSourceDomain("Company");
-    	rt4.setTargetDomain("Product");
-    	Attribute a4 = new Attribute("invest", "total investment", AttributeType.FLOAT, "500000.0");
-    	rt4.setAttribute(a4);
-    	
-    	RelationshipDef rt5 = new RelationshipDef();
-    	rt5.setName("designon");
-        rt5.setId(3);
-        rt5.setSourceDomain("Person");
-    	rt5.setTargetDomain("Product");
-    	Attribute a5 = new Attribute("location", "phyiscal location", AttributeType.STRING, "Monrovia");
-    	rt5.setAttribute(a5);
-    	
-        RelationshipDef rt6 = new RelationshipDef();
-        rt6.setName("workon");
-        rt6.setId(3);
-    	rt6.setSourceDomain("Person");
-    	rt6.setTargetDomain("Product");
-    	Attribute a6 = new Attribute("location", "phyiscal location", AttributeType.STRING, "Monrovia");
-    	rt6.setAttribute(a6);    	       
-    	rts.add(rt1);
-    	rts.add(rt2);
-    	rts.add(rt3);    
-        rts.add(rt4);   
-        rts.add(rt5);   
-        rts.add(rt6);                           
-    }
-    
+          
     /**
      *  Get a list of DomainRelationshipDefObject for the given domain.
      * @param domain Domain name.
@@ -391,7 +330,7 @@ public class RelationshipManager {
         throws ServiceException {
         
         List<RelationshipView> relationships = new ArrayList<RelationshipView>(); 
-        if (!TBD) {
+        
         try {
              // build search options and criteria for source and target
             MultiDomainSearchOptions mdSearchOptions = QueryBuilder.buildMultiDomainSearchOptions(sourceDomainSearch, targetDomainSearch);
@@ -405,45 +344,7 @@ public class RelationshipManager {
         } catch(UserException uex) {
             throw new ServiceException(uex);
         }
-        return relationships;
-        }
-        //demo
-        RelationshipView rs1 = new RelationshipView();
-        rs1.setSourceDomain(sourceDomainSearch.getName());
-        rs1.setTargetDomain(targetDomainSearch.getName());
-        rs1.setName(relationshipSearch.getName());
-        rs1.setId("relationshipId");
-        rs1.setSourceEUID("sourceEUID");
-        rs1.setTargetEUID("targetEUID");
-        rs1.setSourceHighLight("sourceHighLight");
-        rs1.setTargetHighLight("targetHighLight");
-        relationships.add(rs1);
         
-         while(sourceDomainSearch.hasNext()) {
-             com.sun.mdm.multidomain.services.model.Attribute sf = sourceDomainSearch.next();
-             System.out.println("Source => SearchField:" + sf.getName() + ":" + sf.getValue());
-         }
-                
-         while(targetDomainSearch.hasNext()) {
-             com.sun.mdm.multidomain.services.model.Attribute sf = targetDomainSearch.next();
-             System.out.println("target => SearchField:" + sf.getName() + ":" + sf.getValue());
-         }
-         
-         while(relationshipSearch.hasNext()) {
-             com.sun.mdm.multidomain.services.model.Attribute sf = relationshipSearch.next();
-             System.out.println("relationship => SearchField:" + sf.getName() + ":" + sf.getValue());
-         }
-        
-        RelationshipView rs2 = new RelationshipView();
-        rs2.setSourceDomain(sourceDomainSearch.getName());
-        rs2.setTargetDomain(targetDomainSearch.getName());
-        rs2.setName(relationshipSearch.getName());
-        rs2.setId("relationshipId");
-        rs2.setSourceEUID("sourceEUID");
-        rs2.setTargetEUID("targetEUID");
-        rs2.setSourceHighLight("sourceHighLight");
-        rs2.setTargetHighLight("targetHighLight");        
-        relationships.add(rs2);       
         return relationships; 
     }
     
