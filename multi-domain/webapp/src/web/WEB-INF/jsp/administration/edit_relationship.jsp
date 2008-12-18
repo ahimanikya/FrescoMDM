@@ -68,14 +68,18 @@
                         <tr>
                             <td>
                                 <!-- Pre-defined attributes section -->                               
-                                <jsp:include page="/WEB-INF/jsp/administration/predefined_attributes.jsp?prefix=editrelationship" flush="true" />
+                                <jsp:include page="/WEB-INF/jsp/administration/predefined_attributes.jsp" flush="true" >
+                                    <jsp:param name="prefix" value="editrelationship" />
+                                </jsp:include>  
                             </td>
                         </tr>
                         <tr><td><img src="images/spacer.gif" height="6" width="1"></td></tr>
                         <tr>
                             <td>
                                 <!-- Custom attributes section -->
-                                <jsp:include  page="/WEB-INF/jsp/administration/custom_attributes.jsp?prefix=editrelationship" flush="true" />
+                                <jsp:include  page="/WEB-INF/jsp/administration/custom_attributes.jsp" flush="true" >
+                                     <jsp:param name="prefix" value="editrelationship" />
+                                </jsp:include>  
                             </td>
                         </tr>
                        
