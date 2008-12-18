@@ -36,7 +36,6 @@ import com.sun.mdm.multidomain.hierarchy.HierarchyDef;
 import com.sun.mdm.multidomain.attributes.Attribute;
 import com.sun.mdm.multidomain.attributes.AttributeType;
 import com.sun.mdm.multidomain.hierarchy.ops.impl.HierarchyDefDaoImpl;
-import com.sun.mdm.multidomain.hierarchy.ops.impl.HierarchyNodeEaDaoImpl;
 import com.sun.mdm.multidomain.hierarchy.ops.dao.HierarchyDefDao;
 import com.sun.mdm.multidomain.hierarchy.ops.dto.HierarchyDefDto;
 import com.sun.mdm.multidomain.hierarchy.ops.dto.HierarchyNodeEaDto;
@@ -85,37 +84,16 @@ public class HierarchyDefService implements Serializable {
      * Method 'create'
      *
      */
-    public long create(HierarchyDef hier) throws HierarchyDefDaoException, HierarchyEaDaoException {
-
-        /* HierarchyDef object */
-        HierarchyDefDto hierDto = new HierarchyDefDto();
-
-        copyToHierDto(hier, hierDto);
+    public long create(HierarchyDef hierDef) throws HierarchyDefDaoException, HierarchyEaDaoException {
 
         long hierDefID = 0;
         HierarchyDefDaoImpl hierDefDao = new HierarchyDefDaoImpl(mConn);
         try {
-            hierDefID = hierDefDao.insert(hierDto);
+            hierDefID = hierDefDao.insert(hierDef);
         } catch (HierarchyDefDaoException ex) {
             Logger.getLogger(HierarchyDefService.class.getName()).log(Level.SEVERE, null, ex);
             throw ex;
         }
-
-        /* HierarchyDef Extend Attributes */
-        HierarchyNodeEaDto attDto = new HierarchyNodeEaDto();
-        ArrayList<Attribute> attrList = (ArrayList<Attribute>) hier.getAttributes();
-        HierarchyNodeEaDaoImpl hierEaDao = new HierarchyNodeEaDaoImpl(mConn);
-        for (Attribute att : attrList) {
-            attDto.setHierarchyDefId(hierDefID);
-            attDto.setAttributeName(att.getName());
-            attDto.setColumnName(att.getColumnName());
-            attDto.setColumnType(att.getType().name());
-            attDto.setDefaultValue(att.getDefaultValue());
-            attDto.setIsRequired(att.getIsRequired());
-            attDto.setIsSearchable(att.getIsSearchable());
-            hierEaDao.insert(attDto);
-        }
-
         return hierDefID;
     }
 
@@ -132,12 +110,10 @@ public class HierarchyDefService implements Serializable {
      * Method 'update'
      *
      */
-    public void update(HierarchyDef hier) throws HierarchyDefDaoException {
+    public void update(HierarchyDef hierDef) throws HierarchyDefDaoException {
         /* HierarchyDef object */
-        HierarchyDefDto dto = new HierarchyDefDto();
-        copyToHierDto(hier, dto);
         HierarchyDefDaoImpl dao = new HierarchyDefDaoImpl(mConn);
-        dao.update(dto);
+        dao.update(hierDef);
     }
 
     /**
@@ -164,24 +140,6 @@ public class HierarchyDefService implements Serializable {
         copyFromHierDto(hierarchyDef, hierarchyDefDto);
 
         return hierarchyDef;
-    }
-
-    /**
-     * Method 'copyToHierDto'
-     *
-     */
-    private void copyToHierDto(HierarchyDef hier, HierarchyDefDto dto) {
-        dto.setHierarchyDefId(hier.getId());
-        dto.setHierarchyName(hier.getName());
-        dto.setDescription(hier.getDescription());
-        dto.setDomain(hier.getDomain());
-        dto.setEffectiveFromDate(hier.getEffectiveFromDate());
-        dto.setEffectiveToDate(hier.getEffectiveToDate());
-        dto.setEffectiveFromReq(hier.getEffectiveFromRequired() ? "T" : "F");
-        dto.setEffectiveToReq(hier.getEffectiveToRequired() ? "T" : "F");
-        dto.setEffectiveFromInc(hier.getEffectiveFromIncluded() ? "T" : "F");
-        dto.setEffectiveToInc(hier.getEffectiveToIncluded() ? "T" : "F");
-        dto.setPlugIn(hier.getPlugin());
     }
 
     /**
