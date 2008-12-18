@@ -21,6 +21,10 @@ addButtonDisabled.src = "images/icons/add_button_faded.png";
 
 var isByRelSelectDialogLoaded = false; // Global flag to find out if Select dialog is already loaded for ByRelationship screen
 var isByRelAddDialogLoaded = false; // Global flag to find out if Add dialog is already loaded for ByRelationship screen
+
+var isByRecordSelectDialogLoaded = false;
+var isByRecordAddDialogLoaded = false;
+
 function testResults(){
     
     DomainScreenHandler.getSearchResultFields("Company",testResultsBack);
@@ -91,6 +95,8 @@ function changeViewToByRecord(contentPaneId) {
     initializeByRecordScreen ();
 }
 function initializeByRecordScreen() {  
+    isByRecordSelectDialogLoaded = false;
+    isByRecordAddDialogLoaded = false;
 }
 function initializeByRelationshipScreen() {
     currentSelectedSourceDomain = null; 
@@ -111,6 +117,7 @@ function _deleteChildWidgets( parentId) {
 function showSelectDialog() {
     if(currentView != null && currentView == "by_rel")
       showByRelSelectDialog ();
+    else showByRecordSelectDialog();
 }
 function showByRelSelectDialog() {
     var selectDialog = dijit.byId("byrel_select");
@@ -123,6 +130,24 @@ function showByRelSelectDialog() {
 function hideByRelSelectDialog () {
     dijit.byId('byrel_select').hide();
 }
+
+function showByRecordSelectDialog() {
+    var selectDialog = dijit.byId("byrecord_select");
+    if(selectDialog != null)
+      selectDialog.show();
+    if(isByRecordSelectDialogLoaded) loadDomainsForSelectRecord();
+}
+function showByRecordAddDialog() {
+    var addDialog = dijit.byId("byrecord_add");
+    if(addDialog != null)
+        addDialog.show();
+    if(isByRelAddDialogLoaded) initializeByRecordAddDialog();    
+}
+function initializeByRecordAddDialog() {
+    isByRecordAddDialogLoaded = true;
+    alert("By record add dialog Loaded...");
+}
+
 function showByRelAddDialog(){
     if(currentSelectedSourceDomain == null || currentSelectedTargetDomain==null || currentSelectedRelationshipDef==null)
         return;

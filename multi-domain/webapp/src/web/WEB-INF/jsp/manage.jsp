@@ -20,6 +20,7 @@
 <script type='text/javascript' src='scripts/mdwm.js'></script>
 <script type='text/javascript' src='scripts/manage.js'></script>
 <script type='text/javascript' src='scripts/byrel_api.js'></script>
+<script type='text/javascript' src='scripts/byrecord_api.js'></script>
 <style type="text/css">
             @import "scripts/dijit/themes/mdwm/mdwm.css";
 </style>

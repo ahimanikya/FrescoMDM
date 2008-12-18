@@ -48,6 +48,12 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
                 <prop key="/m_rel_add_relationship_attributes.htm">manage_rel_add_relationship_attributes</prop>
                 
                 
+                <prop key="/m_byrecord_select_record.htm">manage_byrecord_select_record</prop>
+                <prop key="/m_byrecord_add_relationship">manage_byrecord_add_relationship</prop>
+                
+                
+                
+                
             </props>
         </property>
     </bean>
@@ -118,5 +124,9 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
   <bean name="manage_rel_add_relationship_attributes"  
           class="com.sun.mdm.multidomain.presentation.web.ManageRelAddRelationshipAttributesController" />
           
+   <bean name="manage_byrecord_select_record"  
+          class="com.sun.mdm.multidomain.presentation.web.ManageByRecordSelectRecordController" />    
+        <bean name="manage_byrecord_add_relationship"  
+          class="com.sun.mdm.multidomain.presentation.web.ManageByRecordAddRelationshipController" />       
      
 </beans>
