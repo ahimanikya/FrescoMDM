@@ -6,8 +6,6 @@
 package com.sun.mdm.multidomain.project.anttasks;
 
 import com.sun.mdm.multidomain.parser.MultiDomainModel;
-//import com.sun.mdm.multidomain.parser.ParserException;
-//import com.sun.mdm.multidomain.parser.Utils;
 import com.sun.mdm.multidomain.parser.ParserException;
 import com.sun.mdm.multidomain.parser.Utils;
 import com.sun.mdm.multidomain.project.MultiDomainProjectProperties;
@@ -97,22 +95,19 @@ public class MultidomainGeneratorTask extends Task {
         // need to regenerate if source files have been modified
         try {
             
-
-            //generateFiles();
+            generateFiles();
                     
-            generateFiles();                    
-            
-            //generate jar file
+            // generate jar file
             generateJars();
-            
-            //put ejb files in ebj project
+
+            // put ejb files in ebj project
             generateEbjFiles();
 
-            //add lib to ejb project by modifing ejb project's
+            // add lib to ejb project by modifing ejb project's
             // project.properties file.
             addEjbLib();
 
-            //put the web files into war project
+            // put the web files into war project
             generateWarFiles();
             
             File objectFile = new File(mSrcdir, MultiDomainProjectProperties.CONFIGURATION_FOLDER
@@ -493,10 +488,11 @@ public class MultidomainGeneratorTask extends Task {
         srcFileSet.setDir(srcDir);
         
         // copy domain object.xml file
-        File srcDir2 = new File(mSrcdir, MultiDomainProjectProperties.DOMAINS_FOLDER);
+        File srcDir2 = mSrcdir;
         FileSet srcFileSet2 = new FileSet();
         srcFileSet2.setDir(srcDir2);
-        srcFileSet2.setIncludes("**/object.xml");
+        srcFileSet2.setIncludes(MultiDomainProjectProperties.DOMAINS_FOLDER+"/**/object.xml");
+        srcFileSet2.setIncludes(MultiDomainProjectProperties.DOMAINS_FOLDER+"/**/domain.xml");
                 
         Copy copy = (Copy) getProject().createTask("copy");
         copy.setTodir(destDir);
