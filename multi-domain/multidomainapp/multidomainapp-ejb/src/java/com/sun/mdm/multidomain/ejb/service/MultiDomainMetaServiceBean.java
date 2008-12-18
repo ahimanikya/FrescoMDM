@@ -51,6 +51,8 @@ import com.sun.mdm.multidomain.relationship.service.RelationshipDefService;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
+
 
 /**
  * The enterprise beans implementation of MultiDomainMetaService that is explpsed to the clients.
@@ -233,10 +235,10 @@ public class MultiDomainMetaServiceBean implements MultiDomainMetaServiceRemote,
         throws ProcessingException, UserException {
         
         try {
-            Connection con = dataSource.getConnection();            
-            HierarchyDefService hierarchyDefService = new HierarchyDefService(con);            
-            return hierarchyDefService.search(domain);
-        } catch(SQLException sqlEx) {
+           Connection con = dataSource.getConnection();            
+           HierarchyDefService hierarchyDefService = new HierarchyDefService(con);
+           return hierarchyDefService.search(domain);
+        } catch (SQLException sqlEx) {
             throw new ProcessingException(sqlEx);            
         } catch (HierarchyDefDaoException e) {
             throw new ProcessingException(e);
@@ -252,10 +254,10 @@ public class MultiDomainMetaServiceBean implements MultiDomainMetaServiceRemote,
         List<HierarchyDef> hierarchyDefs = null;        
         try {
             Connection con = dataSource.getConnection();            
-            HierarchyDefService hierarchyDefService = new HierarchyDefService(con);                        
+            HierarchyDefService hierarchyDefService = new HierarchyDefService(con);            
             hierarchyDefs = hierarchyDefService.search(domain);
         } catch(SQLException sqlEx) {
-            throw new ProcessingException(sqlEx);                        
+            throw new ProcessingException(sqlEx);                                
         } catch (HierarchyDefDaoException e) {
             throw new ProcessingException(e);
         }
@@ -273,14 +275,14 @@ public class MultiDomainMetaServiceBean implements MultiDomainMetaServiceRemote,
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#getHierarchyDefById() 
      */ 
     public HierarchyDef getHierarchyDefById(long hierarchyId)
-        throws ProcessingException, UserException {
+        throws ProcessingException, UserException {      
         
         try {
             Connection con = dataSource.getConnection();            
             HierarchyDefService hierarchyDefService = new HierarchyDefService(con);                        
             return hierarchyDefService.searchById(hierarchyId);
         } catch(SQLException sqlEx) {
-            throw new ProcessingException(sqlEx);                        
+            throw new ProcessingException(sqlEx);                                
         } catch (HierarchyDefDaoException e) {
             throw new ProcessingException(e);
         }
@@ -290,7 +292,7 @@ public class MultiDomainMetaServiceBean implements MultiDomainMetaServiceRemote,
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService#createHierarchyDef() 
      */        
     public String createHierarchyDef(HierarchyDef hierarchyDef)  
-        throws ProcessingException, UserException {
+        throws ProcessingException, UserException {        
         
         try {
             Connection con = dataSource.getConnection();            
@@ -313,7 +315,7 @@ public class MultiDomainMetaServiceBean implements MultiDomainMetaServiceRemote,
             HierarchyDefService hierarchyDefService = new HierarchyDefService(con);                        
             hierarchyDefService.update(hierarchyDef);
         } catch(SQLException sqlEx) {
-            throw new ProcessingException(sqlEx);                        
+            throw new ProcessingException(sqlEx);                                
         } catch (HierarchyDefDaoException e) {
             throw new ProcessingException(e);
         }
@@ -330,7 +332,7 @@ public class MultiDomainMetaServiceBean implements MultiDomainMetaServiceRemote,
             HierarchyDefService hierarchyDefService = new HierarchyDefService(con);                        
             hierarchyDefService.delete(hierarchyDef);
         } catch(SQLException sqlEx) {
-            throw new ProcessingException(sqlEx);                        
+            throw new ProcessingException(sqlEx);                                
         } catch (HierarchyDefDaoException e) {
             throw new ProcessingException(e);
         }
@@ -342,14 +344,13 @@ public class MultiDomainMetaServiceBean implements MultiDomainMetaServiceRemote,
     public void deleteHierarchyDef(String domain, String name) 
         throws ProcessingException, UserException {
         
-        List<HierarchyDef> hierarchyDefs = null;
-        
+        List<HierarchyDef> hierarchyDefs = null;        
         try {
             Connection con = dataSource.getConnection();            
             HierarchyDefService hierarchyDefService = new HierarchyDefService(con);                        
             hierarchyDefs = hierarchyDefService.search(domain);
         } catch(SQLException sqlEx) {
-            throw new ProcessingException(sqlEx);                        
+            throw new ProcessingException(sqlEx);                                
         } catch (HierarchyDefDaoException e) {
             throw new ProcessingException(e);
         }
@@ -361,7 +362,7 @@ public class MultiDomainMetaServiceBean implements MultiDomainMetaServiceRemote,
                     HierarchyDefService hierarchyDefService = new HierarchyDefService(con);                                
                     hierarchyDefService.delete(hierarchyDef);
                 } catch(SQLException sqlEx) {
-                    throw new ProcessingException(sqlEx);                                
+                    throw new ProcessingException(sqlEx);                    
                 } catch (HierarchyDefDaoException e) {
                     throw new ProcessingException(e);
                 }
