@@ -234,7 +234,7 @@ public class MDConfigManagerTest extends TestCase {
             }
             
             ObjectDefinitionBuilder builder = new ObjectDefinitionBuilder();
-            InputStream  stream = ObjectFactory.class.getResourceAsStream("/domains/Person/object.xml");      
+            InputStream  stream = ObjectFactory.class.getResourceAsStream("/Domains/Person/object.xml");      
             ObjectDefinition person = builder.parse(stream);
             
             ObjectFactory objectFactory = ObjectFactoryRegistry.lookup("Person");        

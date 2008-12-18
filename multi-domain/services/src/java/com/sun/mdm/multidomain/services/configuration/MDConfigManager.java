@@ -69,6 +69,7 @@ import java.util.Collection;
 import java.util.Properties;
 import java.io.InputStream;
 import java.io.BufferedReader;
+
 import org.xml.sax.InputSource;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -87,7 +88,7 @@ public class MDConfigManager {
     public static final int DEFAULT_RECORD_SUMMARY_ID = 1;
     public static final int DEFAULT_RECORD_DETAILS_ID = 1;
     private static final String DOMAIN_CONFIG_DIR = "Domains";
-    private static final String DOMAIN_FILE_NAME = "domain.xml";
+    private static final String DOMAIN_CONFIG_FILE = "domain.xml";
     
     // basic node configuration constants 
         
@@ -314,10 +315,9 @@ public class MDConfigManager {
             SummaryLabel summaryLabel = convertSummaryLabel(domainName, domainFWM.getRecordID());
             domainScreenConfig.setSummaryLabel(summaryLabel);
 
-            //fix me
-            //ArrayList<SearchScreenConfig> sSC = 
-            //         convertSearchType(domainName, domainFWM.getSearchType());
-            //domainScreenConfig.setSearchScreenConfigs(sSC);
+            ArrayList<SearchScreenConfig> sSC = 
+                     convertSearchType(domainName, domainFWM.getSearchType());
+            domainScreenConfig.setSearchScreenConfigs(sSC);
             
             ArrayList<SearchResultsConfig> sRC = 
                     convertSearchDetail(domainName, domainFWM.getSearchDetail());
@@ -351,9 +351,8 @@ public class MDConfigManager {
         
         // open the copied portion of the MIDM.xml file for this domain.
         
-        String fileName = DOMAIN_CONFIG_DIR + "/" + domainName + "/" + DOMAIN_FILE_NAME;
+        String fileName = DOMAIN_CONFIG_DIR + "/" + domainName + "/" + DOMAIN_CONFIG_FILE;
         InputStream input;
-        BufferedReader rdr;
         try {
             input = MDConfigManager.class.getClassLoader().getResourceAsStream(fileName);
         } catch (Exception e) {
@@ -588,16 +587,21 @@ public class MDConfigManager {
                                                        "this domain ({0})", 
                                                        domainName));
             }
-            ObjectNodeConfig rootObj = null;
-            String rootObjName = retrieveRootObjectName(fieldConfigGroups);
-            rootObj = objNodeConfigs.get(rootObjName);
-            
-            SearchScreenConfig sSCObj = new SearchScreenConfig(rootObj, screenTitle, 
-                                                               instruction, searchResultID, 
-                                                               screenOrder, showEUID, 
-                                                               showLID, options, 
-                                                               fieldConfigGroups);
-            searchScreenConfigs.add(sSCObj);
+            try {
+                ObjectNodeConfig rootObj = objNodeConfigs.get(domainName);
+
+                SearchScreenConfig sSCObj = new SearchScreenConfig(rootObj, screenTitle, 
+                                                                   instruction, searchResultID, 
+                                                                   screenOrder, showEUID, 
+                                                                   showLID, options, 
+                                                                   fieldConfigGroups);
+                searchScreenConfigs.add(sSCObj);
+            } catch (Exception e) {
+                throw new ConfigException(mLocalizer.t("CFG574: Could not convert the  " +
+                                                       "search type for " +
+                                                       "this domain ({0}): {1}", 
+                                                       domainName, e.getMessage()));
+            }
         }
         return searchScreenConfigs;
     }
@@ -638,11 +642,7 @@ public class MDConfigManager {
         if (fieldGroup == null) {
             return null;
         }
-        // testing--raymond tam
-        // RESUME HERE
-        // set the description for the FieldConfigGroup
-        String description = null;
-        
+        String description = fieldGroup.getDescription();
         
         // pass field refs
         ArrayList<FieldConfig> fieldConfigs = createFieldConfig(domainName, fieldGroup.getFieldRefs());
@@ -810,9 +810,6 @@ public class MDConfigManager {
         for (SearchDetail searchDetail : searchDetails) {
             String displayName = searchDetail.getDisplayName();
             int searchResultsID = searchDetail.getSearchResultID();
-            // testing--raymond tam
-            // RESUME HERE
-//            int searchResultsSummaryID = searchDetail.getSearchSummaryID();
             int searchResultsSummaryID = DEFAULT_RECORD_SUMMARY_ID;
             int searchResultDetailsID = searchDetail.getRecordDetailID();
             int pageSize = searchDetail.getItemPerPage();
@@ -831,10 +828,8 @@ public class MDConfigManager {
                                                        "this domain ({0})", 
                                                        domainName));
             }
-            ObjectNodeConfig rootObj = null;
-            String rootObjName = retrieveRootObjectName(fieldConfigGroups);
-            rootObj = objNodeConfigs.get(rootObjName);
             try {
+                ObjectNodeConfig rootObj = objNodeConfigs.get(domainName);
                 SearchResultsConfig sRC = new SearchResultsConfig(rootObj, displayName, 
                                                    searchResultsID, searchResultsSummaryID, 
                                                    searchResultDetailsID, pageSize, 
@@ -844,9 +839,11 @@ public class MDConfigManager {
             } catch (Exception e) {
                 throw new ConfigException(mLocalizer.t("CFG544: Could not add the " +
                                                        "search result configuration " +
-                                                       "named {1} and with " +
-                                                       "searchResultsID = {1}", 
-                                                       searchResultsID));
+                                                       "named {0} and with " +
+                                                       "searchResultsID = {1}: {2}", 
+                                                       displayName, 
+                                                       searchResultsID,
+                                                       e.getMessage()));
             }
         }
         return searchResultsConfigs;
@@ -893,15 +890,22 @@ public class MDConfigManager {
                                                        "this domain ({0})", 
                                                        domainName));
             }
-            ObjectNodeConfig rootObj = null;
-            String rootObjName = retrieveRootObjectName(fieldConfigGroups);
-            rootObj = objNodeConfigs.get(rootObjName);
-    
-            SearchResultDetailsConfig sRDC = 
-                        new SearchResultDetailsConfig(rootObj, displayName, searchResultDetailID, 
-                                                      showEUID, showLID, fieldConfigGroups);
-            searchResultDetailsConfig.add(sRDC);
-                                                                  
+            
+            try {
+                ObjectNodeConfig rootObj = objNodeConfigs.get(domainName);
+                SearchResultDetailsConfig sRDC = 
+                            new SearchResultDetailsConfig(rootObj, displayName, searchResultDetailID, 
+                                                          showEUID, showLID, fieldConfigGroups);
+                searchResultDetailsConfig.add(sRDC);
+            } catch (Exception e) {
+                throw new ConfigException(mLocalizer.t("CFG575: Could not add the " +
+                                                       "search result details configuration " +
+                                                       "named {1} and with " +
+                                                       "searchResultDetailID = {1}: {2}", 
+                                                       displayName, 
+                                                       recordDetail.getRecordDetailId(), 
+                                                       e.getMessage()));
+            }
         }
         return searchResultDetailsConfig;
     }            
@@ -943,17 +947,22 @@ public class MDConfigManager {
                                                    "this domain ({0})", 
                                                    domainName));
         }
-        ObjectNodeConfig rootObj = null;
-        String rootObjName = retrieveRootObjectName(fieldConfigGroups);
-        rootObj = objNodeConfigs.get(rootObjName);
-        SearchResultsSummaryConfig sRSC 
-                = new SearchResultsSummaryConfig(rootObj, DEFAULT_RECORD_SUMMARY_ID, 
-                                                 DEFAULT_RECORD_DETAILS_ID,
-                                                 showEUID,
-                                                 showLID,
-                                                 fieldConfigGroups);
+        try {
+            ObjectNodeConfig rootObj = objNodeConfigs.get(domainName);
+            SearchResultsSummaryConfig sRSC 
+                    = new SearchResultsSummaryConfig(rootObj, DEFAULT_RECORD_SUMMARY_ID, 
+                                                     DEFAULT_RECORD_DETAILS_ID,
+                                                     showEUID,
+                                                     showLID,
+                                                     fieldConfigGroups);
 
-        searchResultsSummaryConfig.add(sRSC);
+            searchResultsSummaryConfig.add(sRSC);
+        } catch (Exception e) {
+            throw new ConfigException(mLocalizer.t("CFG576: Could not add the " +
+                                                   "search result summary configuration " +
+                                                   "this domain ({0}): {1}", 
+                                                   domainName, e.getMessage()));
+        }
         return searchResultsSummaryConfig;
     }            
 
@@ -1688,11 +1697,6 @@ public class MDConfigManager {
 	    mInitialScreenID = initialScreenID;
 	}
 	
-// testing--raymond tam        
-//	public String getMasterControllerJndi() {  //  return the jndi name for the master controller
-//	    return null;
-//	}
-
     /**
      * Get JndiResource for the given resource id.
      * @param id Identifier of JndiResource.
@@ -1807,21 +1811,6 @@ public class MDConfigManager {
         return (getDateInputMask(dateFormat));
     }
     
-    /**
-     * Gets the input mask of date in the MDConfigManager class
-     *
-     * @return the input mask of date based on the date format
-     */
-// testing--raymond tam
-/*    
-    public static String getDateInputMask() {
-        String format = DEFAULT_MDWM_DATEFORMAT;
-        String dateMask = format.replace('M', 'D');
-        dateMask = dateMask.replace('d', 'D');
-        dateMask = dateMask.replace('y', 'D');
-        return dateMask;
-    }
-*/    
     /**
      * Gets the input mask of date in the MDConfigManager class
      *
