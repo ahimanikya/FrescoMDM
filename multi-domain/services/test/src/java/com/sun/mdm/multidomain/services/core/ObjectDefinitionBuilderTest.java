@@ -45,7 +45,7 @@ public class ObjectDefinitionBuilderTest extends TestCase {
     public void test001() {
         
         ObjectDefinitionBuilder builder = new ObjectDefinitionBuilder();
-        InputStream  stream = ObjectFactory.class.getResourceAsStream("/domains/Person/object.xml");      
+        InputStream  stream = ObjectFactory.class.getResourceAsStream("/Domains/Person/object.xml");      
         
         ObjectDefinition person = builder.parse(stream);
         assertTrue(person.getName().equals("Person"));
