@@ -46,7 +46,7 @@ public class MultiDomainProjectProperties {
     // Multi-Domain MDM Domains Node Folder
     public static final String MIDM_NODE_DOMAIN_FOLDER = "domains_midm"; //NOI18N
     // Multi-Domain MDM Domains Node XML
-    public static final String MIDM_NODE_DOMAIN_XML = "_midm.xml"; //NOI18N
+    public static final String MIDM_NODE_DOMAIN_XML = "domain.xml"; //NOI18N
     // Multi-Domain MDM Configuration Folder
     public static final String CONFIGURATION_FOLDER = "Configuration"; //NOI18N
     // Multi-Domain MDM Match Engine Folder
