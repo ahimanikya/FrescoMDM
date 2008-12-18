@@ -220,6 +220,8 @@ function createCustomAttributesSection (tableId, attributesArray, prefixToUse, s
    // alert("CREATING custom attributes section for: " + tableId);
      var editCustomAttrFuncs = [
       function(data) { return data; },
+      function(data) { return data; },
+      function(data) { return data; },
       function(data) { return data; }
     ];
     if(showRequiredSymbol == null) showRequiredSymbol = true;
@@ -245,38 +247,34 @@ function createCustomAttributesSection (tableId, attributesArray, prefixToUse, s
           cellCreator:function(options) {
             var td = document.createElement("td");
             var tempData = options.data;
+            var byRangeDiv = null;
+            var byRangeCheckbox = null;
+            var labelByRange = null;
+            var field_To = null;
+            if(showByRange) {
+                byRangeDiv = document.createElement("span");
+                byRangeDiv.id = prefixToUse + "_" + tempData.name + "_TO_DIV";
+                byRangeDiv.style.display = "none";
+                var labelTo = document.createElement ("label");
+                labelTo.id = "label_TO"; labelTo.innerHTML ="&nbsp; to ";
+                byRangeDiv.appendChild (labelTo);
+                field_To = document.createElement("input");
+                field_To.type ="text";
+                field_To.name = prefixToUse + "_" + tempData.name + "_TO";
+                field_To.id = prefixToUse + "_" + tempData.name + "_TO";
+                byRangeDiv.appendChild (field_To);
 
-            if(options.cellNum == 1) {
-                var byRangeDiv = null;
-                var byRangeCheckbox = null;
-                var labelByRange = null;
-                var field_To = null;
-                if(showByRange) {
-                    byRangeDiv = document.createElement("span");
-                    byRangeDiv.id = prefixToUse + "_" + tempData.name + "_TO_DIV";
-                    byRangeDiv.style.display = "none";
-                    var labelTo = document.createElement ("label");
-                    labelTo.id = "label_TO"; labelTo.innerHTML =" to ";
-                    byRangeDiv.appendChild (labelTo);
-                    field_To = document.createElement("input");
-                    field_To.type ="text";
-                    field_To.name = prefixToUse + "_" + tempData.name + "_TO";
-                    field_To.id = prefixToUse + "_" + tempData.name + "_TO";
-                    byRangeDiv.appendChild (field_To);     
-                    //td.appendChild(byRangeDiv);
-
-                    byRangeCheckbox = document.createElement("input");
-                    byRangeCheckbox.type = "checkbox";
-                    byRangeCheckbox.name = "showbyRangeChk";
-                    byRangeCheckbox.value = byRangeDiv.id;
-                    byRangeCheckbox.onclick = function () {
-                        displayDiv(this.value, this.checked);
-                    }
-                    //td.appendChild (byRangeCheckbox);
-                    labelByRange = document.createElement ("label");
-                    labelByRange.innerHTML = "By Range";
-                    //td.appendChild (labelByRange);
+                byRangeCheckbox = document.createElement("input");
+                byRangeCheckbox.type = "checkbox";
+                byRangeCheckbox.name = "showbyRangeChk";
+                byRangeCheckbox.value = byRangeDiv.id;
+                byRangeCheckbox.onclick = function () {
+                    displayDiv(this.value, this.checked);
                 }
+                labelByRange = document.createElement ("label");
+                labelByRange.innerHTML = "By Range";
+            }
+            if(options.cellNum == 1) {
                 if(tempData.dataType=="date"){
                     var datefield = document.createElement("input");
                     // This should be date field...
@@ -294,24 +292,6 @@ function createCustomAttributesSection (tableId, attributesArray, prefixToUse, s
                           width:"150px"
                     }; 
                     datefield = new dijit.form.DateTextBox(props, datefield);
-                    if(showByRange) { 
-                      field_To.type = "text";
-                      field_To.name = prefixToUse + "_" + tempData.name + "_TO";
-                      field_To.id = prefixToUse + "_" + tempData.name + "_TO";
-                      field_To.size = 5; 
-                      field_To.style.width = "100px";
-                      var dateProps = {
-                          name: "custom_date_attr",
-                          promptMessage: getMessageForI18N("date_Format"),
-                          invalidMessage: getMessageForI18N("invalid_date"),
-                          width:"150px"
-                      }; 
-                      field_To = new dijit.form.DateTextBox(dateProps, field_To);
-                      td.appendChild(byRangeDiv);                    
-                      td.appendChild(byRangeCheckbox);
-                      td.appendChild(labelByRange);
-                    }
-
                 }else if(tempData.dataType == "boolean"){
                     var booleanField = document.createElement("select");
                     var tOption = document.createElement ("option");
@@ -325,29 +305,58 @@ function createCustomAttributesSection (tableId, attributesArray, prefixToUse, s
                     booleanField.name = prefixToUse + "_" + tempData.name;
                     booleanField.id = prefixToUse + "_" + tempData.name;
                     td.appendChild(booleanField);
-               }
-               else{
+               } else {
                     var field = document.createElement("input");
                     field.type ="text";
                     field.name = prefixToUse + "_" + tempData.name;
                     field.id = prefixToUse + "_" + tempData.name;
-                    td.appendChild (field);                          
-                    if(showByRange) { 
-                        td.appendChild(byRangeDiv);                    
-                        td.appendChild(byRangeCheckbox);
-                        td.appendChild(labelByRange);
-                    }
+                    td.appendChild (field);
                }
                td.className = "label";
                options.data = null;
-            }else {
+            } else if(options.cellNum == 0) {
                 if(getBoolean(tempData.isRequired) == true && showRequiredSymbol){
                    options.data = "<span class='label'>" + tempData.name + getMessageForI18N("mandatorySymbol") +  "</span>"; 
-                }else{
+                } else {
                    options.data = "<span class='label'>" + tempData.name +  "</span>";
                 }
                 td.innerHTML = options.data;
-            }  
+            } else if(options.cellNum == 2) {
+                // create by Range field.
+                if(showByRange) { 
+                    if(tempData.dataType=="date"){
+                      field_To.type = "text";
+                      field_To.name = prefixToUse + "_" + tempData.name + "_TO";
+                      field_To.id = prefixToUse + "_" + tempData.name + "_TO";
+                      field_To.size = 5; 
+                      field_To.style.width = "100px";
+                      var dateProps = {
+                          name: "custom_date_attr",
+                          promptMessage: getMessageForI18N("date_Format"),
+                          invalidMessage: getMessageForI18N("invalid_date"),
+                          width:"150px"
+                      }; 
+                      field_To = new dijit.form.DateTextBox(dateProps, field_To);
+                      td.appendChild(byRangeDiv);
+                    } else if(tempData.dataType == "boolean"){
+                    } else {
+                      td.appendChild(byRangeDiv);  
+                    }
+                }
+                options.data = null;
+                td.className = "label";
+            } else if(options.cellNum == 3) {
+                if(showByRange) {                 
+                  if(tempData.dataType == "boolean") {
+                  } else {
+                    td.appendChild(byRangeCheckbox);
+                    td.appendChild(labelByRange);
+                  }
+                }
+                options.data = null;
+                td.className = "label";
+            }
+            else {}
             return td;
           },
           escapeHtml:false

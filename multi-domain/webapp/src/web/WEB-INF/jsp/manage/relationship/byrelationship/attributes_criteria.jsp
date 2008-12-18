@@ -36,7 +36,7 @@
                                 </tr>
                                 <tr>
                                     <td class="Heading" colspan="5">
-                                        <table border="1" width="100%">
+                                        <table border="0">
                                             <tbody id="byrel_select_customAttributes"></tbody>
                                         </table>
                                     </td>
