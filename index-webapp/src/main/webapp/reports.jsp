@@ -58,12 +58,15 @@
 <%@ page import="javax.el.ValueExpression" %>
 <%@ page import="javax.faces.context.FacesContext" %>
 <%@ page import="javax.faces.application.FacesMessage" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 
 
 <script>
 var editIndexid = "";
 var thisForm;
 var rand = "";
+var outputDivId = "";
+
 function setRand(thisrand)  {
 	rand = thisrand;
 }
@@ -80,7 +83,10 @@ function setRand(thisrand)  {
    ArrayList fullFieldNamesList  = new ArrayList();
    StringBuffer myColumnDefs = new StringBuffer();
    SourceHandler sourceHandler = new SourceHandler();
-
+   Date myDate  = new Date();
+   SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat("yyyy");
+   String dateField = simpleDateFormatFields.format(myDate);
+   int intCurrentYear =  new Integer(dateField).intValue();
 %>
 <%
 //set locale value
@@ -206,16 +212,64 @@ if(session!=null ){
 										   <form id="form<%=i%>">
 										             <input id='lidmask' type='hidden' name='lidmask' value='' />
 											         <div class="reportYUISearch1" >
+													 <%if(activityText.equalsIgnoreCase(orderdedScreens[i].getDisplayTitle()) ){%>
+													 <script>
+										               outputDivId = "results<%=i%>";
+										             </script>
+													 <%}%>
 													 <h:panelGrid rendered="<%=isActivityReportValueExpression%>">
 													   <h:panelGroup>
-													    <h:outputText value="Activity Type"/> &nbsp;
-														<h:selectOneMenu title="activityType" styleClass="selectContent" id="viewreports" value="#{ReportHandler.frequency}" >
+													    <h:outputText value="#{msgs.activity_type}"/> &nbsp;
+														<h:selectOneMenu title="activityType" styleClass="selectContent" id="viewreports" onchange="javascript:showActivityTypes(this.value,outputDivId);" value="#{ReportHandler.frequency}" >
                                                            <f:selectItems value="#{ReportHandler.activityReportTypes}"/>
                                                         </h:selectOneMenu>      
 													   </h:panelGroup>
 													   </h:panelGrid>
-<!--End Field groups loop-->
 												  <input type="hidden" title="tabName" name="reportName" value="<%=orderdedScreens[i].getDisplayTitle()%>"/>
+                                                  <%if(isActivityBoolean) {%>
+												  <table cellspacing="4" cellpadding="4" >
+												  <tr>
+												    <td>
+													  <div id="ActivitySearchCriteria">
+												           <%    
+															 String inputMaskVar  = dateFormat;
+														     inputMaskVar = inputMaskVar.toUpperCase();
+                                                             inputMaskVar = inputMaskVar.replace("MM","DD");
+														     inputMaskVar = inputMaskVar.replace("DD","DD");
+														     inputMaskVar = inputMaskVar.replace("YYYY","DDDDD");
+															%>
+															  <table>
+															    <tr>
+																<td><%=bundle.getString("fromdate_label_text")%></td>
+																<td>
+																<input type="text" 
+																	   id="WeeklyDate"
+																	   title="StartDate"
+ 																	  onkeydown="javascript:qws_field_on_key_down(this, '<%=inputMaskVar%>')"
+																		onkeyup="javascript:qws_field_on_key_up(this)"                         onblur="javascript:validate_date(this,'<%=dateFormat%>')">
+																	  <a href="javascript:void(0);" 
+																		 title="WeeklyDate"
+																		 onclick="g_Calendar.show(event,
+																			  'WeeklyDate',
+																			  '<%=dateFormat%>',
+																			  '<%=global_daysOfWeek%>',
+																			  '<%=global_months%>',
+																			  '<%=cal_prev_text%>',
+																			  '<%=cal_next_text%>',
+																			  '<%=cal_today_text%>',
+																			  '<%=cal_month_text%>',
+																			  '<%=cal_year_text%>')" 
+																			  ><img  border="0"  title="WeeklyDate (<%=dateFormat%>)"  src="./images/cal.gif"/></a>
+																	  <font class="dateFormat">(<%=dateFormat%>)</font>
+																	  </td>
+																	  </tr>
+																	  </table>
+														  
+													  </div>
+													</td>
+												  </tr>
+												  </table>
+												  <%} else {%>
 												  <table>
 												  <tr><td>&nbsp;</td></tr>
 												   <%
@@ -328,6 +382,7 @@ if(session!=null ){
 												   <%}%>
 
 												  </table>
+												  <%}%>
 <!-- Action Buttons -->   
 													<table  cellpadding="0" cellspacing="0">
 													 <tr>
@@ -460,7 +515,96 @@ if(session!=null ){
                         </td>
                     </tr>
                 </table>
-            </div>        
+            </div>      
+			
+		  <div id="<%=bundle.getString("WEEKLY_ACTIVITY")%>" style="visibiity:hidden;display:none;">
+			   <%
+				 String inputMaskVar  = dateFormat;
+				 inputMaskVar = inputMaskVar.toUpperCase();
+				 inputMaskVar = inputMaskVar.replace("MM","DD");
+				 inputMaskVar = inputMaskVar.replace("DD","DD");
+				 inputMaskVar = inputMaskVar.replace("YYYY","DDDDD");
+				%>
+				  <table>
+					<tr>
+						  <td> <%=bundle.getString("fromdate_label_text")%></td>
+					   <td>
+					<input type="text" 
+						   id="WeeklyDate"
+						   title="StartDate"
+						  onkeydown="javascript:qws_field_on_key_down(this, '<%=inputMaskVar%>')"
+							onkeyup="javascript:qws_field_on_key_up(this)"                         onblur="javascript:validate_date(this,'<%=dateFormat%>')">
+						  <a href="javascript:void(0);" 
+							 title="WeeklyDate"
+							 onclick="g_Calendar.show(event,
+								  'WeeklyDate',
+								  '<%=dateFormat%>',
+								  '<%=global_daysOfWeek%>',
+								  '<%=global_months%>',
+								  '<%=cal_prev_text%>',
+								  '<%=cal_next_text%>',
+								  '<%=cal_today_text%>',
+								  '<%=cal_month_text%>',
+								  '<%=cal_year_text%>')" 
+								  ><img  border="0"  title="WeeklyDate (<%=dateFormat%>)"  src="./images/cal.gif"/></a>
+						  <font class="dateFormat">(<%=dateFormat%>)</font>
+						  </td>
+						  </tr>
+						  </table>
+		  </div>
+		  <div id="<%=bundle.getString("MONTHLY_ACTIVITY")%>" style="visibiity:hidden;display:none;">
+				  <table>
+					<tr>
+					   <td><%=bundle.getString("month_year_selection")%></td>
+					   <td>
+						<select id="Month" title="Monthly_Month">	
+							<option value="01"><%=bundle.getString("MONTH01")%></option>
+							<option value="02"><%=bundle.getString("MONTH02")%></option>
+							<option value="03"><%=bundle.getString("MONTH03")%></option>
+							<option value="04"><%=bundle.getString("MONTH04")%></option>
+							<option value="05"><%=bundle.getString("MONTH05")%></option>
+							<option value="06"><%=bundle.getString("MONTH06")%></option>
+							<option value="07"><%=bundle.getString("MONTH07")%></option>
+							<option value="08"><%=bundle.getString("MONTH08")%></option>
+							<option value="09"><%=bundle.getString("MONTH09")%></option>
+							<option value="10"><%=bundle.getString("MONTH10")%></option>
+							<option value="11"><%=bundle.getString("MONTH11")%></option>
+							<option value="12"><%=bundle.getString("MONTH12")%></option>
+						</select>
+					  </td>
+					  <td>
+						<select id="Year" title="Monthly_Year">	
+						   <%for(int year = intCurrentYear - 50  ; year < intCurrentYear + 10 ; year++) {%>
+							<%if(year == intCurrentYear ) {%>
+							  <option value="<%=year%>" selected="true"><%=year%></option> 
+							<%} else {%>
+							<option value="<%=year%>"><%=year%></option> 
+							<%}%>
+						   <%}%>
+						</select>
+					  </td>
+					  </tr>
+				 </table>
+		  </div>
+		  <div id="<%=bundle.getString("YEARLY_ACTIVITY")%>"  style="visibiity:hidden;display:none;">
+				  <table>
+					<tr>
+					   <td><%=bundle.getString("year_selection")%></td>
+					  <td>
+						<select id="Year" title="Yearly_year">	
+						   <%for(int year = intCurrentYear - 50  ; year < intCurrentYear + 10 ; year++) {%>
+							<%if(year == intCurrentYear ) {%>
+							  <option value="<%=year%>" selected="true"><%=year%></option> 
+							<%} else {%>
+							<option value="<%=year%>"><%=year%></option> 
+							<%}%>
+						   <%}%>
+						</select>
+					  </td>
+					  </tr>
+				 </table>
+		   </div>
+
             <form id="lidform" name="lidform">
 				 <input id='lidmask' type='hidden' name='lidmask' value='' />
 			 </form>

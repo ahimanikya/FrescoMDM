@@ -34,6 +34,7 @@
 
 <%@ page import="com.sun.mdm.index.edm.presentation.security.Operations"%>
 <%@ page import="com.sun.mdm.index.edm.services.masterController.MasterControllerService" %>
+<%@ page import="com.sun.mdm.index.edm.services.configuration.ConfigManager"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.FieldConfig"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ScreenObject"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ValidationService"  %>
@@ -85,6 +86,7 @@ boolean isSessionActive = true;
 
 
 <%
+String dateFormat  = ConfigManager.getDateFormat();
 ReportHandler reportHandler = new ReportHandler();
 
 String reportName = request.getParameter("tabName");
@@ -141,6 +143,7 @@ ArrayList fcArrayList  = new ArrayList();
 
 <% //Build the request Map 
   
+   HashMap activityReportMap = new HashMap(); // Fix for 6701596 
 
    while(parameterNames.hasMoreElements())   { 
     String attributeName = (String) parameterNames.nextElement();
@@ -150,9 +153,42 @@ ArrayList fcArrayList  = new ArrayList();
 			!("random".equalsIgnoreCase(attributeName)) && 
 			!("form".equalsIgnoreCase(attributeName)) && 
 			!("layer".equalsIgnoreCase(attributeName))  ) {
- 		     reportHandler.getReportParameters().put(attributeName,attributeValue);			
+		    // Fix for 6701596 Start
+			if (activityText.equalsIgnoreCase(reportName))  {
+ 		       activityReportMap.put(attributeName,attributeValue);			
+			} else {
+ 		       reportHandler.getReportParameters().put(attributeName,attributeValue);			
+			}
+			// Fix for 6701596 Ends
       }
    } 
+   // Fix for 6701596 Start
+   if (activityText.equalsIgnoreCase(reportName))  {
+       reportHandler.getReportParameters().put("activityType",activityReportMap.get("activityType"));			
+	   if(activityReportMap.get("activityType").toString().equalsIgnoreCase(bundle.getString("WEEKLY_ACTIVITY")) ) {
+          reportHandler.getReportParameters().put("StartDate",activityReportMap.get("StartDate"));			
+	   } else if(activityReportMap.get("activityType").toString().equalsIgnoreCase(bundle.getString("MONTHLY_ACTIVITY")) ) {
+		  
+		  dateFormat = dateFormat.toUpperCase();
+          dateFormat = dateFormat.replace("DD","01");
+          dateFormat = dateFormat.replace("MM",activityReportMap.get("Monthly_Month").toString());
+          dateFormat = dateFormat.replace("YYYY",activityReportMap.get("Monthly_Year").toString());
+
+          String dateField = dateFormat;
+          reportHandler.getReportParameters().put("StartDate",dateField);			
+	   } else if(activityReportMap.get("activityType").toString().equalsIgnoreCase(bundle.getString("YEARLY_ACTIVITY")) ) {
+
+		  dateFormat = dateFormat.toUpperCase();
+          dateFormat = dateFormat.replace("DD","01");
+          dateFormat = dateFormat.replace("MM","01");
+          dateFormat = dateFormat.replace("YYYY",activityReportMap.get("Yearly_year").toString());
+
+          String dateField = dateFormat;
+
+		  reportHandler.getReportParameters().put("StartDate",dateField);			
+	   }
+   }
+   // Fix for 6701596 Ends
 %>
 
  <%

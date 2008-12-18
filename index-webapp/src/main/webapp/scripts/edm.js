@@ -2445,3 +2445,11 @@ function showMergedRecords(transNo,totalMergedRecords) {
 
 
 } 
+
+//Fix for 6701596 start
+function showActivityTypes(activityType,outputDiv) {
+    //ActivitySearchCriteria
+	document.getElementById('ActivitySearchCriteria').innerHTML = document.getElementById(activityType).innerHTML;
+	document.getElementById(outputDiv).innerHTML = "";
+}
+//Fix for 6701596 end

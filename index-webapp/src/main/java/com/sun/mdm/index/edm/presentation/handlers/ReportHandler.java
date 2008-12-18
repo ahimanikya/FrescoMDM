@@ -65,6 +65,7 @@ import com.sun.mdm.index.edm.presentation.validations.EDMValidation;
 import com.sun.mdm.index.edm.util.QwsUtil;
 import com.sun.mdm.index.master.ProcessingException;
 import com.sun.mdm.index.master.UserException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -427,11 +428,11 @@ public class ReportHandler {
     public ArrayList activitiesReport() {
         request.setAttribute("reportTabName", Activity_Report_Label);
         try {
-            //Set paramaters for the search
-            getActivityReport().setCreateStartTime((String) reportParameters.get("StartTime"));
-            getActivityReport().setCreateEndTime((String) reportParameters.get("EndTime"));
-            getActivityReport().setCreateStartDate((String) reportParameters.get("StartDate"));
-            getActivityReport().setCreateEndDate((String) reportParameters.get("EndDate"));
+            /*Set paramaters for the search
+            //getActivityReport().setCreateStartTime((String) reportParameters.get("StartTime"));
+            //getActivityReport().setCreateEndTime((String) reportParameters.get("EndTime"));
+            //getActivityReport().setCreateEndDate((String) reportParameters.get("EndDate"));
+            
             //check one of many condition here
             if(!checkOneOfManyCondition()) return null;
             //Check Valid report Size
@@ -443,8 +444,7 @@ public class ReportHandler {
                 getActivityReport().setMaxResultsSize(getMaxReportSize(Activity_Report_Label));
             }
             getActivityReport().setPageSize(getRecordsPerPage(Activity_Report_Label));
-
-            getActivityReport().setFrequency((String) reportParameters.get("activityType"));
+             
             
 
             //Check if all the required values in the group are entered by the user
@@ -474,6 +474,22 @@ public class ReportHandler {
                 }
                 return null;
             }
+            */
+            
+
+            if (reportParameters.get("StartDate") == null) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("enter_date_from"), bundle.getString("enter_date_from")));
+                return null;
+            }
+
+            if (reportParameters.get("StartDate") != null && reportParameters.get("StartDate").toString().length() == 0) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("enter_date_from"), bundle.getString("enter_date_from")));
+                return null;
+            }
+               
+               
+            getActivityReport().setCreateStartDate((String) reportParameters.get("StartDate"));
+            getActivityReport().setFrequency((String) reportParameters.get("activityType"));
             
             ArrayList results = getActivityReport().activityReport();
 
