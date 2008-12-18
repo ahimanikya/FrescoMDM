@@ -112,13 +112,27 @@ public class RelationshipDefDaoImpl extends AbstractDAO implements RelationshipD
             if (rs != null && rs.next()) {
                 mPrimaryKey = rs.getLong(1);
             }
+
+            /* RelationshipDef Extend Attributes */
+            RelationshipEaDto attDto = new RelationshipEaDto();
+            ArrayList<Attribute> attrList = (ArrayList<Attribute>) relDef.getAttributes();
+            RelationshipEaDaoImpl relEaDao = new RelationshipEaDaoImpl(userConn);
+            for (Attribute att : attrList) {
+                attDto.setRelationshipDefId(mPrimaryKey);
+                attDto.setAttributeName(att.getName());
+                attDto.setColumnName(att.getColumnName());
+                attDto.setColumnType(att.getType().name());
+                attDto.setDefaultValue(att.getDefaultValue());
+                attDto.setIsRequired(att.getIsRequired());
+                attDto.setIsSearchable(att.getIsSearchable());
+                relEaDao.insert(attDto);
+            }
             stmt.close();
             return mPrimaryKey;
         } catch (Exception _e) {
             _e.printStackTrace();
             throw new RelationshipDefDaoException("Exception: " + _e.getMessage(), _e);
         }
-
     }
 
     public long getPrimaryKey() {
@@ -378,8 +392,12 @@ public class RelationshipDefDaoImpl extends AbstractDAO implements RelationshipD
      * Populates a Relationship Extended Attributes with data from a ResultSet
      */
     private void populateRelEa(RelationshipDef relDef, ResultSet rs) throws SQLException {
-        String strVal = null;
+        String strVal = rs.getString(RELATIONSHIP_EA.ATTRIBUTE_NAME.columnName);
+        if (strVal == null) {
+            return;
+        }
         Attribute att = new Attribute();
+        att.setName(strVal);
         att.setId(rs.getLong(RELATIONSHIP_DEF.RELATIONSHIP_DEF_ID.columnName));
         att.setName(rs.getString(RELATIONSHIP_EA.ATTRIBUTE_NAME.columnName));
         att.setColumnName(rs.getString(RELATIONSHIP_EA.COLUMN_NAME.columnName));
@@ -396,8 +414,6 @@ public class RelationshipDefDaoImpl extends AbstractDAO implements RelationshipD
         if (strVal != null) {
             att.setIsRequired(strVal.equalsIgnoreCase("T") ? true : false);
         }
-        if (att.getName() != null) {
-            relDef.getAttributes().add(att);
-        }
+        relDef.getAttributes().add(att);
     }
 }
