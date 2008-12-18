@@ -165,8 +165,8 @@
     }%>
    
    
-   
-   <%if(dashboardHandler.showSubscreenTab(lookupText)) {%>
+    
+   <%if(operations.isEO_SearchViewSBR()  && dashboardHandler.showSubscreenTab(lookupText)) {%>
        <td>
        <div class="dashboardHeadMessage"><h:outputLabel for="#{msgs.dashboard_quicksearch_table_text}" value="#{msgs.dashboard_quicksearch_table_text}"/></div> 
         <div id="qs" class="dashboardSummaryQS"> 
@@ -303,7 +303,7 @@
    
                 
    <td> 
-   <%if(dashboardHandler.showSubscreenTab(compareText)) {%>
+   <%if(operations.isEO_Compare() && dashboardHandler.showSubscreenTab(compareText)) {%>
        <div class="dashboardHeadMessage">
            <h:outputLabel for="#{msgs.dashboard_compareeuid_table_text}" value="#{msgs.dashboard_compareeuid_table_text}"/>
        </div>
