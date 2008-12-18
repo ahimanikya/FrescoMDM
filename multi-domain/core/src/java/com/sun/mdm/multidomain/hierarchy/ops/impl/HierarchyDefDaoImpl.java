@@ -42,6 +42,7 @@ import com.sun.mdm.multidomain.sql.Criteria;
 import com.sun.mdm.multidomain.sql.DeleteBuilder;
 import com.sun.mdm.multidomain.sql.SQLBuilder;
 import com.sun.mdm.multidomain.sql.InsertBuilder;
+import com.sun.mdm.multidomain.sql.JoinCriteria;
 import com.sun.mdm.multidomain.sql.MatchCriteria;
 import com.sun.mdm.multidomain.sql.OrderBy;
 import com.sun.mdm.multidomain.sql.Parameter;
@@ -153,13 +154,13 @@ public class HierarchyDefDaoImpl extends AbstractDAO implements HierarchyDefDao 
         try {
             UpdateBuilder builder = new UpdateBuilder();
             builder.setTable(HIERARCHY_DEF.getTableName());
-            for (HIERARCHY_DEF rel : HIERARCHY_DEF.values()) {
-                switch (rel) {
+            for (HIERARCHY_DEF hd : HIERARCHY_DEF.values()) {
+                switch (hd) {
                     case HIERARCHY_DEF_ID:
-                        builder.addCriteria(new Parameter(rel.columnName));
+                        builder.addCriteria(new Parameter(hd.columnName));
                         break;
                     default:
-                        builder.addColumns(rel.columnName);
+                        builder.addColumns(hd.columnName);
                 }
             }
             String sqlStr = SQLBuilder.buildSQL(builder);
@@ -276,17 +277,25 @@ public class HierarchyDefDaoImpl extends AbstractDAO implements HierarchyDefDao 
 
     private String BuildSelectByDomain() {
         SelectBuilder builder = new SelectBuilder();
-        builder.setTable(HIERARCHY_DEF.getTableName(), HIERARCHY_NODE_EA.getTableName());
+        // Add SELECT table
+        builder.setTable(HIERARCHY_DEF.getTableName());
+        // Add JOIN table
+        String[] joinTables = new String[]{HIERARCHY_NODE_EA.getTableName()};
 
+        // ADD SELECT columns
         for (HIERARCHY_DEF hier : HIERARCHY_DEF.values()) {
             builder.addColumns(hier.prefixedColumnName);
         }
         for (HIERARCHY_NODE_EA ea : HIERARCHY_NODE_EA.values()) {
             builder.addColumns(ea.prefixedColumnName);
         }
-        Criteria c1 = new MatchCriteria(HIERARCHY_DEF.HIERARCHY_DEF_ID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, HIERARCHY_NODE_EA.HIERARCHY_DEF_ID.prefixedColumnName);
-        Criteria c2 = new Parameter(HIERARCHY_DEF.DOMAIN.prefixedColumnName);
-        builder.addCriteria(new AND(c1, c2));
+        // Add WHERE criteria
+        Criteria c1 = new Parameter(HIERARCHY_DEF.DOMAIN.prefixedColumnName);
+        builder.addCriteria(c1);
+        // ADD JOIN criteria
+        Criteria j1 = new JoinCriteria(HIERARCHY_DEF.HIERARCHY_DEF_ID.prefixedColumnName, JoinCriteria.OPERATOR.EQUALS, HIERARCHY_NODE_EA.HIERARCHY_DEF_ID.prefixedColumnName);
+        builder.addJoin(joinTables, JoinCriteria.JOIN_TYPE.LEFTJOIN, j1);
+        // ADD ORDER BY clause
         builder.addOrderBy(new OrderBy(HIERARCHY_DEF.HIERARCHY_DEF_ID.prefixedColumnName, OrderBy.ORDER.ASC));
         String sqlStr = SQLBuilder.buildSQL(builder);
         return sqlStr;
@@ -294,17 +303,24 @@ public class HierarchyDefDaoImpl extends AbstractDAO implements HierarchyDefDao 
 
     private String BuildSelectById() {
         SelectBuilder builder = new SelectBuilder();
-        builder.setTable(HIERARCHY_DEF.getTableName(), HIERARCHY_NODE_EA.getTableName());
+        // Add SELECT table
+        builder.setTable(HIERARCHY_DEF.getTableName());
+        // Add JOIN table
+        String[] joinTables = new String[]{HIERARCHY_NODE_EA.getTableName()};
 
+        // ADD SELECT columns
         for (HIERARCHY_DEF hier : HIERARCHY_DEF.values()) {
             builder.addColumns(hier.prefixedColumnName);
         }
         for (HIERARCHY_NODE_EA ea : HIERARCHY_NODE_EA.values()) {
             builder.addColumns(ea.prefixedColumnName);
         }
-        Criteria c1 = new MatchCriteria(HIERARCHY_DEF.HIERARCHY_DEF_ID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, HIERARCHY_NODE_EA.HIERARCHY_DEF_ID.prefixedColumnName);
-        Criteria c2 = new MatchCriteria(HIERARCHY_DEF.HIERARCHY_DEF_ID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, "?");
-        builder.addCriteria(new AND(c1, c2));
+        // Add WHERE criteria
+        Criteria c1 = new Parameter(HIERARCHY_DEF.HIERARCHY_DEF_ID.prefixedColumnName);
+        builder.addCriteria(c1);
+        // ADD JOIN criteria
+        Criteria j1 = new JoinCriteria(HIERARCHY_DEF.HIERARCHY_DEF_ID.prefixedColumnName, JoinCriteria.OPERATOR.EQUALS, HIERARCHY_NODE_EA.HIERARCHY_DEF_ID.prefixedColumnName);
+        builder.addJoin(joinTables, JoinCriteria.JOIN_TYPE.LEFTJOIN, j1);
         String sqlStr = SQLBuilder.buildSQL(builder);
         return sqlStr;
     }
@@ -353,9 +369,8 @@ public class HierarchyDefDaoImpl extends AbstractDAO implements HierarchyDefDao 
                 hierDto = new HierarchyDefDto();
                 populateDto(hierDto, rs);
             }
-            HierarchyNodeEaDto eaDto = new HierarchyNodeEaDto();
-            populateDto(eaDto, rs);
-            hierDto.getAttributeDefs().add(eaDto);
+            populateEaDto(hierDto, rs);
+
         }
         if (hierDto != null) {
             resultList.add(hierDto);
@@ -384,13 +399,22 @@ public class HierarchyDefDaoImpl extends AbstractDAO implements HierarchyDefDao 
     /**
      * Populates a DTO with data from a ResultSet
      */
-    private void populateDto(HierarchyNodeEaDto dto, ResultSet rs) throws SQLException {
-        dto.setHierarchyDefId(rs.getLong(HIERARCHY_DEF.HIERARCHY_DEF_ID.columnName));
-        dto.setAttributeName(rs.getString(HIERARCHY_NODE_EA.ATTRIBUTE_NAME.columnName));
-        dto.setColumnName(rs.getString(HIERARCHY_NODE_EA.COLUMN_NAME.columnName));
-        dto.setColumnType(rs.getString(HIERARCHY_NODE_EA.COLUMN_TYPE.columnName));
-        dto.setDefaultValue(rs.getString(HIERARCHY_NODE_EA.DEFAULT_VALUE.columnName));
-        dto.setIsRequired(rs.getString(HIERARCHY_NODE_EA.IS_REQUIRED.columnName).equalsIgnoreCase("T") ? true : false);
-        dto.setIsSearchable(rs.getString(HIERARCHY_NODE_EA.IS_SEARCHABLE.columnName).equalsIgnoreCase("T") ? true : false);
+    private void populateEaDto(HierarchyDefDto hierDto, ResultSet rs) throws SQLException {
+        String strVal = rs.getString(HIERARCHY_NODE_EA.ATTRIBUTE_NAME.columnName);
+        if (strVal == null) {
+            return;
+        }
+        HierarchyNodeEaDto eaDto = new HierarchyNodeEaDto();
+        eaDto.setAttributeName(strVal);
+        eaDto.setHierarchyDefId(rs.getLong(HIERARCHY_DEF.HIERARCHY_DEF_ID.columnName));
+
+        eaDto.setColumnName(rs.getString(HIERARCHY_NODE_EA.COLUMN_NAME.columnName));
+        eaDto.setColumnType(rs.getString(HIERARCHY_NODE_EA.COLUMN_TYPE.columnName));
+        eaDto.setDefaultValue(rs.getString(HIERARCHY_NODE_EA.DEFAULT_VALUE.columnName));
+        strVal = rs.getString(HIERARCHY_NODE_EA.IS_REQUIRED.columnName);
+        eaDto.setIsRequired(strVal != null && strVal.equalsIgnoreCase("T") ? true : false);
+        strVal = rs.getString(HIERARCHY_NODE_EA.IS_SEARCHABLE.columnName);
+        eaDto.setIsSearchable(strVal != null && strVal.equalsIgnoreCase("T") ? true : false);
+        hierDto.getAttributeDefs().add(eaDto);
     }
 }
