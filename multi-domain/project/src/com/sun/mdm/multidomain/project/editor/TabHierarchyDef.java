@@ -30,6 +30,7 @@ import org.openide.NotifyDescriptor;
 import org.openide.DialogDisplayer;
 import java.awt.Toolkit;
 
+import com.sun.mdm.multidomain.util.Logger;
 import com.sun.mdm.multidomain.project.editor.nodes.DefinitionNode;
 import com.sun.mdm.multidomain.parser.Definition;
 import com.sun.mdm.multidomain.parser.Attribute;
@@ -38,6 +39,11 @@ import com.sun.mdm.multidomain.parser.Attribute;
  * @author  kkao
  */
 public class TabHierarchyDef extends javax.swing.JPanel {
+    /** The logger. */
+    private static final Logger mLog = Logger.getLogger(
+            TabHierarchyDef.class.getName()
+        
+        );
     EditorMainApp mEditorMainApp;
     DefinitionNode mDefinitionNode;
     Definition mDefinition;
@@ -973,7 +979,20 @@ private void onButtonEffectiveTo(java.awt.event.ActionEvent evt) {//GEN-FIRST:ev
         }
         return al;
     }
+    
+    private void displayIncorrectDatePicked(final boolean from, String fromDate, String toDate) {
         
+        NotifyDescriptor desc;
+        if (from) {
+            desc = new NotifyDescriptor.Message(NbBundle.getMessage(TabHierarchyDef.class, "MSG_Incorrect_From_Date_Picked", fromDate, toDate));
+        } else {
+            desc = new NotifyDescriptor.Message(NbBundle.getMessage(TabHierarchyDef.class, "MSG_Incorrect_To_Date_Picked", toDate, fromDate));
+        }
+        desc.setMessageType(NotifyDescriptor.ERROR_MESSAGE);
+        desc.setTitle(NbBundle.getMessage(TabHierarchyDef.class, "MSG_Incorrect_Date"));
+        DialogDisplayer.getDefault().notify(desc);
+    }
+    
     private void performDatePicker(final boolean from) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -985,14 +1004,49 @@ private void onButtonEffectiveTo(java.awt.event.ActionEvent evt) {//GEN-FIRST:ev
                             String df = mEditorMainApp.getMultiDomainModel(false).getDateFormat();
                             java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat(df);
                             String dateStr = formatter.format(date);
+                            boolean setIt = true;
                             if (from) {
-                                jTextEffectiveFrom.setText(dateStr);
-                                mDefinition.setEffectiveFrom(dateStr);
+                                // check if before effectiveto date
+                                String toDateStr = getEffectiveTo();
+                                if (toDateStr != null && toDateStr.length() > 0) {
+                                    try {
+                                        java.util.Date toDate = formatter.parse(toDateStr);
+                                        if (date.after(toDate)) {
+                                            setIt = false;
+                                            displayIncorrectDatePicked(from, dateStr, toDateStr);
+                                        }
+                                    } catch (java.text.ParseException ex) {
+                                        setIt = false;
+                                        mLog.error(ex.getMessage());
+                                    }
+                                }
+                                if (setIt) {
+                                    jTextEffectiveFrom.setText(dateStr);
+                                    mDefinition.setEffectiveFrom(dateStr);
+                                }
                             } else {
-                                jTextEffectiveTo.setText(dateStr);
-                                mDefinition.setEffectiveTo(dateStr);
+                                // check if after effectivefrom date
+                                String fromDateStr = getEffectiveFrom();
+                                if (fromDateStr != null && fromDateStr.length() > 0) {
+                                    try {
+                                        java.util.Date fromDate = formatter.parse(fromDateStr);
+                                        if (date.before(fromDate)) {
+                                            setIt = false;
+                                            displayIncorrectDatePicked(from, fromDateStr, dateStr);
+                                        }
+                                    } catch (java.text.ParseException ex) {
+                                        setIt = false;
+                                        mLog.error(ex.getMessage());
+                                    }
+                                }
+                                if (setIt) {
+                                    jTextEffectiveTo.setText(dateStr);
+                                    mDefinition.setEffectiveTo(dateStr);
+                                }
                             }
-                            mEditorMainApp.enableSaveAction(true);
+                            if (setIt) {
+                                mEditorMainApp.enableSaveAction(true);
+                            }
                         }
                     }
                 });
