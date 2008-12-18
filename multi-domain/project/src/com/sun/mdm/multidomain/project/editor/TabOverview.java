@@ -596,54 +596,47 @@ private void onRemoveDefinition(java.awt.event.ActionEvent evt) {//GEN-FIRST:eve
     }
     
     private void performAddRelationship() {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                final AddRelationshipDialog dialog = new AddRelationshipDialog(mAlDomainNames, mEditorMainApp);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    public void windowClosed(java.awt.event.WindowEvent e) {
-                        if (dialog.getReturnStatus() == AddDefinitionDialog.RET_OK) {
-                            String definitionName = dialog.getDefinitionName();
-                            String sourceDomain = dialog.getSourceDomain();
-                            String targetDomain = dialog.getTargetDomain();
-                            String plugin = dialog.getPlugin();
-                            if (mEditorMainApp.getDefinitionNode(definitionName, sourceDomain, targetDomain) != null) {
-                                //Already exists
-                            } else {
-                                // add new DefinitionNode
-                                Definition definition = new Definition(definitionName, Definition.TYPE_RELATIONSHIP, sourceDomain, targetDomain, plugin, null);
-                                addDefinitionNode(definition);
-                            }
-                        }
-                    }
-                });
-                dialog.setVisible(true);
+        final AddRelationshipDialog dialog = new AddRelationshipDialog(mAlDomainNames, mEditorMainApp);
+        dialog.setVisible(true);
+        if (dialog.getReturnStatus() == AddDefinitionDialog.RET_OK) {
+            String definitionName = dialog.getDefinitionName();
+            String sourceDomain = dialog.getSourceDomain();
+            String targetDomain = dialog.getTargetDomain();
+            String plugin = dialog.getPlugin();
+            if (mEditorMainApp.getDefinitionNode(definitionName, sourceDomain, targetDomain) != null) {
+                //Already exists
+                displayDefinitionExists(definitionName);
+            } else {
+                // add new DefinitionNode
+                Definition definition = new Definition(definitionName, Definition.TYPE_RELATIONSHIP, sourceDomain, targetDomain, plugin, null);
+                addDefinitionNode(definition);
             }
-        });
+        }
     }
-    
+               
     private void performAddHierarchy() {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                final AddHierarchyDialog dialog = new AddHierarchyDialog(mAlDomainNames, mEditorMainApp);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    public void windowClosed(java.awt.event.WindowEvent e) {
-                        if (dialog.getReturnStatus() == AddDefinitionDialog.RET_OK) {
-                            String definitionName = dialog.getDefinitionName();
-                            String domain = dialog.getDomain();
-                            String plugin = dialog.getPlugin();
-                            if (mEditorMainApp.getDefinitionNode(definitionName, domain, domain) != null) {
-                                //Already exists
-                            } else {
-                                // add new DefinitionNode
-                                Definition definition = new Definition(definitionName, Definition.TYPE_HIERARCHY, domain, domain, plugin, null);
-                                addDefinitionNode(definition);
-                            }
-                        }
-                    }
-                });
-                dialog.setVisible(true);
+        final AddHierarchyDialog dialog = new AddHierarchyDialog(mAlDomainNames, mEditorMainApp);
+        dialog.setVisible(true);
+        if (dialog.getReturnStatus() == AddDefinitionDialog.RET_OK) {
+            String definitionName = dialog.getDefinitionName();
+            String domain = dialog.getDomain();
+            String plugin = dialog.getPlugin();
+            if (mEditorMainApp.getDefinitionNode(definitionName, domain, domain) != null) {
+                //Already exists
+                displayDefinitionExists(definitionName);
+            } else {
+                // add new DefinitionNode
+                Definition definition = new Definition(definitionName, Definition.TYPE_HIERARCHY, domain, domain, plugin, null);
+                addDefinitionNode(definition);
             }
-        });
+        }
+    }
+
+    private void displayDefinitionExists(String definitionName) {
+        NotifyDescriptor desc = new NotifyDescriptor.Message(NbBundle.getMessage(TabOverview.class, "MSG_Definition_Exists", definitionName));
+        desc.setMessageType(NotifyDescriptor.ERROR_MESSAGE);
+        desc.setTitle(NbBundle.getMessage(TabHierarchyDef.class, "MSG_Error"));
+        DialogDisplayer.getDefault().notify(desc);
     }
     
     //ToDo update jTableDomains's # of definitions

@@ -40,7 +40,7 @@ public class AddRelationshipDialog extends javax.swing.JDialog {
     
     /** Creates new form AddDefinitionDialog */
     public AddRelationshipDialog(ArrayList <String> alDomains, EditorMainApp editorMainApp) {
-        super();
+        super(org.openide.windows.WindowManager.getDefault().getMainWindow(), true);
         initComponents();
         mEditorMainApp = editorMainApp;
         setTitle(org.openide.util.NbBundle.getMessage(AddRelationshipDialog.class, "TITLE_Add_Relationship")); // NOI18N

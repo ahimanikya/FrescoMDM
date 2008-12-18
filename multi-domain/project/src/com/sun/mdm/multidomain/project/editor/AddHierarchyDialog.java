@@ -41,7 +41,7 @@ public class AddHierarchyDialog extends javax.swing.JDialog {
 
     /** Creates new form AddDefinitionDialog */
     public AddHierarchyDialog(ArrayList <String> alDomains, EditorMainApp editorMainApp) {
-        super();
+        super(org.openide.windows.WindowManager.getDefault().getMainWindow(), true);
         initComponents();
         mEditorMainApp = editorMainApp;
         setTitle(org.openide.util.NbBundle.getMessage(AddHierarchyDialog.class, "TITLE_Add_Hierarchy")); // NOI18N
