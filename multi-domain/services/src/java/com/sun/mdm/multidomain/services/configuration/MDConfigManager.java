@@ -69,7 +69,6 @@ import java.util.Collection;
 import java.util.Properties;
 import java.io.InputStream;
 import java.io.BufferedReader;
-
 import org.xml.sax.InputSource;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -87,8 +86,8 @@ public class MDConfigManager {
     public static final String FIELD_DELIM = ".";
     public static final int DEFAULT_RECORD_SUMMARY_ID = 1;
     public static final int DEFAULT_RECORD_DETAILS_ID = 1;
-    private static final String DOMAIN_CONFIG_DIR = "domains_midm";
-    private static final String DOMAIN_FILE_SUFFIX = "_midm.xml";
+    private static final String DOMAIN_CONFIG_DIR = "Domains";
+    private static final String DOMAIN_FILE_NAME = "domain.xml";
     
     // basic node configuration constants 
         
@@ -352,7 +351,7 @@ public class MDConfigManager {
         
         // open the copied portion of the MIDM.xml file for this domain.
         
-        String fileName = DOMAIN_CONFIG_DIR + "/" + domainName + DOMAIN_FILE_SUFFIX;
+        String fileName = DOMAIN_CONFIG_DIR + "/" + domainName + "/" + DOMAIN_FILE_NAME;
         InputStream input;
         BufferedReader rdr;
         try {
