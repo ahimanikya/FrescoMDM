@@ -22,6 +22,8 @@
  */
 package com.sun.mdm.multidomain.hierarchy.ops.impl;
 
+import com.sun.mdm.multidomain.attributes.Attribute;
+import com.sun.mdm.multidomain.hierarchy.HierarchyDef;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
@@ -82,12 +84,13 @@ public class HierarchyDefDaoImpl extends AbstractDAO implements HierarchyDefDao 
     /**
      * Inserts a new row in the hierarchy_def table.
      */
-    public long insert(HierarchyDefDto dto) throws HierarchyDefDaoException {
+    public long insert(HierarchyDef hierDef) throws HierarchyDefDaoException {
 
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
         try {
+            // Build INSERT SQL
             InsertBuilder builder = new InsertBuilder();
             builder.setTable(HIERARCHY_DEF.getTableName());
             for (HIERARCHY_DEF hier : HIERARCHY_DEF.values()) {
@@ -97,17 +100,16 @@ public class HierarchyDefDaoImpl extends AbstractDAO implements HierarchyDefDao 
             stmt = userConn.prepareStatement(sqlStr, Statement.RETURN_GENERATED_KEYS);
             int index = 1;
             stmt.setLong(index++, 0);  // Primary key
-            stmt.setString(index++, dto.getHierarchyName());
-            stmt.setString(index++, dto.getDescription());
-            stmt.setString(index++, dto.getDomain());
-            stmt.setTimestamp(index++, (java.sql.Timestamp) dto.getEffectiveFromDate());
-            stmt.setTimestamp(index++, (java.sql.Timestamp) dto.getEffectiveToDate());
-            stmt.setString(index++, dto.getEffectiveFromReq());
-            stmt.setString(index++, dto.getEffectiveToReq());
-            stmt.setString(index++, dto.getEffectiveFromInc());
-            stmt.setString(index++, dto.getEffectiveToInc());
-
-            stmt.setString(index++, dto.getPlugIn());
+            stmt.setString(index++, hierDef.getName());
+            stmt.setString(index++, hierDef.getDescription());
+            stmt.setString(index++, hierDef.getDomain());
+            stmt.setTimestamp(index++, (java.sql.Timestamp) hierDef.getEffectiveFromDate());
+            stmt.setTimestamp(index++, (java.sql.Timestamp) hierDef.getEffectiveToDate());
+            stmt.setString(index++, hierDef.getEffectiveFromRequired() ? "T" : "F");
+            stmt.setString(index++, hierDef.getEffectiveToRequired() ? "T" : "F");
+            stmt.setString(index++, hierDef.getEffectiveFromIncluded() ? "T" : "F");
+            stmt.setString(index++, hierDef.getEffectiveToIncluded() ? "T" : "F");
+            stmt.setString(index++, hierDef.getPlugin());
 
             int rows = stmt.executeUpdate();
             // retrieve values from auto-increment columns
@@ -115,6 +117,22 @@ public class HierarchyDefDaoImpl extends AbstractDAO implements HierarchyDefDao 
             if (rs != null && rs.next()) {
                 mPrimaryKey = rs.getLong(1);
             }
+
+            /* HierarchyDef Extend Attributes */
+            HierarchyNodeEaDto attDto = new HierarchyNodeEaDto();
+            ArrayList<Attribute> attrList = (ArrayList<Attribute>) hierDef.getAttributes();
+            HierarchyNodeEaDaoImpl hierEaDao = new HierarchyNodeEaDaoImpl(userConn);
+            for (Attribute att : attrList) {
+                attDto.setHierarchyDefId(mPrimaryKey);
+                attDto.setAttributeName(att.getName());
+                attDto.setColumnName(att.getColumnName());
+                attDto.setColumnType(att.getType().name());
+                attDto.setDefaultValue(att.getDefaultValue());
+                attDto.setIsRequired(att.getIsRequired());
+                attDto.setIsSearchable(att.getIsSearchable());
+                hierEaDao.insert(attDto);
+            }
+
             return mPrimaryKey;
         } catch (Exception _e) {
             _e.printStackTrace();
@@ -129,7 +147,7 @@ public class HierarchyDefDaoImpl extends AbstractDAO implements HierarchyDefDao 
     /**
      * Updates a single row in the hierarchy_def table.
      */
-    public int update(HierarchyDefDto dto) throws HierarchyDefDaoException {
+    public int update(HierarchyDef hierDef) throws HierarchyDefDaoException {
         PreparedStatement stmt = null;
 
         try {
@@ -148,18 +166,19 @@ public class HierarchyDefDaoImpl extends AbstractDAO implements HierarchyDefDao 
             stmt = userConn.prepareStatement(sqlStr);
 
             int index = 1;
-            stmt.setString(index++, dto.getHierarchyName());
-            stmt.setString(index++, dto.getDescription());
-            stmt.setString(index++, dto.getDomain());
-            stmt.setTimestamp(index++, (java.sql.Timestamp) dto.getEffectiveFromDate());
-            stmt.setTimestamp(index++, (java.sql.Timestamp) dto.getEffectiveToDate());
-            stmt.setString(index++, dto.getEffectiveFromReq());
-            stmt.setString(index++, dto.getEffectiveToReq());
-            stmt.setString(index++, dto.getEffectiveFromInc());
-            stmt.setString(index++, dto.getEffectiveToInc());
+            stmt.setString(index++, hierDef.getName());
+            stmt.setString(index++, hierDef.getDescription());
+            stmt.setString(index++, hierDef.getDomain());
+            stmt.setTimestamp(index++, (java.sql.Timestamp) hierDef.getEffectiveFromDate());
+            stmt.setTimestamp(index++, (java.sql.Timestamp) hierDef.getEffectiveToDate());
+            stmt.setString(index++, hierDef.getEffectiveFromRequired() ? "T" : "F");
+            stmt.setString(index++, hierDef.getEffectiveToRequired() ? "T" : "F");
+            stmt.setString(index++, hierDef.getEffectiveFromIncluded() ? "T" : "F");
+            stmt.setString(index++, hierDef.getEffectiveToIncluded() ? "T" : "F");
+            stmt.setString(index++, hierDef.getPlugin());
 
             /* set update SQL criteria */
-            stmt.setLong(index++, dto.getHierarchyDefId());
+            stmt.setLong(index++, hierDef.getId());
             int rows = stmt.executeUpdate();
 
             return rows;
