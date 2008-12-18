@@ -230,9 +230,12 @@ function createCustomAttributesSection (tableId, attributesArray, prefixToUse, s
     if(attributesArray != null && attributesArray.length > 0) {
         for(i=0; i<attributesArray.length; i++) {            
             var fName =  prefixToUse + "_" + attributesArray[i].name;
-            //alert("destroying " + fName);
             if(dijit.byId(fName) != undefined && dijit.byId(fName) != null ) {
                dijit.byId(fName).destroy();
+            }
+            var fName_To =  prefixToUse + "_" + attributesArray[i].name + "_TO";
+            if(dijit.byId(fName_To) != undefined && dijit.byId(fName_To) != null ) {
+                dijit.byId(fName_To).destroy();
             }
         }
     }

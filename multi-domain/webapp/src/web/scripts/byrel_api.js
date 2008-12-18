@@ -276,17 +276,19 @@ function searchRelationships() {
           return;
       }
       var byRangeObj =document.getElementById("select_custom_" + relationshipDefObj.extendedAttributes[c].name+"_TO");
-      var byRangeName = byRangeObj.name;
-      var byRangeValue = byRangeObj.value;
+      var byRangeName = "";
+      var byRangeValue = "";
       if(byRangeObj != null){
+          byRangeName = byRangeObj.name;
+          byRangevalue = byRangeObj.value;
           //alert("byRangeName---"+byRangeName +"  byRangeValue----"+byRangeValue);
           if( ! isValidCustomAttribute( attributeType, byRangeObj.value) ) {
-          alert(byRangeValue + " " + getMessageForI18N("isnotavalidvaluefor")+ " " + byRangeName + " " + getMessageForI18N("attribute")+ " " +getMessageForI18N("attributeTypeFor")+ " " +byRangeValue + " " +getMessageForI18N("is")+ " " +"'"+attributeType+"'");
-          byRangeObj.focus(); 
-          return;
-         }
+            alert(byRangeValue + " " + getMessageForI18N("isnotavalidvaluefor")+ " " + byRangeName + " " + getMessageForI18N("attribute")+ " " +getMessageForI18N("attributeTypeFor")+ " " +byRangeValue + " " +getMessageForI18N("is")+ " " +"'"+attributeType+"'");
+            byRangeObj.focus(); 
+            return;
+          }
       }         
-     }
+    }
      
     var sourceDomainSearch = {name: sourceDomain}; 
     var targetDomainSearch = {name: targetDomain};
