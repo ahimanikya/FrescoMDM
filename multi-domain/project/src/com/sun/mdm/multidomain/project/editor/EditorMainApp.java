@@ -719,13 +719,13 @@ public class EditorMainApp {
      */
     public void save(boolean bClosing) {
         try {
+            String msgSaveFailed = NbBundle.getMessage(EditorMainApp.class, "MSG_Save_Failed");
             // MultiDomainModel.xml
             String multiDomainModelXml = getMultiDomainModelXmlString();
             if (multiDomainModelXml != null) {
                 mMultiDomainApplication.saveMultiDomainModelXml(multiDomainModelXml);
             } else {
-                String msg = NbBundle.getMessage(EditorMainApp.class, "MSG_Save_Failed");
-                NotifyDescriptor desc = new NotifyDescriptor.Message(msg);
+                NotifyDescriptor desc = new NotifyDescriptor.Message(msgSaveFailed);
                 DialogDisplayer.getDefault().notify(desc);
             }
             
@@ -733,11 +733,8 @@ public class EditorMainApp {
             if (relationshipWebManagerXml != null) {
                 mMultiDomainApplication.saveMultiDomainWebManagerXml(relationshipWebManagerXml);
             } else {
-                String msg = NbBundle.getMessage(EditorMainApp.class, "MSG_Save_Failed");
-
-                NotifyDescriptor desc = new NotifyDescriptor.Message(msg);
+                NotifyDescriptor desc = new NotifyDescriptor.Message(msgSaveFailed);
                 DialogDisplayer.getDefault().notify(desc);
-                
             }
             deleteDomainFileObject();
             mMultiDomainApplication.resetModified(false);

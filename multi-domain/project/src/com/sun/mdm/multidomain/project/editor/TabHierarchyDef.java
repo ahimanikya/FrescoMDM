@@ -254,7 +254,7 @@ public class TabHierarchyDef extends javax.swing.JPanel {
         jButtonEditPredefinedAttribute.setEnabled(false);
         jButtonEditPredefinedAttribute.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonEditPredefinedAttributeonEditPredefinedAttribute(evt);
+                onEditPredefinedAttribute(evt);
             }
         });
 
@@ -430,54 +430,65 @@ public class TabHierarchyDef extends javax.swing.JPanel {
 
     }// </editor-fold>//GEN-END:initComponents
 
-private void jButtonEditPredefinedAttributeonEditPredefinedAttribute(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditPredefinedAttributeonEditPredefinedAttribute
-TableModelPredefinedAttribute model = (TableModelPredefinedAttribute) this.jTablePredefinedAttr.getModel();
-        int idx = this.jTablePredefinedAttr.getSelectedRow();
-        PredefinedAttributeRow row = model.getRow(idx);
-        String oldName = row.getName();
-        final PredefinedAttributeDialog dialog = new PredefinedAttributeDialog(row.getName(), row.getIncluded(),
-                row.getRequired());
-        dialog.setVisible(true);
-        if (dialog.isModified()) {
-            String attrName = dialog.getAttributeName();
-            String included = dialog.getIncluded() == true ? "true" : "false";
-            String required = dialog.getRequired() == true ? "true" : "false";
-            // Replace Attribute
-            Attribute attr = new Attribute(attrName, included, required);
-            mDefinitionNode.updatePredefinedAttribute(oldName, attr);
-            // update row
-            row.setName(attrName);
-            row.setIncluded(included);
-            row.setRequired(required);
-            model.fireTableDataChanged();
-            jTablePredefinedAttr.setRowSelectionInterval(idx, idx);
-            mEditorMainApp.enableSaveAction(true);
-        }
-}//GEN-LAST:event_jButtonEditPredefinedAttributeonEditPredefinedAttribute
+private void onEditPredefinedAttribute(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onEditPredefinedAttribute
+    TableModelPredefinedAttribute model = (TableModelPredefinedAttribute) this.jTablePredefinedAttr.getModel();
+    int idx = this.jTablePredefinedAttr.getSelectedRow();
+    PredefinedAttributeRow row = model.getRow(idx);
+    String oldName = row.getName();
+    final PredefinedAttributeDialog dialog = new PredefinedAttributeDialog(row.getName(), row.getIncluded(),
+            row.getRequired());
+    dialog.setVisible(true);
+    if (dialog.isModified()) {
+        String attrName = dialog.getAttributeName();
+        String included = dialog.getIncluded() == true ? "true" : "false";
+        String required = dialog.getRequired() == true ? "true" : "false";
+        // Replace Attribute
+        Attribute attr = new Attribute(attrName, included, required);
+        mDefinitionNode.updatePredefinedAttribute(oldName, attr);
+        // update row
+        row.setName(attrName);
+        row.setIncluded(included);
+        row.setRequired(required);
+        model.fireTableDataChanged();
+        jTablePredefinedAttr.setRowSelectionInterval(idx, idx);
+        mEditorMainApp.enableSaveAction(true);
+    }
+}//GEN-LAST:event_onEditPredefinedAttribute
 
 private void onAddExtendedAttribute(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddExtendedAttribute
-final ExtendedAttributeDialog dialog = new ExtendedAttributeDialog();
-            dialog.setVisible(true);
-            if (dialog.isModified()) {
-                String attrName = dialog.getAttributeName();
-                String dataType = dialog.getDataType();
-                String defaultValue = dialog.getDefaultValue();
-                String searchable = dialog.getSearchable() == true ? "true" : "false";
-                String required = dialog.getRequired() == true ? "true" : "false";
-                // add new Attribute
-                Attribute attr = new Attribute(attrName, "", dataType, defaultValue,
-                                               searchable, required);
-                mDefinitionNode.addExtendedAttribute(attr);
-                // add a new row
-                TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtendedAttr.getModel();
-                ExtendedAttributeRow row = new ExtendedAttributeRow(attr.getName(), 
-                                                            attr.getDataType(), attr.getDefaultValue(),
-                                                            attr.getSearchable(), attr.getRequired());
-                model.addRow(model.getRowCount(), row);
-                model.fireTableDataChanged();
-                mEditorMainApp.enableSaveAction(true);
-            }
+    final ExtendedAttributeDialog dialog = new ExtendedAttributeDialog();
+    dialog.setVisible(true);
+    if (dialog.isModified()) {
+        String attrName = dialog.getAttributeName();
+        if (mDefinition.getExtendedAttribute(attrName) == null) {
+            String dataType = dialog.getDataType();
+            String defaultValue = dialog.getDefaultValue();
+            String searchable = dialog.getSearchable() == true ? "true" : "false";
+            String required = dialog.getRequired() == true ? "true" : "false";
+            // add new Attribute
+            Attribute attr = new Attribute(attrName, "", dataType, defaultValue,
+                                           searchable, required);
+            mDefinitionNode.addExtendedAttribute(attr);
+            // add a new row
+            TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtendedAttr.getModel();
+            ExtendedAttributeRow row = new ExtendedAttributeRow(attr.getName(), 
+                                                        attr.getDataType(), attr.getDefaultValue(),
+                                                        attr.getSearchable(), attr.getRequired());
+            model.addRow(model.getRowCount(), row);
+            model.fireTableDataChanged();
+            mEditorMainApp.enableSaveAction(true);
+        } else {
+            displayExtendedAttributeFound(attrName);
+        }
+    }
 }//GEN-LAST:event_onAddExtendedAttribute
+
+    private void displayExtendedAttributeFound(String attrName) {
+        NotifyDescriptor desc = new NotifyDescriptor.Message(NbBundle.getMessage(TabHierarchyDef.class, "MSG_Attribute_Exists", attrName));
+        desc.setMessageType(NotifyDescriptor.ERROR_MESSAGE);
+        desc.setTitle(NbBundle.getMessage(TabHierarchyDef.class, "MSG_Error"));
+        DialogDisplayer.getDefault().notify(desc);
+    }
 
 private void onRemoveExtendedAttribute(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemoveExtendedAttribute
 TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtendedAttr.getModel();
@@ -507,15 +518,16 @@ TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtended
 }//GEN-LAST:event_onRemoveExtendedAttribute
 
 private void onEditExtendedAttribute(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onEditExtendedAttribute
-TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtendedAttr.getModel();
-        int idx = this.jTableExtendedAttr.getSelectedRow();
-        ExtendedAttributeRow row = model.getRow(idx);
-        String oldName = row.getName();
-        final ExtendedAttributeDialog dialog = new ExtendedAttributeDialog(row.getName(), row.getDataType(), 
-                                                    row.getDefaultValue(), row.getSearchable(), row.getRequired());
-        dialog.setVisible(true);
-        if (dialog.isModified()) {
-            String attrName = dialog.getAttributeName();
+    TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtendedAttr.getModel();
+    int idx = this.jTableExtendedAttr.getSelectedRow();
+    ExtendedAttributeRow row = model.getRow(idx);
+    String oldName = row.getName();
+    final ExtendedAttributeDialog dialog = new ExtendedAttributeDialog(row.getName(), row.getDataType(), 
+                                                row.getDefaultValue(), row.getSearchable(), row.getRequired());
+    dialog.setVisible(true);
+    if (dialog.isModified()) {
+        String attrName = dialog.getAttributeName();
+        if (oldName.equals(attrName) || mDefinition.getExtendedAttribute(attrName) == null) {
             String dataType = dialog.getDataType();
             String defaultValue = dialog.getDefaultValue();
             String searchable = dialog.getSearchable() == true ? "true" : "false";
@@ -533,7 +545,10 @@ TableModelExtendedAttribute model = (TableModelExtendedAttribute) jTableExtended
             model.fireTableDataChanged();
             jTableExtendedAttr.setRowSelectionInterval(idx, idx);
             mEditorMainApp.enableSaveAction(true);
+        } else {
+            displayExtendedAttributeFound(attrName);
         }
+    }
 }//GEN-LAST:event_onEditExtendedAttribute
 
 private void onButtonEffectiveFrom(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onButtonEffectiveFrom
@@ -543,30 +558,6 @@ private void onButtonEffectiveFrom(java.awt.event.ActionEvent evt) {//GEN-FIRST:
 private void onButtonEffectiveTo(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onButtonEffectiveTo
     performDatePicker(false);
 }//GEN-LAST:event_onButtonEffectiveTo
-    private void onEditPredefinedAttribute(java.awt.event.ActionEvent evt) {                                           
-        TableModelPredefinedAttribute model = (TableModelPredefinedAttribute) this.jTablePredefinedAttr.getModel();
-        int idx = this.jTablePredefinedAttr.getSelectedRow();
-        PredefinedAttributeRow row = model.getRow(idx);
-        String oldName = row.getName();
-        final PredefinedAttributeDialog dialog = new PredefinedAttributeDialog(row.getName(), row.getIncluded(),
-                row.getRequired());
-        dialog.setVisible(true);
-        if (dialog.isModified()) {
-            String attrName = dialog.getAttributeName();
-            String included = dialog.getIncluded() == true ? "true" : "false";
-            String required = dialog.getRequired() == true ? "true" : "false";
-            // Replace Attribute
-            Attribute attr = new Attribute(attrName, included, required);
-            mDefinitionNode.updatePredefinedAttribute(oldName, attr);
-            // update row
-            row.setName(attrName);
-            row.setIncluded(included);
-            row.setRequired(required);
-            model.fireTableDataChanged();
-            jTablePredefinedAttr.setRowSelectionInterval(idx, idx);
-            mEditorMainApp.enableSaveAction(true);
-        }
-    }                                          
 
     private void onPredefinedAttributesSelected() {
         int cnt = jTablePredefinedAttr.getSelectedRowCount();
