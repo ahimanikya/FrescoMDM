@@ -212,24 +212,18 @@ String euidValue  = (String) recordDetailsHandler.getParametersMap().get("EUID")
    <% 
      if(validationFailed || duplicateFound) { //If validation fails display the error message here
     %>
-     <div class="ajaxalert">
-	  <table>
-			<tr>
-				<td>
-				      <ul>
- 				             <li>
-							    <%if(duplicateFound) {%>
-                                  <%=request.getParameter("duplicateLid")%>
-							    <%}else {%>
-							      <%=bundle.getString("ERROR_one_of_many")%>
-							    <%}%>
-							 </li>
-  				      </ul>
-				<td>
-			<tr>
-		</table>
-	</div>
-<%} else {%>
+ 	  <table>
+		<tr>
+		 <td>
+ 		  <%if(duplicateFound) {%>
+            <script>document.getElementById('messages').innerHTML='<ul><li><%=request.getParameter("duplicateLid")%></li></ul>';</script>
+		  <%}else {%>
+			<script>document.getElementById('messages').innerHTML='<ul><li><%=bundle.getString("ERROR_one_of_many")%></li></ul>';</script> 
+		  <%}%>
+ 		<td>
+	  <tr>
+	</table>
+ <%} else {%>
 <% ArrayList allEuids = new ArrayList();	
 	%>
 <%
@@ -270,24 +264,26 @@ String euidValue  = (String) recordDetailsHandler.getParametersMap().get("EUID")
  		</script>
  		</td></tr>
 		</table>
-   <%} else {%>
-    <div class="ajaxalert">
-	  <table>
-			<tr>
-				<td>
-				      <ul>
-			            <% while (messagesIter.hasNext())   { %>
-				             <li>
-								<% FacesMessage facesMessage  = (FacesMessage)messagesIter.next(); %>
-								<%= facesMessage.getSummary() %>
-				             </li>
-						 <% } %>
-				      </ul>
-				<td>
-			<tr>
-		</table>
-	</div>
-
+   <%} else {
+	      StringBuffer msgs = new StringBuffer("<ul>");	
+	%>
+    <table>
+	<tr>
+	 <td>
+ 	 <% 
+		while (messagesIter.hasNext())   { %>
+		<% FacesMessage facesMessage  = (FacesMessage)messagesIter.next(); %>
+		<%msgs.append("<li>");
+		  msgs.append(facesMessage.getSummary());
+          msgs.append("</li>");
+		 %>
+	  <%}
+		 msgs.append("</ul>");
+	  %>
+         <script>document.getElementById('messages').innerHTML="<%=msgs%>";</script>
+		<td>
+	<tr>
+  </table>
    <%}%>
 
 <%}%>
@@ -295,8 +291,7 @@ String euidValue  = (String) recordDetailsHandler.getParametersMap().get("EUID")
 
     <%} else {%> <!--If not from the dashboard -->
 		<table><tr><td>
-          <div class="ajaxalert">
-		<script>
+ 		<script>
  		if (checkedItems.length >= 2)  { 
 		  var euids = "";
 		  for(var j=0;j<checkedItems.length;j++) {
@@ -310,8 +305,7 @@ String euidValue  = (String) recordDetailsHandler.getParametersMap().get("EUID")
 	    } 
 
 		</script>
-		  </div>
-		</td></tr>
+ 		</td></tr>
 		</table>
 <%}%>
 
@@ -342,63 +336,62 @@ String euidValue  = (String) recordDetailsHandler.getParametersMap().get("EUID")
   </tr>
   </table>
   <%}else if(megredEuid != null){%>
-       <%if("Exception_Occured".equalsIgnoreCase(megredEuid)) {%>
- <div class="ajaxalert">
-	  <table>
-			<tr>
-				<td>
-				      <ul>
-			            <% while (messagesIter.hasNext())   { %>
-				             <li>
-								<% FacesMessage facesMessage  = (FacesMessage)messagesIter.next(); %>
- 								<%= facesMessage.getSummary() %>
-				             </li>
-						 <% } %>
-				      </ul>
-				<td>
-			<tr>
-		</table>
-		</div>
-
-       <%}else if("Invalid EUID".equalsIgnoreCase(megredEuid)) {%>
-       <div class="ajaxalert">
-           <table>
-       	   <tr>
-       	     <td>
-              <% String messages = "EUID '" + euidValue + "' " + bundle.getString("euid_not_found_text"); %>     	 
- 	            <script>
-       		      var messages = document.getElementById("messages");
-       	          messages.innerHTML= "<ul><li><%=messages%></li></ul>";
-       		      messages.style.visibility="visible";
-       	      </script>
-       	   </td>
-       	   </tr>
-       	 <table>
-       	 </div>
-     <%}else{%>
-       <table>
-         <tr><td>
-		 <!-- Modified  on 27-09-2008, to change alert pop up window to information pop up window -->
-         <script>
-		     window.location = "#top";
-             document.getElementById("activemessageDiv").innerHTML='<%=megredEuid%> <%=active_euid_text%> <%=euidValue%>.';
-			 document.getElementById('activeDiv').style.visibility='visible';
-			 document.getElementById('activeDiv').style.display='block';
- 			 <%if("euiddetails.jsf".equalsIgnoreCase(request.getParameter("pageName"))) {%>
-				 popUrl = '/<%=URI%>/euiddetails.jsf?euid=<%=megredEuid%>';
-			 <%} else if("dashboard.jsf".equalsIgnoreCase(request.getParameter("pageName"))) {%>
-				 popUrl = '/<%=URI%>/euiddetails.jsf?euid=<%=megredEuid%>&<%=previousQueryStr%>&fromUrl=dashboard.jsf';
-			 <%} else {%>
-				 popUrl = '/<%=URI%>/euiddetails.jsf?euid=<%=megredEuid%>&<%=previousQueryStr%>&fromUrl=recorddetails.jsf';
-			 <%}%>
-		  
+       <%if("Exception_Occured".equalsIgnoreCase(megredEuid)) {
+	      StringBuffer msgs = new StringBuffer("<ul>");	
+       %>
+  <table>
+	<tr>
+     <td>
+		<% while (messagesIter.hasNext())   { %>
+		 <% FacesMessage facesMessage  = (FacesMessage)messagesIter.next(); %>
+		<% msgs.append("<li>");
+		   msgs.append(facesMessage.getSummary());
+		   msgs.append("</li>");
+ 	    %>
+ 	    <%}
+		msgs.append("</ul>");
+		%>
+       <script>document.getElementById('messages').innerHTML="<%=msgs%>";</script>
+	<td>
+   <tr>
+ </table>
+	<%}else if("Invalid EUID".equalsIgnoreCase(megredEuid)) {%>
+		<table>
+	   <tr>
+		 <td>
+		  <% String messages = "EUID '" + euidValue + "' " + bundle.getString("euid_not_found_text"); %>     	 
+			<script>
+			  var messages = document.getElementById("messages");
+			  messages.innerHTML= "<ul><li><%=messages%></li></ul>";
+			  messages.style.visibility="visible";
 		  </script>
-         </td>
-         </tr>
-         </table>
-		 
+	   </td>
+	   </tr>
+	 <table>
+  <%}else{%>
+   <table>
+	 <tr><td>
+	 <!-- Modified  on 27-09-2008, to change alert pop up window to information pop up window -->
+	 <script>
+		 window.location = "#top";
+		 document.getElementById("activemessageDiv").innerHTML='<%=megredEuid%> <%=active_euid_text%> <%=euidValue%>.';
+		 document.getElementById('activeDiv').style.visibility='visible';
+		 document.getElementById('activeDiv').style.display='block';
+		 <%if("euiddetails.jsf".equalsIgnoreCase(request.getParameter("pageName"))) {%>
+			 popUrl = '/<%=URI%>/euiddetails.jsf?euid=<%=megredEuid%>';
+		 <%} else if("dashboard.jsf".equalsIgnoreCase(request.getParameter("pageName"))) {%>
+			 popUrl = '/<%=URI%>/euiddetails.jsf?euid=<%=megredEuid%>&<%=previousQueryStr%>&fromUrl=dashboard.jsf';
+		 <%} else {%>
+			 popUrl = '/<%=URI%>/euiddetails.jsf?euid=<%=megredEuid%>&<%=previousQueryStr%>&fromUrl=recorddetails.jsf';
+		 <%}%>
+	  
+	  </script>
+	 </td>
+	 </tr>
+	 </table>
+	 
 
-     <%}%>
+ <%}%>
 <%}%>
 
 <% } else if (recordDetailsHandler.getParametersMap().get("LID") != null && recordDetailsHandler.getParametersMap().get("SystemCode") != null) {%><!-- if only System Code/LID is entered by the user is entered by the user-->
@@ -434,8 +427,7 @@ String euidValue  = (String) recordDetailsHandler.getParametersMap().get("EUID")
   </tr>
   </table>
   <%}else{%>
-      <div class="ajaxalert">
-    <table>
+     <table>
 	   <tr>
 	     <td>
   <%
@@ -465,11 +457,9 @@ String euidValue  = (String) recordDetailsHandler.getParametersMap().get("EUID")
 	   </td>
 	   </tr>
 	 <table>
-	 </div>
-  <%}%>
+   <%}%>
  <%} else {%>
-       <div class="ajaxalert">
-    <table>
+     <table>
 	   <tr>
 	     <td>
    <%
@@ -490,8 +480,6 @@ String euidValue  = (String) recordDetailsHandler.getParametersMap().get("EUID")
 	   </td>
 	   </tr>
 	 <table>
-	 </div>
-
  <%}%>
 
 
@@ -504,8 +492,7 @@ String euidValue  = (String) recordDetailsHandler.getParametersMap().get("EUID")
 	  ) 
    
     {%>
-        <div class="ajaxalert">
-           <table>
+            <table>
        	   <tr>
        	     <td>
               <% String messages = bundle.getString("enter_euid_text"); %>     	 
@@ -517,8 +504,7 @@ String euidValue  = (String) recordDetailsHandler.getParametersMap().get("EUID")
        	   </td>
        	   </tr>
        	 <table>
-       	 </div>
-   <%}%>
+    <%}%>
 
 <%} else {%>
 <%
@@ -684,28 +670,26 @@ if (results != null)   {
 		 messages.style.visibility="hidden";
 	 </script>
 <% } else { %> <!-- End results!= null -->
-    <div class="ajaxalert">
-<p style="text-align:left;color:red;">
+ <p style="text-align:left;color:red;">
      <%
 		  Iterator messagesIter = FacesContext.getCurrentInstance().getMessages(); 
 	      StringBuffer msgs = new StringBuffer("<ul>");	
 			
           while (messagesIter.hasNext()) {
-
-                     FacesMessage facesMessage = (FacesMessage) messagesIter.next();
+	        FacesMessage facesMessage = (FacesMessage) messagesIter.next();
 	%>
-			<ul><li><%=  facesMessage.getSummary()%></li></ul>
-		<%
+ 		<%
                      msgs.append("<li>");
 					 msgs.append(facesMessage.getSummary());
 					 msgs.append("</li>");
           }
 		  msgs.append("</ul>");		  
-     %>     	 
+     %> 
+	 <table><tr><td>
+     <script>document.getElementById('messages').innerHTML="<%=msgs%>";</script>
+	 </td></tr></table>
 </p>
-</div>
-
-<% } %>
+ <% } %>
 
 <%}%>
 

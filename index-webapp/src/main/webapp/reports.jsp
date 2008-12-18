@@ -219,7 +219,9 @@ if(session!=null ){
 													 <%}%>
 													 <h:panelGrid rendered="<%=isActivityReportValueExpression%>">
 													   <h:panelGroup>
-													    <h:outputText value="#{msgs.activity_type}"/> &nbsp;
+													    <span class="inlinefonts">
+													     <h:outputText value="#{msgs.activity_type}"/>
+														</span>&nbsp;
 														<h:selectOneMenu title="activityType" styleClass="selectContent" id="viewreports" onchange="javascript:showActivityTypes(this.value,outputDivId);" value="#{ReportHandler.frequency}" >
                                                            <f:selectItems value="#{ReportHandler.activityReportTypes}"/>
                                                         </h:selectOneMenu>      
@@ -240,7 +242,9 @@ if(session!=null ){
 															%>
 															  <table>
 															    <tr>
-																<td><%=bundle.getString("fromdate_label_text")%></td>
+																<td>
+																<span class="inlinefonts"><%=bundle.getString("fromdate_label_text")%></span>
+																</td>
 																<td>
 																<input type="text" 
 																	   id="WeeklyDate"
@@ -293,7 +297,9 @@ if(session!=null ){
 															<%if(fieldConfig.isRequired()) {%>
 																 <span style="font-size:9px;color:red;verticle-align:top">*&nbsp;</span>
 															<%}%>
+															<span class="inlinefonts">
 															<%=fieldConfig.getDisplayName()%>
+															</span>
 														</nobr>
 													 
 													 </td>
@@ -527,7 +533,11 @@ if(session!=null ){
 				%>
 				  <table>
 					<tr>
-						  <td> <%=bundle.getString("fromdate_label_text")%></td>
+						  <td>
+						   <span class="inlinefonts">
+						    <%=bundle.getString("fromdate_label_text")%>
+						   </span>
+						 </td>
 					   <td>
 					<input type="text" 
 						   id="WeeklyDate"
@@ -555,7 +565,11 @@ if(session!=null ){
 		  <div id="<%=bundle.getString("MONTHLY_ACTIVITY")%>" style="visibiity:hidden;display:none;">
 				  <table>
 					<tr>
-					   <td><%=bundle.getString("month_year_selection")%></td>
+					   <td>
+						<span class="inlinefonts">
+					    <%=bundle.getString("month_year_selection")%>
+						</span>
+					   </td>
 					   <td>
 						<select id="Month" title="Monthly_Month">	
 							<option value="01"><%=bundle.getString("MONTH01")%></option>
@@ -589,7 +603,11 @@ if(session!=null ){
 		  <div id="<%=bundle.getString("YEARLY_ACTIVITY")%>"  style="visibiity:hidden;display:none;">
 				  <table>
 					<tr>
-					   <td><%=bundle.getString("year_selection")%></td>
+					   <td>
+						 <span class="inlinefonts">
+					      <%=bundle.getString("year_selection")%>
+						 </span>
+					   </td>
 					  <td>
 						<select id="Year" title="Yearly_year">	
 						   <%for(int year = intCurrentYear - 50  ; year < intCurrentYear + 10 ; year++) {%>

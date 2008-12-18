@@ -103,7 +103,7 @@ function setRand(thisrand)  {
     <%@include file="./templates/header.jsp"%>
     <body class="yui-skin-sam">
         <div id="mainContent">     
-            <div id ="transactions " class="basicSearch">
+            <div id ="transactions " class="duplicaterecords">
                     <h:form id="advancedformData">
                         <table border="0" cellpadding="0" cellspacing="0" align="right">
                             <tr>

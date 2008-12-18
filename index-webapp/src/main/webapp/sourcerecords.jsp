@@ -446,10 +446,12 @@ function showExtraTabDivs(divId,thisEvent)  {
                                                         <h:dataTable id="fieldConfigId" var="feildConfig" headerClass="tablehead"  value="#{SourceHandler.viewEditScreenConfigArray}">
                                                             <!--Rendering Non Updateable HTML Text Area-->
                                                             <h:column>
+															  <span class="inlinefonts"><nobr>
                                                                 <h:outputText value="#{feildConfig.displayName}" />
                                                                 <h:outputText  value="*"  rendered="#{feildConfig.required}" /> 
-                                                            </h:column> 
-                                                                
+															  </nobr></span>
+															</h:column> 
+															  
                                                             <!--Rendering HTML Select Menu List-->
                                                             <h:column rendered="#{feildConfig.guiType eq 'MenuList'}" >
                                                                 <h:selectOneMenu id="viewEditSourceOption" title="SystemCode" rendered="#{feildConfig.name eq 'SystemCode'}" 
@@ -617,11 +619,12 @@ function showExtraTabDivs(divId,thisEvent)  {
                                                                              var="feildConfig" 
                                                                              value="#{SourceAddHandler.addScreenConfigArray}">
                                                                     <!--Rendering Non Updateable HTML Text Area-->
-                                                                    <h:column>
+                                                                    <h:column>															    <span class="inlinefonts">
                                                                         <nobr>
                                                                             <h:outputText value="*" rendered="#{feildConfig.required}" />
                                                                             <h:outputText value="#{feildConfig.displayName}" />
                                                                         </nobr>
+																	  </span>
                                                                     </h:column>
                                                                     <!--Rendering HTML Select Menu List-->
                                                                     <h:column rendered="#{feildConfig.guiType eq 'MenuList'}" >
@@ -702,9 +705,11 @@ function showExtraTabDivs(divId,thisEvent)  {
 															</h:outputText>													  
 															<h:outputText rendered="#{!fieldConfigPerAdd.required}">
 																<span style="font-size:12px;color:red;verticle-align:top">&nbsp;</span>
-															</h:outputText>													  
-															<h:outputText value="#{fieldConfigPerAdd.displayName}" />
-														    <h:outputText value=":"/>
+															</h:outputText>		
+															<span class="inlinefonts">										
+															 <h:outputText value="#{fieldConfigPerAdd.displayName}" />
+														     <h:outputText value=":"/>
+															</span>
                                                          </h:column>
                                                         <!--Rendering HTML Select Menu List-->
                                                         <h:column rendered="#{fieldConfigPerAdd.guiType eq 'MenuList' &&  fieldConfigPerAdd.valueType ne 6}" >
@@ -829,9 +834,11 @@ function showExtraTabDivs(divId,thisEvent)  {
 												</h:outputText>													  
 												<h:outputText rendered="#{!childFieldConfigAdd.required}">
 													<span style="font-size:12px;color:red;verticle-align:top">&nbsp;</span>
-												</h:outputText>													  
-												<h:outputText value="#{childFieldConfigAdd.displayName}" />
-												<h:outputText value=":"/>
+												</h:outputText>
+										        <span class="inlinefonts">												
+												 <h:outputText value="#{childFieldConfigAdd.displayName}" />
+												 <h:outputText value=":"/>
+												</span>
   											</h:column>
                                             <!--Rendering HTML Select Menu List-->
                                             <h:column rendered="#{childFieldConfigAdd.guiType eq 'MenuList'}" >
@@ -1105,10 +1112,10 @@ function showExtraTabDivs(divId,thisEvent)  {
                                                    <h:form id="basicMergeformData">
                                                      <table border="0" cellpadding="4" cellspacing="4">
                                                            <tr>
-                                                               <td>
-                                                                   <h:outputLabel style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
+                                                               <td>						
+                                                                   <h:outputLabel style="font-family:Arial,Helvetica, sans-serif;font-size:12px;color:#102030;vertical-align:middle;text-align:left;font-weight:bold;"
                                                                    for="#{msgs.transaction_source}" value="#{msgs.transaction_source}"/>
-                                                                </td>
+															  </td>
                                                                <td>
                                                                    <h:selectOneMenu title="#{msgs.transaction_source}" onchange="javascript:setLidMaskMergeValue(this,'basicMergeformData')"
 																   style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"id="sourceOption" 
@@ -1119,7 +1126,7 @@ function showExtraTabDivs(divId,thisEvent)  {
                                                                </td>
                                                                <input id='lidmask' type='hidden' name='lidmask' value='DDD-DDD-DDDD' />           
                                                                <td>
-                                                               <font style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
+                                                               <font  style="font-family:Arial,Helvetica, sans-serif;font-size:12px;color:#102030;vertical-align:middle;text-align:left;font-weight:bold;"
                                                                    > <%=localIdDesignation%> 1  </font>
 																   <%
 																	ValueExpression mergeLIDVaueExpression = ExpressionFactory.newInstance().createValueExpression( localIdDesignation+ " 1" ,  localIdDesignation.getClass());   
@@ -1138,7 +1145,7 @@ function showExtraTabDivs(divId,thisEvent)  {
 																	%>
                                                                <td>
                                                                 
-																   <font style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
+																   <font  style="font-family:Arial,Helvetica, sans-serif;font-size:12px;color:#102030;vertical-align:middle;text-align:left;font-weight:bold;"
                                                                    > <%=localIdDesignation%> 2  </font>
                                                                    <h:inputText value="#{SourceMergeHandler.lid2}" id="LID2" title="<%=mergeLIDVaueExpression%>"
 																   style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
@@ -1150,7 +1157,7 @@ function showExtraTabDivs(divId,thisEvent)  {
 																   %>
                                                                <td>
  
-																   <font style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
+																   <font  style="font-family:Arial,Helvetica, sans-serif;font-size:12px;color:#102030;vertical-align:middle;text-align:left;font-weight:bold;"
                                                                    > <%=localIdDesignation%>3  </font>
                                                                    <h:inputText value="#{SourceMergeHandler.lid3}" id="LID3" title="<%=mergeLIDVaueExpression%>"
 																   style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
@@ -1162,7 +1169,7 @@ function showExtraTabDivs(divId,thisEvent)  {
 																	 mergeLIDVaueExpression = ExpressionFactory.newInstance().createValueExpression( localIdDesignation+ " 4" ,  localIdDesignation.getClass());   
 																   %>
                                                                <td>
-																   <font style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
+																   <font  style="font-family:Arial,Helvetica, sans-serif;font-size:12px;color:#102030;vertical-align:middle;text-align:left;font-weight:bold;"
                                                                    > <%=localIdDesignation%> 4  </font>
                                                                    <h:inputText value="#{SourceMergeHandler.lid4}" id="LID4" title="<%=mergeLIDVaueExpression%>"
 																   style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"

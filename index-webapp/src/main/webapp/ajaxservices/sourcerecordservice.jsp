@@ -505,9 +505,11 @@ boolean isSessionActive = true;
 										</h:outputText>													  
 										<h:outputText rendered="#{!fieldConfigPerAdd.required}">
 											<span style="font-size:12px;color:red;verticle-align:top">&nbsp;</span>
-										</h:outputText>											 		  
-										<h:outputText value="#{fieldConfigPerAdd.displayName}"/>
-										<h:outputText value=":"/>
+										</h:outputText>	
+										<span class="inlinefonts">										 		  
+										 <h:outputText value="#{fieldConfigPerAdd.displayName}"/>
+ 										<h:outputText value=":"/>
+										</span>
 									  </h:column>
 									<!--Rendering HTML Select Menu List-->
 									<h:column rendered="#{fieldConfigPerAdd.guiType eq 'MenuList' &&  fieldConfigPerAdd.valueType ne 6 && !fieldConfigPerAdd.sensitive}" >
@@ -742,9 +744,11 @@ boolean isSessionActive = true;
 																</h:outputText>													  
 																<h:outputText rendered="#{!childFieldConfigAdd.required}">
 																	<span style="font-size:12px;color:red;verticle-align:top">&nbsp;</span>
-																</h:outputText>													  
+																</h:outputText>	
+																<span class="inlinefonts">
 																<h:outputText value="#{childFieldConfigAdd.displayName}" />
 																<h:outputText value=":"/>
+																</span>
 
 																				</h:column>
 																				<!--Rendering HTML Select Menu List-->

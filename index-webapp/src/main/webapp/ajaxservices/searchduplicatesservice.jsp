@@ -818,9 +818,10 @@ String previousQuery=request.getQueryString(); //added  on 22/08/2008 for incorp
                                                         FieldConfig fieldConfigMap = (FieldConfig) resultsConfigFeilds[ifc]; 
                                                      %>
 													<% if (ifc == 0) {%>
-													     <tr><td><h:outputText value="#{msgs.source_rec_status_but}"/></td></tr>
+													     <tr><td><span class="inlinefonts"><h:outputText value="#{msgs.source_rec_status_but}"/></span></td></tr>
 													<% } %>
-                                                    <tr><td><%=fieldConfigMap.getDisplayName()%></td></tr>
+                                                    <tr><td>
+													<span class="inlinefonts"><%=fieldConfigMap.getDisplayName()%></span></td></tr>
                                                     <%}%>
 													<tr><td>&nbsp</td></tr>
 													<tr><td>&nbsp</td></tr>

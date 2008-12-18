@@ -181,7 +181,9 @@ function align(thisevent,divID) {
                             <tr>
                                 <td>
                                     <h:outputText  rendered="#{SearchDuplicatesHandler.possilbeSearchTypesCount gt 1}"  value="#{msgs.patdet_search_text}"/>&nbsp;
-                                               <select id="searchTypeList" title="<%=bundle.getString("search_Type")%>" onchange="javascript:document.getElementById('outputdiv').innerHTML ='';getRecordDetailsFormValues('searchTypeForm');checkedItems = new Array();setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchscreenservices.jsf?random='+rand+'&'+queryStr,'SearchCriteria','')" style="width:220px;">	
+                                               <select id="searchTypeList" title="<%=bundle.getString("search_Type")%>" onchange="javascript:
+										       document.getElementById('messages').innerHTML='';
+											   document.getElementById('outputdiv').innerHTML ='';getRecordDetailsFormValues('searchTypeForm');checkedItems = new Array();setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchscreenservices.jsf?random='+rand+'&'+queryStr,'SearchCriteria','')" style="width:220px;">	
                                               <%ArrayList   searchListItemArray = searchDuplicatesHandler.getPossilbeSearchTypes();%>
 											    <%for(int p = 0; p <searchListItemArray.size();p++) {
                                                         SelectItem selectItem = (SelectItem) searchListItemArray.get(p);
@@ -351,7 +353,9 @@ function align(thisevent,divID) {
 										<% if(operations.isPotDup_SearchView()){%>	
                                            <a  class="button" title="<h:outputText value="#{msgs.search_button_label}"/>"
 										       href="javascript:void(0)"
-                                               onclick="javascript:getFormValues('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?random='+rand+'&'+queryStr,'outputdiv','')">  
+                                               onclick="javascript:
+										       document.getElementById('messages').innerHTML='';
+											   getFormValues('advancedformData');setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?random='+rand+'&'+queryStr,'outputdiv','')">  
                                                <span>
                                                  <h:outputText value="#{msgs.search_button_label}"/>
                                                </span>

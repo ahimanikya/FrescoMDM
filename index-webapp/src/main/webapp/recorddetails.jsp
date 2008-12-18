@@ -160,7 +160,9 @@ function align(thisevent,divID) {
                             <tr>
                                 <td>
                                     <h:outputText  rendered="#{RecordDetailsHandler.possilbeSearchTypesCount gt 1}"  value="#{msgs.patdet_search_text}"/>&nbsp;
-                                               <select id="searchTypeList" title="<%=bundle.getString("search_Type")%>" onchange="javascript:document.getElementById('outputdiv').innerHTML ='';getRecordDetailsFormValues('searchTypeForm');checkedItems = new Array();setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchscreenservices.jsf?random='+rand+'&'+queryStr,'SearchCriteria','')" style="width:220px;">	
+                                               <select id="searchTypeList" title="<%=bundle.getString("search_Type")%>" onchange="javascript:
+ 											   document.getElementById('messages').innerHTML='';
+											   document.getElementById('outputdiv').innerHTML ='';getRecordDetailsFormValues('searchTypeForm');checkedItems = new Array();setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchscreenservices.jsf?random='+rand+'&'+queryStr,'SearchCriteria','')" style="width:220px;">	
                                               <%ArrayList   searchListItemArray = recordDetailsHandler.getPossilbeSearchTypes();%>
 											    <%for(int p = 0; p <searchListItemArray.size();p++) {
                                                         SelectItem selectItem = (SelectItem) searchListItemArray.get(p);
@@ -327,7 +329,9 @@ function align(thisevent,divID) {
                                     <td align="left">
                                         <nobr>
 										<% if(operations.isEO_SearchViewSBR()){%>	
-                                           <a  title="<h:outputText value="#{msgs.search_button_label}"/>" class="button" href="javascript:void(0)" onclick="javascript:getRecordDetailsFormValues('advancedformData');checkedItems = new Array();setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/recorddetailsservice.jsf?random='+rand+'&'+queryStr,'outputdiv','')">  
+                                           <a  title="<h:outputText value="#{msgs.search_button_label}"/>" class="button" href="javascript:void(0)" onclick="javascript:
+										   document.getElementById('messages').innerHTML='';
+										   getRecordDetailsFormValues('advancedformData');checkedItems = new Array();setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/recorddetailsservice.jsf?random='+rand+'&'+queryStr,'outputdiv','')">  
                                                <span>
                                                  <h:outputText value="#{msgs.search_button_label}"/>
                                                </span>
@@ -337,7 +341,7 @@ function align(thisevent,divID) {
 									    <nobr>
 										    <h:outputLink  title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:
 											document.getElementById('messages').innerHTML='';
-											ClearContents('advancedformData')">
+ 											ClearContents('advancedformData')">
                                                 <span><h:outputText value="#{msgs.clear_button_label}"/></span>
                                             </h:outputLink>
                                         </nobr>                                        

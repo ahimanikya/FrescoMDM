@@ -178,7 +178,9 @@
 
                 <tr>
                     <td> 
+						<span class="inlinefonts">
                         <h:outputText value="#{msgs.dashboard_quick_search_text}" />
+						</span>
                     </td>
                     <td> <h:inputText id="euidField" title="EUID" value="#{DashboardHandler.singleEuid}"  maxlength="#{SourceHandler.euidLength}" /> </td>
                 </tr>
@@ -314,22 +316,22 @@
             <!--Caption included-->
                 <!--Caption class = "euidHeadMessage"> Compare EUID's </caption-->                
                 <tr>
-                     <td><nobr><h:outputText value="#{msgs.EUID1}"/></nobr></td>
+                     <td><nobr><span class="inlinefonts"><h:outputText value="#{msgs.EUID1}"/></span></nobr></td>
                     <td><h:inputText  id="euid1Field" title="EUID 1" onblur="javascript:checkDuplicateFileds('compareform',this,'#{msgs.already_found_error_text}')" value="#{DashboardHandler.euid1}" maxlength="#{SourceHandler.euidLength}" /></td>
                      <td>&nbsp;</td>
                </tr>
                 <tr>
-                     <td><h:outputText value="#{msgs.EUID2}"/></td>
+                     <td><span class="inlinefonts"><h:outputText value="#{msgs.EUID2}"/></span></td>
 				    <td><h:inputText  id="euid2Field" title="EUID 2" onblur="javascript:checkDuplicateFileds('compareform',this,'#{msgs.already_found_error_text}')" value="#{DashboardHandler.euid2}" maxlength="#{SourceHandler.euidLength}" />
                     <td>&nbsp;</td>
                 </tr>
                 <tr>
-                    <td><h:outputText value="#{msgs.EUID3}"/></td>
+                    <td><span class="inlinefonts"><h:outputText value="#{msgs.EUID3}"/></span></td>
 				    <td><h:inputText  id="euid3Field" title="EUID 3" onblur="javascript:checkDuplicateFileds('compareform',this,'#{msgs.already_found_error_text}')" value="#{DashboardHandler.euid3}" maxlength="#{SourceHandler.euidLength}" /></td>
                     <td>&nbsp;</td>
                 </tr>
                 <tr>
-                    <td><h:outputText value="#{msgs.EUID4}"/></td>
+                    <td><span class="inlinefonts"><h:outputText value="#{msgs.EUID4}"/></span></td>
                     <td><h:inputText  id="euid4Field"  title="EUID 4"  onblur="javascript:checkDuplicateFileds('compareform',this,'#{msgs.already_found_error_text}')" value="#{DashboardHandler.euid4}" maxlength="#{SourceHandler.euidLength}" /></td>
                 </tr>
                 <tr>

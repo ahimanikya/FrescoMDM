@@ -648,7 +648,7 @@ width:100%;
 .duplicaterecords  td {
            font-family: Arial, Helvetica, sans-serif;
            font-size:12px;
-           color:#837F74;
+           color:#102030;
            text-align:left;
            vertical-align:middle;                  
            font-weight:bold;
@@ -2999,4 +2999,13 @@ a.navbuttonselected:active span {
 	   font-size: 12px;
    background-color:#c4c8e1;
    color:#000000;
+}
+
+.inlinefonts {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:12px;
+	color:#102030;
+	vertical-align:top;
+	text-align:left;
+	font-weight:bold;
 }

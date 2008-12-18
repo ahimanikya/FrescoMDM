@@ -304,10 +304,12 @@ if(session!=null){
                                                 </h:outputText>													  
                                                 <h:outputText rendered="#{!fieldConfigPer.required}">
                                                     <span style="font-size:12px;color:red;verticle-align:top">&nbsp;</span>
-                                                </h:outputText>													  
-												<h:outputText value="#{fieldConfigPer.displayName}" />
-                                                      <h:outputText value=":"/>
- 													 </nobr>
+                                                </h:outputText>
+											    <span class="inlinefonts">
+												 <h:outputText value="#{fieldConfigPer.displayName}" />
+                                                       <h:outputText value=":"/>
+												</span>
+ 												 	 </nobr>
                                                  </h:column>                                                        
                                                  <h:column>
 												    <table border="0" cellpadding="0" cellspacing="0">
@@ -652,10 +654,11 @@ if(session!=null){
                                                 </h:outputText>
                                                 <h:outputText rendered="#{!childFieldConfigAdd.required}">
                                                     <span style="font-size:12px;color:red;verticle-align:top">&nbsp;</span>
-                                                </h:outputText>													  
-
-                                                <h:outputText value="#{childFieldConfigAdd.displayName}"  />
-                                                <h:outputText value=":"/>
+                                                </h:outputText>										  
+												<span class="inlinefonts">										 		  
+			                                        <h:outputText value="#{childFieldConfigAdd.displayName}"  />
+				                                    <h:outputText value=":"/>
+											    </span>
                                             </h:column>
                                             <!--Rendering HTML Select Menu List-->
                                             <h:column rendered="#{childFieldConfigAdd.guiType eq 'MenuList'}" >
@@ -917,10 +920,10 @@ if(session!=null){
                                                       <h:outputText rendered="#{!fieldConfigPer.required}">
                                                        <span style="font-size:12px;color:red;verticle-align:top">&nbsp;</span>
                                                      </h:outputText>													  
-													  
-													  <h:outputText value="#{fieldConfigPer.displayName}" />
-                                                      <h:outputText value=":"/>
-
+										             <span class="inlinefonts">										 		  
+													   <h:outputText value="#{fieldConfigPer.displayName}" />
+                                                       <h:outputText value=":"/>
+													 </span>
 													 </nobr>
                                                  </h:column>                                                        
                              
@@ -1177,9 +1180,11 @@ if(session!=null){
                                                       </h:outputText>													 
                                                       <h:outputText rendered="#{!fieldConfigPer.required}">
                                                        <span style="font-size:12px;color:red;verticle-align:top">&nbsp;</span>
-                                                     </h:outputText>													  
-													  <h:outputText value="#{fieldConfigPer.displayName}" />
-                                                        <h:outputText value=":"/>
+                                                     </h:outputText>
+										              <span class="inlinefonts">										 		  
+													    <h:outputText value="#{fieldConfigPer.displayName}" />
+                                                         <h:outputText value=":"/>
+													  </span>
 													 </nobr>
                                                  </h:column>                                                        
                              
@@ -1411,9 +1416,11 @@ if(session!=null){
                                                       </h:outputText>
                                                       <h:outputText rendered="#{!soChildFieldConfigAdd.required}">
                                                        <span style="font-size:12px;color:red;verticle-align:top">&nbsp;</span>
-                                                     </h:outputText>								
-													  <h:outputText value="#{soChildFieldConfigAdd.displayName}" />
-                                                       <h:outputText value=":"/>
+                                                     </h:outputText>
+										              <span class="inlinefonts">										 		  
+													    <h:outputText value="#{soChildFieldConfigAdd.displayName}" />
+                                                        <h:outputText value=":"/>
+													  </span>
                                 					 </nobr>
                                                  </h:column>                                                        
                                           <%if("active".equalsIgnoreCase(soStatus) || "New".equalsIgnoreCase(soStatus)) {%>

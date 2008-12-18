@@ -537,9 +537,9 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
                                                             FieldConfig fieldConfigMap = (FieldConfig) roorNodeFieldConfigs[ifc];
                                                                         %>  
                                                                                     <tr>
-                                                                                      <td>
-                                                                                         <%=fieldConfigMap.getDisplayName()%>                 
-                                                                                      </td>
+                                                                                      <td><span class="inlinefonts">
+                                                                                         <%=fieldConfigMap.getDisplayName()%>             
+                                                                                      </span></td>
                                                                                     </tr>
                                                                         <%}%>
                                                              
@@ -562,9 +562,9 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
                                                                         FieldConfig fieldConfigMap =  fieldConfigArrayMinor[ifc];
                                                                       %>  
                                                                     <tr>
-                                                                        <td>
+                                                                        <td><span class="inlinefonts">
                                                                             <%=fieldConfigMap.getDisplayName()%>
-                                                                        </td>
+                                                                        </span></td>
                                                                     </tr>
                                                                     <%
                                                                       } // field config loop

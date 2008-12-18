@@ -445,9 +445,9 @@ boolean isSessionActive = true;
 
                                                                     %>  
                                                                     <tr>
-                                                                        <td>
+                                                                        <td><span class="inlinefonts">
                                                                             <%=fieldConfigMap.getDisplayName()%>
-                                                                        </td>
+                                                                        </span></td>
                                                                     </tr>
                                                                     <%
                                                                        }
@@ -470,9 +470,9 @@ boolean isSessionActive = true;
                                                                        FieldConfig fieldConfigMap =  fieldConfigArrayMinor[ifc];
                                                                       %>  
                                                                     <tr>
-                                                                        <td>
+                                                                        <td><span class="inlinefonts">
                                                                             <%=fieldConfigMap.getDisplayName()%>
-                                                                        </td>
+                                                                        </span></td>
                                                                     </tr>
                                                                     <%
                                                                       } //FIELD CONFIG LOOP

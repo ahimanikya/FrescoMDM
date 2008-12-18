@@ -310,8 +310,8 @@ boolean isSessionActive = true;
                                                             <div id="personassEuidDataContent" style="visibility:visible;display:block;" class="yellow">
                                                                 
                                                                 <table border="0" cellspacing="0" cellpadding="0">
-																<tr><td>EUID</td></tr>
-																<tr><td><h:outputText value="#{msgs.source_rec_status_but}"/></td></tr>
+																<tr><td><span class="inlinefonts">EUID</span></td></tr>
+																<tr><td><span class="inlinefonts"><h:outputText value="#{msgs.source_rec_status_but}"/></span></td></tr>
                                                                     <%
 
                                                                 String mainDOB;
@@ -325,9 +325,9 @@ boolean isSessionActive = true;
                                                                     %>  
 
                                                                     <tr>
-                                                                        <td>
+                                                                        <td><span class="inlinefonts">
                                                                             <%=fieldConfigMap.getDisplayName()%>
-                                                                        </td>
+                                                                        </span></td>
                                                                     </tr>
                                                                     <%
                                                                        } // If not EUID 
@@ -350,9 +350,9 @@ boolean isSessionActive = true;
                                                                        FieldConfig fieldConfigMap =  fieldConfigArrayMinor[ifc];
                                                                       %>  
                                                                     <tr>
-                                                                        <td>
+                                                                        <td><span class="inlinefonts">
                                                                             <%=fieldConfigMap.getDisplayName()%>
-                                                                        </td>
+                                                                        </span></td>
                                                                     </tr>
                                                                     <%
                                                                       } //FIELD CONFIG LOOP

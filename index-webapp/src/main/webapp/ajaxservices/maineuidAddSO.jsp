@@ -162,7 +162,9 @@ boolean isSessionActive = true;
 
      <tr height="22px" valign="top">
          <td align="left">
+		  <span class="inlinefonts">										 		  
 		     <h:outputText value="#{msgs.transaction_source}"/>:
+		  </span>
          </td>
     	  <td align="left">
              <h:selectOneMenu id="SystemCode" title="SystemCode"
@@ -176,7 +178,10 @@ boolean isSessionActive = true;
     </tr>
     <tr>
         <td align="left" nowrap>
+		  <span class="inlinefonts">										 		  
 		        <%=localIdDesignation%>:
+		  
+		  </span>
    	    </td>
    	    <td align="left">
                 <h:inputText id="LID" 
@@ -206,9 +211,14 @@ boolean isSessionActive = true;
            <nobr>
 		    <h:outputText rendered="#{fieldConfigPerAdd.required}">
                 <span style="font-size:12px;color:red;verticle-align:top">*</span>
-             </h:outputText>													  
- 			 <h:outputText value="#{fieldConfigPerAdd.displayName}" />
-             <h:outputText value=":"/>
+             </h:outputText>	
+			<h:outputText rendered="#{!fieldConfigPerAdd.required}">
+				<span style="font-size:12px;color:red;verticle-align:top">&nbsp;</span>
+			</h:outputText>
+		    <span class="inlinefonts">										 		  
+ 			  <h:outputText value="#{fieldConfigPerAdd.displayName}" />
+              <h:outputText value=":"/>
+			</span>
 			</nobr>
          </h:column>                                                        
             <!--Rendering HTML Select Menu List-->
@@ -327,9 +337,14 @@ boolean isSessionActive = true;
                                               <nobr>
                                           		 <h:outputText rendered="#{childFieldConfigAdd.required}">
                                                     <span style="font-size:12px;color:red;verticle-align:top">*</span>
-                                                 </h:outputText>													  
-                                          		 <h:outputText value="#{childFieldConfigAdd.displayName}" />
-                                                 <h:outputText value=":"/>
+                                                 </h:outputText>
+												<h:outputText rendered="#{!childFieldConfigAdd.required}">
+													<span style="font-size:12px;color:red;verticle-align:top">&nbsp;</span>
+												</h:outputText>
+										        <span class="inlinefonts">										 		  
+                                          		   <h:outputText value="#{childFieldConfigAdd.displayName}" />
+                                                   <h:outputText value=":"/>
+												</span>
                                           	 </nobr>
                                            </h:column>                                                        
                                                         <!--Rendering HTML Select Menu List-->

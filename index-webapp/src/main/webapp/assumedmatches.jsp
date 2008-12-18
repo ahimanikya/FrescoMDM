@@ -94,7 +94,7 @@ function setRand(thisrand)  {
 
     <body class="yui-skin-sam">
     <%@include file="./templates/header.jsp"%>
-     <div id="mainContent">   
+     <div id="mainContent" >   
 <%
    double rand = java.lang.Math.random();
    String URI = request.getRequestURI();
@@ -109,7 +109,7 @@ function setRand(thisrand)  {
    SourceHandler sourceHandler= new SourceHandler();
 
 %>
-    <div id ="assumedmatches " class="basicSearch">
+    <div id ="assumedmatches " class="duplicaterecords">
             <table border="0" cellpadding="0" cellspacing="0" align="right">
                 <h:form id="searchTypeForm" >
                             <tr>

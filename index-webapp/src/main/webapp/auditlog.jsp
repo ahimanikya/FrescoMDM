@@ -109,7 +109,7 @@ function setRand(thisrand)  {
 	    <tr>
 		  <td>
              <div id="mainContent" style="width:100%">     
-              <div id ="auditlog " class="basicSearch">
+              <div id ="auditlog " class="duplicaterecords">
                         <table border="0" cellpadding="" cellspacing="0">
                       <h:form id="searchTypeForm" >
 						<%if(auditLogHandler.getPossilbeSearchTypesCount() > 1) { %>
