@@ -55,7 +55,9 @@ import com.sun.mdm.multidomain.services.util.Localizer;
 public class ObjectFactoryImpl implements ObjectFactory {
     private static Logger logger = Logger.getLogger("com.sun.mdm.multidomain.services.core.ObjectFactoryImpl");	
     private static final Localizer localizer = Localizer.getInstance();
-
+    
+    private static final String OBJECT_FILE_NAME = "object.xml";
+    private static final String DOMAIN_CONFIG_PATH = "Domains";
     public static final String VARCHAR2 = "VARCHAR2";
     public static final String CHAR = "CHAR";
     public static final String FLOAT = "FLOAT";
@@ -128,7 +130,7 @@ public class ObjectFactoryImpl implements ObjectFactory {
             synchronized(ObjectFactoryImpl.class) {
             try {
                 if (mEIndexObject == null) {
-                    InputStream stream = ObjectFactoryImpl.class.getResourceAsStream("/domains/" + objectName + "/object.xml");
+                    InputStream stream = ObjectFactoryImpl.class.getResourceAsStream("/" + DOMAIN_CONFIG_PATH + "/" + objectName + "/" + OBJECT_FILE_NAME);
                     mEIndexObject = Utils.parseEIndexObject(new InputSource(stream));
                     stream.close();
                 }                

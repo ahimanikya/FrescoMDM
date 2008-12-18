@@ -40,6 +40,8 @@ import com.sun.mdm.multidomain.services.model.Field;
  */
 public class ObjectNodeFactoryImpl implements ObjectFactory {
 
+    private static final String OBJECT_FILE_NAME = "object.xml";
+    private static final String DOMAIN_CONFIG_PATH = "Domains";
     private static final String[] FIELD_TYPE_STRINGS = new String[] { 
                                     ObjectField.OBJECTMETA_UNDEFINED_STRING,
                                     ObjectField.OBJECTMETA_INT_STRING, 
@@ -84,7 +86,7 @@ public class ObjectNodeFactoryImpl implements ObjectFactory {
     private void initialize() {
         if(!initialized) {
             synchronized(ObjectNodeFactoryImpl.class) {
-                InputStream stream = ObjectNodeFactoryImpl.class.getResourceAsStream("/domains/" + objectName + "/object.xml");
+                InputStream stream = ObjectNodeFactoryImpl.class.getResourceAsStream("/" + DOMAIN_CONFIG_PATH + "/" + objectName + "/" + OBJECT_FILE_NAME);
                 ObjectDefinitionBuilder builder = new ObjectDefinitionBuilder();
                 objectDef = builder.parse(stream);                
                 addObjectId(objectDef);                
