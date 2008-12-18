@@ -23,19 +23,14 @@
 package com.sun.mdm.multidomain.relationship.service;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.sql.Connection;
 import com.sun.mdm.multidomain.relationship.ops.exceptions.RelationshipDefDaoException;
 import com.sun.mdm.multidomain.relationship.ops.exceptions.RelationshipEaDaoException;
 import com.sun.mdm.multidomain.relationship.ops.factory.AbstractDaoFactory;
 import com.sun.mdm.multidomain.relationship.ops.factory.AbstractDaoFactory.DatabaseType;
 import com.sun.mdm.multidomain.relationship.RelationshipDef;
-import com.sun.mdm.multidomain.attributes.Attribute;
 import com.sun.mdm.multidomain.relationship.ops.impl.RelationshipDefDaoImpl;
-import com.sun.mdm.multidomain.relationship.ops.impl.RelationshipEaDaoImpl;
 import com.sun.mdm.multidomain.relationship.ops.dao.RelationshipDefDao;
-import com.sun.mdm.multidomain.relationship.ops.dto.RelationshipEaDto;
-
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -91,21 +86,6 @@ public class RelationshipDefService implements Serializable {
         } catch (RelationshipDefDaoException ex) {
             Logger.getLogger(RelationshipDefService.class.getName()).log(Level.SEVERE, null, ex);
             throw ex;
-        }
-
-        /* RelationshipDef Extend Attributes */
-        RelationshipEaDto attDto = new RelationshipEaDto();
-        ArrayList<Attribute> attrList = (ArrayList<Attribute>) relDef.getAttributes();
-        RelationshipEaDaoImpl relEaDao = new RelationshipEaDaoImpl(mConn);
-        for (Attribute att : attrList) {
-            attDto.setRelationshipDefId(relDefID);
-            attDto.setAttributeName(att.getName());
-            attDto.setColumnName(att.getColumnName());
-            attDto.setColumnType(att.getType().name());
-            attDto.setDefaultValue(att.getDefaultValue());
-            attDto.setIsRequired(att.getIsRequired());
-            attDto.setIsSearchable(att.getIsSearchable());
-            relEaDao.insert(attDto);
         }
         return relDefID;
     }
