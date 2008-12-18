@@ -250,7 +250,22 @@ public class Definition {
         }
     }
 
-    /** Add a predefined attribute
+    /** get extended attribute
+     * 
+     * @param attribute
+     */
+    public Attribute getExtendedAttribute(String attrName) {
+        Attribute attr = null;
+        for (int i=0; i < extendedAttributes.size(); i++) {
+            attr = extendedAttributes.get(i);
+            if (attrName.equals(attr.getName())) {
+                return attr;
+            }
+        }
+        return null;
+    }
+
+    /** Add a extended attribute
      * 
      * @param attribute
      */
