@@ -169,7 +169,7 @@ function initializeAddDialog() {
 
     document.getElementById("byrel_addSourceDomain").innerHTML= selectedSourceDomain;
     document.getElementById("byrel_addTargetDomain").innerHTML= selectedTargetDomain;
-    document.getElementById("byrel_addRelationshipDef").innerHTML= selectedRelationshipDef;
+    document.getElementById("relationship_add_RelationshipDefName").innerHTML= selectedRelationshipDef;
     
     RelationshipDefHandler.getRelationshipDefByName(selectedRelationshipDef, selectedSourceDomain, selectedTargetDomain, populateAddRelationshipDefAttributes);
     // Populate search type drop down 
@@ -184,18 +184,18 @@ function populateAddRelationshipDefAttributes(data){
     var purgeDate =(getBoolean(data.purgeDate));
     var CustomrowCount = 0;
     var PredefinedrowCount = 0;  
-   // document.getElementById('byrel_add_customAttributes').innerHTML="";
-   // document.getElementById('byrel_add_predefinedAttributes').innerHTML="";
-    //dwr.util.removeAllRows("byrel_add_customAttributes");
-    dwr.util.removeAllRows("byrel_add_predefinedAttributes");
+   // document.getElementById('relationship_add_customAttributes').innerHTML="";
+   // document.getElementById('relationship_add_predefinedAttributes').innerHTML="";
+    //dwr.util.removeAllRows("relationship_add_customAttributes");
+    dwr.util.removeAllRows("relationship_add_predefinedAttributes");
        if(data.extendedAttributes.length>0 ){
-           createCustomAttributesSection ("byrel_add_customAttributes", data.extendedAttributes, "add_custom", true,false);
+           createCustomAttributesSection ("relationship_add_customAttributes", data.extendedAttributes, "add_custom", true,false);
            displayDiv ("add_Relationship_CustomAtrributes", true);
        }else{
            displayDiv ("add_Relationship_CustomAtrributes", false);
        }
        if(startDate==true || endDate==true || purgeDate == true ){ 
-          createPredefinedAttributesSection ("byrel_add_predefinedAttributes", data, "add_predefined", true);
+          createPredefinedAttributesSection ("relationship_add_predefinedAttributes", data, "add_predefined", true);
           displayDiv ("add_Relationship_PredefinedAtrributes", true);
       } else{
           displayDiv ("add_Relationship_PredefinedAtrributes", false);

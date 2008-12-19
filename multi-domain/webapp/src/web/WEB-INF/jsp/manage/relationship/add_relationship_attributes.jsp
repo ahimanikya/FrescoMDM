@@ -11,7 +11,7 @@
             <td>
              <f:message key="relationship_attributes_text" /><f:message key="colon_symbol" />
            </td>
-           <td id="byrel_addRelationshipDef"></td>
+           <td id="relationship_add_RelationshipDefName"></td>
         </tr>
    </table> 
 </div>
@@ -29,19 +29,10 @@
                         <tr>
                             <td class="Heading" colspan="2">
                                 <table border="0"  >
-                                    <tbody id="byrel_add_customAttributes"></tbody>
+                                    <tbody id="relationship_add_customAttributes"></tbody>
                                 </table>
                             </td>
                         </tr>
-                       <!-- <tr>
-                            <td class="label">
-                                &nbsp;&nbsp;<f:message key="number_visit_text" /><f:message key="colon_symbol" /> <f:message key="mandatory_symbol" />
-                            </td>
-                            <td><img src="images/spacer.gif" height="1" width="25"></td>
-                            <td>
-                                <input id="byrel_add_numbervisits" name="NumberVisits" title="<f:message key="number_visit_text" />" dojoType="dijit.form.TextBox" style="width:150px"/> 
-                            </td>
-                        </tr> -->
                     </table>
                     
                 </div>
