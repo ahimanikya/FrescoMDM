@@ -65,6 +65,7 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.Collection;
 import java.util.Properties;
 import java.io.InputStream;
@@ -1660,6 +1661,38 @@ public class MDConfigManager {
         mScreens.remove(screenID);
     }
     
+    public ScreenObject searchScreenByName(String name, ArrayList<ScreenObject> screens) throws ConfigException { 
+           ScreenObject foundScreen = null; 
+           for (ScreenObject screen : screens) {
+              if (name.equalsIgnoreCase(screen.getViewPath())) { 
+                  foundScreen = screen;
+                  break;
+              } else if (screen.getSubscreens() != null &&
+                         !screen.getSubscreens().isEmpty()) {
+                ArrayList<ScreenObject> subs = screen.getSubscreens();
+                searchScreenByName(name, subs);
+              }
+           }
+           return foundScreen;
+    }
+    
+    public ScreenObject getScreenByName(String name) throws ConfigException { 
+       /* ScreenObject has a bug which does not have idenetifer attribute */
+        ScreenObject foundScreen = null;
+        Set<Integer> ids = mScreens.keySet();
+        for (Integer id : ids) {
+            ScreenObject screen = mScreens.get(id);
+            if (name.equalsIgnoreCase(foundScreen.getViewPath())) {
+                foundScreen = screen;
+                break;
+            } else if (foundScreen.getSubscreens()!=null &&
+                       !foundScreen.getSubscreens().isEmpty()) {
+              foundScreen = searchScreenByName(name, foundScreen.getSubscreens());  
+            }
+        }
+        return foundScreen;
+    }
+      
     /**
      * Retrieve a screen configuration.
      *
@@ -1667,7 +1700,7 @@ public class MDConfigManager {
      * @return Configuration for a screen.
      * @throws ConfigException if an error is encountered
      */    
-	public static ScreenObject getScreen(Integer screenID) throws ConfigException {  
+    public static ScreenObject getScreen(Integer screenID) throws ConfigException {  
         ScreenObject scrObj = (ScreenObject) mScreens.get(screenID);
         if (scrObj == null) {
             if (mScreens.containsKey(screenID) == false) {
@@ -1675,7 +1708,7 @@ public class MDConfigManager {
             }
         } 
         return scrObj;
-	}
+    }
 	
     /**
      * Retrieve the ID of the initial screen.
