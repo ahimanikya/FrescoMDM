@@ -21,7 +21,14 @@
             dojo.require("dijit.layout.ContentPane");
             dojo.require("dijit.layout.TabContainer");
             dojo.require("dijit.form.Button");
-            
+        </script>
+        <script type="text/javascript">
+            dwr.engine.setAsync(true);
+            dwr.engine.setOrdered(true);
+            dwr.engine.setErrorHandler(exceptionHandler);
+            function exceptionHandler(message) {
+                alert("invocation exception: " + message);
+            }
         </script>
         <script>
             // initialize icons
