@@ -32,6 +32,12 @@ import java.util.List;
  * @author cye
  */
 public class DomainSearch extends AttributeList {
+    
+    /* supported search type or id */
+    public static final String ALPHA_SEARCH = "ALPHA-SEARCH";
+    public static final String BLOCKER_SEARCH = "BLOCKER-SEARCH";
+    public static final String PHONETIC_SEARCH = "PHONETIC-SEARCH";
+    
     /* domain name */
     private String name;
     /* search type */
