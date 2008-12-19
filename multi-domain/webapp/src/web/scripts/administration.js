@@ -114,11 +114,16 @@ function validateRelationshipForm() {
         var  tempAttr = {};
         tempAttr.name = attr.AttributeNameField.value;
         tempAttr.dataType = attr.AttributeTypeField.value;
-        tempAttr.defaultValue = attr.DefaultValueField.value;
+         if (tempAttr.dataType == "date") {
+            tempAttr.defaultValue = attr.DefaultValueField.getDisplayedValue();
+        } else {
+            tempAttr.defaultValue = attr.DefaultValueField.value;
+        }
+    
         tempAttr.isRequired = attr.RequiredField.checked;
         tempAttr.searchable = attr.SearchableField.checked;
         tempAttr.id = attr.IdField.value;
-        
+
         if(isEmpty (tempAttr.name)) {
             alert(getMessageForI18N("enter_attribute_name"));
             attr.AttributeNameField.focus();
@@ -347,36 +352,3 @@ function validateEditHierarchyForm() {
     dijit.byId('edithierarchy').hide();       
 }
 
-function populateEditHierarchyDefForm(data) {
-    //alert("editing " + data);
-    showHierarchyDialog('edithierarchy');      
-    if(data != null) {      
-        dojo.byId("hierarchy_edit_name").value = data.name;
-        dojo.byId("hierarchy_edit_plugin").value = data.plugin;
-        dojo.byId("hierarchy_edit_description").value = data.description;
-        
-           
-       /* narahari
-         dijit.byId("hierarchy_edit_description").attr("value", ""); 
-        dijit.byId("hierarchy_edit_description").attr("value", data.description);
-       */             
-         
-        
-        //alert("Start date got is: " + data.startDate + " Required: " + data.startDateRequired);
-        populatePredefinedAttributeField(dijit.byId(editHierarchyPrefix+"_EffectiveFrom"), 
-            dijit.byId(editHierarchyPrefix+"_EffectiveFromRequired"), getBoolean(data.startDate), getBoolean(data.startDateRequired) );
-
-        //alert("end date got is: " + data.endDate + " Required: " + data.endDateRequired);
-        populatePredefinedAttributeField(dijit.byId(editHierarchyPrefix+"_EffectiveTo"), 
-            dijit.byId(editHierarchyPrefix+"_EffectiveToRequired"), getBoolean(data.endDate), getBoolean(data.endDateRequired));
-
-        //alert("Purge date got is: " + data.purgeDate + " Required: " + data.purgeDateRequired);
-        populatePredefinedAttributeField(dijit.byId(editHierarchyPrefix+"_PurgeDate"), 
-            dijit.byId(editHierarchyPrefix+"_PurgeDateRequired"), getBoolean(data.purgeDate), getBoolean(data.purgeDateRequired) );
-        
-        // custom atributes populating
-        createCustomAttributes (data, editHierarchyPrefix+'_customAttributesTable', eval(editHierarchyPrefix+'_attributesArray'), editHierarchyPrefix );
-        refreshCustomAttributesButtonsPalette(eval(editHierarchyPrefix+'_attributesArray'), editHierarchyPrefix );
-    }
-
-}

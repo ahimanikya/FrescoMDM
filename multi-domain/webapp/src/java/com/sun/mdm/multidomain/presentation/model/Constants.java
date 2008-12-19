@@ -28,5 +28,10 @@ package com.sun.mdm.multidomain.presentation.model;
  */
 public class Constants {
     public static final String DATE_FORMAT = "date_format";
+    public static final String DATE_INPUT_MASK = "date_input_mask";
+    
     public static final String ADD_RELATIONSHIP = "add_relationship";
+     public static final String EDIT_RELATIONSHIP = "edit_relationship";
+    public static final String ADD_HIERARCY = "add_hierarchy";
+    public static final String EDIT_HIERARCY = "edit_hierarchy";
 }

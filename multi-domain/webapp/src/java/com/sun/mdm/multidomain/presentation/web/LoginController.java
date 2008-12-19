@@ -63,6 +63,11 @@ public class LoginController extends BaseCommandController {
         errorMessage = cex.getLocalizedMessage();
     }
     
+    request.getSession().setAttribute("mdwm_date_format", 
+            MDConfigManager.getDateFormatForMultiDomain());
+    request.getSession().setAttribute("mdwm_date_input_mask", 
+            MDConfigManager.getDateInputMaskForMultiDomain());
+    
     logger.info(localizer.x("WEB004: login controller delivered the request to the page {0}.", pageId));
     
     if (errorMessage != null) {

@@ -7,6 +7,8 @@
 <%@ include file="/WEB-INF/jsp/include.jsp" %>
 <%
     String prefixToUse = "edithierarchy";
+    String dateFormat =  (String)session.getAttribute("mdwm_date_format");
+    String dateInputMask = (String)session.getAttribute("mdwm_date_input_mask");
 %>
 
 
@@ -66,7 +68,7 @@
                         <tr>
                             <td>
                                 <!-- Custom attributes section -->
-                                <jsp:include page="/WEB-INF/jsp/administration/custom_attributes.jsp?prefix=edithierarchy" flush="true" />
+                                <jsp:include page="/WEB-INF/jsp/administration/custom_attributes.jsp?prefix=edithierarchy&date_format=${edit_hierarchy.date_format}&date_input_mask=${edit_hierarchy.date_input_mask}" flush="true" />
                             
                             </td>
                         </tr>
@@ -85,3 +87,43 @@
     </tr>
 </table> 
 
+<!-- Moved here so it can reference session information -->
+<script language="javascript" 
+  type="text/javascript">
+var editHierarchyPrefix="<%=prefixToUse%>";
+var dateFormat = "<%=dateFormat%>";
+var dateInputMask = "<%=dateInputMask%>";
+function populateEditHierarchyDefForm(data) {
+    //alert("editing " + data);
+    showHierarchyDialog('edithierarchy');      
+    if(data != null) {      
+        dojo.byId("hierarchy_edit_name").value = data.name;
+        dojo.byId("hierarchy_edit_plugin").value = data.plugin;
+        dojo.byId("hierarchy_edit_description").value = data.description;
+        
+           
+       /* narahari
+         dijit.byId("hierarchy_edit_description").attr("value", ""); 
+        dijit.byId("hierarchy_edit_description").attr("value", data.description);
+       */             
+         
+        
+        //alert("Start date got is: " + data.startDate + " Required: " + data.startDateRequired);
+        populatePredefinedAttributeField(dijit.byId(editHierarchyPrefix+"_EffectiveFrom"), 
+            dijit.byId(editHierarchyPrefix+"_EffectiveFromRequired"), getBoolean(data.startDate), getBoolean(data.startDateRequired) );
+
+        //alert("end date got is: " + data.endDate + " Required: " + data.endDateRequired);
+        populatePredefinedAttributeField(dijit.byId(editHierarchyPrefix+"_EffectiveTo"), 
+            dijit.byId(editHierarchyPrefix+"_EffectiveToRequired"), getBoolean(data.endDate), getBoolean(data.endDateRequired));
+
+        //alert("Purge date got is: " + data.purgeDate + " Required: " + data.purgeDateRequired);
+        populatePredefinedAttributeField(dijit.byId(editHierarchyPrefix+"_PurgeDate"), 
+            dijit.byId(editHierarchyPrefix+"_PurgeDateRequired"), getBoolean(data.purgeDate), getBoolean(data.purgeDateRequired) );
+        
+        // custom atributes populating
+        createCustomAttributes (data, editHierarchyPrefix+'_customAttributesTable', eval(editHierarchyPrefix+'_attributesArray'), editHierarchyPrefix,  dateFormat, dateInputMask);
+        refreshCustomAttributesButtonsPalette(eval(editHierarchyPrefix+'_attributesArray'), editHierarchyPrefix );
+    }
+
+}
+</script>

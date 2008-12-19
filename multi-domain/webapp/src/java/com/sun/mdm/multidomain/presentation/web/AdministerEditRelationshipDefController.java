@@ -34,13 +34,17 @@ import org.springframework.web.servlet.ModelAndView;
 /**
  * AdministerEditRelationshipDefController class.
  * @author Harish
+ * 
+ * Currently not used.
  */
 public class AdministerEditRelationshipDefController implements Controller {
 
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) 
         throws ServletException, IOException {   
         System.out.println("Loading edit relationship def page now...");
+        
         String value = "edit_relationship";
-        return new ModelAndView("administration/edit_relationship", "edit_relationship", value);
+        return new ModelAndView("administration/edit_relationship", 
+                "edit_relationship", value);
     }    
 }

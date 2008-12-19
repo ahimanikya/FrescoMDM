@@ -2,9 +2,14 @@
 
 var selectOptions = new Array("string","date","int","float","char","boolean");
 
-function NewAttribute(tableId, attributesArray, prefixToUse)
+function NewAttribute(tableId, attributesArray, prefixToUse, 
+   date_format, date_input_mask)
 {
     var _this = this;
+    
+    this.DateFormat = date_format;
+    this.DateInputMask = date_input_mask; 
+    
     // Create our row  
     this.Row = document.getElementById(tableId).insertRow(document.getElementById(tableId).rows.length);
 
@@ -86,11 +91,15 @@ function NewAttribute(tableId, attributesArray, prefixToUse)
                 this.DefaultValueField.size = 5; 
                 this.DefaultValueField.style.width = "100px";
                 this.Row.cells[3].appendChild(this.DefaultValueField);
+                var date_format=this.DateFormat;
+            //alert("date_format_as_passed_in="+date_format+ " date_input_mask="+this.DateInputMask);    
                 var props = {
                       name: "date_attr",
-                      promptMessage: "mm/dd/yyyy",
-                      invalidMessage: "Invalid date.",
-                      //constraints: "{selector:'date', datePattern:'mm/dd/yyyy'}",
+                      promptMessage: date_format,
+                      invalidMessage:  getMessageForI18N("invalid_date"),
+                      //constraints: "{selector:'date', datePattern:'" + date_format + "'}",
+                      selector: "date", 
+                      datePattern: date_format,
                       width:"150px"
                 }; 
                 this.DefaultValueField = new dijit.form.DateTextBox(props, this.DefaultValueField);
@@ -98,9 +107,9 @@ function NewAttribute(tableId, attributesArray, prefixToUse)
         } else if( this.AttributeTypeField.value == "boolean") {
                 this.DefaultValueField = document.createElement("select");
                 var tOption = document.createElement ("option");
-                tOption.text = "true"; tOption.value = "true";
+                tOption.text = getMessageForI18N("true_text"); tOption.value = "true";
                 var fOption = document.createElement ("option");
-                fOption.text = "false"; fOption.value = "false";
+                fOption.text = getMessageForI18N("false_text"); fOption.value = "false";
                 this.DefaultValueField.options[0] = tOption;
                 this.DefaultValueField.options[1] = fOption;
                 this.Row.cells[3].appendChild(this.DefaultValueField);
@@ -320,21 +329,25 @@ function refreshCustomAttributesButtonsPalette (attributesArray, buttonIdPrefix)
 }
 
 // function to create set of custom attributes entry from data set.
-function createCustomAttributes (data, tableId, attributesArray, prefixToUse) {
+function createCustomAttributes (data, tableId, attributesArray, prefixToUse,
+  date_format, date_input_mask) {
     //alert("creating custom attributes now for " + prefixToUse + " table id " + tableId);
     attributesArray.splice(0, attributesArray.length); // Reset the array
     if(data.extendedAttributes != null) {
         for(i=0; i<data.extendedAttributes.length; i++) {
             var attrValue = data.extendedAttributes[i];
             //alert(i + " : " + attrValue.name + " : --- required:" + attrValue.required + " searchable:" + attrValue.searchable);
-            var tempAttr = new NewAttribute(tableId,attributesArray, prefixToUse);
+            var tempAttr = new NewAttribute(tableId,attributesArray, prefixToUse,
+              date_format, date_input_mask);
             attributesArray.push(tempAttr);
             // put values in fields
             tempAttr.AttributeNameField.value = attrValue.name;
             tempAttr.AttributeTypeField.value = attrValue.dataType;
             tempAttr.TypeChanged();
-            if (attrValue.dataType == "date") {
-              tempAttr.DefaultValueField.setValue(new Date(attrValue.defaultValue));
+            if (attrValue.dataType == "date") {      
+              if (attrValue.defaultValue!=""){      
+                tempAttr.DefaultValueField.setValue(new Date(attrValue.defaultValue));                  
+              }
             } else {
               tempAttr.DefaultValueField.value = attrValue.defaultValue;    
             }

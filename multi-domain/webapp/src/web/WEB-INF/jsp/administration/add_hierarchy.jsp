@@ -7,6 +7,7 @@
 <%
     String prefixToUse = "addhierarchy";
 %>
+
 <table border="0" width="100%" cellpadding="0" cellspacing="0">
     <tr>
         <td class="formLabel" >
@@ -24,6 +25,7 @@
                 <option value="HierPrunePlugin">HierPrunePlugin</option>
            </select>
          </td>
+     </tr>     
     <tr><td colspan="4"><img src="images/spacer.gif" height="5" width="1"></td></tr>
     <tr>
         <td class="formLabel">

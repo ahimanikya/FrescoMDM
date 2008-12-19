@@ -64,7 +64,9 @@ JSP files loads all the messages from message.properties, which will be used in 
     messages ["select_plugin"] = '<f:message key="select_plugin" />';
     messages ["enter_attribute_name"] = '<f:message key="enter_attribute_name" />';
     
-
+   messages ["invalid_date"] = '<f:message key="invalid_date" />';
+   messages ["true_text"] = '<f:message key="true_text" />';
+   messages ["false_text"] = '<f:message key="false_text" />';
     // Exception messages
     messages ["exception"] = '<f:message key="exception_text" />';
 

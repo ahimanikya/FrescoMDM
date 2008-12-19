@@ -22,6 +22,9 @@
  */
 package com.sun.mdm.multidomain.presentation.web;
 
+import com.sun.mdm.multidomain.presentation.beans.ViewModelHandler;
+import com.sun.mdm.multidomain.presentation.model.ViewModel;
+import com.sun.mdm.multidomain.presentation.model.ViewModel.ModelObject;
 import java.io.IOException;
         
 import javax.servlet.http.HttpServletRequest;
@@ -40,7 +43,13 @@ public class AdministerAddHierarchyDefController implements Controller {
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) 
         throws ServletException, IOException {   
         System.out.println("Loading add hierarchy page now...");
-        String value = "add_hierarchy";
-        return new ModelAndView("administration/add_hierarchy", "add_hierarchy", value);
+        
+        ViewModelHandler handler = (ViewModelHandler)request.getSession().getAttribute("viewModelHandler");
+        ViewModel<String> model = handler.getAddHierarchyModel();
+        String modelName = model.getModelName();
+        ModelObject<String> modelObject = model.getModelObject();
+      //  String value = "add_hierarchy";
+        return new ModelAndView("administration/add_hierarchy", modelName,
+                modelObject.getObjects());
     }    
 }

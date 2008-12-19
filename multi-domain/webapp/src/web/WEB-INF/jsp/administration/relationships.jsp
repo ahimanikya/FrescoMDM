@@ -262,8 +262,8 @@
 <!-- Content for Edit relationship -->
 <div id="editrelationship" dojoType="dijit.Dialog" title="<f:message key="edit_relationship_text" />" style="display:none;" >
     <div dojoType="dijit.layout.ContentPane" style="width:820px;padding:5px;">
-        <jsp:include page="/WEB-INF/jsp/administration/edit_relationship.jsp" flush="true" />
-    </div>      
+      <jsp:include page="/WEB-INF/jsp/administration/edit_relationship.jsp" flush="true" />
+    </div>
 </div>
 
 <script>
@@ -341,7 +341,7 @@ function deleteRelationshipDefs () {
     refreshRelationshipDefsButtonsPalette();
 }
 
-function showRelationshipDialog (dialogId) {
+function showRelationshipDialog (dialogId) {  
     var relationshipDialog = dijit.byId(dialogId);
     var strTitle = relationshipDialog.title;
     var sourceDomain=document.getElementById("selectSourceDomain").value;
@@ -354,7 +354,7 @@ function showRelationshipDialog (dialogId) {
 }
 
 function prepareEditRelationshipDef(relationshipDefName) {
-    //alert("editing for  ---------- " + relationshipDefName);
+   
     var sourceDomain=document.getElementById("selectSourceDomain").value;
     var targetDomain=document.getElementById("selectTargetDomain").value;    
     RelationshipDefHandler.getRelationshipDefByName(relationshipDefName, sourceDomain, targetDomain, populateEditRelationshipDefForm);   

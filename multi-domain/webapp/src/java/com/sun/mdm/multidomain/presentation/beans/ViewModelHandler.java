@@ -43,10 +43,21 @@ public class ViewModelHandler {
     public ViewModel getAddRelationshipModel() {
         ViewModel<String> viewModel = new ViewModel<String>();
         ViewModel.ModelObject<String> modelObject = new ViewModel.ModelObject<String>();
-        modelObject.setObject(Constants.DATE_FORMAT, configManager.getDateFormatForMultiDomain());
+        
         viewModel.setModelName(Constants.ADD_RELATIONSHIP);
         viewModel.setModelObject(modelObject);
         return viewModel;        
     }
+    
+    public ViewModel getAddHierarchyModel() {
+        ViewModel<String> viewModel = new ViewModel<String>();
+        ViewModel.ModelObject<String> modelObject = new ViewModel.ModelObject<String>();
+        
+        viewModel.setModelName(Constants.ADD_HIERARCY);
+        viewModel.setModelObject(modelObject);
+        return viewModel;        
+    }
+    
+   
     
 }

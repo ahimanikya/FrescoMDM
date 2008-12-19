@@ -34,13 +34,17 @@ import org.springframework.web.servlet.ModelAndView;
 /**
  * AdministerEditHierarchyDefController class.
  * @author Harish
+ * 
+ * Currently not used.
  */
 public class AdministerEditHierarchyDefController implements Controller {
 
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) 
         throws ServletException, IOException {   
          System.out.println("Loading edit hierarchy page now...");
+   
         String value = "edit_hierarchy";
-        return new ModelAndView("administration/edit_hierarchy", "edit_hierarchy", value);
+        return new ModelAndView("administration/edit_hierarchy",
+                "edit_hierarchy", value);
     }    
 }

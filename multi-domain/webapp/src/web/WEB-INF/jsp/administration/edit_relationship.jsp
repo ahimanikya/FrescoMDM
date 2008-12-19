@@ -1,4 +1,4 @@
-<%-- 
+<%-- r
     Document   : edit_relationship
     Created on : Nov 6, 2008, 4:34:25 PM
     Author     : Narahari
@@ -6,6 +6,8 @@
 <%@ include file="/WEB-INF/jsp/include.jsp" %>
 <%
     String prefixToUse = "editrelationship";
+    String dateFormat =  (String)session.getAttribute("mdwm_date_format");
+    String dateInputMask = (String)session.getAttribute("mdwm_date_input_mask");
 %>
 
 <script type="text/javascript" src="../scripts/dojo/dojo.js" djConfig="parseOnLoad:true, isDebug: true"></script>                
@@ -101,6 +103,9 @@
 <script language="javascript" 
   type="text/javascript">
 var editRelationshipPrefix = "<%=prefixToUse%>";
+var dateFormat = "<%=dateFormat%>";
+var dateInputMask = "<%=dateInputMask%>";
+
 function validateEditRelationshipForm() {
   var relationshipDefId = dojo.byId("relationship_edit_id").value;  
   var relationshipDefName = dojo.byId("relationship_edit_name").value;
@@ -195,9 +200,7 @@ function validateEditRelationshipForm() {
 
 
 function populateEditRelationshipDefForm(data) {
-   
-    if(data != null) {   
-       
+    if(data != null) {     
         dojo.byId("relationship_edit_id").value = data.id;
         dojo.byId("relationship_edit_name").value = data.name;
         dojo.byId("relationship_edit_direction").value = data.biDirection;
@@ -226,7 +229,9 @@ function populateEditRelationshipDefForm(data) {
 
         // Populate custom attributes;
         //eval(editRelationshipPrefix+'_attributesArray').splice(0, 0);
-        createCustomAttributes (data, editRelationshipPrefix+'_customAttributesTable', eval(editRelationshipPrefix+'_attributesArray'), editRelationshipPrefix );
+    
+        createCustomAttributes (data, editRelationshipPrefix+'_customAttributesTable', eval(editRelationshipPrefix+'_attributesArray'), editRelationshipPrefix, dateFormat, 
+          dateInputMask    );
         refreshCustomAttributesButtonsPalette(eval(editRelationshipPrefix+'_attributesArray'), editRelationshipPrefix );
     }
     showRelationshipDialog('editrelationship');  
