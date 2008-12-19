@@ -144,7 +144,7 @@ function showByRecordAddDialog() {
     var addDialog = dijit.byId("byrecord_add");
     if(addDialog != null)
         addDialog.show();
-    if(isByRelAddDialogLoaded) initializeByRecordAddDialog();    
+    if(isByRecordAddDialogLoaded) initializeByRecordAddDialog();    
 }
 function initializeByRecordAddDialog() {
     isByRecordAddDialogLoaded = true;
