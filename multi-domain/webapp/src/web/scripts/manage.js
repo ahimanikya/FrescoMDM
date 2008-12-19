@@ -149,6 +149,7 @@ function showByRecordAddDialog() {
 function initializeByRecordAddDialog() {
     isByRecordAddDialogLoaded = true;
     alert("By record add dialog Loaded...");
+    byRecord_prepareAdd();
 }
 
 function showByRelAddDialog(){

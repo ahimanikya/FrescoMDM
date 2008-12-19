@@ -99,7 +99,7 @@
 <tr><td>
     <table border="0" cellspacing="5" align="right">
       <tr>
-        <td align="right" colspan="2"><input type="button"  id="byRecordSelectRecordButton" disabled = "true" title="<f:message key='select_record_text' />" value="<f:message key='select_record_text' />"/> <input type="button" onclick="hideByRecordSelectDialog();" title="<f:message key='cancel_text' />" value="<f:message key='cancel_text' />" /></td>
+        <td align="right" colspan="2"><input type="button"  id="byRecordSelectRecordButton" disabled = "true" title="<f:message key='select_record_text' />" value="<f:message key='select_record_text' />" onclick="byRecordSelectRecord();"/> <input type="button" onclick="hideByRecordSelectDialog();" title="<f:message key='cancel_text' />" value="<f:message key='cancel_text' />" /></td>
       </tr>
     </table>
 

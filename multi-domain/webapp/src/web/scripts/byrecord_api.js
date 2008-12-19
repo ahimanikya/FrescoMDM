@@ -11,6 +11,15 @@ function exceptionHandler(message) {
 }
 
 
+var byRecord_CurrentSelected_Domain = null;
+var byRecord_CurrentSelected_EUID = null;
+
+var byRecord_CurrentSelected_RelationshipDefName = null; // Populated when any operation happens in Tree
+var byRecord_CurrentSelected_TargetDomain = null; // Populated when any operation happens in Tree
+
+
+var byRecord_CachedRelationshipDefs = {};
+
 /*
  * Scripts for Select Record screen <START>
  */ 
@@ -209,6 +218,34 @@ function enableByRecordSelectRecordButton(){
  * Scripts for Main (tree, details) screen <START>
  */
 
+function byRecordSelectRecord() {
+    var selectedDomain = document.getElementById("byRecord_SelectDomain").value;
+    var selectedRecordEUID = null;
+    
+    var chkBoxes = document.getElementsByName("byRecordSelectResultsCheckBox");
+    for(i=0; i<chkBoxes.length; i++) {
+        if(chkBoxes[i].checked) {
+            selectedRecordEUID = chkBoxes[i].value;
+        }
+    }
+    
+    byRecord_CurrentSelected_Domain = selectedDomain;
+    byRecord_CurrentSelected_EUID = selectedRecordEUID;
+
+    // Hard code assigning values, to be used for Add dialog
+    byRecord_CurrentSelected_TargetDomain = "Company";
+    byRecord_CurrentSelected_RelationshipDefName = "worksfor";
+    
+    RelationshipDefHandler.getRelationshipDefByName(byRecord_CurrentSelected_RelationshipDefName, byRecord_CurrentSelected_Domain, 
+        byRecord_CurrentSelected_TargetDomain, cacheRelationshipDef);
+        
+    dijit.byId('byrecord_select').hide();
+
+}
+// function to cache the realtionship def details.
+function cacheRelationshipDef(data) {
+    byRecord_CachedRelationshipDefs [data.name] = data;
+}
 
 /*
  * Scripts for Main (listing, details) screen <END>
@@ -221,6 +258,23 @@ function enableByRecordSelectRecordButton(){
 /*
  * Scripts for Add Relationship screen <START>
  */ 
+
+function byRecord_prepareAdd () {
+    var relationshipDefObj = byRecord_CachedRelationshipDefs[byRecord_CurrentSelected_RelationshipDefName] ;
+    
+    alert("Soruce domain " + byRecord_CurrentSelected_Domain );
+    alert("target domain " + byRecord_CurrentSelected_TargetDomain);
+    
+    alert("Source EUID " + byRecord_CurrentSelected_EUID);
+    
+    alert("relationship def " + relationshipDefObj.name);
+    
+    // create search criteria section for target domain
+    
+    // create attributes section for relationship def 
+    
+}
+
 /*
  * Scripts for Add Relationship screen <END>
  */
