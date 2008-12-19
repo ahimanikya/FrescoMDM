@@ -22,15 +22,12 @@
  */
 package com.sun.mdm.multidomain.project.generator.descriptor;
 
-import java.io.BufferedWriter;
+import com.sun.mdm.multidomain.project.generator.FileUtil;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import com.sun.mdm.multidomain.project.generator.TemplateWriter;
 import com.sun.mdm.multidomain.project.generator.exception.TemplateWriterException;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
 
 /**
  * AppXmlWriter class.
@@ -63,7 +60,7 @@ public class AppXmlWriter {
     public void writeApplicationXml() throws TemplateWriterException {
         try {
             File appFile = new File(mOutputDir, APPLICATION_XML);
-            writeStringToFile(appFile, templateWrite(APPLICATION_XML_TEMPLATE));            
+            FileUtil.writeStringToFile(appFile, templateWrite(APPLICATION_XML_TEMPLATE));            
         } catch (IOException ioe) {
             new TemplateWriterException(ioe.getMessage());
         } 
@@ -72,7 +69,7 @@ public class AppXmlWriter {
     public void writeSunApplicationXml() throws TemplateWriterException {
         try {
             File appFile = new File(mOutputDir, SUN_APPLICATION_XML);
-            writeStringToFile(appFile, templateWrite(SUN_APPLICATION_XML_TEMPLATE));            
+            FileUtil.writeStringToFile(appFile, templateWrite(SUN_APPLICATION_XML_TEMPLATE));            
         } catch (IOException ioe) {
             new TemplateWriterException(ioe.getMessage());
         } 
@@ -93,13 +90,6 @@ public class AppXmlWriter {
             throw ex;
         }
         return strRet;
-    } 
-    
-    private void writeStringToFile(File outFile, String content) throws IOException{
-        BufferedWriter output = new BufferedWriter(
-                new OutputStreamWriter(new FileOutputStream(outFile), "UTF-8"));
-        output.write( content );
-        output.close();
     }
     
 }

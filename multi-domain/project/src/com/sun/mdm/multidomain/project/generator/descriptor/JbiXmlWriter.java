@@ -24,15 +24,12 @@
 package com.sun.mdm.multidomain.project.generator.descriptor;
 
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import com.sun.mdm.multidomain.project.generator.FileUtil;
 import com.sun.mdm.multidomain.project.generator.TemplateWriter;
 import com.sun.mdm.multidomain.project.generator.exception.TemplateWriterException;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
 
 
 public class JbiXmlWriter {
@@ -59,7 +56,7 @@ public class JbiXmlWriter {
             
             File jbiFile = new File(mPath, "jbi.xml");
             mPath.mkdirs();
-            writeStringToFile(jbiFile, writeProject(templateFileName));
+            FileUtil.writeStringToFile(jbiFile, writeProject(templateFileName));
         } catch (IOException ex) {
             new TemplateWriterException(ex.getMessage());
         }
@@ -83,13 +80,5 @@ public class JbiXmlWriter {
             throw ex;
         }
         return strRet;
-    }
-    
-    private void writeStringToFile(File outFile, String content ) throws IOException{
-
-        BufferedWriter output = new BufferedWriter(
-                new OutputStreamWriter(new FileOutputStream(outFile), "UTF-8"));
-        output.write( content );
-        output.close();
     }
 }

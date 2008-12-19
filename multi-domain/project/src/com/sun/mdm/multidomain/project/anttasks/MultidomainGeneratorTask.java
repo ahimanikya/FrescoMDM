@@ -9,19 +9,16 @@ import com.sun.mdm.multidomain.parser.MultiDomainModel;
 import com.sun.mdm.multidomain.parser.ParserException;
 import com.sun.mdm.multidomain.parser.Utils;
 import com.sun.mdm.multidomain.project.MultiDomainProjectProperties;
+import com.sun.mdm.multidomain.project.generator.FileUtil;
 import com.sun.mdm.multidomain.project.generator.descriptor.JbiXmlWriter;
 import com.sun.mdm.multidomain.project.generator.descriptor.AppXmlWriter;
 import com.sun.mdm.multidomain.project.generator.domainObjects.EntityObjectWriter;
 import com.sun.mdm.multidomain.project.generator.exception.TemplateWriterException;
 import com.sun.mdm.multidomain.project.generator.persistence.DDLWriter;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
@@ -303,7 +300,7 @@ public class MultidomainGeneratorTask extends Task {
     }
     
 
-    private void generateEbjFiles() {
+    private void generateEbjFiles() throws IOException {
 
         File destDir = new File(mEjbdir, "src/java/com/sun/mdm/multidomain/ejb/service");
         Delete delete = (Delete) getProject().createTask("delete");
@@ -343,7 +340,7 @@ public class MultidomainGeneratorTask extends Task {
 
     }
     
-    private void generateWarFiles() {
+    private void generateWarFiles() throws IOException {
         
         File destDir = new File(mWardir, "web");
         FileSet fileSet = new FileSet();
@@ -390,41 +387,66 @@ public class MultidomainGeneratorTask extends Task {
         copy.execute();
 
         //set context root
-	String sunWebXml= (mWardir.getAbsolutePath()+"/web/WEB-INF/sun-web.xml");
+	File sunWebXml= new File(mWardir, "web/WEB-INF/sun-web.xml");
         String appName = getProject().getProperty("jar.name"); // TBD fix me 
-	replaceToken(sunWebXml, 
+	FileUtil.replaceTokenInFile(sunWebXml, 
                      MultiDomainProjectProperties.MDWM_CONTEXT_ROOT_TOEKN, 
                      "/" + appName.substring(0, appName.length() - 4) + "MDWM");   
                   
     }
     
     private void addEjbLib() throws FileNotFoundException, IOException {
+        ArrayList<String> libs =new ArrayList<String>();
+        libs.add("multidomain-core.jar");
+        libs.add("multidomain-client.jar");
+        libs.add("resources.jar");
+        libs.add("index-core.jar");
+        libs.add("net.java.hulp.i18n.jar");
+        
+        ArrayList<String> newLibs =new ArrayList<String>();
+        File ejbProjectXml = new File(mEjbdir,"nbproject/project.xml");
+        String ejbProjectXmlString = FileUtil.readFileToString(ejbProjectXml);
+        for (String libName:libs){
+            if(ejbProjectXmlString.indexOf(libName)<0){
+                newLibs.add(libName);
+            }
+        }
 
         File ejbPropertyFile = new File(mEjbdir, "nbproject/project.properties");
         java.util.Properties properties = new java.util.Properties();
         properties.load(new FileInputStream(ejbPropertyFile));
-        properties.setProperty("file.reference.index-core.jar",
-                "../lib/index-core.jar");
-        properties.setProperty("file.reference.multidomain-core.jar",
-                "../lib/multidomain-core.jar");
-        properties.setProperty("file.reference.net.java.hulp.i18n.jar",
-                "../lib/net.java.hulp.i18n.jar");
-        properties.setProperty("javac.classpath",
-                "${file.reference.index-core.jar}:"
-                        + "${file.reference.multidomain-core.jar}:"
-                        + "${file.reference.net.java.hulp.i18n.jar}");
+        
+        StringBuffer includedLibrary = new StringBuffer();
+        
+        StringBuffer classpath;       
+        if (null==properties.getProperty("javac.classpath")){
+            classpath = new StringBuffer();
+        }else{
+            classpath = new StringBuffer(properties.getProperty("javac.classpath").trim());
+        }
+        
+        for (String newLibName:newLibs){
+            
+            properties.setProperty("file.reference." + newLibName,
+                "../lib/" + newLibName);
+            
+            if (classpath.length()< 1){
+                classpath.append("${file.reference." + newLibName +"}");
+            }else{
+                classpath = classpath.append(":${file.reference." + newLibName +"}");
+            }
+            
+            includedLibrary.append(
+                    "<included-library files=\"1\">file.reference." + newLibName+"</included-library>\n");
+        }
+        properties.setProperty("javac.classpath", classpath.toString() );
 
         properties.store(new FileOutputStream(ejbPropertyFile), null);
         
-        String libs = "<included-library files=\"1\">file.reference.index-core.jar</included-library>"+
-            "<included-library files=\"1\">file.reference.net.java.hulp.i18n.jar</included-library>"+
-            "<included-library files=\"1\">file.reference.multidomain-core.jar</included-library>";
         String token = "</data>";
+        String values = includedLibrary.toString() + token;        
         
-        File ejbProjectXml = new File(mEjbdir,"nbproject/project.xml");
-        
-        replaceToken(ejbProjectXml.getAbsolutePath(),token,libs+token);
-
+        FileUtil.updateFile(ejbProjectXml, ejbProjectXmlString.replaceFirst(token, values));
     }
     
     private void generateJars() throws FileNotFoundException, IOException,
@@ -519,7 +541,7 @@ public class MultidomainGeneratorTask extends Task {
         jar.execute();
     }
     
-    private void setEJBMappedName(String token, String value) {
+    private void setEJBMappedName(String token, String value) throws IOException {
 
         ArrayList<String> files = new ArrayList<String>();
         String ejbFilePath = mEjbdir.getAbsolutePath()
@@ -530,46 +552,12 @@ public class MultidomainGeneratorTask extends Task {
         files.add(path);
 
         for (int i = 0; i < files.size(); i++) {
-            String ejbFile = files.get(i).toString();
-            replaceToken(ejbFile, token, value);
+            File ejbFile = new File(files.get(i));
+            FileUtil.replaceTokenInFile(ejbFile, token, value);
         }
     }
     
-    private void replaceToken(String fileName, String token, String value) {
-        File file = new File(fileName);
-        File tempFile = new File(fileName + ".tmp");
-        if (tempFile.exists()) {
-            tempFile.delete();
-        }
-        file.renameTo(tempFile);
-        file = new File(fileName);
 
-        try {
-            BufferedReader buffIn = new BufferedReader(new FileReader(tempFile));
-            BufferedWriter buffOut = new BufferedWriter(new FileWriter(file));
-            String strLine;
-            while ((strLine = buffIn.readLine()) != null) {
-                buffOut.write(strLine.replaceAll(token, value));
-                buffOut.newLine();
-            }
-            buffIn.close();
-            buffOut.close();
-        } catch (Exception ex) {
-
-            if (file.exists()) {
-                file.delete();
-            }
-            tempFile.renameTo(file);
-                        throw new BuildException("can not replace token in "
-                    + fileName);
-        } finally {
-            tempFile = new File(fileName + ".tmp");
-            if (tempFile.exists()) {
-                tempFile.delete();
-            }
-        }
-    }
-    
 }
 
 
