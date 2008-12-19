@@ -49,7 +49,8 @@ import com.sun.mdm.multidomain.services.configuration.SearchScreenConfig;
 import com.sun.mdm.multidomain.services.configuration.DomainScreenConfig;
 import com.sun.mdm.multidomain.services.configuration.FieldConfigGroup;
 import com.sun.mdm.multidomain.services.configuration.FieldConfig;
-
+import com.sun.mdm.multidomain.services.configuration.ScreenObject;
+        
 import com.sun.mdm.multidomain.query.MultiDomainSearchCriteria;
 import com.sun.mdm.multidomain.query.MultiDomainSearchOptions;
 import com.sun.mdm.multidomain.query.MultiDomainSearchOptions.DomainSearchOption;
@@ -99,6 +100,10 @@ public class QueryBuilder {
          DomainSearchOption mdSearchOption1 = buildMultiDomainSearchOption(sourceDomainSearch);
          DomainSearchOption mdSearchOption2 = buildMultiDomainSearchOption(targetDomainSearch);
          
+         ScreenObject manageRelationshipScreen = configManager.getScreenByName("manage/manage_relationship");
+         mdSearchOptions.setPrimaryDomain(sourceDomainSearch.getName());
+         mdSearchOptions.setPageSize(manageRelationshipScreen.getPageSize());
+         mdSearchOptions.setMaxElements(manageRelationshipScreen.getMaxRecords());
          mdSearchOptions.setOptions(sourceDomainSearch.getName(), mdSearchOption1);
          mdSearchOptions.setOptions(targetDomainSearch.getName(), mdSearchOption2);
              
@@ -116,7 +121,9 @@ public class QueryBuilder {
         MDConfigManager configManager =  MDConfigManager.getInstance(); 
         DomainScreenConfig domainConfig = configManager.getDomainScreenConfig(domainSearch.getName());      
         DomainSearchOption mdSearchOption = new DomainSearchOption();
+        
         try {
+            
             String EUID = domainSearch.getAttributeValue(EUID_NAME);
             String localId = domainSearch.getAttributeValue(LOCAL_ID_NAME);
             String systemCode = domainSearch.getAttributeValue(SYSTEM_CODE_NAME);    
@@ -130,50 +137,35 @@ public class QueryBuilder {
                 new ConfigException(localizer.t("QRY002: local Id for simple search is not defined for system code {0}", systemCode));
             } 
                     
-            // search result page
-            List<SearchResultsConfig> searchResultPages = domainConfig.getSearchResultsConfigs();           
-            //TBD: should base on Record-Id configuration.
-            Iterator searchResultPageIterator = searchResultPages.iterator();
-            EPathArrayList searchResultFields = new EPathArrayList();
-            String objectRef = null;
-            int pageSize = 0;
-            int maxElements = 0;        
-            while(searchResultPageIterator.hasNext()) {
-                SearchResultsConfig searchResultPage = (SearchResultsConfig)searchResultPageIterator.next();
-                pageSize = searchResultPage.getPageSize();
-                maxElements = searchResultPage.getMaxRecords();
-                List fieldEpaths = searchResultPage.getEPaths();
-                Iterator fieldEpathsIterator = fieldEpaths.iterator();
-                while(fieldEpathsIterator.hasNext()) {
-                    String fieldEPath = (String) fieldEpathsIterator.next();
-                    searchResultFields.add("Enterprise.SystemSBR." + fieldEPath);
-                    if (objectRef == null) {
-                        objectRef = fieldEPath.substring(0, fieldEPath.indexOf("."));
-                    }      
-                }
-            }   
-            searchResultFields.add("Enterprise.SystemSBR." + objectRef + ".EUID");
-         
+            // search result page based record-id
+            List<FieldConfig> fieldConfigs = domainConfig.getSummaryLabel().getFieldConfigs();
+            EPathArrayList resultFields = new EPathArrayList();
+           
+            for(FieldConfig fieldConfig : fieldConfigs) {
+                String fieldEPath = fieldConfig.toEpathStyleString(fieldConfig. getFullFieldName());
+                resultFields.add(fieldEPath);
+            }
+            
             // search page
             List<SearchScreenConfig> searchPages = domainConfig.getSearchScreenConfigs();
             Iterator searchPageIterator = searchPages.iterator();
             String queryBuilder = null;
             boolean isWeighted = false;
-            SearchScreenConfig searchPage = null;
-            //TDB: a simple API should be provied to get the specific searchPage for the given the search type.
-            while (searchPageIterator.hasNext()) {
-                searchPage = (SearchScreenConfig) searchPageIterator.next();                   
+            for (SearchScreenConfig searchPage : searchPages) {
                 if (searchPage.getScreenTitle().equalsIgnoreCase(domainSearch.getType())) {
                     queryBuilder = searchPage.getOptions().getQueryBuilder();
                     if (searchPage.getOptions().getIsWeighted()) {
                         isWeighted = true;
                     }
                     break;
-                }
-            }               
-            mdSearchOption.setOptions(searchResultFields);
+                }             
+            }
+             
+            mdSearchOption.setDomain(domainSearch.getName());
+            mdSearchOption.setOptions(resultFields);
             mdSearchOption.setSearchId(queryBuilder);
-            mdSearchOption.setIsWeighted(isWeighted);         
+            mdSearchOption.setIsWeighted(isWeighted);   
+            
         } catch(EPathException eex) {
             throw new ConfigException(eex);            
         }        
@@ -230,7 +222,6 @@ public class QueryBuilder {
             }
         }             
         
-        String objectRef = null;
         //TDB: a simple configuration API should be provied to get a list of search field config.
         List<FieldConfigGroup> searchFieldConfigGroups = searchPage.getFieldConfigGroups();
         List<FieldConfig> searchFieldConfigs = new ArrayList<FieldConfig>();
@@ -239,9 +230,8 @@ public class QueryBuilder {
             searchFieldConfigs.addAll(fieldConfigs);
         }        
 
-        Iterator<FieldConfig> fieldConfigIterator = searchFieldConfigs.iterator();
-        while(fieldConfigIterator.hasNext()) {
-            FieldConfig fieldConfig = fieldConfigIterator.next();
+        String objectRef = null;
+        for (FieldConfig fieldConfig : searchFieldConfigs) {
             objectRef = fieldConfig.getRootObj();
             String fieldValue = null;                
             //Get the field value for each field config range type.
@@ -260,13 +250,11 @@ public class QueryBuilder {
                 } else {
                     searchCriteria.put(fieldConfig.getFullFieldName(), fieldValue);
                 }
-            }                
-         }
-        
-        SystemObject[] systemObjects = new SystemObject[3];
-                
-        systemObjects[0] = buildSystemObject(objectRef, searchCriteria);
-        // The back-end multidomain service not support range yet.        
+            }                         
+        }
+         
+        SystemObject[] systemObjects = new SystemObject[3];             
+        systemObjects[0] = buildSystemObject(objectRef, searchCriteria);   
         // systemObjectFrom
         if (!searchCriteriaFrom.isEmpty()) {
             systemObjects[1] = buildSystemObject(objectRef, searchCriteriaFrom);
