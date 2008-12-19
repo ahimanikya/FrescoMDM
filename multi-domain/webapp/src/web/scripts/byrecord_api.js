@@ -24,13 +24,16 @@ function updateByRecordSelectDomains(data){
     dwr.util.addOptions("byRecord_SelectDomain", data, "name");
     dwr.util.setValue("byRecord_SelectDomain", data[0].name); 
     
-    // Load search criteria for select domains.
-    var selectedDomain =document.getElementById("byRecord_SelectDomain").value;    
-    RelationshipDefHandler.getDomainSearchCriteria(selectedDomain, byRecordSelectSearchTypes);
+    loadByRecordSelectSearchTypes("byRecord_SelectDomain");
 }
 function loadByRecordSelectSearchTypes(id){
     var currentDomain = document.getElementById(id).value;
     RelationshipDefHandler.getDomainSearchCriteria(currentDomain, byRecordSelectSearchTypes);
+    
+    // Cache the search fields for this domain
+    DomainScreenHandler.getSearchResultFields(currentDomain, { callback:function(dataFromServer) {
+      loadSearchResultFields(dataFromServer, currentDomain); }
+    });
 }
 function byRecordSelectSearchTypes(data){
     
@@ -99,9 +102,7 @@ function byRecordSelectRecordSearch(){
     domainSearch.attributes = domainAttributes;
     RelationshipHandler.searchEnterprises (domainSearch, byRecordSelectSearchResults);
     
-    DomainScreenHandler.getSearchResultFields(selectedDomain, { callback:function(dataFromServer) {
-      loadSearchResultFields(dataFromServer, selectedDomain); }
-    });
+
 }
 var cachedByRecordSelectSearchResults = null; // to cache the search results for select record (Select dialog)
 
