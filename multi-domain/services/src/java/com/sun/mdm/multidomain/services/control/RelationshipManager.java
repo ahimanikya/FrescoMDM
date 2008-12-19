@@ -331,6 +331,30 @@ public class RelationshipManager {
         
         List<RelationshipView> relationships = new ArrayList<RelationshipView>(); 
         
+        //TDB
+        sourceDomainSearch.setName("Person");
+        sourceDomainSearch.setType("Advanced Person Lookup (Alpha)");
+        sourceDomainSearch.setAttributeValue("Person.FirstName", "George");
+        sourceDomainSearch.setAttributeValue("Person.LastName", "Denise");
+        sourceDomainSearch.setAttributeValue("Person.SSN", "888888888");
+        sourceDomainSearch.setAttributeValue("Person.Address.AddressLine1", "100 Foo Avenue");
+        sourceDomainSearch.setAttributeValue("Person.Address.City", "Foo");
+            
+        targetDomainSearch.setName("Company");
+        targetDomainSearch.setType("Advanced Company Lookup (Phonetic)");
+        targetDomainSearch.setAttributeValue("Company.CompanyName", "Centerpoint");
+        targetDomainSearch.setAttributeValue("Company.StockSymbol", "Java");
+        targetDomainSearch.setAttributeValue("Company.TaxPayerID", "888");
+        targetDomainSearch.setAttributeValue("Company.Address.AddressLine1", "100 Foo Avenue");
+        targetDomainSearch.setAttributeValue("Company.Address.City", "Foo");
+            
+        relationshipSearch.setName("EmployedBy");
+        relationshipSearch.setSourceDomain(sourceDomainSearch.getName());
+        relationshipSearch.setTargetDomain(targetDomainSearch.getName());
+        relationshipSearch.setStartDate("11/01/2008");
+        relationshipSearch.setEndDate("11/31/2008");
+        relationshipSearch.setAttributeValue("hiredDate", "11/01/2008");    
+        
         try {
              // build search options and criteria for source and target
             MultiDomainSearchOptions mdSearchOptions = QueryBuilder.buildMultiDomainSearchOptions(sourceDomainSearch, targetDomainSearch);
@@ -345,6 +369,28 @@ public class RelationshipManager {
             throw new ServiceException(uex);
         }
         
+        //TDB
+        RelationshipView rel1 = new RelationshipView();
+        rel1.setName("EmployedBy");
+        rel1.setId("000001");
+        rel1.setSourceDomain(relationshipSearch.getSourceDomain());
+        rel1.setTargetDomain(relationshipSearch.getTargetDomain());
+        rel1.setSourceEUID("0000000001");
+        rel1.setTargetEUID("0000000002");
+        rel1.setSourceHighLight("George Denise");
+        rel1.setTargetHighLight("Centerpoint Java");
+        relationships.add(rel1);
+        RelationshipView rel2 = new RelationshipView();
+        rel2.setName("EmployedBy");
+        rel2.setId("000002");
+        rel2.setSourceDomain(relationshipSearch.getSourceDomain());
+        rel2.setTargetDomain(relationshipSearch.getTargetDomain());
+        rel2.setSourceEUID("0000000001");
+        rel2.setTargetEUID("0000000003");
+        rel2.setSourceHighLight("George Denise");
+        rel2.setTargetHighLight("Sun Java");
+        relationships.add(rel2);
+        
         return relationships; 
     }
     
@@ -356,9 +402,8 @@ public class RelationshipManager {
      */
     public RelationshipComposite getRelationship(RelationshipView relationshipView)
         throws ServiceException {
-      
+   
         RelationshipComposite relationshipComposite = new RelationshipComposite();
-        if (!TBD) {
         try {
              // build search options and criteria for source and target
             Relationship relationship = new Relationship();
@@ -375,34 +420,58 @@ public class RelationshipManager {
         } catch(UserException uex) {
             throw new ServiceException(uex);
         }
-        return relationshipComposite;        
-        }
         
-        //demo
-        System.out.println(relationshipView.getSourceDomain() + ":" + relationshipView.getTargetDomain());
+        //TBD
+        ObjectRecord sourceRecord = new ObjectRecord();
+        sourceRecord.setName("Person");
+        sourceRecord.setEUID("0000000001");
+        sourceRecord.setAttributeValue("Person.FirstName", "George");
+        sourceRecord.setAttributeValue("Person.MiddleName", "Denise");
+        sourceRecord.setAttributeValue("Person.LastName", "Denise");
+        sourceRecord.setAttributeValue("Person.SSN", "888888888");
+        sourceRecord.setAttributeValue("Person.DOB", "11/01/2008");
+        sourceRecord.setAttributeValue("Person.Gender", "M");
+        sourceRecord.setAttributeValue("Person.Title", "CEO");
+        sourceRecord.setAttributeValue("Person.Citizenship", "UN");
+        sourceRecord.setAttributeValue("Person.Address.AddressLine1", "100 Foo Avenue");
+        sourceRecord.setAttributeValue("Person.Address.AddressLine2", "APT# 001");
+        sourceRecord.setAttributeValue("Person.Address.City", "Foo");
+        sourceRecord.setAttributeValue("Person.Address.StateCode", "CA");
+        sourceRecord.setAttributeValue("Person.Address.County", "USA");
+        sourceRecord.setAttributeValue("Person.Phone.Phone", "(626)4700000");   
+        sourceRecord.setAttributeValue("Person.Phone.PhoneExt", "8888");
+           
+        ObjectRecord targetRecord = new ObjectRecord(); 
+        targetRecord.setName("Company");
+        targetRecord.setEUID("0000000001");
+        targetRecord.setAttributeValue("Company.CompanyName", "SunSet");
+        targetRecord.setAttributeValue("Company.CompanyType", "Public");
+        targetRecord.setAttributeValue("Company.StockSymbol", "Sun");
+        targetRecord.setAttributeValue("Company.Industry", "Software");
+        targetRecord.setAttributeValue("Company.TaxPayerID", "0001");
+        targetRecord.setAttributeValue("Company.NoOfEmployees", "100");
+        targetRecord.setAttributeValue("Company.Address.AddressLine1", "100 Foo Avenue");
+        targetRecord.setAttributeValue("Company.Address.AddressLine2", "APT# 001");
+        targetRecord.setAttributeValue("Company.Address.City", "Foo");
+        targetRecord.setAttributeValue("Company.Address.StateCode", "CA");
+        targetRecord.setAttributeValue("Company.Address.County", "USA");
+        targetRecord.setAttributeValue("Company.Phone.Phone", "(626)4700000");   
+        targetRecord.setAttributeValue("Company.Phone.PhoneExt", "8888");
         
-        RelationshipComposite rsc = new RelationshipComposite();
-        
-        ObjectRecord sr = new ObjectRecord();
-        sr.setName(relationshipView.getSourceDomain());
-        sr.add(new com.sun.mdm.multidomain.services.model.Attribute("Foo1","Foo1"));
-        sr.add(new com.sun.mdm.multidomain.services.model.Attribute("FirstName","Foo1"));
-        sr.add(new com.sun.mdm.multidomain.services.model.Attribute("LastName","Foo1"));
-        rsc.setSourceRecord(sr);
-        
-        ObjectRecord tr = new ObjectRecord();
-        tr.setName(relationshipView.getSourceDomain());
-        tr.add(new com.sun.mdm.multidomain.services.model.Attribute("Foo2","Foo2"));
-        tr.add(new com.sun.mdm.multidomain.services.model.Attribute("FirstName","Foo2"));
-        tr.add(new com.sun.mdm.multidomain.services.model.Attribute("LastName","Foo2"));        
-        rsc.setTargetRecord(tr);
-        
-        RelationshipRecord rs = new RelationshipRecord();
-        rs.setId(relationshipView.getId());
-        rs.setName(relationshipView.getName());
-        rs.add(new com.sun.mdm.multidomain.services.model.Attribute("Foo3","Foo3"));
-        rsc.setRelationshipRecord(rs);
-        return rsc;
+        RelationshipRecord relationshipRecord = new RelationshipRecord();
+        relationshipRecord.setName("EmployedBy");
+        relationshipRecord.setId("000001");
+        relationshipRecord.setSourceDomain("Person");
+        relationshipRecord.setTargetDomain("Company");
+        relationshipRecord.setStartDate("11/01/2008");
+        relationshipRecord.setEndDate("11/31/2008");
+        relationshipRecord.setAttributeValue("hiredDate", "11/01/2008");
+        relationshipRecord.setAttributeValue("title", "CEO");
+        relationshipComposite.setSourceRecord(sourceRecord);
+        relationshipComposite.setTargetRecord(targetRecord);
+        relationshipComposite.setRelationshipRecord(relationshipRecord);
+    
+        return relationshipComposite;       
     }
     
     /**
@@ -412,7 +481,8 @@ public class RelationshipManager {
      * @throws ServiceException Thrown if an error occurs during processing.
      */
     public List<ObjectRecord> searchEnterprises(DomainSearch domainSearch)
-        throws ServiceException {           
+        throws ServiceException {      
+        
         List<ObjectRecord> objects = new ArrayList<ObjectRecord>();  
         if (!TBD) {
         try {
@@ -431,13 +501,60 @@ public class RelationshipManager {
         }
         }
         
-        //demo
-        ObjectRecord r1 = new ObjectRecord("foo","000-000-0000");
-        r1.add(new com.sun.mdm.multidomain.services.model.Attribute("FOO1", "FOO1"));
-        objects.add(r1);
-        ObjectRecord r2 = new ObjectRecord("foo","000-000-0001");
-        r2.add(new com.sun.mdm.multidomain.services.model.Attribute("FOO2", "FOO2"));       
-        objects.add(r2);
+        //TBD
+        if ("Person".equals(domainSearch.getName())) {
+            ObjectRecord record1 = new ObjectRecord();
+            record1.setName("Person");
+            record1.setEUID("0000000001");
+            record1.setAttributeValue("Person.FirstName", "George");
+            record1.setAttributeValue("Person.MiddleName", "Denise");
+            record1.setAttributeValue("Person.LastName", "Denise");
+            record1.setAttributeValue("Person.SSN", "888888888");
+            record1.setAttributeValue("Person.DOB", "11/01/2008");
+            record1.setAttributeValue("Person.Gender", "M");
+            record1.setAttributeValue("Person.Address.AddressLine1", "100 Foo Avenue");
+            record1.setAttributeValue("Person.Address.AddressLine2", "APT# 001");
+            record1.setAttributeValue("Person.Address.City", "Foo");
+            objects.add(record1);
+            
+            ObjectRecord record2 = new ObjectRecord();
+            record2.setName("Person");
+            record2.setEUID("0000000002");
+            record2.setAttributeValue("Person.FirstName", "Mary");
+            record2.setAttributeValue("Person.MiddleName", "Denise");
+            record2.setAttributeValue("Person.LastName", "Denise");
+            record2.setAttributeValue("Person.SSN", "999999999");
+            record2.setAttributeValue("Person.DOB", "11/01/2008");
+            record2.setAttributeValue("Person.Gender", "F");
+            record2.setAttributeValue("Person.Address.AddressLine1", "100 Foo Avenue");
+            record2.setAttributeValue("Person.Address.AddressLine2", "APT# 001");
+            record2.setAttributeValue("Person.Address.City", "Foo");
+            objects.add(record2);
+                       
+        } else if ("Company".equals(domainSearch.getName())) {
+          
+            ObjectRecord record1 = new ObjectRecord(); 
+            record1.setName("Company");
+            record1.setEUID("0000000001");
+            record1.setAttributeValue("Company.CompanyName", "SunSet");         
+            record1.setAttributeValue("Company.StockSymbol", "Sun"); 
+            record1.setAttributeValue("Company.TaxPayerID", "0001");
+            record1.setAttributeValue("Company.Address.AddressLine1", "100 Foo Avenue");
+            record1.setAttributeValue("Company.Address.AddressLine2", "APT# 001");
+            record1.setAttributeValue("Company.Address.City", "Foo");
+            objects.add(record1);
+  
+            ObjectRecord record2 = new ObjectRecord(); 
+            record2.setName("Company");
+            record2.setEUID("0000000002");
+            record2.setAttributeValue("Company.CompanyName", "SunShine");         
+            record2.setAttributeValue("Company.StockSymbol", "Sun"); 
+            record2.setAttributeValue("Company.TaxPayerID", "0002");
+            record2.setAttributeValue("Company.Address.AddressLine1", "100 Foo Avenue");
+            record2.setAttributeValue("Company.Address.AddressLine2", "APT# 001");
+            record2.setAttributeValue("Company.Address.City", "Foo");
+            objects.add(record2);
+        }
         return objects;
     }
     
