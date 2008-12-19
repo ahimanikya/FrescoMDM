@@ -137,6 +137,9 @@ function showByRecordSelectDialog() {
       selectDialog.show();
     if(isByRecordSelectDialogLoaded) loadDomainsForSelectRecord();
 }
+function hideByRecordSelectDialog () {
+    dijit.byId('byrecord_select').hide();
+}
 function showByRecordAddDialog() {
     var addDialog = dijit.byId("byrecord_add");
     if(addDialog != null)

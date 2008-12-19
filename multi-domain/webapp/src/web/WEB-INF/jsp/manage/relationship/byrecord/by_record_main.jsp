@@ -34,10 +34,10 @@
 </div>
 
 
-<div id="byrecord_select" dojoType="dijit.Dialog" title="<f:message key='select_record' />" style="display:none;width:750px;height:500px;padding:0px;"
+<div id="byrecord_select" dojoType="dijit.Dialog" title="<f:message key='select_record_text' />" style="display:none;width:750px;height:500px;padding:0px;"
         href="m_byrecord_select_record.htm" parseOnLoad="true" onLoad="loadDomainsForSelectRecord();">
 </div>
 
-<div id="byrecord_add" dojoType="dijit.Dialog" title="<f:message key='add_relationship' />"  style="display:none;width:750px;height:500px;padding:0px;"
+<div id="byrecord_add" dojoType="dijit.Dialog" title="<f:message key='add_records_text' />"  style="display:none;width:750px;height:500px;padding:0px;"
         href="m_byrecord_add_relationship.htm" parseOnLoad="true" onLoad="initializeByRecordAddDialog();">
 </div>
