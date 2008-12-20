@@ -1662,18 +1662,22 @@ public class MDConfigManager {
     }
     
     public ScreenObject searchScreenByName(String name, ArrayList<ScreenObject> screens) throws ConfigException { 
-           ScreenObject foundScreen = null; 
-           for (ScreenObject screen : screens) {
+        ScreenObject foundScreen = null; 
+        if (screens != null) {
+            for (ScreenObject screen : screens) {
               if (name.equalsIgnoreCase(screen.getViewPath())) { 
                   foundScreen = screen;
                   break;
-              } else if (screen.getSubscreens() != null &&
-                         !screen.getSubscreens().isEmpty()) {
+              } else {
                 ArrayList<ScreenObject> subs = screen.getSubscreens();
-                searchScreenByName(name, subs);
+                foundScreen = searchScreenByName(name, subs);
+                if (foundScreen != null) {
+                    break;
+                }
               }
-           }
-           return foundScreen;
+            }
+        }
+        return foundScreen;
     }
     
     public ScreenObject getScreenByName(String name) throws ConfigException { 
@@ -1685,9 +1689,11 @@ public class MDConfigManager {
             if (name.equalsIgnoreCase(screen.getViewPath())) {
                 foundScreen = screen;
                 break;
-            } else if (screen.getSubscreens()!=null &&
-                       !screen.getSubscreens().isEmpty()) {
+            } else {
               foundScreen = searchScreenByName(name, screen.getSubscreens());  
+              if (foundScreen != null) {
+                  break;
+              }
             }
         }
         return foundScreen;
