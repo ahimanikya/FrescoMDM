@@ -27,13 +27,14 @@ import java.util.HashMap;
 import java.util.Set;
         
 import com.sun.mdm.index.objects.epath.EPathArrayList;
+import java.io.Serializable;
 
 /**
  * MultiDomainSearchOptions class.
  * @author SwaranjitDua
  * @author cye
  */
-public class MultiDomainSearchOptions {
+public class MultiDomainSearchOptions implements Serializable {
     /**
      * EPathArrayList is defined in Master Index. Each domain has a EPathArrayList
      * which contains fully-qualified field name named FQFN. e.g., Person.FirstName,
@@ -134,7 +135,7 @@ public class MultiDomainSearchOptions {
     }
   
   
-  public static class DomainSearchOption {
+  public static class DomainSearchOption implements Serializable  {
       private String domain;
     /**
      * Whether to use weighted option.

@@ -59,7 +59,7 @@ public class MasterIndexLocator {
         try {
         Hashtable env = new Hashtable();
 
-        DomainService dService = new DomainService();
+        DomainService dService = new DomainService(con);
 
         Domain[] domains = dService.getDomains();
 

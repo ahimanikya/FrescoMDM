@@ -26,10 +26,10 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
 
-import com.sun.mdm.index.objects.SystemObject;
 
 import com.sun.mdm.multidomain.relationship.Relationship;
 import com.sun.mdm.index.master.search.enterprise.EOSearchCriteria;
+import java.io.Serializable;
 
 /**
  * MultiDomainSearchCriteria class. This class is used to specify different 
@@ -40,7 +40,7 @@ import com.sun.mdm.index.master.search.enterprise.EOSearchCriteria;
  * @author SwaranjitDua
  * @author cye
  */
-public class MultiDomainSearchCriteria {
+public class MultiDomainSearchCriteria implements Serializable {
     /**
      * Relationship defines search relationship attributes. 
      */

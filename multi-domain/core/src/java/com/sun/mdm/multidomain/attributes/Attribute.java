@@ -22,12 +22,14 @@
  */
 package com.sun.mdm.multidomain.attributes;
 
+import java.io.Serializable;
+
 /**
  * Flexible Attribute class.
  * @author cye
  * @author SwaranjitDua
  */
-public class Attribute {
+public class Attribute implements Serializable {
              
     private long id;
     private String name;
