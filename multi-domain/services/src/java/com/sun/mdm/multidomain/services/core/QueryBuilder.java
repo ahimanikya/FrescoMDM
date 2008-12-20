@@ -288,7 +288,7 @@ public class QueryBuilder {
             while(relationshipSearch.hasNext()) {
                 Attribute field = relationshipSearch.next();
                 com.sun.mdm.multidomain.attributes.Attribute attribute = new com.sun.mdm.multidomain.attributes.Attribute();
-                attribute.setName(attribute.getName());
+                attribute.setName(field.getName());
                 relationship.setAttributeValue(attribute, field.getValue());
             }    
         } catch (ParseException pex) {            
@@ -423,35 +423,36 @@ public class QueryBuilder {
 	try {
             ObjectFactory objectFactory = ObjectFactoryRegistry.lookup(objectName);
             ObjectNode topNode = objectFactory.create(objectName);
+            
             Iterator<String> keys = searchCriteria.keySet().iterator();        
             while (keys.hasNext()) {
                 String key = (String) keys.next();
 		String value = (String) searchCriteria.get(key);
-            
-		if ((value != null) && (value.trim().length() > 0)) {
+		if (value != null && value.trim().length() > 0) {
+                    
                     int index = key.indexOf(".");
-                    if (index > -1) {
-                        String tmpRef = key.substring(0, index);
+                    if (index > -1) {                      
+                        String nodeName = key.substring(0, index);
 			String fieldName = key.substring(index + 1);
                         
-                        int findex = fieldName.indexOf(".");
-                        if (findex > -1){
-                            tmpRef = fieldName.substring(0,findex);
-                            fieldName = fieldName.substring(findex + 1);  
+                        index = fieldName.indexOf(".");
+                        if (index > -1) {
+                            nodeName = fieldName.substring(0, index);
+                            fieldName = fieldName.substring(index + 1);         
                         }
-
-			if (tmpRef.equalsIgnoreCase(objectName)) {
+                        
+			if (nodeName.equalsIgnoreCase(objectName)) {
                             setObjectNodeFieldValue(topNode, fieldName, value);
 			} else {
-                            ArrayList<ObjectNode> childNodes = topNode.pGetChildren(tmpRef);
-                            ObjectNode node = null;
-                            if (childNodes == null) {
-                                node = objectFactory.create(tmpRef);
-				topNode.addChild(node);
+                            ArrayList<ObjectNode> children = topNode.pGetChildren(nodeName);
+                            ObjectNode childNode = null;
+                            if (children == null) {
+                                childNode = objectFactory.create(nodeName);
+				topNode.addChild(childNode);
                             } else {
-                                node = (ObjectNode) childNodes.get(0);
+                                childNode = (ObjectNode) children.get(0);
                             }                        
-                            setObjectNodeFieldValue(node, fieldName, value);
+                            setObjectNodeFieldValue(childNode, fieldName, value);
                         }
                     }
                  }            
@@ -541,7 +542,7 @@ public class QueryBuilder {
             case ObjectField.OBJECTMETA_FLOAT_TYPE:
             	node.setValue(field, (Object) Float.valueOf(value));
             	break;
-            	case ObjectField.OBJECTMETA_STRING_TYPE:
+            case ObjectField.OBJECTMETA_STRING_TYPE:
             default:
             	node.setValue(field, (Object) value);
 		break;
