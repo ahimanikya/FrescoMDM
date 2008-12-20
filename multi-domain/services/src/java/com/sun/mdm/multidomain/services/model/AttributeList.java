@@ -155,6 +155,7 @@ public class AttributeList implements Iterator<Attribute> {
             if (name.equals(attribute.getName())) {
                 attribute.setValue(value);
                 found = true;
+                break;
             }
         }
         if(!found) {
