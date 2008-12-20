@@ -25,7 +25,8 @@ package com.sun.mdm.multidomain.query;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
-        
+import java.io.Serializable;        
+
 import com.sun.mdm.index.objects.epath.EPathArrayList;
 import java.io.Serializable;
 
@@ -136,7 +137,8 @@ public class MultiDomainSearchOptions implements Serializable {
   
   
   public static class DomainSearchOption implements Serializable  {
-      private String domain;
+    
+    private String domain;
     /**
      * Whether to use weighted option.
      */

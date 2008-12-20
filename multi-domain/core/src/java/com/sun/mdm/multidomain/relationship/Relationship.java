@@ -162,7 +162,10 @@ public class Relationship implements Serializable  {
      * @param value Attribute value.
      */
     public void setAttributeValue(Attribute attribute, String value) {
-        getAttributes().put(attribute, value);
+        if (attributeValues == null) {
+            attributeValues = new HashMap<Attribute, String>();
+        }
+        attributeValues.put(attribute, value);
     }
 
     /**
@@ -171,7 +174,10 @@ public class Relationship implements Serializable  {
      * @return String Attribute value.
      */
     public String getAttributeValue(Attribute attribute) {
-        return getAttributes().get(attribute);
+        if (attributeValues == null) {
+            attributeValues = new HashMap<Attribute, String>();
+        }
+        return attributeValues.get(attribute);
     }
 
     /**

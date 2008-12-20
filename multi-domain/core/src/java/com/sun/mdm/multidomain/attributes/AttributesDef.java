@@ -25,6 +25,7 @@ package com.sun.mdm.multidomain.attributes;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.io.Serializable;
 
 /**
  * AttributesDef class.
@@ -32,7 +33,7 @@ import java.util.Iterator;
  * @author SwaranjitDua
  * @author cye
  */
-public abstract class AttributesDef {
+public abstract class AttributesDef implements Serializable {
 
     //public enum RelationshipMode {RELATIONSHIP,HIERARCHY, GROUP};
     //public enum DirectionMode {UNIDIRECTIONAL,BIDIRECTIONAL};

@@ -25,13 +25,14 @@ package com.sun.mdm.multidomain.attributes;
 import java.util.Date;
 import java.util.Map;
 import java.util.HashMap;
-
+import java.io.Serializable;
+        
 /**
  * AttributesValue class
  * Encapsulates fixed and flexible attributes and values for a concrete association.
  * @author SwaranjitDua
  */
-public class AttributesValue {
+public class AttributesValue implements Serializable {
     private Date effectiveFromDate;
     private Date effectiveToDate;
     private Date purgeDate;

@@ -25,6 +25,7 @@ package com.sun.mdm.multidomain.query;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
+import java.io.Serializable;
 
 
 import com.sun.mdm.multidomain.relationship.Relationship;

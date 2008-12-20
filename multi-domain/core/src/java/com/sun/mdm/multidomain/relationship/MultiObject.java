@@ -25,7 +25,7 @@ package com.sun.mdm.multidomain.relationship;
 import com.sun.mdm.index.objects.ObjectNode;
 import java.util.List;
 import java.util.ArrayList;
-
+import java.io.Serializable;
         
 /**
  * MultiObject class.
@@ -33,7 +33,7 @@ import java.util.ArrayList;
  * objects from other domains to which source object has a relationship.
  * @author SwaranjitDua
  */
-public class MultiObject {
+public class MultiObject implements Serializable {
     private ObjectNode sourceDomainObject;	
     private List<RelationshipDomain> relationshipDomains = new ArrayList<RelationshipDomain>();
 	
@@ -116,7 +116,7 @@ public class MultiObject {
      * in this class. 
      * This is encapsulated within MultiObject.
      */
-    public static class RelationshipDomain {
+    public static class RelationshipDomain implements Serializable {
         private String domain;
         private List<RelationshipObject> relationshipObjects = new ArrayList<RelationshipObject>();
         
@@ -182,7 +182,7 @@ public class MultiObject {
      * in this class. 
      * This is encapsulated within MultiObject.
      */
-    public static class RelationshipObject {
+    public static class RelationshipObject implements Serializable {
         private ObjectNode targetObject;
         private Relationship relationship;
         
