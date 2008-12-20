@@ -332,6 +332,7 @@ public class RelationshipManager {
         List<RelationshipView> relationships = new ArrayList<RelationshipView>(); 
         
         //TDB
+        sourceDomainSearch = new DomainSearch();
         sourceDomainSearch.setName("Person");
         sourceDomainSearch.setType("Advanced Person Lookup (Alpha)");
         sourceDomainSearch.setAttributeValue("Person.FirstName", "George");
@@ -340,6 +341,7 @@ public class RelationshipManager {
         sourceDomainSearch.setAttributeValue("Person.Address.AddressLine1", "100 Foo Avenue");
         sourceDomainSearch.setAttributeValue("Person.Address.City", "Foo");
             
+        targetDomainSearch = new DomainSearch();
         targetDomainSearch.setName("Company");
         targetDomainSearch.setType("Advanced Company Lookup (Phonetic)");
         targetDomainSearch.setAttributeValue("Company.CompanyName", "Centerpoint");
@@ -348,13 +350,14 @@ public class RelationshipManager {
         targetDomainSearch.setAttributeValue("Company.Address.AddressLine1", "100 Foo Avenue");
         targetDomainSearch.setAttributeValue("Company.Address.City", "Foo");
             
+        relationshipSearch = new RelationshipSearch();
         relationshipSearch.setName("EmployedBy");
         relationshipSearch.setSourceDomain(sourceDomainSearch.getName());
         relationshipSearch.setTargetDomain(targetDomainSearch.getName());
         relationshipSearch.setStartDate("11/01/2008");
         relationshipSearch.setEndDate("11/31/2008");
         relationshipSearch.setAttributeValue("hiredDate", "11/01/2008");    
-        
+        if(TBD) {
         try {
              // build search options and criteria for source and target
             MultiDomainSearchOptions mdSearchOptions = QueryBuilder.buildMultiDomainSearchOptions(sourceDomainSearch, targetDomainSearch);
@@ -368,7 +371,7 @@ public class RelationshipManager {
         } catch(UserException uex) {
             throw new ServiceException(uex);
         }
-        
+        }
         //TDB
         RelationshipView rel1 = new RelationshipView();
         rel1.setName("EmployedBy");
@@ -404,6 +407,7 @@ public class RelationshipManager {
         throws ServiceException {
    
         RelationshipComposite relationshipComposite = new RelationshipComposite();
+        if(TBD) {
         try {
              // build search options and criteria for source and target
             Relationship relationship = new Relationship();
@@ -420,7 +424,7 @@ public class RelationshipManager {
         } catch(UserException uex) {
             throw new ServiceException(uex);
         }
-        
+        }
         //TBD
         ObjectRecord sourceRecord = new ObjectRecord();
         sourceRecord.setName("Person");
@@ -567,7 +571,6 @@ public class RelationshipManager {
     public ObjectRecord getEnterprise(ObjectView object)
         throws ServiceException {
         
-        if (!TBD) {
         ObjectRecord objectRecord = null;
         try {           
             // need to add a new method in multiDomainService to getObject
@@ -581,12 +584,6 @@ public class RelationshipManager {
             throw new ServiceException(cex);
         }
         return objectRecord;        
-        }
-        
-        //demo
-        ObjectRecord record = new ObjectRecord(object.getName(), object.getEUID());
-        record.add(new com.sun.mdm.multidomain.services.model.Attribute("foo","foo"));
-        return record;
     } 
     
     /**
