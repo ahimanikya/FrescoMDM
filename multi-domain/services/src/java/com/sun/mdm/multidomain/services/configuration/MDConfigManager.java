@@ -1682,12 +1682,12 @@ public class MDConfigManager {
         Set<Integer> ids = mScreens.keySet();
         for (Integer id : ids) {
             ScreenObject screen = mScreens.get(id);
-            if (name.equalsIgnoreCase(foundScreen.getViewPath())) {
+            if (name.equalsIgnoreCase(screen.getViewPath())) {
                 foundScreen = screen;
                 break;
-            } else if (foundScreen.getSubscreens()!=null &&
-                       !foundScreen.getSubscreens().isEmpty()) {
-              foundScreen = searchScreenByName(name, foundScreen.getSubscreens());  
+            } else if (screen.getSubscreens()!=null &&
+                       !screen.getSubscreens().isEmpty()) {
+              foundScreen = searchScreenByName(name, screen.getSubscreens());  
             }
         }
         return foundScreen;
