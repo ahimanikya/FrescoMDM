@@ -433,6 +433,12 @@ public class QueryBuilder {
                     if (index > -1) {
                         String tmpRef = key.substring(0, index);
 			String fieldName = key.substring(index + 1);
+                        
+                        int findex = fieldName.indexOf(".");
+                        if (findex > -1){
+                            tmpRef = fieldName.substring(0,findex);
+                            fieldName = fieldName.substring(findex + 1);  
+                        }
 
 			if (tmpRef.equalsIgnoreCase(objectName)) {
                             setObjectNodeFieldValue(topNode, fieldName, value);
