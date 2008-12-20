@@ -357,7 +357,8 @@ public class RelationshipManager {
         relationshipSearch.setStartDate("11/01/2008");
         relationshipSearch.setEndDate("11/31/2008");
         relationshipSearch.setAttributeValue("hiredDate", "11/01/2008");    
-        if(TBD) {
+        
+        if(!TBD) {
         try {
              // build search options and criteria for source and target
             MultiDomainSearchOptions mdSearchOptions = QueryBuilder.buildMultiDomainSearchOptions(sourceDomainSearch, targetDomainSearch);
@@ -372,6 +373,7 @@ public class RelationshipManager {
             throw new ServiceException(uex);
         }
         }
+        
         //TDB
         RelationshipView rel1 = new RelationshipView();
         rel1.setName("EmployedBy");
@@ -407,7 +409,7 @@ public class RelationshipManager {
         throws ServiceException {
    
         RelationshipComposite relationshipComposite = new RelationshipComposite();
-        if(TBD) {
+        if(!TBD) {
         try {
              // build search options and criteria for source and target
             Relationship relationship = new Relationship();
