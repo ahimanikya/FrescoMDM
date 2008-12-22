@@ -25,7 +25,7 @@
            <input type="button" value="Add" onclick="showByRecordAddDialog();">
                <input type="button" value="test" onclick="getByRecordData()">
                    <div id="mainTreeContainer" dojoType="dijit.layout.ContentPane"
-                   style="width:300px;height:250px;border:1px solid #000000;background-color:#ffffff;"></div>
+                   style="width:300px;height:400px;border:1px solid #000000;background-color:#ffffff;"></div>
            </div>
     </div>
     

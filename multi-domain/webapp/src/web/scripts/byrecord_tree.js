@@ -19,7 +19,7 @@ var item_types = {DOMAIN:"domain", RELATIONSHIP:"relationship", RECORD:"record"}
 
 function getByRecordData () {
     var selectedDomain = "Person";
-    var selectedEUID = "000-000-055";
+    var selectedEUID = "000-000-555";
     var domainSearchObj = {name:selectedDomain, attributes:[{EUID: selectedEUID}]};
     
     //RelationshipHandler.searchDomainRelationshipsByRecord(domainSearchObj, getByRecordDataCB);
@@ -90,7 +90,7 @@ function getByRecordDataCB (data) {
     rootRecordItem.id = "roodRecordID";
     rootRecordItem.EUID = data.primaryObject.EUID;
     rootRecordItem.name = data.primaryObject.highLight;
-    rootDomainItem.type = item_types.RECORD;
+    rootRecordItem.type = item_types.RECORD;
  
     var rootDomain = mainTree_Store.newItem( rootDomainItem , null);
     var rootRecord = mainTree_Store.newItem(rootRecordItem, {parent: rootDomain, attribute:"children"} );
@@ -107,6 +107,11 @@ function getByRecordDataCB (data) {
         var rNodeItem = mainTree_Store.newItem(relationshipNode, {parent: rootRecord, attribute:"children"} );
         var relationships = tempRelObj.relationshipViews;
         for(j=0; j<relationships.length; j++) {
+            var recordNode = {};
+            recordNode.id = j+  relationshipNode.id + "_" + relationships[j].sourceEUID;
+            recordNode.name = relationships[j].sourceHighLight;
+            recordNode.type = item_types.RECORD;
+            var recordNodeItem = mainTree_Store.newItem(recordNode, {parent: rNodeItem, attribute:"children"} );
             //alert(j + " " + relationships[j].sourceEUID + " :: " + relationships[j].targetEUID);
         }
     }
@@ -119,19 +124,21 @@ function getByRecordDataCB (data) {
     return;
 }
 
+
 // Function to create the main tree. Store should be populated before calling this.
 function createMainTree () {
     var newModel  = new dijit.tree.TreeStoreModel({
-            store: mainTree_Store,
-            query: {id:'roodDomainID'},
-            childrenAttrs: ["children"]
+        store: mainTree_Store,
+        query: {id:'roodDomainID'},
+        childrenAttrs: ["children"]    
     });
     var mainTreeObj = dijit.byId("mainTree");
     if (dijit.byId("mainTree")) {dijit.byId("mainTree").destroy()}
     mainTreeObj = new dijit.Tree({
         id: "mainTree",
         model: newModel,
-        onClick: mainTreeClicked
+        onClick: mainTreeClicked,
+        getIconClass: mainTreeGetIconClass
     }, document.createElement("div"));
     mainTreeObj.startup();
     dojo.byId("mainTreeContainer").appendChild(mainTreeObj.domNode);
@@ -148,5 +155,18 @@ function deleteItemsFromStore(items, req) {
 // Main tree click event is captured by this function
 function mainTreeClicked(item, node) {
   //  alert("clicked")
+}
+
+function mainTreeGetIconClass (item, opened) {
+    if(item != null) {
+	var itemType = mainTree_Store.getValue(item, "type");
+        //alert(mainTree_Store.getValue(item, "id") + " : " +itemType);
+        if(itemType == item_types.DOMAIN) {
+            return "domainIcon";
+        } else if(itemType == item_types.RELATIONSHIP ) {
+            return "relationshipBiDirectionIcon";
+        } else return "recordIcon";
+    }
+    return "recordIcon";    
 }
 
