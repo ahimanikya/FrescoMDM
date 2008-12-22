@@ -132,7 +132,7 @@ public class RelationshipDaoImpl extends AbstractDAO implements RelationshipDao 
         PreparedStatement stmt = null;
 
         try {
-            // stmt = conn.prepareStatement(SQL_UPDATE);
+            //stmt =userConn.prepareStatement(SQL_UPDATE);
             int index = 1;
             stmt.setLong(index++, dto.getRelationshipId());
             stmt.setString(index++, dto.getSourceEuid());
@@ -155,8 +155,7 @@ public class RelationshipDaoImpl extends AbstractDAO implements RelationshipDao 
         PreparedStatement stmt = null;
 
         try {
-            //System.out.println("Executing " + SQL_DELETE + " with PK: " + pk);
-            // stmt = conn.prepareStatement(SQL_DELETE);
+            //stmt = userConn.prepareStatement(SQL_DELETE);
             stmt.setLong(1, pk);
             int rows = stmt.executeUpdate();
 
