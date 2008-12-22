@@ -58,7 +58,7 @@
         Under construction!
     </div>
     <div id="mRelatioshipTab" dojoType="dijit.layout.ContentPane" title="<f:message key='relationship_text' />" 
-            href="m_byrelationship_main.htm" parseOnLoad="true" onLoad="showSelectDialog();">
+            href="m_byrelationship_main.htm" parseOnLoad="true" <!--onLoad="showSelectDialog();"--> >
         
     </div>
     

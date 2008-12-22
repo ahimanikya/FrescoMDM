@@ -586,6 +586,7 @@ function deselectAllRelationships () {
 
 function refreshRelationshipsListingButtonsPalette () {
     var selectedChoices = 0;
+    
     var chkboxes = document.getElementsByName("relationship_id");
     for(i=0;i<chkboxes.length; i++) {
         if(chkboxes[i].checked )

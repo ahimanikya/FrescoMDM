@@ -20,7 +20,8 @@
                
            </div>
            <hr>
-           <div dojoType="dijit.layout.ContentPane" href="m_byrel_relationships_listing.htm" parseOnLoad="true"></div>
+           <div dojoType="dijit.layout.ContentPane" href="m_byrel_relationships_listing.htm" parseOnLoad="true"           
+           onLoad ="refreshRelationshipsListingButtonsPalette();"></div>
     </div>
     
     <div dojoType="dijit.layout.ContentPane" gutters="false" region="center" splitter="true" 
