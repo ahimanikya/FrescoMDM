@@ -7,15 +7,9 @@ var mainTree_Data = { identifier: 'id',
     label: 'name',
     items: []};
 var mainTree_Store = null;
-var mainTree_Model = null;
 
 dojo.addOnLoad(function(){
     mainTree_Store = new dojo.data.ItemFileWriteStore({data: mainTree_Data});
-    mainTree_Model = new dijit.tree.TreeStoreModel({
-              store: mainTree_Store,
-              query: {id:'roodDomainID'},
-              childrenAttrs: ["children"]
-      });
 });
 
 
@@ -80,73 +74,79 @@ function getByRecordData () {
 }
 
 function getByRecordDataCB (data) {
+    
+    // 1. Populate store for tree
+    // 1a. delete existing data items from store.
+    mainTree_Store.fetch ({query:{},onComplete: deleteItemsFromStore, queryOptions: {deep:true}});
+    
+    // 1b. Create root element, i.e., Domain eg., Person, UK Patient.
     var rootDomainItem = {};
     rootDomainItem.id = "roodDomainID";
     rootDomainItem.name = data.domain;
     rootDomainItem.type = item_types.DOMAIN;
     
+    // 1c. Create node for the main record. eg., George Karlin.
     var rootRecordItem = {};
     rootRecordItem.id = "roodRecordID";
     rootRecordItem.EUID = data.primaryObject.EUID;
     rootRecordItem.name = data.primaryObject.highLight;
-
-    var rootRecordItem2 = {};
-    rootRecordItem2.id = "roodRecordID2";
-    rootRecordItem2.EUID = data.primaryObject.EUID;
-    rootRecordItem2.name = data.primaryObject.highLight;
-    
-    mainTree_Store.fetch ({query:{},onComplete: deleteItems,queryOptions: {deep:true}});
-
+    rootDomainItem.type = item_types.RECORD;
+ 
     var rootDomain = mainTree_Store.newItem( rootDomainItem , null);
     var rootRecord = mainTree_Store.newItem(rootRecordItem, {parent: rootDomain, attribute:"children"} );
-    mainTree_Store.newItem(rootRecordItem2, {parent: rootDomain, attribute:"children"} );
-    mainTree_Store.save({onComplete:saved});
 
-   // var newStore = new dojo.data.ItemFileWriteStore({data: mainTree_Data});
+    // 1d. add relationships for the root record.
+    for(i=0; i<data.relationshipsObjects.length; i++) {
+        var tempRelObj = data.relationshipsObjects[i];
+        //alert(i + " " + tempRelObj.relationshipDefView.id + " -- " + tempRelObj.relationshipDefView.sourceDomain + " : "+ tempRelObj.relationshipDefView.targetDomain);
+        var relationshipNode = {};
+        relationshipNode.id = tempRelObj.relationshipDefView.id;
+        relationshipNode.name = tempRelObj.relationshipDefView.name;
+        relationshipNode.type = item_types.RELATIONSHIP;
+        
+        var rNodeItem = mainTree_Store.newItem(relationshipNode, {parent: rootRecord, attribute:"children"} );
+        var relationships = tempRelObj.relationshipViews;
+        for(j=0; j<relationships.length; j++) {
+            //alert(j + " " + relationships[j].sourceEUID + " :: " + relationships[j].targetEUID);
+        }
+    }
     
-     var newModel  = new dijit.tree.TreeStoreModel({
-              store: mainTree_Store,
-              query: {id:'roodDomainID'},
-              childrenAttrs: ["children"]
-      });
-      
+    // 2. Save the items of store
+    mainTree_Store.save();
+    
+    // 3. Create tree now
+    createMainTree();
+    return;
+}
+
+// Function to create the main tree. Store should be populated before calling this.
+function createMainTree () {
+    var newModel  = new dijit.tree.TreeStoreModel({
+            store: mainTree_Store,
+            query: {id:'roodDomainID'},
+            childrenAttrs: ["children"]
+    });
     var mainTreeObj = dijit.byId("mainTree");
     if (dijit.byId("mainTree")) {dijit.byId("mainTree").destroy()}
-
     mainTreeObj = new dijit.Tree({
         id: "mainTree",
         model: newModel,
-        onClick: mytreeclicked
+        onClick: mainTreeClicked
     }, document.createElement("div"));
     mainTreeObj.startup();
     dojo.byId("mainTreeContainer").appendChild(mainTreeObj.domNode);
-
-    return;
-    alert(data.domain + " : " + data.primaryObject.highLight + " : " + data.relationshipsObjects.length);
-
-    for(i=0; i<data.relationshipsObjects.length; i++) {
-        var tempRelObj = data.relationshipsObjects[i];
-        alert(i + " " + tempRelObj.relationshipDefView.name + " -- " + tempRelObj.relationshipDefView.sourceDomain + " : "+ tempRelObj.relationshipDefView.targetDomain);
-        var relationships = tempRelObj.relationshipViews;
-        for(j=0; j<relationships.length; j++) {
-            alert(j + " " + relationships[j].sourceEUID + " :: " + relationships[j].targetEUID);
-        }
-    }
 }
 
-function deleteItems(items, req) {
-    //alert(items + " : " + items.length);
+// function to delete items from main tree store.
+function deleteItemsFromStore(items, req) {
     for(i=0; i<items.length; i++) {
-        var s = mainTree_Store.deleteItem(items[i]);
-       // alert(i + " : " + s);
-        mainTree_Store.save({onComplete:saved});
+        var status = mainTree_Store.deleteItem(items[i]);
+        mainTree_Store.save();
     }
 }
-function saved() {
-    //alert("saved");
-}
 
-function mytreeclicked(item, node) {
-    alert("clicked")
+// Main tree click event is captured by this function
+function mainTreeClicked(item, node) {
+  //  alert("clicked")
 }
 
