@@ -200,6 +200,7 @@ if (results != null)   {
 	if(results.size()>0 && results.get(0) instanceof HashMap){
 		lidErrorMap = (results.get(0)!=null)?(HashMap)results.get(0):new HashMap();
 	}
+	Operations operations = new Operations();
   	if(lidErrorMap.get("LID_SYSTEM_CODE_ERROR")==null){
 %>
      <table border="0" cellpadding="0" cellspacing="0"> 
@@ -209,11 +210,10 @@ if (results != null)   {
 			</td>
 			<td>
 				<% if (results.size() > 0){%>
-                    <h:panelGrid rendered="#{Operations.transLog_Print}"  >
+				  <% if (operations.isTransLog_Print()){%>
                         <a title="<%=print_text%>" class="button" href="javascript:void(0)" onclick="javascript:getRecordDetailsFormValues('advancedformData');openPrintWindow('/<%=URI%>/printservices/transactions.jsf?random='+rand+'&'+queryStr)"><span><%=print_text%></span></a>
-					</h:panelGrid>             
-
 				<% } %>
+ 				<% } %>
             </td>
          </tr>
 <%}%>
