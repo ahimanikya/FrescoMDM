@@ -23,6 +23,7 @@
            <hr>
            <div dojoType="dijit.layout.ContentPane"  parseOnLoad="true">Under construction...
            <input type="button" value="Add" onclick="showByRecordAddDialog();">
+               <input type="button" value="test" onclick="getByRecordData()">
            </div>
     </div>
     
