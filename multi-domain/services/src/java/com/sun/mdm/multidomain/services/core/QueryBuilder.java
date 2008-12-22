@@ -50,11 +50,12 @@ import com.sun.mdm.multidomain.services.configuration.DomainScreenConfig;
 import com.sun.mdm.multidomain.services.configuration.FieldConfigGroup;
 import com.sun.mdm.multidomain.services.configuration.FieldConfig;
 import com.sun.mdm.multidomain.services.configuration.ScreenObject;
-        
+
 import com.sun.mdm.multidomain.query.MultiDomainSearchCriteria;
 import com.sun.mdm.multidomain.query.MultiDomainSearchOptions;
 import com.sun.mdm.multidomain.query.MultiDomainSearchOptions.DomainSearchOption;
 import com.sun.mdm.multidomain.relationship.Relationship;
+import com.sun.mdm.multidomain.relationship.RelationshipDef;
 import com.sun.mdm.multidomain.hierarchy.HierarchyNode;
 import com.sun.mdm.multidomain.hierarchy.HierarchyDef;
 import com.sun.mdm.multidomain.query.HierarchySearchCriteria;
@@ -296,7 +297,7 @@ public class QueryBuilder {
         }
         return relationship;
     }
-    
+        
     /**
      * Build EOSearchOptions.
      * @param domainSearch DomainSearch.
@@ -388,7 +389,9 @@ public class QueryBuilder {
         Relationship relationship = new Relationship();     
         
         try {
-            relationship.setRelationshipId(Integer.parseInt(relastionshipRecord.getId()));
+            if (relastionshipRecord.getId() !=null ) {
+                relationship.setRelationshipId(Integer.parseInt(relastionshipRecord.getId()));
+            }
             relationship.setSourceEUID(relastionshipRecord.getSourceEUID());
             relationship.setTargetEUID(relastionshipRecord.getTargetEUID());
             if (relastionshipRecord.getStartDate() != null) {
