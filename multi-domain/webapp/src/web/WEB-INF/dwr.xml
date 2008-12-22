@@ -39,7 +39,8 @@
       <include method="addRelationship" />
       <include method="updateRelationship" />
       <include method="deleteRelationship" />
-      <include method="searchRelationshipsByRecord" />      
+      <include method="searchRelationshipsByRecord" />
+      <include method="searchDomainRelationshipsByRecord" />
     </create>
 
     <create creator="spring" javascript="HierarchyDefHandler" scope="session">
