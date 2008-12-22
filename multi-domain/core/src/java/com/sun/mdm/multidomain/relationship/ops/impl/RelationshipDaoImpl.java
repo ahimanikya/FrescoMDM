@@ -24,6 +24,7 @@ package com.sun.mdm.multidomain.relationship.ops.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -101,9 +102,9 @@ public class RelationshipDaoImpl extends AbstractDAO implements RelationshipDao 
                 builder.addColumns(r.columnName);
             }
             String sqlStr = SQLBuilder.buildSQL(builder);
-            stmt = userConn.prepareStatement(sqlStr);
+            stmt = userConn.prepareStatement(sqlStr, Statement.RETURN_GENERATED_KEYS);
             int index = 1;
-            stmt.setNull(index++, java.sql.Types.INTEGER);  // Primary key column
+            stmt.setNull(index++, java.sql.Types.NULL);
             stmt.setLong(index++, rel.getRelationshipDef().getId());
             stmt.setString(index++, rel.getSourceEUID());
             stmt.setString(index++, rel.getTargetEUID());
