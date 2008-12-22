@@ -831,6 +831,8 @@
 	width: 16px;
 	height: 16px;
 }
+
+
 .mdwm .dijitFolderOpened {
 	background: url(images/folderOpened.gif) no-repeat;
 }
@@ -840,6 +842,19 @@
 .mdwm .dijitLeaf {
 	background: url(images/leaf.gif) no-repeat;
 }
+.mdwm .domainIcon {
+	background: url('images/domain_icon.png') no-repeat;
+}
+.mdwm .relationshipOneDirectionIcon {
+	background: url('images/relationship-right.png') no-repeat;
+}
+.mdwm .relationshipBiDirectionIcon {
+	background: url('images/relationship-both.png') no-repeat;
+}
+.mdwm .recordIcon {
+	background: url('images/document_icon.png') no-repeat;
+}
+
 .mdwm .dijitProgressBar {
 	margin:2px 0px 2px 0px;
 }
