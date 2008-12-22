@@ -615,10 +615,14 @@ public class RelationshipManager {
      * @param relationshipView RelationshipView.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public void deleteRelationship(RelationshipView relationshipView)
+    public void deleteRelationship(RelationshipView relView)
         throws ServiceException {
          try {
-            multiDomainService.deleteRelationship(Integer.parseInt(relationshipView.getId()));
+             if (relView.getId() != null ) {
+                multiDomainService.deleteRelationship(Long.parseLong(relView.getId()));                 
+             } else {
+                 throw new UserException("invalid relationship id: null");
+             }
         } catch (ProcessingException pex) {
             throw new ServiceException(pex);
         } catch (UserException uex) {
