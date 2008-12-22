@@ -7,6 +7,8 @@
 <html>
 <head>
     <title><f:message key="manage_text" /></title>
+    <script type="text/javascript" src="scripts/dojo/dojo.js" djConfig="parseOnLoad:true, isDebug: false"></script>     
+    
     <script type='text/javascript' src='dwr/engine.js'></script>    
     <script type='text/javascript' src='dwr/util.js'></script>    
     <script type='text/javascript' src='dwr/local.js'></script>
@@ -25,7 +27,7 @@
     <style type="text/css">
         @import "scripts/dijit/themes/mdwm/mdwm.css";
     </style>
-    <script type="text/javascript" src="scripts/dojo/dojo.js" djConfig="parseOnLoad:true, isDebug: false"></script>                
+               
     <script type="text/javascript">
         dojo.require("dojo.parser");
         dojo.require("dijit.Dialog");
@@ -40,6 +42,12 @@
         dojo.require("dijit.form.TextBox");
         dojo.require("dijit.form.DateTextBox");  
         dojo.require("dijit.Paginator");
+        
+        dojo.require("dojo.data.ItemFileReadStore");
+        dojo.require("dojo.data.ItemFileWriteStore");
+
+
+        dojo.require("dijit.Tree");
     </script>
     <script type="text/javascript">
         dwr.engine.setAsync(true);

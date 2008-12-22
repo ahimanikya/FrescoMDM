@@ -146,6 +146,9 @@ function showByRecordAddDialog() {
         addDialog.show();
     if(isByRecordAddDialogLoaded) initializeByRecordAddDialog();    
 }
+function hideByRecordAddDialog () {
+    dijit.byId('byrecord_add').hide();
+}
 function initializeByRecordAddDialog() {
     isByRecordAddDialogLoaded = true;
     alert("By record add dialog Loaded...");
