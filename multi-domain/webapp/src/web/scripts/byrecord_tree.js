@@ -41,12 +41,13 @@ function getByRecordData () {
         relationshipDefView.id = "" + i;
         if(i%2==0) {
           relationshipDefView.sourceDomain = selectedDomain;
-          relationshipDefView.targetDomain = "Tdomain " + i;
+          relationshipDefView.targetDomain = "Company";
+          relationshipDefView.biDirection = true;
         } else {
-          relationshipDefView.sourceDomain = "SDomain" + i;
+          relationshipDefView.sourceDomain = "Company";
           relationshipDefView.targetDomain = selectedDomain;
+          relationshipDefView.biDirection = false;
         }
-        relationshipDefView.biDirection = true;
         tempRelationshipObj.relationshipDefView = relationshipDefView;
         
         var relationshipViews = [];
@@ -102,16 +103,25 @@ function getByRecordDataCB (data) {
         var relationshipNode = {};
         relationshipNode.id = tempRelObj.relationshipDefView.id;
         relationshipNode.name = tempRelObj.relationshipDefView.name;
+        relationshipNode.biDirection = tempRelObj.relationshipDefView.biDirection;
         relationshipNode.type = item_types.RELATIONSHIP;
         
         var rNodeItem = mainTree_Store.newItem(relationshipNode, {parent: rootRecord, attribute:"children"} );
+        
+        var relationshipDomain = {};
+        relationshipDomain.id = relationshipNode.id + "_" + tempRelObj.relationshipDefView.sourceDomain;
+        relationshipDomain.name = tempRelObj.relationshipDefView.sourceDomain;
+        
+        relationshipDomain.type = item_types.DOMAIN;
+        var rDomainItem = mainTree_Store.newItem(relationshipDomain, {parent: rNodeItem, attribute:"children"} );
+        
         var relationships = tempRelObj.relationshipViews;
         for(j=0; j<relationships.length; j++) {
             var recordNode = {};
             recordNode.id = j+  relationshipNode.id + "_" + relationships[j].sourceEUID;
             recordNode.name = relationships[j].sourceHighLight;
             recordNode.type = item_types.RECORD;
-            var recordNodeItem = mainTree_Store.newItem(recordNode, {parent: rNodeItem, attribute:"children"} );
+            var recordNodeItem = mainTree_Store.newItem(recordNode, {parent: rDomainItem, attribute:"children"} );
             //alert(j + " " + relationships[j].sourceEUID + " :: " + relationships[j].targetEUID);
         }
     }
@@ -164,7 +174,10 @@ function mainTreeGetIconClass (item, opened) {
         if(itemType == item_types.DOMAIN) {
             return "domainIcon";
         } else if(itemType == item_types.RELATIONSHIP ) {
-            return "relationshipBiDirectionIcon";
+            var relBiDirection = mainTree_Store.getValue(item, "biDirection");
+            if(relBiDirection!=null && getBoolean(relBiDirection)) {
+                return "relationshipBiDirectionIcon"
+            } else return "relationshipOneDirectionIcon";
         } else return "recordIcon";
     }
     return "recordIcon";    
