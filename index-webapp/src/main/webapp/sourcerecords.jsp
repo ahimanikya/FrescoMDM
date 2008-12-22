@@ -996,6 +996,40 @@ function showExtraTabDivs(divId,thisEvent)  {
 																	   href="javascript:void(0);"													
 																	   onclick="javascript:if(editMinorObjectType.length<1){
 																	    if(unsavedRootNodeValues.length<1){
+																   if(document.getElementById('message5')!=null){
+																		document.getElementById('message5').innerHTML='';
+																	}
+																	if(document.getElementById('errormessage11')!=null){
+																		document.getElementById('errormessage11').innerHTML='';
+																	}
+																	if(document.getElementById('errormessage22')!=null){
+																		document.getElementById('errormessage22').innerHTML='';
+																	}
+																	if(document.getElementById('errormessage33')!=null){
+																		document.getElementById('errormessage33').innerHTML='';
+																	}
+																	if(document.getElementById('errormessage44')!=null){
+																		document.getElementById('errormessage44').innerHTML='';
+																	}
+																	if(document.getElementById('errormessage5')!=null){
+																		document.getElementById('errormessage5').innerHTML='';
+																	}																	 
+																	if(document.getElementById('errormessage6')!=null){
+																		document.getElementById('errormessage6').innerHTML='';
+																	}
+																	if(document.getElementById('errormessage7')!=null){
+																		document.getElementById('errormessage7').innerHTML='';
+																	}
+																	if(document.getElementById('errormessage8')!=null){
+																		document.getElementById('errormessage8').innerHTML='';
+																	}
+																	if(document.getElementById('errormessage9')!=null){
+																		document.getElementById('errormessage9').innerHTML='';
+																	}
+																	document.getElementById('duplicateIdsDiv').innerHTML='';
+																	document.getElementById('errormessages').innerHTML='';
+																	document.getElementById('lidAlreadyfoundDiv').innerHTML='';	
+
 																	      getFormValues('basicValidateAddformData');ajaxMinorObjects('/<%=URI%>/ajaxservices/minorobjects.jsf?'+queryStr+'&validate=true&rand=<%=rand%>','addFormValidate','');
 																		 }else{
 																			showUnSavedRootNodeAlert(event);

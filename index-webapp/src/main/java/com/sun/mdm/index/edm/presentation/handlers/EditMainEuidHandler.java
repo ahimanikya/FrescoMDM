@@ -131,6 +131,13 @@ public class EditMainEuidHandler {
     private String removeEOMinorObjectsValues = new String();
     private ArrayList eoBrandNewSystemObjects;
     
+    /**HashMap to store the links from the data base for the Minor objects**/
+    private HashMap linkedSOMinorObjectFieldsFromDB = new HashMap();
+
+    private ArrayList minorObjectsLinksByUser = new ArrayList();
+    
+    private ArrayList minorObjectsunLinksByUser = new ArrayList();
+
     /** Creates a new instance of EditMainEuidHandler */
     public EditMainEuidHandler() {
     }
@@ -962,7 +969,8 @@ public class EditMainEuidHandler {
                         }
                      }
                     //fix for #228 end
-		  
+
+                    
                     for (int k = 0; k < soMinorObjectsMapArrayListEdit.size(); k++) {
                         HashMap minorObjectHashMapEdit = (HashMap) soMinorObjectsMapArrayListEdit.get(k);
 
@@ -971,6 +979,16 @@ public class EditMainEuidHandler {
                         minorObjectHashMapEdit.put(MasterControllerService.SYSTEM_CODE, systemObject.getSystemCode()); // set System code here
 
                         minorObjectHashMapEdit.put(MasterControllerService.MINOR_OBJECT_TYPE, objectNodeConfig.getName()); // set MINOR_OBJECT_TYPE
+                         
+                        //Fix for link minor objects - 6692028
+                        minorObjectHashMapEdit.put("keyTypeValue", midmUtilityManager.getKeyTypeForMinorObjects(objectNodeConfig.getName(), minorObjectHashMapEdit)); 
+
+                        HashMap minorObjectsLinkedHashMap = masterControllerService.getLinkValuesForChildren(editEnterpriseObject,
+                                objectNodeConfig.getName(),
+                                (String) minorObjectHashMapEdit.get(MasterControllerService.MINOR_OBJECT_ID));
+                        if(!minorObjectsLinkedHashMap.isEmpty()) { 
+                            getLinkedSOMinorObjectFieldsFromDB().put(minorObjectHashMapEdit.get("keyTypeValue").toString(), minorObjectsLinkedHashMap);
+                         }
 
                     }
 
@@ -986,6 +1004,9 @@ public class EditMainEuidHandler {
                         minorObjectHashMap.put(MasterControllerService.SYSTEM_CODE, systemObject.getSystemCode()); // set System code here
 
                         minorObjectHashMap.put(MasterControllerService.MINOR_OBJECT_TYPE, objectNodeConfig.getName()); // set MINOR_OBJECT_TYPE
+
+                        //Fix for link minor objects - 6692028
+                        minorObjectHashMap.put("keyTypeValue", midmUtilityManager.getKeyTypeForMinorObjects(objectNodeConfig.getName(), minorObjectHashMap)); 
 
                     }
                     systemObjectHashMap.put("SO" + objectNodeConfig.getName() + "ArrayList", soMinorObjectsMapArrayList); // set SO addresses as arraylist here
@@ -1564,6 +1585,148 @@ public class EditMainEuidHandler {
 
     public void setEoBrandNewSystemObjects(ArrayList eoBrandNewSystemObjects) {
         this.eoBrandNewSystemObjects = eoBrandNewSystemObjects;
+    }
+
+    public HashMap getLinkedSOMinorObjectFieldsFromDB() {
+        return linkedSOMinorObjectFieldsFromDB;
+    }
+
+    public void setLinkedSOMinorObjectFieldsFromDB(HashMap linkedSOMinorObjectFieldsFromDB) {
+        this.linkedSOMinorObjectFieldsFromDB = linkedSOMinorObjectFieldsFromDB;
+    }
+    /**
+     * Added  on 19/12/2008
+     * 
+     * This method is used SAVE the links for the minor objects selected by the user from edit main euid ajax services.
+     *
+     *  @return EO_EDIT_SUCCESS if save is successful <br>
+     *         null if add SO , save EO fails or any exception occurs.<br>
+     *         CONCURRENT_MOD_ERROR if the EO is already modified by another user<br>
+     * 
+     */
+
+    public String saveMinorObjectsLinksSelected() {
+        try {
+            String updateEuid = (String) session.getAttribute("editEuid");
+            EnterpriseObject updateEnterpriseObject = masterControllerService.getEnterpriseObject(updateEuid);
+            
+            //get the revision number from the session and which is available in DB
+            Integer sessionRevisionNumber  =(Integer) session.getAttribute("SBR_REVISION_NUMBER"+updateEnterpriseObject.getEUID());
+            Integer dbRevisionNumber  = updateEnterpriseObject.getSBR().getRevisionNumber();
+            if(dbRevisionNumber.intValue() != sessionRevisionNumber.intValue() ) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "'"+updateEnterpriseObject.getEUID()+ "' "+bundle.getString("concurrent_mod_text"),"'"+updateEnterpriseObject.getEUID()+ "' "+bundle.getString("concurrent_mod_text") ));
+                return EditMainEuidHandler.CONCURRENT_MOD_ERROR;
+            }
+
+            
+            EnterpriseObject updateEO = masterControllerService.saveLinksForChildren(getMinorObjectsLinksByUser(),updateEnterpriseObject);
+            session.setAttribute("editEuid", updateEO.getEUID());
+
+            masterControllerService.updateEnterpriseObject(updateEO);
+
+        } catch (Exception ex) {
+            if (ex instanceof ValidationException) {
+                mLogger.error(mLocalizer.x("EME056: Exception has occurred :{0}", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("EME057: Exception has occurred :{0}", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("EME058: Exception has occurred :{0}", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof ProcessingException) {
+                String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                if (exceptionMessage.indexOf("stack trace") != -1) {
+                    String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                    if (exceptionMessage.indexOf("message=") != -1) {
+                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
+                    }
+                    mLogger.error(mLocalizer.x("EME059: Service Layer Processing Exception occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                } else {
+                    mLogger.error(mLocalizer.x("EME060: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                }
+            }
+            return EditMainEuidHandler.SERVICE_LAYER_ERROR;
+        }
+        return EditMainEuidHandler.EDIT_EO_SUCCESS;
+    }
+
+/** 
+     * Added  on 19/12/2008
+     * 
+     * This method is used remove the links for the minor objects. This method is called from the ajaxservices.
+     *
+     *  @return EO_EDIT_SUCCESS if save is successful<br>
+     *         null if add SO , save EO fails or any exception occurs.<br>
+     *         CONCURRENT_MOD_ERROR if the EO is already modified by another user<br>
+     * 
+     */
+
+    public String saveMinorObjectUnLinksSelected() {
+        try {
+            String updateEuid = (String) session.getAttribute("editEuid");
+            EnterpriseObject updateEnterpriseObject = masterControllerService.getEnterpriseObject(updateEuid);
+
+            //get the revision number from the session and which is available in DB
+            Integer sessionRevisionNumber = (Integer) session.getAttribute("SBR_REVISION_NUMBER" + updateEnterpriseObject.getEUID());
+            Integer dbRevisionNumber = updateEnterpriseObject.getSBR().getRevisionNumber();
+            if (dbRevisionNumber.intValue() != sessionRevisionNumber.intValue()) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "'" + updateEnterpriseObject.getEUID() + "' "+bundle.getString("concurrent_mod_text"), "'" + updateEnterpriseObject.getEUID() + "' "+bundle.getString("concurrent_mod_text")));
+                return EditMainEuidHandler.CONCURRENT_MOD_ERROR;
+            }
+            
+            //Master controller service method used to remove the links for the selected minor objects.
+            EnterpriseObject updateEO = masterControllerService.removeLinksForChildren(getMinorObjectsunLinksByUser(),updateEnterpriseObject);
+             
+            session.setAttribute("editEuid", updateEO.getEUID());
+
+            masterControllerService.updateEnterpriseObject(updateEO);
+
+        } catch (Exception ex) {
+            if (ex instanceof ValidationException) {
+                mLogger.error(mLocalizer.x("EME061: Exception has occurred :{0}", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("EME062: Exception has occurred :{0}", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("EME063: Exception has occurred :{0}", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof ProcessingException) {
+                String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                if (exceptionMessage.indexOf("stack trace") != -1) {
+                    String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                    if (exceptionMessage.indexOf("message=") != -1) {
+                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
+                    }
+                    mLogger.error(mLocalizer.x("EME064: Service Layer Processing Exception occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                } else {
+                    mLogger.error(mLocalizer.x("EME065: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                }
+            }
+            return EditMainEuidHandler.SERVICE_LAYER_ERROR;
+        }
+        return EditMainEuidHandler.EDIT_EO_SUCCESS;
+    }
+
+    public ArrayList getMinorObjectsLinksByUser() {
+        return minorObjectsLinksByUser;
+    }
+
+    public void setMinorObjectsLinksByUser(ArrayList minorObjectsLinksByUser) {
+        this.minorObjectsLinksByUser = minorObjectsLinksByUser;
+    }
+
+    public ArrayList getMinorObjectsunLinksByUser() {
+        return minorObjectsunLinksByUser;
+    }
+
+    public void setMinorObjectsunLinksByUser(ArrayList minorObjectsunLinksByUser) {
+        this.minorObjectsunLinksByUser = minorObjectsunLinksByUser;
     }
     
 }

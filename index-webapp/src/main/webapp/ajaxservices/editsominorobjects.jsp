@@ -194,6 +194,17 @@ boolean isactivateSO = (null == activateSO?false:true);
 String removeSO = request.getParameter("removeSO");
 boolean isremoveSO = (null == removeSO?false:true);
 
+//Variables for Unlinking minor objects
+String isUnLinkingMinorString = request.getParameter("unlinkMinor");
+boolean isUnLinkingMinor = (null == isUnLinkingMinorString?false:true);
+
+Iterator messagesIter = null ;
+//success message
+String sucessMessage = new String();
+
+//get the EUID in session
+String editEuid = (String) session.getAttribute("editEuid");
+
 
 //HashMap for the root node fields
 HashMap rootNodesHashMap = (HashMap) editMainEuidHandler.getEditSingleEOHashMap().get("ENTERPRISE_OBJECT");
@@ -430,7 +441,11 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 		  for (int i =0 ; i <thisMinorObjectListCodes.size();i++)  { 
 			    String styleClass = ((i%2==0)?"even":"odd");
 			    HashMap minorObjectMap  = (HashMap) thisMinorObjectListCodes.get(i); 
-			  	FieldConfig[] fcArray = (FieldConfig[]) allNodeFieldConfigsMap.get(request.getParameter("MOT"));
+
+				//Get the links from the database 
+ 				HashMap minorObjectsSOLinks  = (minorObjectMap.get("keyTypeValue") != null && editMainEuidHandler.getLinkedSOMinorObjectFieldsFromDB().get(minorObjectMap.get("keyTypeValue").toString()) != null) ?  (HashMap)			editMainEuidHandler.getLinkedSOMinorObjectFieldsFromDB().get(minorObjectMap.get("keyTypeValue").toString()): new HashMap();
+			
+				FieldConfig[] fcArray = (FieldConfig[]) allNodeFieldConfigsMap.get(request.getParameter("MOT"));
 				%>
 	    					
 		    <% if ( i == 0)  { %>
@@ -445,6 +460,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
                                 <td class="tablehead"> &nbsp;</td>
 								<td class="tablehead"> &nbsp;</td>
                                 <td class="tablehead"> &nbsp;</td>
+                                <td class="tablehead"> &nbsp;</td>
  							 <%}%>
                              <% for(int k=0;k<fcArray.length;k++) {
 				                   if(fcArray[k].isRequired()) {
@@ -458,6 +474,23 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
                     <% } %>
 				<% if (!MasterControllerService.MINOR_OBJECT_REMOVE.equalsIgnoreCase((String)minorObjectMap.get(MasterControllerService.HASH_MAP_TYPE)))  { %>
 			              <tr class="<%=styleClass%>">
+ 							   <td valign="center" width="14px">
+							        <!-- Display the unlink icon when the minor object is linked and system object is active -->
+                                    <%if("active".equalsIgnoreCase(soStatus) && !MasterControllerService.MINOR_OBJECT_BRAND_NEW.equalsIgnoreCase((String)minorObjectMap.get(MasterControllerService.HASH_MAP_TYPE)) && minorObjectsSOLinks != null && !minorObjectsSOLinks.isEmpty()) {
+                                        String minorObjectLinkString = (String) minorObjectsSOLinks.get(fcArray[0].getFullFieldName());
+ 										String compareLinkString  = selectedSoSystemCode+ ":" +  selectedSoLID ;
+ 										 if( compareLinkString.equalsIgnoreCase(minorObjectLinkString)){
+									 %>
+									  <a href="javascript:void(0)"  
+									       title="<%=bundle.getString("unlink_text")%>"
+                                         onclick="javascript:showUnLinkMinorObjectDiv(event,'unLinkSoMinorDiv','<%=request.getParameter("MOT")%>','<%=selectedSoSystemCode%>','<%=selectedSoLID%>','<%=i%>','<%=minorObjectMap.get("keyTypeValue").toString()%>')"> 
+												 <nobr><img border="0" src='/<%=URI%>/images/unlink.PNG'></nobr> 
+									  </a>
+									  <%}%>
+								  <%} else {%>
+								    &nbsp;
+								  <%}%>
+							   </td>
 								      <% 
 									     String minorObjType = request.getParameter("MOT");
 									  %>	
@@ -516,14 +549,18 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								
  							   <!-- modified  on 23-09-08 for editMinorObjectType.length validation -->
                                <%if("active".equalsIgnoreCase(soStatus) || "New".equalsIgnoreCase(soStatus)) {%>
-							    <td valign="center" width="14px">							   
+							      <td valign="center" width="14px">							   
+                                    <%if(minorObjectsSOLinks.isEmpty()) {%> <!-- If linked dont show the delete button -->
 									  <a href="javascript:void(0)"  title="<%=deleteTitle%>"
 											 onclick='if(editMinorObjectType.length<1){
 											 ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOMinorDiv","")
 											 }else{showUnSavedAlert(event,editMinorObjectType,editObjectType)}'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
-									  </a>
- 							    </td>
+									   </a>
+ 							        <%} else {%>
+									   &nbsp;
+									<%}%>
+ 							      </td>
  							   <%}%>
 							  <% for(int k=0;k<fcArray.length;k++) {
 						            if(fcArray[k].isRequired()) {
@@ -630,6 +667,10 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 		  <% for (int i =0 ; i <  thisMinorObjectList.size();i++)  { 
 			    String styleClass = ((i%2==0)?"even":"odd");
 			    HashMap minorObjectMap  = (HashMap) thisMinorObjectList.get(i); 
+
+				//Get the links from the database 
+ 				HashMap minorObjectsSOLinks  = (minorObjectMap.get("keyTypeValue") != null && editMainEuidHandler.getLinkedSOMinorObjectFieldsFromDB().get(minorObjectMap.get("keyTypeValue").toString()) != null) ?  (HashMap)			editMainEuidHandler.getLinkedSOMinorObjectFieldsFromDB().get(minorObjectMap.get("keyTypeValue").toString()): new HashMap();
+
 				FieldConfig[] fcArray = (FieldConfig[]) allNodeFieldConfigsMap.get(request.getParameter("MOT"));
 		  %>
            <input type="hidden" name="minorindex" value="<%=i%>" />
@@ -640,10 +681,11 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
                           <table border="0" " cellpadding="0" style="width:100%;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 10px; text-align: left;">		  		  
                          <input type="hidden" name="minorindex" value="<%=i%>" />
                           <tr>	
-                                <td class="tablehead"> &nbsp;</td>						  
+                                <td class="tablehead"> &nbsp;</td>
+								<td class="tablehead"> &nbsp;</td>
                                 <td class="tablehead"> &nbsp;</td>
                                 <td class="tablehead"> &nbsp;</td>
-                             <% for(int k=0;k<fcArray.length;k++) {
+                         <% for(int k=0;k<fcArray.length;k++) {
 				                   if(fcArray[k].isRequired()) {
 				              %>
  			                    <td class="tablehead">
@@ -659,6 +701,23 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								<% 
 								String minorObjType = request.getParameter("MOT");
 								 %>	
+ 							   <td valign="center" width="14px">
+							        <!-- Display the unlink icon when the minor object is linked and system object is active -->
+                                    <%if("active".equalsIgnoreCase(soStatus) && !MasterControllerService.MINOR_OBJECT_BRAND_NEW.equalsIgnoreCase((String)minorObjectMap.get(MasterControllerService.HASH_MAP_TYPE)) && minorObjectsSOLinks != null && !minorObjectsSOLinks.isEmpty()) {
+                                        String minorObjectLinkString = (String) minorObjectsSOLinks.get(fcArray[0].getFullFieldName());
+ 										String compareLinkString  = selectedSoSystemCode+ ":" +  selectedSoLID ;
+ 										 if( compareLinkString.equalsIgnoreCase(minorObjectLinkString)){
+									 %>
+									  <a href="javascript:void(0)"  
+									       title="<%=bundle.getString("unlink_text")%>"
+                                         onclick="javascript:showUnLinkMinorObjectDiv(event,'unLinkSoMinorDiv','<%=request.getParameter("MOT")%>','<%=selectedSoSystemCode%>','<%=selectedSoLID%>','<%=i%>','<%=minorObjectMap.get("keyTypeValue").toString()%>')"> 
+												 <nobr><img border="0" src='/<%=URI%>/images/unlink.PNG'></nobr> 
+									  </a>
+									  <%}%>
+								  <%} else {%>
+								    &nbsp;
+								  <%}%>
+							   </td>
 								<!-- modified  on 15-10-08 for adding view button -->
 								<td valign="center" width="14px">
 									  <a href="javascript:void(0)" title="<%=bundle.getString("source_rec_view")%>" 
@@ -703,10 +762,14 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 
 							   <td valign="center" width="14px">							   
 							     <%if("active".equalsIgnoreCase(soStatus) || "New".equalsIgnoreCase(soStatus)) {%>
-					             	  <a href="javascript:void(0)"  title="<%=deleteTitle%>"
-											 onclick='javascript:if(editMinorObjectType.length<1){ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOMinorDiv","");} else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}'> 
-												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
-									  </a>
+                                      <%if(minorObjectsSOLinks.isEmpty()) {%> <!-- If linked dont show the delete button -->
+										  <a href="javascript:void(0)"  title="<%=deleteTitle%>"
+												 onclick='javascript:if(editMinorObjectType.length<1){ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOMinorDiv","");} else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}'> 
+													 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
+										  </a>
+									 <%} else {%>
+										&nbsp;
+									 <%}%>
 								 <%} else {%>
 								    &nbsp;
 								 <%}%>
@@ -958,6 +1021,10 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 			 for (int i =0 ; i <thisMinorObjectList.size();i++)  { 
 			    String styleClass = ((i%2==0)?"even":"odd");
 			    HashMap minorObjectMap  = (HashMap) thisMinorObjectList.get(i); 
+
+				//Get the links from the database 
+ 				HashMap minorObjectsSOLinks  = (minorObjectMap.get("keyTypeValue") != null && editMainEuidHandler.getLinkedSOMinorObjectFieldsFromDB().get(minorObjectMap.get("keyTypeValue").toString()) != null) ?  (HashMap)			editMainEuidHandler.getLinkedSOMinorObjectFieldsFromDB().get(minorObjectMap.get("keyTypeValue").toString()): new HashMap();
+
 				FieldConfig[] fcArray = (FieldConfig[]) allNodeFieldConfigsMap.get(request.getParameter("MOT"));
 		  %>
                          <input type="hidden" name="minorindex" value="<%=i%>" />
@@ -968,8 +1035,9 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
                           <table border="0" " cellpadding="0" style="width:100%;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 10px; text-align: left;">		  		  
                          <input type="hidden" name="minorindex" value="<%=i%>" />
                           <tr>			   
-                                <td class="tablehead"> &nbsp;</td>                                
+                                <td class="tablehead"> &nbsp;</td>
 								<td class="tablehead"> &nbsp;</td>
+                                <td class="tablehead"> &nbsp;</td>
                                 <td class="tablehead"> &nbsp;</td>
                              <% for(int k=0;k<fcArray.length;k++) {
 				                   if(fcArray[k].isRequired()) {
@@ -988,6 +1056,25 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								  <% 
 									  String minorObjType = request.getParameter("MOT");
 								  %>
+
+ 							   <td valign="center" width="14px">
+							        <!-- Display the unlink icon when the minor object is linked and system object is active -->
+                                    <%if("active".equalsIgnoreCase(soStatus) && !MasterControllerService.MINOR_OBJECT_BRAND_NEW.equalsIgnoreCase((String)minorObjectMap.get(MasterControllerService.HASH_MAP_TYPE)) && minorObjectsSOLinks != null && !minorObjectsSOLinks.isEmpty()) {
+                                        String minorObjectLinkString = (String) minorObjectsSOLinks.get(fcArray[0].getFullFieldName());
+ 										String compareLinkString  = selectedSoSystemCode+ ":" +  selectedSoLID ;
+ 										 if( compareLinkString.equalsIgnoreCase(minorObjectLinkString)){
+									 %>
+									  <a href="javascript:void(0)"  
+									       title="<%=bundle.getString("unlink_text")%>"
+                                         onclick="javascript:showUnLinkMinorObjectDiv(event,'unLinkSoMinorDiv','<%=request.getParameter("MOT")%>','<%=selectedSoSystemCode%>','<%=selectedSoLID%>','<%=i%>','<%=minorObjectMap.get("keyTypeValue").toString()%>')"> 
+												 <nobr><img border="0" src='/<%=URI%>/images/unlink.PNG'></nobr> 
+									  </a>
+									  <%}%>
+								  <%} else {%>
+								    &nbsp;
+								  <%}%>
+							   </td>
+
 								<!-- modified  on 15-10-08 for adding view button -->
 								<td valign="center" width="14px">
  									  <a href="javascript:void(0)" title="<%=bundle.getString("source_rec_view")%>" 
@@ -1032,10 +1119,14 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								</td>
 							   <td valign="center" width="14px">							   
 							     <%if("active".equalsIgnoreCase(soStatus) || "New".equalsIgnoreCase(soStatus)) {%>
-									  <a href="javascript:void(0)"  title="<%=deleteTitle%>"
+                                   <%if(minorObjectsSOLinks.isEmpty()) {%> <!-- If linked dont show the delete button -->
+ 									  <a href="javascript:void(0)"  title="<%=deleteTitle%>"
 											 onclick='javascript:if(editMinorObjectType.length<1){ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOMinorDiv","");} else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
 									  </a>
+									 <%} else {%>
+										&nbsp;
+									 <%}%>
 								 <%} else {%>
 								    &nbsp;
 								 <%}%>
@@ -1217,6 +1308,10 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 			 for (int i =0 ; i <thisMinorObjectList.size();i++)  { 
 			    String styleClass = ((i%2==0)?"even":"odd");
 			    HashMap minorObjectMap  = (HashMap) thisMinorObjectList.get(i); 
+
+				//Get the links from the database 
+ 				HashMap minorObjectsSOLinks  = (minorObjectMap.get("keyTypeValue") != null && editMainEuidHandler.getLinkedSOMinorObjectFieldsFromDB().get(minorObjectMap.get("keyTypeValue").toString()) != null) ?  (HashMap)			editMainEuidHandler.getLinkedSOMinorObjectFieldsFromDB().get(minorObjectMap.get("keyTypeValue").toString()): new HashMap();
+
 				FieldConfig[] fcArray = (FieldConfig[]) allNodeFieldConfigsMap.get(request.getParameter("MOT"));
 		  %>
             <input type="hidden" name="minorindex" value="<%=i%>" />
@@ -1227,8 +1322,9 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
                           <table border="0" " cellpadding="0" style="width:100%;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 10px; text-align: left;">		  		  
                          <input type="hidden" name="minorindex" value="<%=i%>" />
                           <tr>			   
-                                <td class="tablehead"> &nbsp;</td>                                
+                                <td class="tablehead"> &nbsp;</td>
 								<td class="tablehead"> &nbsp;</td>
+                                <td class="tablehead"> &nbsp;</td>
                                 <td class="tablehead"> &nbsp;</td>
                              <% for(int k=0;k<fcArray.length;k++) {
 				                   if(fcArray[k].isRequired()) {
@@ -1247,6 +1343,25 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								  <% 
 									  String minorObjType = request.getParameter("MOT");
 								  %>						  
+
+ 							   <td valign="center" width="14px">
+							        <!-- Display the unlink icon when the minor object is linked and system object is active -->
+                                    <%if("active".equalsIgnoreCase(soStatus) && !MasterControllerService.MINOR_OBJECT_BRAND_NEW.equalsIgnoreCase((String)minorObjectMap.get(MasterControllerService.HASH_MAP_TYPE)) && minorObjectsSOLinks != null && !minorObjectsSOLinks.isEmpty()) {
+                                        String minorObjectLinkString = (String) minorObjectsSOLinks.get(fcArray[0].getFullFieldName());
+ 										String compareLinkString  = selectedSoSystemCode+ ":" +  selectedSoLID ;
+ 										 if( compareLinkString.equalsIgnoreCase(minorObjectLinkString)){
+									 %>
+									  <a href="javascript:void(0)"  
+									       title="<%=bundle.getString("unlink_text")%>"
+                                         onclick="javascript:showUnLinkMinorObjectDiv(event,'unLinkSoMinorDiv','<%=request.getParameter("MOT")%>','<%=selectedSoSystemCode%>','<%=selectedSoLID%>','<%=i%>','<%=minorObjectMap.get("keyTypeValue").toString()%>')"> 
+												 <nobr><img border="0" src='/<%=URI%>/images/unlink.PNG'></nobr> 
+									  </a>
+									  <%}%>
+								  <%} else {%>
+								    &nbsp;
+								  <%}%>
+							   </td>
+				
 								<!-- modified  on 15-10-08 for adding view button -->
 								<td valign="center" width="14px">
  									  <a href="javascript:void(0)" title="<%=bundle.getString("source_rec_view")%>" 
@@ -1291,10 +1406,14 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								</td>
 							   <td valign="center" width="14px">							   
 							     <%if("active".equalsIgnoreCase(soStatus) || "New".equalsIgnoreCase(soStatus)) {%>
-									  <a href="javascript:void(0)" title="<%=deleteTitle%>"
+                                   <%if(minorObjectsSOLinks.isEmpty()) {%> <!-- If linked dont show the delete button -->
+ 									  <a href="javascript:void(0)" title="<%=deleteTitle%>"
 											 onclick='javascript:if(editMinorObjectType.length<1){ajaxMinorObjects("/<%=URI%>/ajaxservices/editsominorobjects.jsf?&deleteIndex=<%=i%>&MOT=<%=minorObjType%>&SOLID=<%=selectedSoLID%>&SOSYS=<%=selectedSoSystemCode%>","<%=minorObjType%><%=selectedSoSystemCode%>:<%=selectedSoLID%>SOMinorDiv","");} else{showUnSavedAlert(event,editMinorObjectType,editObjectType);}'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/delete.gif'></nobr> 
 									  </a>
+									 <%} else {%>
+										&nbsp;
+									 <%}%>
 								 <%} else {%>
 								    &nbsp;
 								 <%}%>
@@ -1737,7 +1856,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 	                 editMainEuidHandler.setUnLinkedFieldsHashMapByUser(unLinksHashMap);
 
 		             //Save the links selected
-	     	          String sucessMessage = editMainEuidHandler.saveUnLinksSelected();
+	     	           sucessMessage = editMainEuidHandler.saveUnLinksSelected();
  				   }
 				   //Fix ends for #136
 				   
@@ -1814,6 +1933,94 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 	  document.getElementById("successDiv").style.visibility="visible";
 	  document.getElementById("successDiv").style.display="block";
   </script>
+
+<%} else if (isUnLinkingMinor) {%>
+     <%  
+   		  ArrayList thisMinorObjectList = (ArrayList) thisEoSystemObjectMap.get("SOEDIT"+request.getParameter("MOT")+"ArrayList");
+  		  
+		  int intUnlinkIndex = new Integer(request.getParameter("unlinkIndex")).intValue();
+          
+		  HashMap minorObjectMap  = (HashMap) thisMinorObjectList.get(intUnlinkIndex);
+
+		  String keyType  = (String) minorObjectMap.get("keyTypeValue");
+          String[] keyTypeValues  = keyType.split(":");
+
+
+		  //minorObjectsunLinksByUser
+          editMainEuidHandler.getMinorObjectsunLinksByUser().add(minorObjectMap);
+
+
+		  //call the method to remove the links for the minor objects 
+          sucessMessage =  editMainEuidHandler.saveMinorObjectUnLinksSelected();
+
+		  messagesIter = FacesContext.getCurrentInstance().getMessages(); 
+
+
+	  %>
+
+	 <%	if ("CONCURRENT_MOD_ERROR".equalsIgnoreCase(sucessMessage))  { %>
+		 <div class="ajaxalert">
+	  <table>
+			<tr>
+				<td>
+ 				          <script>
+								window.location = "#top";
+								document.getElementById("successMessageDiv").innerHTML = 'EUID <%=editEuid%>  <%=bundle.getString("concurrent_mod_text")%>';
+								document.getElementById("successDiv").style.visibility="visible";
+								document.getElementById("successDiv").style.display="block";
+				          </script>
+ 			   <td>
+			<tr>
+		</table>
+		</div>
+
+ <%} else if ("success".equalsIgnoreCase(sucessMessage))  { 
+		 //SET ALL THE VALUES HERE
+          editMainEuidHandler.getMinorObjectsunLinksByUser().clear();//Changed SBR hashmap array 
+		 //SET ALL THE VALUES HERE
+          editMainEuidHandler.getChangedSBRArrayList().clear();//Changed SBR hashmap array 
+          editMainEuidHandler.getEditSOHashMapArrayList().clear();//Changed/New System objects hashmap array
+          editMainEuidHandler.getEditSOMinorObjectsHashMapArrayList().clear();// ChangedNew Minor Objects hashmap Array
+
+ 		 %>
+			   <!-- 
+			     // Close the Minor objects 
+			     // Close the Root node fields
+			     // Hide the Save button 
+			     // Reset the query string after the unlink operation is finished
+			   -->
+
+       	 <script>
+	         document.getElementById('unLinkSoMinorDiv').style.visibility='hidden';
+		     document.getElementById('unLinkSoMinorDiv').style.display='none';		 
+			 window.location = "#top";
+ 			 document.getElementById("successMessageDiv").innerHTML = " '<%=keyTypeValues[1]%>  <%=keyTypeValues[0]%>' <%=bundle.getString("unlink_field_success_text")%>";
+			 document.getElementById("successDiv").style.visibility="visible";
+			 document.getElementById("successDiv").style.display="block";
+	     </script>
+
+   <%   } else { //servicelayererror reset all the fields here for root node and minor objects%>
+		 <script>
+			 window.location = "#top";
+		 </script>
+		 <div class="ajaxalert">
+	  <table>
+			<tr>
+				<td>
+				      <ul>
+			            <% while (messagesIter.hasNext())   { %>
+				             <li>
+								<% FacesMessage facesMessage  = (FacesMessage)messagesIter.next(); %>
+ 								<%= facesMessage.getSummary() %>
+				             </li>
+						 <% } %>
+				      </ul>
+				<td>
+			<tr>
+		</table>
+		</div>
+     <%}%>
+ 
  <% } %>
 
  </body>

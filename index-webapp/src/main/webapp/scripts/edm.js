@@ -2453,3 +2453,70 @@ function showActivityTypes(activityType,outputDiv) {
 	document.getElementById(outputDiv).innerHTML = "";
 }
 //Fix for 6701596 end
+
+function showMinorObjectLinkDiv(thisEvent,divId,linkMinorObjectType,linkKeyType) {
+   document.getElementById('linkMinorObjectType').value = linkMinorObjectType;
+   document.getElementById('linkKeyType').value = linkKeyType;
+   //linkSoMinorObjDivSpan
+   var keyTypeValues = linkKeyType.split(":");
+   
+   document.getElementById('linkSoMinorObjDivSpan').innerHTML = keyTypeValues[1] + " " + keyTypeValues[0];
+   
+    var y;
+    var x;      
+	
+    if(document.getElementById(divId).style.visibility == 'hidden') {
+        document.getElementById(divId).style.visibility = "visible";
+        document.getElementById(divId).style.display = "block";
+        if (thisEvent.pageX || thisEvent.pageY) {
+            x = thisEvent.pageX;
+            y = thisEvent.pageY;
+        } else if (thisEvent.clientX || thisEvent.clientY) {
+        x = thisEvent.clientX + document.body.scrollLeft;
+        y = thisEvent.clientY + document.body.scrollTop;
+    }
+    
+    document.getElementById(divId).style.top = (y-150);
+    document.getElementById(divId).style.left = x;
+} else {
+   document.getElementById(divId).style.visibility = "hidden";
+   document.getElementById(divId).style.display = "none";
+}
+
+}
+
+//Function to display unlink minorobjects div
+
+function showUnLinkMinorObjectDiv(thisEvent,divId,linkMinorObjectType,linkSystemCode,linkLid,unlinkIndex,linkKeyType) {
+   document.getElementById('UNLINK_MINOR_OBJ_TYPE').value = linkMinorObjectType;
+   document.getElementById('UNLINK_SYSTEM_CODE').value = linkSystemCode;
+   document.getElementById('UNLINK_LID').value = linkLid;
+   document.getElementById('UNLINK_MINOR_LID').value = unlinkIndex;
+
+   //linkSoMinorObjDivSpan
+   var keyTypeValues = linkKeyType.split(":");
+   
+   document.getElementById('minorUnLinkedDisplayValueDiv').innerHTML = keyTypeValues[1] + " " + keyTypeValues[0];
+   
+    var y;
+    var x;      
+	
+    if(document.getElementById(divId).style.visibility == 'hidden') {
+        document.getElementById(divId).style.visibility = "visible";
+        document.getElementById(divId).style.display = "block";
+        if (thisEvent.pageX || thisEvent.pageY) {
+            x = thisEvent.pageX;
+            y = thisEvent.pageY;
+        } else if (thisEvent.clientX || thisEvent.clientY) {
+        x = thisEvent.clientX + document.body.scrollLeft;
+        y = thisEvent.clientY + document.body.scrollTop;
+    }
+    
+    document.getElementById(divId).style.top = (y-150);
+    document.getElementById(divId).style.left = x;
+} else {
+   document.getElementById(divId).style.visibility = "hidden";
+   document.getElementById(divId).style.display = "none";
+}
+
+}

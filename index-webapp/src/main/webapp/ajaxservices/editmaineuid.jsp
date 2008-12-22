@@ -1998,7 +1998,129 @@ if(session!=null){
                 </form>
             </div> 
             <!-- Fix for #136 ends-->
+
+             <div id="unLinkSoMinorDiv" class="confirmPreview" style="TOP:620px;LEFT:450px;height:100px;VISIBILITY:hidden;display:none;">
+               <form name="unlinkMinorForm" id="unlinkMinorForm" >
+				<input type="hidden" name="UNLINK_SYSTEM_CODE" id="UNLINK_SYSTEM_CODE" title="SOSYS">
+				<input type="hidden" name="UNLINK_LID" id="UNLINK_LID" title="SOLID">
+				<input type="hidden" name="UNLINK_MINOR_LID" id="UNLINK_MINOR_LID" title="unlinkIndex">
+				<input type="hidden" name="UNLINK_MINOR_OBJ_TYPE" id="UNLINK_MINOR_OBJ_TYPE" title="MOT">
+                 <table valign="center" style="padding-top:20px">
+				<tr>
+				<th title="<%=bundle.getString("move")%>"><%=bundle.getString("confirmation_window_heading")%></th>
+				<th align="right">
+				<a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('unLinkSoMinorDiv',event)"><h:outputText value="#{msgs.View_MergeTree_close_text}"/></a>
+
+                 <a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('unLinkSoMinorDiv',event)"><img src="images/close.gif" border="0" alt="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>"/></a>
+				</th>
+				</tr>
+                    <tr><td colspan="2">&nbsp;</td></tr>    
+                    <tr>
+                        <td>
+                             <nobr><b><h:outputText value="#{msgs.unlink_text}"/> '<span id="minorUnLinkedDisplayValueDiv" style="color:white;"></span>' ? </b></nobr> 
+                        </td>
+                    </tr>    
+                    <tr>
+                        <td align="right">
+                            <a  class="button"  href="javascript:void(0)" onclick="javascript:getFormValues('unlinkMinorForm');ajaxMinorObjects('/<%=URI%>/editsominorobjects.jsf?'+queryStr+'&rand=<%=rand%>&unlinkMinor=true','euidFinalErrorMessages','')">                          
+                                <span><h:outputText value="#{msgs.ok_text_button}"/></span>
+                            </a>
+                           <h:outputLink  styleClass="button" value="javascript:void(0)" onclick="javascript:showExtraDivs('unLinkSoMinorDiv',event)">
+                                <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
+                            </h:outputLink>
+                        </td>
+                    </tr>
+                </table> 
+
+
+                </form>
+            </div> 
   
+              <div id="linkSoMinorObjDiv"  class="confirmPreview" style="TOP:620px;LEFT:450px;height:100px;VISIBILITY:hidden;display:none;">
+				<form name="linkMinorObjForm"  id="linkMinorObjForm">
+				<input type="hidden" name="linkMinorObjectType" id="linkMinorObjectType" title="linkMinorObjectType">
+				<input type="hidden" name="linkKeyType" id="linkKeyType" title="linkKeyType">
+                <table border="0" cellpadding="0" cellspacing="0">
+				<tr>
+				<th title="<%=bundle.getString("move")%>"><%=bundle.getString("confirmation_window_heading")%></th>
+				<th align="right">
+				<a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('linkSoMinorObjDiv',event)"><h:outputText value="#{msgs.View_MergeTree_close_text}"/></a>
+                 <a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('linkSoMinorObjDiv',event)"><img src="images/close.gif" border="0" alt="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>"/></a>
+				 </td>
+				</th>
+				</tr>
+                    <tr><td colspan="2">&nbsp;</td></tr>    
+                    <tr>
+                        <td>
+                            <div id="linkedValueDiv" style="visibility:hidden"></div>
+                            <nobr><b><h:outputText value="#{msgs.link_to_text}"/> &nbsp;
+							<h:selectOneMenu id="systemCodeWithLidMinor" title="systemCodeWithLidMinor" value="#{EditMainEuidHandler.linkedSoWithLidByUser}">
+                                <f:selectItems  value="#{EditMainEuidHandler.eoSystemObjectCodesWithLids}" />
+                            </h:selectOneMenu>							
+                         </td>
+                         <td>
+							'<span id="linkSoMinorObjDivSpan" style="color:white;"></span>' </b>
+							</nobr> 
+                        </td>
+                    </tr>    
+					<tr><td colspan="2">&nbsp;</td></tr>    
+					<tr id="actions">
+					  <td colspan="2" align="center">
+					    <table align="center">
+							<tr>
+								<td align="right">
+									<a  class="button"  href="javascript:void(0)" onclick="javascript:getFormValues('linkMinorObjForm');ajaxMinorObjects('/<%=URI%>/editeuidminorobjects.jsf?'+queryStr+'&rand=<%=rand%>&linkingMinor=true','euidFinalErrorMessages','')">                          
+										<span><h:outputText value="#{msgs.ok_text_button}"/></span>
+									</a>
+								</td>
+								<td align="left">
+									<h:outputLink  styleClass="button" value="javascript:void(0)" onclick="javascript:showExtraDivs('linkSoMinorObjDiv',event)">
+										<span><h:outputText value="#{msgs.cancel_but_text}"/></span>
+									</h:outputLink>
+								</td>
+							</tr>
+						</table>
+					  </td>
+					</tr>
+                </table> 
+                </form>
+            </div> 
+         <!-- Added  on 07-10-2008 for all information popups -->
+  		 <div id="unsavedDiv" class="confirmPreview" style="top:400px;left:500px;visibility:hidden;display:none;">
+               <form id="successDiv">
+                <table border="0" cellpadding="0" cellspacing="0">
+				<tr>
+				<th align="center" title="<%=bundle.getString("move")%>"><%=bundle.getString("popup_information_text")%></th>
+				<th>
+				<a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('unsavedDiv',event);"><h:outputText value="#{msgs.View_MergeTree_close_text}"/></a>
+
+                 <a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('unsavedDiv',event);"><img src="images/close.gif" border="0" alt="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>"/></a>
+				</th>
+				</tr>
+                    <tr><td colspan="2">&nbsp;</td></tr>    
+					<tr>
+						<td colspan="2">
+							<b><div id="unsavedMessageDiv"></div></b>
+						</td>
+					</tr>
+					<tr><td colspan="2">&nbsp;</td></tr>    
+					<tr id="actions">
+					  <td colspan="2" align="center">
+					    <table align="center">
+							<tr>
+								<td>
+									<a  class="button"  href="javascript:void(0)" title="<h:outputText value="#{msgs.ok_text_button}" />" onclick="javascript:showExtraDivs('unsavedDiv',event);">                          
+										<span><h:outputText value="#{msgs.ok_text_button}"/></span>
+									</a>
+								</td>
+							</tr>
+						</table>
+					  </td>
+					</tr>
+                </table> 
+                </form>
+            </div> 
+
         </body>
     </html>
 
@@ -2010,6 +2132,8 @@ if(session!=null){
 	dd_unlock=new YAHOO.util.DD("unlockSBRDiv");
 	dd_unsavedDiv=new YAHOO.util.DD("unsavedDiv");	
 	dd_deactivateSODiv=new YAHOO.util.DD("deactivateSODiv");
+	dd_deactivateSODiv=new YAHOO.util.DD("linkSoMinorObjDiv");
+	dd_deactivateSODiv=new YAHOO.util.DD("unLinkSoMinorDiv");
 	</script>
     </f:view>
     <%} %>  <!-- Session check -->

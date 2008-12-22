@@ -625,6 +625,7 @@ public class MidmUtilityManager {
                 for (int k = 0; k < soMinorObjectsMapArrayList.size(); k++) {
                     HashMap minorObjectHashMapCodes = (HashMap) soMinorObjectsMapArrayListCodes.get(k);
                     minorObjectHashMapCodes.put(MasterControllerService.MINOR_OBJECT_TYPE, objectNodeConfig.getName()); // set MINOR_OBJECT_TYPE
+                    minorObjectHashMapCodes.put("keyTypeValue", getKeyTypeForMinorObjects(objectNodeConfig.getName(), minorObjectHashMapCodes)); // Fix for link minor objects - 6692028
                 }
                 enterpriseObjectHashMap.put("EOCODES" + objectNodeConfig.getName() + "ArrayList", soMinorObjectsMapArrayListCodes); // set SO addresses as arraylist here
                 
@@ -655,7 +656,7 @@ public class MidmUtilityManager {
                                  minorObjectHashMap.put(fieldConfig.getFullFieldName(), value);
                             }
                         }
-
+                        minorObjectHashMap.put("keyTypeValue", getKeyTypeForMinorObjects(objectNodeConfig.getName(), minorObjectHashMap)); //Fix for link minor objects - 6692028
                     }
                 }
 
@@ -982,11 +983,13 @@ public class MidmUtilityManager {
                         minorObjectHashMap.put(MasterControllerService.LID, systemObject.getLID()); // set LID here
                         minorObjectHashMap.put(MasterControllerService.SYSTEM_CODE, systemObject.getSystemCode()); // set System code here
                         minorObjectHashMap.put(MasterControllerService.MINOR_OBJECT_TYPE, objectNodeConfig.getName()); // set MINOR_OBJECT_TYPE
+                        minorObjectHashMap.put("keyTypeValue", getKeyTypeForMinorObjects(objectNodeConfig.getName(), minorObjectHashMap)); //Fix for link minor objects - 6692028
 
                         //Edit fields here  
                         minorObjectHashMapEdit.put(MasterControllerService.LID, systemObject.getLID()); // set LID here
                         minorObjectHashMapEdit.put(MasterControllerService.SYSTEM_CODE, systemObject.getSystemCode()); // set System code here
                         minorObjectHashMapEdit.put(MasterControllerService.MINOR_OBJECT_TYPE, objectNodeConfig.getName()); // set MINOR_OBJECT_TYPE
+                        minorObjectHashMapEdit.put("keyTypeValue", getKeyTypeForMinorObjects(objectNodeConfig.getName(), minorObjectHashMapEdit)); //Fix for link minor objects - 6692028
                     }
                     systemObjectHashMap.put("SO" + objectNodeConfig.getName() + "ArrayList", soMinorObjectsMapArrayList); // set SO minor objects list here
                     systemObjectHashMap.put("SO" + objectNodeConfig.getName() + "ArrayListSize", new Integer(soMinorObjectsMapArrayList.size()).intValue()); // set SO minor objects size here
@@ -1143,7 +1146,7 @@ public class MidmUtilityManager {
         SBR sbr = enterpriseObject.getSBR();
 
         //calculate the total number of keys in the hashmap
-        int totalKeysSize = minorObjectHashMap.keySet().size() - 3;
+        int totalKeysSize = minorObjectHashMap.keySet().size() - 4;
 
         int countOverwrites = 0;
 
@@ -1155,6 +1158,7 @@ public class MidmUtilityManager {
                 // setObjectNodeFieldValue(minorObject, (String) obj, (String) value);
                 if (!key.toString().equals(MasterControllerService.MINOR_OBJECT_ID) &&
                         !key.toString().equals(MasterControllerService.MINOR_OBJECT_TYPE) &&
+                        !key.toString().equals("keyTypeValue") &&
                         !key.toString().equals(MasterControllerService.HASH_MAP_TYPE)) {
                      key = key.substring(key.indexOf(".")+1, key.length());
                      SBROverWrite overWriteObj = QwsUtil.getOverWrite(sbr, minorObjectNode, key);

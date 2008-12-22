@@ -245,6 +245,13 @@ Operations operations = new Operations();
 //Variables for adding new source fields
 String saveEditedValues= request.getParameter("editThisID");
 
+HashMap thisEoSystemObjectMap = new HashMap();
+ArrayList eoSystemObjects = editMainEuidHandler.getEoSystemObjects();
+
+//isLinking Minor Objects  fields
+String isLinkingMinorString = request.getParameter("linkingMinor");
+boolean isLinkingMinorObjects = (null == isLinkingMinorString?false:true);
+
 boolean isSaveEditedValues = false;
 if (saveEditedValues != null && !("-1".equalsIgnoreCase(saveEditedValues)))   {
 	isSaveEditedValues = true;
@@ -690,6 +697,11 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 				} else {
 					 checkOverWrites = true;
 				}
+                //Fix for 6692028 Start
+  				HashMap soLinkMap  = (minorObjectMap.get("keyTypeValue") != null && editMainEuidHandler.getLinkedSOMinorObjectFieldsFromDB().get(minorObjectMap.get("keyTypeValue").toString()) != null) ?  (HashMap) 
+				editMainEuidHandler.getLinkedSOMinorObjectFieldsFromDB().get(minorObjectMap.get("keyTypeValue").toString()): new HashMap();
+				//Fix for 6692028 End
+
   			  	FieldConfig[] fcArray = (FieldConfig[]) allNodeFieldConfigsMap.get(request.getParameter("MOT"));
 				%>
 	    					
@@ -699,6 +711,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
                           <table border="0" " cellpadding="0" style="width:100%;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 10px; text-align: left;">		  		  
                          <input type="hidden" name="minorindex" value="<%=i%>" />
                           <tr>			   
+                                <td class="tablehead"> &nbsp;</td>
                                  <td class="tablehead"> &nbsp;</td>
                                  <td class="tablehead"> &nbsp;</td>
 								 <td class="tablehead"> &nbsp;</td>
@@ -717,6 +730,17 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								  <% 
 									  String minorObjType = request.getParameter("MOT");
 								  %>
+							   <td valign="center" width="14px"> 			    
+								<% if (!MasterControllerService.MINOR_OBJECT_BRAND_NEW.equalsIgnoreCase((String)minorObjectMap.get(MasterControllerService.HASH_MAP_TYPE)) && !checkOverWrites && soLinkMap.isEmpty()){ %>								 		  
+								
+								<a href="javascript:void(0)" 
+								     title="<%=bundle.getString("link_text")%>"
+									 onclick="javascript:showMinorObjectLinkDiv(event,'linkSoMinorObjDiv','<%=request.getParameter("MOT")%>','<%=minorObjectMap.get("keyTypeValue").toString()%>')"><nobr><img border="0" src='/<%=URI%>/images/link.PNG'></nobr></a>
+                                <% }  else {%>
+								   &nbsp;
+								<%}%>
+                              </td>
+
 								<!-- modified  on 15-10-08 for adding view button -->
 								<td valign="center" width="14px">
  									  <a href="javascript:void(0)" title="<%=bundle.getString("source_rec_view")%>" 
@@ -731,6 +755,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								</td>								  
 			                    <td valign="center" width="14px">
 									<!-- modified  on 23-09-08 for editMinorObjectType.length validation -->
+								   <% if (soLinkMap.isEmpty()){ %>								 		  
 									  <a href="javascript:void(0)" title="<%=editTitle%>" 
 											 onclick='javascript:
 											 if(editMinorObjectType.length>0 &&  (editMinorObjectType!="<%=minorObjType%>" || newSoInEdit.length>0 || systemcodeInEdit.length>0 || lidInEdit.lenght>0))
@@ -744,8 +769,11 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 											 }'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
+									  <%} else {%>
+									     &nbsp;
+									  <%}%>
  								</td>
-							   <td valign="center" width="14px">							   
+							   <td valign="center" width="14px">
 								<% if (checkOverWrites){ %>
 								 								   
 									  <a href="javascript:void(0)" title="<%=deleteTitle%>"
@@ -868,6 +896,11 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 					 checkOverWrites = true;
 				}
  
+                 //Fix for 6692028 Start
+  				HashMap soLinkMap  = (minorObjectMap.get("keyTypeValue") != null && editMainEuidHandler.getLinkedSOMinorObjectFieldsFromDB().get(minorObjectMap.get("keyTypeValue").toString()) != null) ?  (HashMap) 
+				editMainEuidHandler.getLinkedSOMinorObjectFieldsFromDB().get(minorObjectMap.get("keyTypeValue").toString()): new HashMap();
+                //Fix for 6692028 End
+
 		  %>
            <input type="hidden" name="minorindex" value="<%=i%>" />
 	    					
@@ -877,6 +910,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
                           <table border="0" " cellpadding="0" style="width:100%;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 10px; text-align: left;">		  		  
                          <input type="hidden" name="minorindex" value="<%=i%>" />
                           <tr>			   
+                                 <td class="tablehead"> &nbsp;</td> 
                                  <td class="tablehead"> &nbsp;</td> 
 								 <td class="tablehead"> &nbsp;</td>
                                  <td class="tablehead"> &nbsp;</td>
@@ -896,6 +930,17 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								  <% 
 									  String minorObjType = request.getParameter("MOT");
 								  %>						  
+
+							   <td valign="center" width="14px"> 			    
+								<% if (!MasterControllerService.MINOR_OBJECT_BRAND_NEW.equalsIgnoreCase((String)minorObjectMap.get(MasterControllerService.HASH_MAP_TYPE)) && !checkOverWrites && soLinkMap.isEmpty()){ %>								 		  
+								
+								<a href="javascript:void(0)" 
+								     title="<%=bundle.getString("link_text")%>"
+									 onclick="javascript:showMinorObjectLinkDiv(event,'linkSoMinorObjDiv','<%=request.getParameter("MOT")%>','<%=minorObjectMap.get("keyTypeValue").toString()%>')"><nobr><img border="0" src='/<%=URI%>/images/link.PNG'></nobr></a>
+                                <% }  else {%>
+								   &nbsp;
+								<%}%>
+                              </td>
 								<!-- modified  on 15-10-08 for adding view button -->
 								<td valign="center" width="14px">
  									  <a href="javascript:void(0)" title="<%=bundle.getString("source_rec_view")%>" 
@@ -910,6 +955,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								</td>
 			                    <td valign="center" width="14px">
 								<!-- modified  on 23-09-08 for editMinorObjectType.length validation -->
+								   <% if (soLinkMap.isEmpty()){ %>								 		  
 									  <a href="javascript:void(0)" title="<%=editTitle%>" 
 											 onclick='javascript:if(editMinorObjectType.length>0 &&  (editMinorObjectType!="<%=minorObjType%>" ||  newSoInEdit.length>0 || systemcodeInEdit.length>0 || lidInEdit.lenght>0))
 											 {
@@ -922,6 +968,9 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 											 }'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
+                                    <%} else {%>
+									   &nbsp;
+									<%}%>
 								</td>
 
   							   <td valign="center" width="14px">							   
@@ -1177,6 +1226,11 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 					 checkOverWrites = true;
 				}
  
+                  //Fix for 6692028 Start
+  				HashMap soLinkMap  = (minorObjectMap.get("keyTypeValue") != null && editMainEuidHandler.getLinkedSOMinorObjectFieldsFromDB().get(minorObjectMap.get("keyTypeValue").toString()) != null) ?  (HashMap) 
+				editMainEuidHandler.getLinkedSOMinorObjectFieldsFromDB().get(minorObjectMap.get("keyTypeValue").toString()): new HashMap();
+                //Fix for 6692028 End
+
 		  %>
                          <input type="hidden" name="minorindex" value="<%=i%>" />
 	    					
@@ -1186,10 +1240,11 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
                           <table border="0" " cellpadding="0" style="width:100%;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 10px; text-align: left;">		  		  
                          <input type="hidden" name="minorindex" value="<%=i%>" />
                           <tr>			   
-                                <td class="tablehead"> &nbsp;</td>                
-								<td class="tablehead"> &nbsp;</td>
-                                <td class="tablehead"> &nbsp;</td>
-                             <% for(int k=0;k<fcArray.length;k++) {
+                                 <td class="tablehead"> &nbsp;</td>
+                                 <td class="tablehead"> &nbsp;</td>
+                                 <td class="tablehead"> &nbsp;</td>
+								 <td class="tablehead"> &nbsp;</td>
+                         <% for(int k=0;k<fcArray.length;k++) {
 				                   if(fcArray[k].isRequired()) {
 				              %>
  			                    <td class="tablehead">
@@ -1206,6 +1261,17 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								  <% 
 									  String minorObjType = request.getParameter("MOT");
 								  %>
+							   <td valign="center" width="14px"> 			    
+								<% if (!MasterControllerService.MINOR_OBJECT_BRAND_NEW.equalsIgnoreCase((String)minorObjectMap.get(MasterControllerService.HASH_MAP_TYPE)) && !checkOverWrites && soLinkMap.isEmpty()){ %>								 		  
+								
+								<a href="javascript:void(0)" 
+								     title="<%=bundle.getString("link_text")%>"
+									 onclick="javascript:showMinorObjectLinkDiv(event,'linkSoMinorObjDiv','<%=request.getParameter("MOT")%>','<%=minorObjectMap.get("keyTypeValue").toString()%>')"><nobr><img border="0" src='/<%=URI%>/images/link.PNG'></nobr></a>
+                                <% }  else {%>
+								   &nbsp;
+								<%}%>
+                              </td>
+
 								<!-- modified  on 15-10-08 for adding view button -->
 								<td valign="center" width="14px">
  									  <a href="javascript:void(0)" title="<%=bundle.getString("source_rec_view")%>" 
@@ -1221,6 +1287,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								  
 			                    <td valign="center"n width="14px">
 								<!-- modified  on 23-09-08 for editMinorObjectType.length validation -->
+								   <% if (soLinkMap.isEmpty()){ %>								 		  
 									  <a href="javascript:void(0)" title="<%=editTitle%>" 
 											 onclick='javascript:if(editMinorObjectType.length>0 &&  (editMinorObjectType!="<%=minorObjType%>" || newSoInEdit.length>0 || systemcodeInEdit.length>0 || lidInEdit.lenght>0))
 											 {
@@ -1233,6 +1300,9 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 											 }'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
+									<%} else {%>
+									     &nbsp;
+									<%}%>
  								</td>
 							   
 							   <td valign="center" width="14px">							   
@@ -1424,6 +1494,12 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 				} else {
 					 checkOverWrites = true;
 				}
+
+                  //Fix for 6692028 Start
+  				HashMap soLinkMap  = (minorObjectMap.get("keyTypeValue") != null && editMainEuidHandler.getLinkedSOMinorObjectFieldsFromDB().get(minorObjectMap.get("keyTypeValue").toString()) != null) ?  (HashMap) 
+				editMainEuidHandler.getLinkedSOMinorObjectFieldsFromDB().get(minorObjectMap.get("keyTypeValue").toString()): new HashMap();
+                //Fix for 6692028 End
+
  
 		  %>
             <input type="hidden" name="minorindex" value="<%=i%>" />
@@ -1434,9 +1510,10 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
                           <table border="0" " cellpadding="0" style="width:100%;font-family: Arial, Helvetica, sans-serif; color: #6B6D6B; font-size: 10px; text-align: left;">		  		  
                          <input type="hidden" name="minorindex" value="<%=i%>" />
                           <tr>			   
-								<td class="tablehead"> &nbsp;</td>
                                 <td class="tablehead"> &nbsp;</td>
                                  <td class="tablehead"> &nbsp;</td>
+                                 <td class="tablehead"> &nbsp;</td>
+								 <td class="tablehead"> &nbsp;</td>
                              <% for(int k=0;k<fcArray.length;k++) {
 				                   if(fcArray[k].isRequired()) {
 				              %>
@@ -1454,6 +1531,18 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								  <% 
 									  String minorObjType = request.getParameter("MOT");
 								  %>
+
+							   <td valign="center" width="14px"> 			    
+								<% if (!MasterControllerService.MINOR_OBJECT_BRAND_NEW.equalsIgnoreCase((String)minorObjectMap.get(MasterControllerService.HASH_MAP_TYPE)) && !checkOverWrites && soLinkMap.isEmpty()){ %>								 		  
+								
+								<a href="javascript:void(0)" 
+								     title="<%=bundle.getString("link_text")%>"
+									 onclick="javascript:showMinorObjectLinkDiv(event,'linkSoMinorObjDiv','<%=request.getParameter("MOT")%>','<%=minorObjectMap.get("keyTypeValue").toString()%>')"><nobr><img border="0" src='/<%=URI%>/images/link.PNG'></nobr></a>
+                                <% }  else {%>
+								   &nbsp;
+								<%}%>
+                              </td>
+
 								<!-- modified  on 15-10-08 for adding view button -->
 								<td valign="center" width="14px">
  									  <a href="javascript:void(0)" title="<%=bundle.getString("source_rec_view")%>" 
@@ -1468,6 +1557,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 								</td>							  
 		                      <td valign="center" width="14px">
  								<!-- modified  on 23-09-08 for editMinorObjectType.length validation -->
+                                  <% if (soLinkMap.isEmpty()){ %>								 		  
 									  <a href="javascript:void(0)" title="<%=editTitle%>"
 											 onclick='javascript:if(editMinorObjectType.length>0 &&  (editMinorObjectType!="<%=minorObjType%>" ||  newSoInEdit.length>0 || systemcodeInEdit.length>0 || lidInEdit.lenght>0))
 											 {
@@ -1480,7 +1570,9 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 											 }'> 
 												 <nobr><img border="0" src='/<%=URI%>/images/edit.gif'></nobr> 
 									  </a>
-
+                                   <%} else {%>
+								      &nbsp;
+								   <%}%>
 								</td>
 							   <td valign="center" width="14px">							   
 								<% if (checkOverWrites){ %>
@@ -2356,6 +2448,146 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 
 
   <%}%>
+<% } else if (isLinkingMinorObjects){ %> 	<!-- Linking the SBR minor object fields to its system object minor objects-->
+     
+      <% 
+		      String systemCodeWithLid = request.getParameter("systemCodeWithLidMinor"); 
+              String[] split  = systemCodeWithLid.split(":");
+			  String systemCode = sourceHandler.getSystemCodeDescription(split[0]);
+			  String sys = split[0];
+              String lid = split[1];
+              for(int so = 0; so<eoSystemObjects.size();so++) {
+              	HashMap systemObjectsMap = (HashMap) eoSystemObjects.get(so);
+				//SYSTEM_OBJECT
+				HashMap soHashMap  = (HashMap) systemObjectsMap.get("SYSTEM_OBJECT");
+ 	
+                if(((String)soHashMap.get("LID")).equalsIgnoreCase(lid) && ((String) soHashMap.get("SYSTEM_CODE")).equalsIgnoreCase(sys)) {
+                      thisEoSystemObjectMap =  systemObjectsMap;
+              	}
+              }
+ 
+		     ArrayList thisMinorObjectList = (ArrayList) thisEoSystemObjectMap.get("SOEDIT"+request.getParameter("linkMinorObjectType")+"ArrayList");
+  
+               
+			   //link Key Type like Address:Home,Address:Vacation...ect
+			   String linkKeyType = request.getParameter("linkKeyType");
+
+			   //link Minor Object Type Address, Phone..etc
+               String linkMinorObjectType = request.getParameter("linkMinorObjectType");
+
+              for(int i = 0; i<thisMinorObjectList.size();i++) {
+              	  HashMap minorMap = (HashMap) thisMinorObjectList.get(i);
+                  if(minorMap.get("keyTypeValue").toString().equalsIgnoreCase(linkKeyType) ) {
+                     thisMinorObject =  minorMap;
+              	  }
+              }
+
+			   %>
+           
+		   <%if(thisMinorObject.keySet().size() > 0 ) {%> <!-- if the key type is found in the system objects -->
+
+		   <%
+               thisMinorObject.put("SYS_WITH_LID",systemCodeWithLid);
+			   Object[] keySet  = thisMinorObject.keySet().toArray();
+               
+			   HashMap linkHasMap  = new HashMap();
+
+			   for(int i = 0; i<keySet.length;i++) {
+                   String key = (String) keySet[i];
+				   if(!key.equalsIgnoreCase("SYSTEM_CODE") && !key.equalsIgnoreCase("LID") && !key.equalsIgnoreCase("keyTypeValue")) {
+                      linkHasMap.put(key,thisMinorObject.get(key));
+				   }
+			   }
+  
+ 			   editMainEuidHandler.getMinorObjectsLinksByUser().add(linkHasMap);
+			  
+			  //Save the links selected
+		      sucessMessage  = editMainEuidHandler.saveMinorObjectsLinksSelected();
+		      messagesIter = FacesContext.getCurrentInstance().getMessages(); 
+
+   	  
+		      //CONCURRENT_MOD_ERROR
+        %> 
+
+
+		 <%	if ("CONCURRENT_MOD_ERROR".equalsIgnoreCase(sucessMessage))  { %>
+		 <div class="ajaxalert">
+	  <table>
+			<tr>
+				<td>
+ 				          <script>
+								window.location = "#top";
+								document.getElementById("successMessageDiv").innerHTML = 'EUID <%=editEuid%>  <%=bundle.getString("concurrent_mod_text")%>';
+								document.getElementById("successDiv").style.visibility="visible";
+								document.getElementById("successDiv").style.display="block";
+				          </script>
+ 			   <td>
+			<tr>
+		</table>
+		</div>
+ 	 <%}else if("success".equalsIgnoreCase(sucessMessage)) {
+       //Clear all the MinorObjects Links By User hashmap
+	   editMainEuidHandler.getMinorObjectsLinksByUser().clear();	
+
+		 //SET ALL THE VALUES HERE
+          editMainEuidHandler.getChangedSBRArrayList().clear();//Changed SBR hashmap array 
+          editMainEuidHandler.getEditSOHashMapArrayList().clear();//Changed/New System objects hashmap array
+          editMainEuidHandler.getEditSOMinorObjectsHashMapArrayList().clear();// ChangedNew Minor Objects hashmap Array
+
+		  String keyType = request.getParameter("linkKeyType");
+	      String[] keyTypeValues = keyType.split(":");
+
+
+    %> 			  
+     	 <script>
+	         document.getElementById('linkSoMinorObjDiv').style.visibility='hidden';
+		     document.getElementById('linkSoMinorObjDiv').style.display='none';		 
+			 window.location = "#top";
+ 			 document.getElementById("successMessageDiv").innerHTML = "'<%=keyTypeValues[1]%> <%=keyTypeValues[0]%>'  <%=bundle.getString("link_field_success_text")%> <%=bundle.getString("to_text")%> <%=systemCode%>/<%=lid%>";
+			 document.getElementById("successDiv").style.visibility="visible";
+			 document.getElementById("successDiv").style.display="block";
+	     </script>
+
+          <% //reset all the fields here for root node and minor objects  
+		  } else { //servicelayererror			    %>
+		 <script>
+			 window.location = "#top";
+		 </script>
+		 <div class="ajaxalert">
+	  <table>
+			<tr>
+				<td>
+				      <ul>
+			            <% while (messagesIter.hasNext())   { %>
+				             <li>
+								<% FacesMessage facesMessage  = (FacesMessage)messagesIter.next(); %>
+ 								<%= facesMessage.getSummary() %>
+				             </li>
+						 <% } %>
+				      </ul>
+				<td>
+			<tr>
+		</table>
+		</div>
+     <%}%>
+<%} else {
+		  String keyType = request.getParameter("linkKeyType");
+	      String[] keyTypeValues = keyType.split(":");
+			 
+			 %><!-- if the key type is NOT found in the system objects -->
+   <table><tr><td>
+	 <script>
+	      document.getElementById('linkSoMinorObjDiv').style.visibility='hidden';
+		  document.getElementById('linkSoMinorObjDiv').style.display='none';		 
+
+		  document.getElementById('unsavedDiv').style.visibility='visible';
+		  document.getElementById('unsavedDiv').style.display='block';		 
+ 		  window.location = "#top";
+		  //unsavedMessageDiv
+		  document.getElementById('unsavedMessageDiv').innerHTML = " '<%=keyTypeValues[1]%> <%=keyTypeValues[0]%>' <%=bundle.getString("minor_not_found")%> <%=systemCode%>/<%=lid%>";
+  	  </script>
+  </td></tr></table>
+<%}%>
 
 <% } else if (isCacncelEOEdit){ %> 	<!-- isCancel Edit EO operation-->
  <% 
