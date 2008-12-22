@@ -50,7 +50,7 @@
                         <tr>
                             <td class="label" >
                                 <table border="0" >
-                                    <tbody id="byrel_add_predefinedAttributes"></tbody>
+                                    <tbody id="relationship_add_predefinedAttributes"></tbody>
                                 </table>
                             </td>
                         </tr>

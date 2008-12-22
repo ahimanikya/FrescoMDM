@@ -1036,10 +1036,10 @@ function addTargeSearchResults_Display(currentPage, itemsPerPage) {
 
 function ByRelAddRelationship(){
     
-    var startDateField = document.getElementById('add_predefined_startDate');
-    var endDateField = document.getElementById('add_predefined_endDate');
-    var purgeDateField = document.getElementById('add_predefined_purgeDate');
-    var startDate,endDate,purgeDate;
+   var startDateField = document.getElementById('add_predefined_startDate');
+   var endDateField = document.getElementById('add_predefined_endDate');
+   var purgeDateField = document.getElementById('add_predefined_purgeDate');
+   var startDate,endDate,purgeDate;
     
    var SourceDomain = currentSelectedSourceDomain;
    var TargetDomain = currentSelectedTargetDomain;
@@ -1053,100 +1053,100 @@ function ByRelAddRelationship(){
    var s=0;
    var t=0;
     
-    for(cc =0; cc < relationshipDef.extendedAttributes.length; cc++) {
-      var attributeName = relationshipDef.extendedAttributes[cc].name;
-      var attributeId = document.getElementById("add_custom_" + relationshipDef.extendedAttributes[cc].name);
-      var attributeValue =  document.getElementById("add_custom_" + relationshipDef.extendedAttributes[cc].name).value;
-      var attributeType = relationshipDef.extendedAttributes[cc].dataType;
-        if(getBoolean(relationshipDef.extendedAttributes[cc].isRequired)) {
-          if( isEmpty (attributeValue) ) {
-              alert(getMessageForI18N("enter_ValueFor") + " " + attributeName +getMessageForI18N("period") );
-              attributeId.focus();
-              return ;
-          }
-      }
-      if( ! isValidCustomAttribute( attributeType, attributeValue) ) {
-          alert(attributeValue + " " +getMessageForI18N("isnotavalidvaluefor")+ " " +attributeName + " " +getMessageForI18N("attribute")+ " " +getMessageForI18N("attributeTypeFor")+ " " +attributeValue + " " +getMessageForI18N("is")+ " " +"'"+attributeType+"'");
-          attributeId.focus();
-          return;
-      }
-      
-      relationshipCustomAttributes.push( {attributeName : attributeValue} );
-     }
-     
-    if(startDateField != null)
-     {
-           startDate =  document.getElementById('add_predefined_startDate').value;
-           if(startDateRequireField == true){
-              if( isEmpty (startDate) ) {
-              alert(getMessageForI18N("enterValueFor_effectiveFrom"));
-              startDateField.focus();
-              return ;
-            } 
-          }     
-     }
-     if(endDateField != null)
-     {
-           endDate =  document.getElementById('add_predefined_endDate').value;
-           if(endDateRequireField == true){
-             if( isEmpty (endDate) ) {
-              alert(getMessageForI18N("enterValueFor_effectiveTo"));
-              endDateField.focus();
-              return ;
-           }  
-          }     
-     }
-     if(purgeDateField != null)
-     {
-           purgeDate =  document.getElementById('add_predefined_purgeDate').value;
-           if(purgeDateRequireField == true){
-              if( isEmpty (purgeDate) ) {
-              alert(getMessageForI18N("enterValueFor_purgeDate"));
-              purgeDateField.focus();
-              return ;
-           } 
-          }    
-     }
+   for(cc =0; cc < relationshipDef.extendedAttributes.length; cc++) {
+    var attributeName = relationshipDef.extendedAttributes[cc].name;
+    var attributeId = document.getElementById("add_custom_" + relationshipDef.extendedAttributes[cc].name);
+    var attributeValue =  document.getElementById("add_custom_" + relationshipDef.extendedAttributes[cc].name).value;
+    var attributeType = relationshipDef.extendedAttributes[cc].dataType;
+      if(getBoolean(relationshipDef.extendedAttributes[cc].isRequired)) {
+        if( isEmpty (attributeValue) ) {
+            alert(getMessageForI18N("enter_ValueFor") + " " + attributeName +getMessageForI18N("period") );
+            attributeId.focus();
+            return ;
+        }
+    }
+    if( ! isValidCustomAttribute( attributeType, attributeValue) ) {
+        alert(attributeValue + " " +getMessageForI18N("isnotavalidvaluefor")+ " " +attributeName + " " +getMessageForI18N("attribute")+ " " +getMessageForI18N("attributeTypeFor")+ " " +attributeValue + " " +getMessageForI18N("is")+ " " +"'"+attributeType+"'");
+        attributeId.focus();
+        return;
+    }
+
+    relationshipCustomAttributes.push( {attributeName : attributeValue} );
+   }
+
+   if(startDateField != null)
+   {
+         startDate =  document.getElementById('add_predefined_startDate').value;
+         if(startDateRequireField == true){
+            if( isEmpty (startDate) ) {
+            alert(getMessageForI18N("enterValueFor_effectiveFrom"));
+            startDateField.focus();
+            return ;
+          } 
+        }     
+   }
+   if(endDateField != null)
+   {
+         endDate =  document.getElementById('add_predefined_endDate').value;
+         if(endDateRequireField == true){
+           if( isEmpty (endDate) ) {
+            alert(getMessageForI18N("enterValueFor_effectiveTo"));
+            endDateField.focus();
+            return ;
+         }  
+        }     
+   }
+   if(purgeDateField != null)
+   {
+         purgeDate =  document.getElementById('add_predefined_purgeDate').value;
+         if(purgeDateRequireField == true){
+            if( isEmpty (purgeDate) ) {
+            alert(getMessageForI18N("enterValueFor_purgeDate"));
+            purgeDateField.focus();
+            return ;
+         } 
+        }    
+   }
    var sourceCheckBox = false; 
    var targerCheckBox = false;
    var sourceCheckedArray = document.getElementsByName("addSourceCheckBox"); 
    var targetCheckedArray = document.getElementsByName("addTargetCheckBox");
    
-    for(i=0;i<sourceCheckedArray.length; i++) {
-        if(sourceCheckedArray[i].checked) {
-            s++;
-            sourceCheckBox = true;
-            var sourceRecordEUID = sourceCheckedArray[i].value;
-            for(j=0;j<targetCheckedArray.length; j++) {
-              if(targetCheckedArray[j].checked) {
-                  t++;
-                targerCheckBox = true;
-                var targetRecordEUID = targetCheckedArray[j].value;
-                var newRelationshipRecord = {};
-                newRelationshipRecord.name = RelationshipDefName;
-                newRelationshipRecord.sourceDomain = SourceDomain;
-                newRelationshipRecord.sourceEUID = sourceRecordEUID;
-                newRelationshipRecord.targetDomain = TargetDomain;
-                newRelationshipRecord.targetEUID = targetRecordEUID;
-                
-                newRelationshipRecord.startDate = startDate;
-                newRelationshipRecord.endDate = endDate;
-                newRelationshipRecord.purgeDate = purgeDate;
-                newRelationshipRecord.attributes = relationshipCustomAttributes ; 
-                RelationshipHandler.addRelationship(newRelationshipRecord,addRelationshipCB);
-              }    
-            }     
-        }       
+   for(i=0;i<sourceCheckedArray.length; i++) {
+      if(sourceCheckedArray[i].checked) {
+          s++;
+          sourceCheckBox = true;
+          var sourceRecordEUID = sourceCheckedArray[i].value;
+          for(j=0;j<targetCheckedArray.length; j++) {
+            if(targetCheckedArray[j].checked) {
+                t++;
+              targerCheckBox = true;
+              var targetRecordEUID = targetCheckedArray[j].value;
+              var newRelationshipRecord = {};
+              newRelationshipRecord.name = RelationshipDefName;
+              newRelationshipRecord.sourceDomain = SourceDomain;
+              newRelationshipRecord.sourceEUID = sourceRecordEUID;
+              newRelationshipRecord.targetDomain = TargetDomain;
+              newRelationshipRecord.targetEUID = targetRecordEUID;
+
+              newRelationshipRecord.startDate = startDate;
+              newRelationshipRecord.endDate = endDate;
+              newRelationshipRecord.purgeDate = purgeDate;
+              newRelationshipRecord.attributes = relationshipCustomAttributes ; 
+              RelationshipHandler.addRelationship(newRelationshipRecord,addRelationshipCB);
+            }    
+          }     
+      }       
    } 
-    if(s == 0) {
+   if(s == 0) {
        alert(getMessageForI18N("select_atleast_one_source_record"));    
-    }else if(t == 0 ){
+   }else if(t == 0 ){
        alert(getMessageForI18N("select_atleast_one_destination_record"));    
-    }        
+   }        
 }
 function addRelationshipCB(data) {
-  alert("New relationship record added, id is : " + data);
-    hideByRelAddDialog();
+   alert("New relationship record added, id is : " + data);
+   hideByRelAddDialog();
     
     // refresh the relationship listing 
     searchRelationships();

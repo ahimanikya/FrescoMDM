@@ -151,7 +151,6 @@ function hideByRecordAddDialog () {
 }
 function initializeByRecordAddDialog() {
     isByRecordAddDialogLoaded = true;
-    alert("By record add dialog Loaded...");
     byRecord_prepareAdd();
 }
 
