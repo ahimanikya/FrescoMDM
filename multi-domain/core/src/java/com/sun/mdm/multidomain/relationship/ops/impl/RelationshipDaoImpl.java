@@ -26,6 +26,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -106,9 +107,9 @@ public class RelationshipDaoImpl extends AbstractDAO implements RelationshipDao 
             stmt.setLong(index++, rel.getRelationshipDef().getId());
             stmt.setString(index++, rel.getSourceEUID());
             stmt.setString(index++, rel.getTargetEUID());
-            stmt.setTimestamp(index++, (java.sql.Timestamp) rel.getEffectiveFromDate());
-            stmt.setTimestamp(index++, (java.sql.Timestamp) rel.getEffectiveToDate());
-            stmt.setTimestamp(index++, (java.sql.Timestamp) rel.getPurgeDate());
+            stmt.setTimestamp(index++, new Timestamp(rel.getEffectiveFromDate().getTime()));
+            stmt.setTimestamp(index++, new Timestamp(rel.getEffectiveToDate().getTime()));
+            stmt.setTimestamp(index++, new Timestamp(rel.getPurgeDate().getTime()));
 
             int rows = stmt.executeUpdate();
 
