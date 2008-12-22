@@ -182,11 +182,10 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
      */   
     public void deleteRelationship(Relationship relationship)
         throws ProcessingException, UserException {
-        try {
-        Connection con = dataSource.getConnection();
-        RelationshipService relService = new RelationshipService(con);
-        relService.delete(relationship);
-
+       try {
+            Connection con = dataSource.getConnection();
+            RelationshipService relService = new RelationshipService(con);
+            relService.delete(relationship);
        } catch (Exception ex) {
            throw new ProcessingException(ex);
        }
@@ -195,9 +194,17 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
        /**
      * @see com.sun.mdm.multidomain.ejb.service.MultiDomainService#deleteRelationship()
      */
-    public void deleteRelationship(long relID)
+    public void deleteRelationship(long relId)
         throws ProcessingException, UserException {
-        throw new ProcessingException("Not Implemented Yet.");
+        try {
+            Connection con = dataSource.getConnection();
+            RelationshipService relService = new RelationshipService(con);
+            Relationship relationship = new Relationship();
+            relationship.setRelationshipId(relId);
+            relService.delete(relationship);
+        } catch (Exception ex) {
+           throw new ProcessingException(ex);
+        }        
     }
 
     /**
