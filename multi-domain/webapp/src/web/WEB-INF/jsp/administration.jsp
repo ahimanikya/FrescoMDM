@@ -16,6 +16,7 @@
         <script type="text/javascript" src="scripts/lang_utils.js" ></script>
         <script type="text/javascript" src="scripts/administration.js" ></script>
         <script type="text/javascript" src="scripts/dojo/dojo.js" djConfig="parseOnLoad:true, isDebug: false"></script>
+        <script type='text/javascript' src='dwr/engine.js'></script>
         <script type="text/javascript">
             dojo.require("dojo.parser");
             dojo.require("dijit.layout.ContentPane");
