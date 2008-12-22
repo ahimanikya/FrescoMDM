@@ -1534,8 +1534,12 @@ public class MasterControllerService {
             String minorObjectId = (String) hm.get(MINOR_OBJECT_ID);
             for (Object obj : hm.keySet()) {
                 String key = (String) obj;
-                if( !key.equals(MINOR_OBJECT_ID) )
-                    hashMapNew.put("LINK:" + key + "@" + minorObjectId, resolveSystemObject((String)hm.get(key),eo));
+                    if( !key.equals(MINOR_OBJECT_ID) && 
+                    !key.equals(MINOR_OBJECT_TYPE) && 
+                    !key.equals(HASH_MAP_TYPE) && 
+                    !key.equals("LINK_MINOR_ID") && 
+                    !key.equals("SYS_WITH_LID"))
+                       hashMapNew.put("LINK:" + key + "@" + minorObjectId, resolveSystemObject((String)hm.get("SYS_WITH_LID"),eo));
             }       
         }
         //EnterpriseObject eo1 = null;
@@ -1796,9 +1800,10 @@ public EnterpriseObject removeLocks(HashMap hm, EnterpriseObject eo) throws Proc
                     str = str.substring(5);
                     String objectId = str.substring(str.indexOf("@")+1);
                     str = str.substring(0, str.indexOf("@"));
-                    if (objectId.equals(minorObjectId))
-                    {
-                        String value = getLinkedFieldValue((String) overWrite.getData(), str, minorObjectType, minorObjectId);
+                    String minorObjectTypeLocal  = str.substring(0, str.indexOf("."));
+                    String[] minorIds  = objectId.split(":");
+                    if (minorObjectTypeLocal.equalsIgnoreCase(minorObjectType) && minorIds[0].equalsIgnoreCase(minorObjectId)) {
+                        String value = getLinkedFieldValue((String) overWrite.getData(), str, minorObjectType, objectId);
                         hm.put(str, value);
                     }
                 }
@@ -1851,9 +1856,9 @@ public EnterpriseObject removeLocks(HashMap hm, EnterpriseObject eo) throws Proc
             if (linkData.charAt(0) == '[' && linkData.charAt(linkData.length() - 1) == ']') {
                 String systemCode = linkData.substring(1, linkData.indexOf(":"));
                 String lid = linkData.substring(linkData.indexOf(":") + 1, linkData.length() - 1);
-                SystemObject systemObject = getSystemObject(systemCode, lid);
-                ObjectNode child = systemObject.getObject().getChild(minorObjectType, minorObjectId);
-                fieldValue = EPathAPI.getFieldValue(path, child);
+                //SystemObject systemObject = getSystemObject(systemCode, lid);
+                //fieldValue = EPathAPI.getFieldValue(path, systemObject.getObject());
+                fieldValue = systemCode + ":" + lid;
             }
         }
         if (fieldValue != null) {
