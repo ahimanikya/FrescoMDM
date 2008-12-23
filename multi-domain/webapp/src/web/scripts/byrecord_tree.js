@@ -17,16 +17,21 @@ var item_types = {DOMAIN:"domain", RELATIONSHIP:"relationship", RECORD:"record"}
 
 
 
+
 function getByRecordData () {
-    var selectedDomain = "Person";
-    var selectedEUID = "000-000-555";
+
+	var selectedDomain = "Person";
+	var selectedEUID = "000-000-555";
+	if(byRecord_CurrentSelected_Domain != null) selectedDomain = byRecord_CurrentSelected_Domain;
+	if(byRecord_CurrentSelected_EUID != null) selectedEUID = byRecord_CurrentSelected_EUID;
+
     var domainSearchObj = {name:selectedDomain, attributes:[{EUID: selectedEUID}]};
     
     //RelationshipHandler.searchDomainRelationshipsByRecord(domainSearchObj, getByRecordDataCB);
     
     // For testing, simulate data and call callback method <START>
     var data = {};
-    data.domain = "Person";
+    data.domain = domainSearchObj.name;
     
     var primaryObj = {};
     primaryObj.EUID = domainSearchObj.attributes[0].EUID;
@@ -41,10 +46,10 @@ function getByRecordData () {
         relationshipDefView.id = "" + i;
         if(i%2==0) {
           relationshipDefView.sourceDomain = selectedDomain;
-          relationshipDefView.targetDomain = "Company";
+          relationshipDefView.targetDomain = "Hospital"+i;
           relationshipDefView.biDirection = true;
         } else {
-          relationshipDefView.sourceDomain = "Company";
+          relationshipDefView.sourceDomain = "Hospital";
           relationshipDefView.targetDomain = selectedDomain;
           relationshipDefView.biDirection = false;
         }
@@ -99,27 +104,51 @@ function getByRecordDataCB (data) {
     // 1d. add relationships for the root record.
     for(i=0; i<data.relationshipsObjects.length; i++) {
         var tempRelObj = data.relationshipsObjects[i];
+		var useSourceDomain = false;
+		if(tempRelObj.relationshipDefView.sourceDomain != byRecord_CurrentSelected_Domain)
+			useSourceDomain = true; 
+		else useSourceDomain = false;
+
         //alert(i + " " + tempRelObj.relationshipDefView.id + " -- " + tempRelObj.relationshipDefView.sourceDomain + " : "+ tempRelObj.relationshipDefView.targetDomain);
         var relationshipNode = {};
         relationshipNode.id = tempRelObj.relationshipDefView.id;
         relationshipNode.name = tempRelObj.relationshipDefView.name;
         relationshipNode.biDirection = tempRelObj.relationshipDefView.biDirection;
+		if(useSourceDomain)
+			relationshipNode.otherDomain = tempRelObj.relationshipDefView.sourceDomain;
+		else
+			relationshipNode.otherDomain = tempRelObj.relationshipDefView.targetDomain;
+
         relationshipNode.type = item_types.RELATIONSHIP;
         
         var rNodeItem = mainTree_Store.newItem(relationshipNode, {parent: rootRecord, attribute:"children"} );
         
+
+
         var relationshipDomain = {};
         relationshipDomain.id = relationshipNode.id + "_" + tempRelObj.relationshipDefView.sourceDomain;
-        relationshipDomain.name = tempRelObj.relationshipDefView.sourceDomain;
-        
+		if(useSourceDomain)
+			relationshipDomain.name = tempRelObj.relationshipDefView.sourceDomain;
+		else
+			relationshipDomain.name = tempRelObj.relationshipDefView.targetDomain;
+        relationshipDomain.underRelationship = relationshipNode.name;
         relationshipDomain.type = item_types.DOMAIN;
         var rDomainItem = mainTree_Store.newItem(relationshipDomain, {parent: rNodeItem, attribute:"children"} );
         
         var relationships = tempRelObj.relationshipViews;
         for(j=0; j<relationships.length; j++) {
             var recordNode = {};
-            recordNode.id = j+  relationshipNode.id + "_" + relationships[j].sourceEUID;
-            recordNode.name = relationships[j].sourceHighLight;
+			if(useSourceDomain) {
+				recordNode.id = j +  relationshipNode.id + "_" + relationships[j].sourceEUID;
+				recordNode.EUID = relationships[j].sourceEUID;
+				recordNode.name = relationships[j].sourceHighLight;
+			} else {
+				recordNode.id = j+  relationshipNode.id + "_" + relationships[j].targetEUID;
+				recordNode.EUID = relationships[j].targetEUID;
+				recordNode.name = relationships[j].targetHighLight;
+			}
+			recordNode.underDomain = relationshipDomain.name;
+			recordNode.underRelationship = relationshipNode.name;
             recordNode.type = item_types.RECORD;
             var recordNodeItem = mainTree_Store.newItem(recordNode, {parent: rDomainItem, attribute:"children"} );
             //alert(j + " " + relationships[j].sourceEUID + " :: " + relationships[j].targetEUID);
@@ -131,6 +160,10 @@ function getByRecordDataCB (data) {
     
     // 3. Create tree now
     createMainTree();
+	
+	// 4. Reset button pallete (enable/disable add,delete, etc., buttons)
+	isAddButtonEnabled = false, isDeleteButtonEnabled = false;
+	targetDomain = null, addToRelationship = null;
     return;
 }
 
@@ -148,10 +181,15 @@ function createMainTree () {
         id: "mainTree",
         model: newModel,
         onClick: mainTreeClicked,
-        getIconClass: mainTreeGetIconClass
+		onClose: mainTreeNodeClosed,
+        getIconClass: mainTreeGetIconClass,
+		_onBlur:mainTreeOnBlur
     }, document.createElement("div"));
     mainTreeObj.startup();
     dojo.byId("mainTreeContainer").appendChild(mainTreeObj.domNode);
+}
+// OnBlur event for main tree: Doing nothing for now.
+function mainTreeOnBlur(){
 }
 
 // function to delete items from main tree store.
@@ -161,15 +199,54 @@ function deleteItemsFromStore(items, req) {
         mainTree_Store.save();
     }
 }
+var isAddButtonEnabled = false;
+var isDeleteButtonEnabled = false;
+var targetDomain = null, addToRelationship = null;
 
 // Main tree click event is captured by this function
 function mainTreeClicked(item, node) {
-  //  alert("clicked")
+	isAddButtonEnabled = false, isDeleteButtonEnabled = false;
+	targetDomain = null, addToRelationship = null;
+
+	var itemType = mainTree_Store.getValue(item, "type");
+	var itemName = mainTree_Store.getValue(item, "name");
+
+	if(itemType == item_types.DOMAIN) {
+		if(itemName != byRecord_CurrentSelected_Domain) {
+			isAddButtonEnabled = true;
+			isDeleteButtonEnabled = true;
+			targetDomain = itemName;
+			addToRelationship = mainTree_Store.getValue(item, "underRelationship");
+		}
+	} else if(itemType == item_types.RELATIONSHIP) {
+		isAddButtonEnabled = true;
+		isDeleteButtonEnabled = true;
+		targetDomain = mainTree_Store.getValue(item, "otherDomain");
+		addToRelationship = itemName;
+	} else  if(itemType == item_types.RECORD) {
+		var itemEUID = mainTree_Store.getValue(item, "EUID");
+		if(itemEUID != byRecord_CurrentSelected_EUID) {
+			isAddButtonEnabled = true;
+			targetDomain = itemName;
+			
+			targetDomain = mainTree_Store.getValue(item, "underDomain");
+			addToRelationship = mainTree_Store.getValue(item, "underRelationship");
+		}
+		isDeleteButtonEnabled = true;
+	}
 }
 
+function mainTreeNodeClosed(item, node) {
+	isAddButtonEnabled = false, isDeleteButtonEnabled = false;
+	targetDomain = null, addToRelationship = null;
+
+	var itemName = mainTree_Store.getValue(item, "name"); //alert(itemName);
+}
+
+// Custom icons for our main tree (different icons for domain, relationship & record)
 function mainTreeGetIconClass (item, opened) {
     if(item != null) {
-	var itemType = mainTree_Store.getValue(item, "type");
+		var itemType = mainTree_Store.getValue(item, "type");
         //alert(mainTree_Store.getValue(item, "id") + " : " +itemType);
         if(itemType == item_types.DOMAIN) {
             return "domainIcon";
@@ -183,3 +260,10 @@ function mainTreeGetIconClass (item, opened) {
     return "recordIcon";    
 }
 
+function chkstatus() {
+	var res = "Add allowed: " + isAddButtonEnabled;
+	res += "\nDelete allowed: " + isDeleteButtonEnabled;
+	res += "\n target domain: " + targetDomain ;
+	res += "\n add to relationship def : " + addToRelationship;
+	alert(res);
+}
