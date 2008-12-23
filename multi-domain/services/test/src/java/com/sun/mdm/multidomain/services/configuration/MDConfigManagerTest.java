@@ -253,4 +253,33 @@ public class MDConfigManagerTest extends TestCase {
             fail(ex.getMessage());
         }        
     }
+    
+    public void testDomainScreenConfig() {
+        try {
+            DomainScreenConfig domainSCFG = configManager.getDomainScreenConfig("Person");
+            HashMap<String, ObjectNodeConfig> objNodeConfigMap = configManager.getObjectNodeConfig("Person");
+                       
+            ArrayList<SearchScreenConfig> searchSCFGS = domainSCFG.getSearchScreenConfigs();
+            for (SearchScreenConfig searchCFG : searchSCFGS) {
+                ArrayList<FieldConfigGroup> searchFieldCGS = searchCFG.getFieldConfigGroups();
+                for (FieldConfigGroup fieldCG : searchFieldCGS) {
+                    ArrayList<FieldConfig> fields = fieldCG.getFieldConfigs();
+                    for (FieldConfig field : fields) {
+                        
+                        String fieldName = field.getFieldName();
+                        ObjectNodeConfig objNodeConfig = objNodeConfigMap.get(field.getObjRef());
+                        FieldConfig nField = objNodeConfig.getFieldConfig(fieldName);
+                        if (nField != null) {
+                            System.out.println(nField.toString());                        
+                        } else {
+                            assertTrue(false);
+                        }
+                    }
+                }
+            }            
+        } catch (Exception ex) {                    
+            ex.printStackTrace();
+            fail(ex.getMessage());            
+        }        
+    }
 }
