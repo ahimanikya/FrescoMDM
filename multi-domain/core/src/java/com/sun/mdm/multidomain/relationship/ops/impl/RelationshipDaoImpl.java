@@ -39,16 +39,21 @@ import com.sun.mdm.multidomain.relationship.RelationshipDef;
 import com.sun.mdm.multidomain.relationship.RelationshipDef.DirectionMode;
 import com.sun.mdm.multidomain.relationship.ops.dao.AbstractDAO;
 import com.sun.mdm.multidomain.relationship.ops.dao.RelationshipDao;
-import com.sun.mdm.multidomain.relationship.ops.dto.RelationshipDto;
+import com.sun.mdm.multidomain.relationship.ops.dto.RelationshipEavDto;
 import com.sun.mdm.multidomain.relationship.ops.exceptions.*;
 import com.sun.mdm.multidomain.sql.AND;
 import com.sun.mdm.multidomain.sql.Criteria;
+import com.sun.mdm.multidomain.sql.DeleteBuilder;
 import com.sun.mdm.multidomain.sql.InCriteria;
 import com.sun.mdm.multidomain.sql.InsertBuilder;
+import com.sun.mdm.multidomain.sql.JoinCriteria;
 import com.sun.mdm.multidomain.sql.MatchCriteria;
 import com.sun.mdm.multidomain.sql.OR;
+import com.sun.mdm.multidomain.sql.OrderBy;
+import com.sun.mdm.multidomain.sql.Parameter;
 import com.sun.mdm.multidomain.sql.SQLBuilder;
 import com.sun.mdm.multidomain.sql.SelectBuilder;
+import com.sun.mdm.multidomain.sql.UpdateBuilder;
 import java.util.Iterator;
 import static com.sun.mdm.multidomain.sql.DBSchema.*;
 
@@ -96,12 +101,12 @@ public class RelationshipDaoImpl extends AbstractDAO implements RelationshipDao 
         ResultSet rs = null;
 
         try {
-            InsertBuilder builder = new InsertBuilder();
-            builder.setTable(RELATIONSHIP.getTableName());
+            InsertBuilder insert = new InsertBuilder();
+            insert.setTable(RELATIONSHIP.getTableName());
             for (RELATIONSHIP r : RELATIONSHIP.values()) {
-                builder.addColumns(r.columnName);
+                insert.addColumns(r.columnName);
             }
-            String sqlStr = SQLBuilder.buildSQL(builder);
+            String sqlStr = SQLBuilder.buildSQL(insert);
             stmt = userConn.prepareStatement(sqlStr, Statement.RETURN_GENERATED_KEYS);
             int index = 1;
             stmt.setNull(index++, java.sql.Types.NULL);
@@ -118,6 +123,15 @@ public class RelationshipDaoImpl extends AbstractDAO implements RelationshipDao 
             if (rs != null && rs.next()) {
                 mPrimaryKey = rs.getLong(1);
             }
+
+            /* Relationship Extend Attributes Values */
+            RelationshipEavDto attDto = new RelationshipEavDto();
+            attDto.setRelationshipId(mPrimaryKey);
+            if (rel.getAttributes().isEmpty() == false) {
+                attDto.setAttributes(rel.getAttributes());
+                RelationshipEavDaoImpl relEavDao = new RelationshipEavDaoImpl(userConn);
+                relEavDao.insert(attDto);
+            }
             return mPrimaryKey;
         } catch (Exception _e) {
             _e.printStackTrace();
@@ -126,22 +140,34 @@ public class RelationshipDaoImpl extends AbstractDAO implements RelationshipDao 
     }
 
     /**
-     * Updates a single row in the RelationshipDto table.
+     * Updates a single row in the Relationship table.
      */
-    public void update(long pk, RelationshipDto dto) throws RelationshipDaoException {
+    public int update(Relationship rel) throws RelationshipDaoException {
         PreparedStatement stmt = null;
 
         try {
-            //stmt =userConn.prepareStatement(SQL_UPDATE);
+            UpdateBuilder update = new UpdateBuilder();
+            update.setTable(RELATIONSHIP.getTableName());
+            for (RELATIONSHIP r : RELATIONSHIP.values()) {
+                if (r.columnName.equalsIgnoreCase(RELATIONSHIP.getPKColumName())) {
+                    update.addCriteria(new Parameter(r.columnName));
+                } else {
+                    update.addColumns(r.columnName);
+                }
+            }
+            String sqlStr = SQLBuilder.buildSQL(update);
+            stmt = userConn.prepareStatement(sqlStr);
             int index = 1;
-            stmt.setLong(index++, dto.getRelationshipId());
-            stmt.setString(index++, dto.getSourceEuid());
-            stmt.setString(index++, dto.getTargetEuid());
-            stmt.setTimestamp(index++, (java.sql.Timestamp) dto.getEffectiveFromDate());
-            stmt.setTimestamp(index++, (java.sql.Timestamp) dto.getEffectiveToDate());
-            stmt.setTimestamp(index++, (java.sql.Timestamp) dto.getPurgeDate());
-            stmt.setLong(14, pk);
+            stmt.setLong(index++, rel.getRelationshipDef().getId());
+            stmt.setString(index++, rel.getSourceEUID());
+            stmt.setString(index++, rel.getTargetEUID());
+            stmt.setTimestamp(index++, (java.sql.Timestamp) rel.getEffectiveFromDate());
+            stmt.setTimestamp(index++, (java.sql.Timestamp) rel.getEffectiveToDate());
+            stmt.setTimestamp(index++, (java.sql.Timestamp) rel.getPurgeDate());
+
+            stmt.setLong(index++, rel.getRelationshipId());  // Primary key column
             int rows = stmt.executeUpdate();
+            return rows;
         } catch (Exception _e) {
             _e.printStackTrace();
             throw new RelationshipDaoException("Exception: " + _e.getMessage(), _e);
@@ -151,14 +177,29 @@ public class RelationshipDaoImpl extends AbstractDAO implements RelationshipDao 
     /**
      * Deletes a single row in the RelationshipDto table.
      */
-    public void delete(long pk) throws RelationshipDaoException {
+    public void delete(long relId) throws RelationshipDaoException {
         PreparedStatement stmt = null;
 
         try {
-            //stmt = userConn.prepareStatement(SQL_DELETE);
-            stmt.setLong(1, pk);
+            // Build DELELE SQL for RELATIONSHIP_EAV table
+            DeleteBuilder eavDelete = new DeleteBuilder();
+            eavDelete.setTable(RELATIONSHIP_EAV.getTableName());
+            Criteria c1 = new Parameter(RELATIONSHIP_EAV.RELATIONSHIP_ID.columnName);
+            eavDelete.addCriteria(c1);
+            String sqlStr = SQLBuilder.buildSQL(eavDelete);
+            stmt = userConn.prepareStatement(sqlStr);
+            stmt.setLong(1, relId);
+
             int rows = stmt.executeUpdate();
 
+            // Build DELETE SQL for RELATIONSHIP table
+            DeleteBuilder relDelete = new DeleteBuilder();
+            relDelete.setTable(RELATIONSHIP.getTableName());
+            relDelete.addCriteria(new Parameter(RELATIONSHIP.getPKColumName()));
+            sqlStr = SQLBuilder.buildSQL(relDelete);
+            stmt = userConn.prepareStatement(sqlStr);
+            stmt.setLong(1, relId);
+            rows = stmt.executeUpdate();
         } catch (Exception _e) {
             _e.printStackTrace();
             throw new RelationshipDaoException("Exception: " + _e.getMessage(), _e);
@@ -174,10 +215,10 @@ public class RelationshipDaoImpl extends AbstractDAO implements RelationshipDao 
         try {
 
             Criteria c1 = new MatchCriteria(RELATIONSHIP_DEF.RELATIONSHIP_DEF_ID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, RELATIONSHIP.RELATIONSHIP_DEF_ID.prefixedColumnName);
-            Criteria c2 = new MatchCriteria(RELATIONSHIP_DEF.RELATIONSHIP_DEF_ID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, RELATIONSHIP_EA.RELATIONSHIP_DEF_ID.prefixedColumnName);
-            Criteria c3 = new MatchCriteria(RELATIONSHIP.SOURCE_EUID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, "?");
-            Criteria c4 = new MatchCriteria(RELATIONSHIP.TARGET_EUID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, "?");
-            String sqlStr = buildSelectRelationshipDef(new AND(c1, c2, c3, c4));
+            //Criteria c2 = new MatchCriteria(RELATIONSHIP_DEF.RELATIONSHIP_DEF_ID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, RELATIONSHIP_EA.RELATIONSHIP_DEF_ID.prefixedColumnName);
+            Criteria c2 = new MatchCriteria(RELATIONSHIP.SOURCE_EUID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, "?");
+            Criteria c3 = new MatchCriteria(RELATIONSHIP.TARGET_EUID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, "?");
+            String sqlStr = buildSelectRelationshipDef(new AND(c1, c2, c3));
 
             PreparedStatement stmt = userConn.prepareStatement(sqlStr);
             int index = 1;
@@ -323,38 +364,57 @@ public class RelationshipDaoImpl extends AbstractDAO implements RelationshipDao 
     }
 
     private String buildSelectRelationship(RelationshipDef relDef, Criteria crit) {
-        SelectBuilder builder = new SelectBuilder();
-        builder.setTable(RELATIONSHIP.getTableName(), RELATIONSHIP_EAV.getTableName());
-        Criteria c1 = new MatchCriteria(RELATIONSHIP.RELATIONSHIP_ID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, RELATIONSHIP_EAV.RELATIONSHIP_ID.prefixedColumnName);
+
+        SelectBuilder select = new SelectBuilder();
+        // Assign SELECT tables
+        select.setTable(RELATIONSHIP.getTableName());
+        // Assign OUTER JOIN tables
+        String[] joinTables = new String[]{RELATIONSHIP_EAV.getTableName()};
+        // Add Relationship columns to the SELECT list
         for (RELATIONSHIP rel : RELATIONSHIP.values()) {
-            builder.addColumns(rel.prefixedColumnName);
+            select.addColumns(rel.prefixedColumnName);
         }
         for (RELATIONSHIP_EAV ea : RELATIONSHIP_EAV.values()) {
-            builder.addColumns(ea.prefixedColumnName);
+            select.addColumns(ea.prefixedColumnName);
         }
+        // Add Extended-Attribute columns to the SELECT list
         for (Attribute attr : relDef.getAttributes()) {
-            builder.addColumns(attr.getColumnName());
+            select.addColumns(attr.getColumnName());
         }
-        builder.addCriteria(new AND(c1, crit));
-        String sqlStr = SQLBuilder.buildSQL(builder);
+        // Add WHERE criteria
+        //Criteria c1 = new MatchCriteria(RELATIONSHIP.RELATIONSHIP_ID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, RELATIONSHIP_EAV.RELATIONSHIP_ID.prefixedColumnName);
+        select.addCriteria(crit);
+        // Add OUTER JOIN criteria
+        Criteria j1 = new JoinCriteria(RELATIONSHIP.RELATIONSHIP_ID.prefixedColumnName, JoinCriteria.OPERATOR.EQUALS, RELATIONSHIP_EAV.RELATIONSHIP_ID.prefixedColumnName);
+        select.addJoin(joinTables, JoinCriteria.JOIN_TYPE.LEFTJOIN, j1);
+        // Add Order By Clause
+        select.addOrderBy(new OrderBy(RELATIONSHIP.RELATIONSHIP_ID.prefixedColumnName, OrderBy.ORDER.ASC));
+        String sqlStr = SQLBuilder.buildSQL(select);
         return sqlStr;
     }
 
     private String buildSelectRelationshipDef(Criteria crit) {
-        SelectBuilder selectBld = new SelectBuilder();
-        String relEATable = RELATIONSHIP_EA.getTableName();
-        String relTable = RELATIONSHIP.getTableName();
-        String relDefTable = RELATIONSHIP_DEF.getTableName();
-        selectBld.setTable(relDefTable, relTable, relEATable);
-        selectBld.addColumns(RELATIONSHIP.RELATIONSHIP_ID.prefixedColumnName);
+        SelectBuilder select = new SelectBuilder();
+        // Assign SELECT tables
+        select.setTable(RELATIONSHIP.getTableName(), RELATIONSHIP_DEF.getTableName());
+        // Assign OUTER JOIN tables
+        String[] joinTables = new String[]{RELATIONSHIP_EA.getTableName()};
+
+        // Add SELECT list
+        select.addColumns(RELATIONSHIP.RELATIONSHIP_ID.prefixedColumnName);
         for (RELATIONSHIP_DEF rdef : RELATIONSHIP_DEF.values()) {
-            selectBld.addColumns(rdef.prefixedColumnName);
+            select.addColumns(rdef.prefixedColumnName);
         }
         for (RELATIONSHIP_EA relEA : RELATIONSHIP_EA.values()) {
-            selectBld.addColumns(relEA.prefixedColumnName);
+            select.addColumns(relEA.prefixedColumnName);
         }
-        selectBld.addCriteria(crit);
-        String sqlStr = SQLBuilder.buildSQL(selectBld);
+        // Add WHERE criteria
+        select.addCriteria(crit);
+        // Add OUTER JOIN
+        Criteria j1 = new JoinCriteria(RELATIONSHIP_DEF.RELATIONSHIP_DEF_ID.prefixedColumnName, JoinCriteria.OPERATOR.EQUALS, RELATIONSHIP_EA.RELATIONSHIP_DEF_ID.prefixedColumnName);
+        select.addJoin(joinTables, JoinCriteria.JOIN_TYPE.LEFTJOIN, j1);
+
+        String sqlStr = SQLBuilder.buildSQL(select);
         return sqlStr;
     }
 
@@ -370,18 +430,6 @@ public class RelationshipDaoImpl extends AbstractDAO implements RelationshipDao 
             resultList.add(rel);
         }
         return resultList;
-    }
-
-    /**
-     * Fetches multiple rows from the result set
-     */
-    private RelationshipDef fetchRelationshipDef(ResultSet rs) throws SQLException {
-        RelationshipDef relDef = null;
-        if (rs.next()) {
-            relDef = new RelationshipDef();
-            populateRelDef(rs, relDef);
-        }
-        return relDef;
     }
 
     /**
@@ -425,30 +473,39 @@ public class RelationshipDaoImpl extends AbstractDAO implements RelationshipDao 
     /**
      * Populates a RelationshipDef object with data from a ResultSet
      */
-    private void populateRelDef(ResultSet rs, RelationshipDef relDef) throws SQLException {
-        if (rs.isFirst()) {
-            if (mRelationshipId == 0) {
-                mRelationshipId = rs.getLong(RELATIONSHIP.RELATIONSHIP_ID.columnName);
+    private RelationshipDef fetchRelationshipDef(ResultSet rs) throws SQLException {
+        RelationshipDef relDef = null;
+        while (rs.next()) {
+            if (rs.isFirst()) {
+                if (mRelationshipId == 0) {
+                    mRelationshipId = rs.getLong(RELATIONSHIP.RELATIONSHIP_ID.columnName);
+                }
+                relDef = new RelationshipDef();
+                relDef.setId(rs.getLong(RELATIONSHIP_DEF.RELATIONSHIP_DEF_ID.columnName));
+                relDef.setName(rs.getString(RELATIONSHIP_DEF.RELATIONSHIP_NAME.columnName));
+                relDef.setDescription(rs.getString(RELATIONSHIP_DEF.DESCRIPTION.columnName));
+                relDef.setSourceDomain(rs.getString(RELATIONSHIP_DEF.SOURCE_DOMAIN.columnName));
+                relDef.setTargetDomain(rs.getString(RELATIONSHIP_DEF.TARGET_DOMAIN.columnName));
+                relDef.setDirection(rs.getString(RELATIONSHIP_DEF.BIDIRECTIONAL.columnName).equalsIgnoreCase("T") ? DirectionMode.BIDIRECTIONAL : DirectionMode.UNIDIRECTIONAL);
+                relDef.setEffectiveFromRequired(rs.getString(RELATIONSHIP_DEF.EFFECTIVE_FROM_REQ.columnName).equalsIgnoreCase("T") ? true : false);
+                relDef.setEffectiveToRequired(rs.getString(RELATIONSHIP_DEF.EFFECTIVE_TO_REQ.columnName).equalsIgnoreCase("T") ? true : false);
+                relDef.setPurgeDateRequired(rs.getString(RELATIONSHIP_DEF.PURGE_DATE_REQ.columnName).equalsIgnoreCase("T") ? true : false);
+                relDef.setPlugin(rs.getString(RELATIONSHIP_DEF.PLUGIN.columnName));
             }
-            relDef.setId(rs.getLong(RELATIONSHIP_DEF.RELATIONSHIP_DEF_ID.columnName));
-            relDef.setName(rs.getString(RELATIONSHIP_DEF.RELATIONSHIP_NAME.columnName));
-            relDef.setDescription(rs.getString(RELATIONSHIP_DEF.DESCRIPTION.columnName));
-            relDef.setSourceDomain(rs.getString(RELATIONSHIP_DEF.SOURCE_DOMAIN.columnName));
-            relDef.setTargetDomain(rs.getString(RELATIONSHIP_DEF.TARGET_DOMAIN.columnName));
-            relDef.setDirection(rs.getString(RELATIONSHIP_DEF.BIDIRECTIONAL.columnName).equalsIgnoreCase("T") ? DirectionMode.BIDIRECTIONAL : DirectionMode.UNIDIRECTIONAL);
-            relDef.setEffectiveFromRequired(rs.getString(RELATIONSHIP_DEF.EFFECTIVE_FROM_REQ.columnName).equalsIgnoreCase("T") ? true : false);
-            relDef.setEffectiveToRequired(rs.getString(RELATIONSHIP_DEF.EFFECTIVE_TO_REQ.columnName).equalsIgnoreCase("T") ? true : false);
-            relDef.setPurgeDateRequired(rs.getString(RELATIONSHIP_DEF.PURGE_DATE_REQ.columnName).equalsIgnoreCase("T") ? true : false);
-            relDef.setPlugin(rs.getString(RELATIONSHIP_DEF.PLUGIN.columnName));
+
+            long eaID = rs.getLong(RELATIONSHIP_EA.EA_ID.columnName);
+            if (eaID > 0) {
+                Attribute attr = new Attribute();
+                attr.setId(eaID);
+                attr.setName(rs.getString(RELATIONSHIP_EA.ATTRIBUTE_NAME.columnName));
+                attr.setColumnName(rs.getString(RELATIONSHIP_EA.COLUMN_NAME.columnName));
+                attr.setType(AttributeType.valueOf(rs.getString(RELATIONSHIP_EA.COLUMN_TYPE.columnName)));
+                attr.setDefaultValue(rs.getString(RELATIONSHIP_EA.DEFAULT_VALUE.columnName));
+                attr.setIsSearchable(rs.getString(RELATIONSHIP_EA.IS_SEARCHABLE.columnName).equalsIgnoreCase("T") ? true : false);
+                attr.setIsRequired(rs.getString(RELATIONSHIP_EA.IS_REQUIRED.columnName).equalsIgnoreCase("T") ? true : false);
+                relDef.getAttributes().add(attr);
+            }
         }
-        Attribute attr = new Attribute();
-        attr.setId(rs.getLong(RELATIONSHIP_EA.EA_ID.columnName));
-        attr.setName(rs.getString(RELATIONSHIP_EA.ATTRIBUTE_NAME.columnName));
-        attr.setColumnName(rs.getString(RELATIONSHIP_EA.COLUMN_NAME.columnName));
-        attr.setType(AttributeType.valueOf(rs.getString(RELATIONSHIP_EA.COLUMN_TYPE.columnName)));
-        attr.setDefaultValue(rs.getString(RELATIONSHIP_EA.DEFAULT_VALUE.columnName));
-        attr.setIsSearchable(rs.getString(RELATIONSHIP_EA.IS_SEARCHABLE.columnName).equalsIgnoreCase("T") ? true : false);
-        attr.setIsRequired(rs.getString(RELATIONSHIP_EA.IS_REQUIRED.columnName).equalsIgnoreCase("T") ? true : false);
-        relDef.getAttributes().add(attr);
+        return relDef;
     }
 }
