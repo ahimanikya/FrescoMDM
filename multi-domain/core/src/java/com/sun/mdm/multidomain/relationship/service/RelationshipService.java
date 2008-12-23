@@ -106,6 +106,8 @@ public class RelationshipService implements Serializable {
      */
     public void delete(Relationship rel) throws RelationshipDaoException {
         new RelationshipDaoImpl(mConn).delete(rel.getRelationshipId());
+        RelationshipDaoImpl relDao = new RelationshipDaoImpl(mConn);
+        relDao.delete(rel.getRelationshipId());
     }
 
     /**
