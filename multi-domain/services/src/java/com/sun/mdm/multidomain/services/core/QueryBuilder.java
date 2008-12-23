@@ -412,6 +412,7 @@ public class QueryBuilder {
                 attribute1 = relastionshipRecord.next();
                 com.sun.mdm.multidomain.attributes.Attribute attribute2 = new com.sun.mdm.multidomain.attributes.Attribute();
                 attribute2.setName(attribute1.getName());
+                attribute2.setColumnName(attribute1.getName());
                 relationship.setAttributeValue(attribute2, attribute1.getValue());
             }
         } catch(ParseException pex) {            
