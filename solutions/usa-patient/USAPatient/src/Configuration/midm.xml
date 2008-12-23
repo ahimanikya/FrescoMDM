@@ -1773,6 +1773,32 @@ search</instruction>
                             </search-result-list-page>
                         </search-result-pages>
                     </subscreen>
+                      <subscreen>
+                        <enable>true</enable>
+                        <root-object>USAPatient</root-object>
+                        <tab-name>Assumed Matches Report</tab-name>
+                        <report-name>Assumed Match</report-name>
+                        <screen-id>6</screen-id>
+                        <display-order>6</display-order> 
+                        <search-pages/>
+                        <search-result-pages>
+                            <search-result-list-page>
+                                <search-result-id>0</search-result-id>
+                                <item-per-page>10</item-per-page>
+                                <max-result-size>2000</max-result-size>
+                                <field-group>
+                                    <description></description>
+                                    <field-ref>USAPatient.FirstName</field-ref>
+                                    <field-ref>USAPatient.LastName</field-ref>
+                                    <field-ref>USAPatient.SSN</field-ref>
+                                    <field-ref>USAPatient.DOB</field-ref>
+                                    <field-ref>USAPatient.Address.AddressLine1</field-ref>
+                                    <field-ref>USAPatient.Address.AddressLine2</field-ref>
+                                    <field-ref>USAPatient.Phone.Phone</field-ref>
+                                </field-group>
+                            </search-result-list-page>
+                        </search-result-pages>
+                    </subscreen>
                 </subscreen-configurations>
             </reports>
             <audit-log>

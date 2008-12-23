@@ -951,8 +951,6 @@
                             <field-ref>UKPatient.Gender</field-ref>
                             <field-ref>UKPatient.NI</field-ref>
                         </field-group>
-                        
-                       
                         <search-option>
                             <display-name>Blocker Search</display-name>
                             <query-builder>BLOCKER-SEARCH</query-builder>
@@ -970,7 +968,8 @@
                         <show-euid>false</show-euid>
                         <show-lid>false</show-lid>
                         <instruction>Enter as much information as possible to narrow the
-search</instruction>
+search
+                        </instruction>
                         <field-group>
                             <description>UKPatient</description>
                         </field-group>
@@ -983,7 +982,6 @@ search</instruction>
                             <description>Address</description>
                             <field-ref>UKPatient.Address.AddressLine1</field-ref>
                         </field-group>
-                        
                         <search-option>
                             <display-name>Phonetic Search</display-name>
                             <query-builder>PHONETIC-SEARCH</query-builder>
@@ -994,8 +992,6 @@ search</instruction>
                             </parameter>
                         </search-option>
                     </simple-search-page>
-
-
                     <simple-search-page>
                         <screen-title>UKPatient Lookup</screen-title>
                         <search-result-id>1</search-result-id>
@@ -1013,7 +1009,6 @@ search</instruction>
                         </search-option>
                     </simple-search-page>
                 </search-pages>
-
                 <search-result-pages>
                     <search-result-list-page>
                         <search-result-id>0</search-result-id>
@@ -1524,6 +1519,46 @@ search</instruction>
                                 <item-per-page>10</item-per-page>
                                 <max-result-size>2000</max-result-size>
                                 <field-group/>
+                            </search-result-list-page>
+                        </search-result-pages>
+                    </subscreen>
+                    <subscreen>
+                        <enable>true</enable>
+                        <root-object>UKPatient</root-object>
+                        <tab-name>Assumed Matches Report</tab-name>
+                        <report-name>Assumed Match</report-name>
+                        <screen-id>6</screen-id>
+                        <display-order>6</display-order>
+                        <search-pages/>
+                        <search-result-pages>
+                            <search-result-list-page>
+                                <search-result-id>0</search-result-id>
+                                <item-per-page>10</item-per-page>
+                                <max-result-size>2000</max-result-size>
+                                <field-group>
+                                    <description></description>
+                                    <field-ref>UKPatient.Gender</field-ref>
+                                    <field-ref>UKPatient.DOB</field-ref>
+                                </field-group>
+                                <field-group>
+                                    <description></description>
+                                    <field-ref>UKPatient.Name.FamilyName</field-ref>
+                                    <field-ref>UKPatient.Name.GivenName</field-ref>
+                                    <field-ref>UKPatient.Name.OtherGivenName</field-ref>
+                                </field-group>
+                                <field-group>
+                                    <description></description>
+                                    <field-ref>UKPatient.Address.AddressLine1</field-ref>
+                                    <field-ref>UKPatient.Address.AddressHouseNo</field-ref>
+                                    <field-ref>UKPatient.Address.AddressStreet</field-ref>
+                                    <field-ref>UKPatient.Address.Postcode</field-ref>
+                                </field-group>
+                                <field-group>
+                                    <description></description>
+                                    <field-ref>UKPatient.Telecom.Root</field-ref>
+                                    <field-ref>UKPatient.Telecom.Extension</field-ref>
+                                    <field-ref>UKPatient.Telecom.Code</field-ref>
+                                </field-group>
                             </search-result-list-page>
                         </search-result-pages>
                     </subscreen>
