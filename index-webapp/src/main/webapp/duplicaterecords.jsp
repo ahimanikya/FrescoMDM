@@ -408,11 +408,11 @@ function align(thisevent,divID) {
  			   </h:panelGroup>
 
 			</h:panelGrid>
+<div  id="outputdiv"></div>
 
     </div>  
     </td>
     </tr>
-   <tr><td><div  id="outputdiv"></div></td></tr>
 </table>
 
 </div>  

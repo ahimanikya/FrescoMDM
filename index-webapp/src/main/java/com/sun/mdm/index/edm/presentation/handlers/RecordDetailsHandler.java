@@ -484,6 +484,7 @@ public class RecordDetailsHandler extends ScreenConfiguration {
                     EnterpriseObject eo = masterControllerService.getEnterpriseObject(euid);
                     fieldvalues.put("EUID", eoSearchResultRecord.getEUID());
                     fieldvalues.put("EOStatus", eo.getStatus());
+                    fieldvalues.put("CheckBox", eoSearchResultRecord.getEUID());
 
                     resultArrayList.add(fieldvalues);
                 

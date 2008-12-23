@@ -513,6 +513,10 @@ String euidValue  = (String) recordDetailsHandler.getParametersMap().get("EUID")
 
 ArrayList resultConfigArray = recordDetailsHandler.getResultsConfigArray();
 if (results != null)   {
+   keys.add("CheckBox");
+   labelsList.add("");
+   fullFieldNamesList.add("CheckBox");
+
    keys.add("EUID");
    labelsList.add("EUID");
    fullFieldNamesList.add("EUID");
@@ -532,7 +536,9 @@ if (results != null)   {
 	myColumnDefs.append("[");
     String value = new String();
 	for(int ji=0;ji<keys.size();ji++) {
-	    if ("EUID".equalsIgnoreCase((String)keys.toArray()[ji]))  {
+	    if ("CheckBox".equalsIgnoreCase((String)keys.toArray()[ji]))  {
+	      value = "{key:" + "\"" + keys.toArray()[ji]+  "\"" + ", label: " + "\"" + labelsList.toArray()[ji]+"\"" +  ",width:25,resizeable:true}";
+	    } else if ("EUID".equalsIgnoreCase((String)keys.toArray()[ji]))  {
 	      value = "{key:" + "\"" + keys.toArray()[ji]+  "\"" + ", label: " + "\"" + labelsList.toArray()[ji]+"\"" +  ",width:150,sortable:true,resizeable:true}";
 	    }  else {
 	      value = "{key:" + "\"" + keys.toArray()[ji]+  "\"" + ", label: " + "\"" + labelsList.toArray()[ji]+"\"" +  ",sortable:true,resizeable:true}";
@@ -599,16 +605,16 @@ if (results != null)   {
 				              %>
                                    <td>
 								    <nobr>
-								      <%if(keyValue.equalsIgnoreCase("EUID")) {%>
-									  <%if(operations.isEO_Compare() ) {%>
-									  <%if("active".equalsIgnoreCase( (String)valueMap.get("EOStatus") ) ) {%>
-                                        <input type="checkbox" id="checkbox-<%=valueMap.get("EUID")%>"
-                                              onclick="javascript:getCheckedValues(this,'<%=valueMap.get(fullFieldNamesList.toArray()[kc])%>')"/>&nbsp;
-									  <%} else {%>
-                                        <input type="checkbox" title="<%=valueMap.get("EOStatus")%> EO " readonly="true" disabled="true" />&nbsp;
-									  <%}%>
-									  <%}
-                                                                           %>
+								      <%if(keyValue.equalsIgnoreCase("CheckBox")) {%>
+										  <%if(operations.isEO_Compare() ) {%>
+											  <%if("active".equalsIgnoreCase( (String)valueMap.get("EOStatus") ) ) {%>
+												<input type="checkbox" id="checkbox-<%=valueMap.get("EUID")%>"
+													  onclick="javascript:getCheckedValues(this,'<%=valueMap.get(fullFieldNamesList.toArray()[kc])%>')"/>&nbsp;
+											  <%} else {%>
+												<input type="checkbox" title="<%=valueMap.get("EOStatus")%> EO " readonly="true" disabled="true" />&nbsp;
+											  <%}%>
+										  <%}%>
+								   <%} else if(keyValue.equalsIgnoreCase("EUID")) {%>
                                                                           
 		                          <a href="euiddetails.jsf?euid=<%=valueMap.get(fullFieldNamesList.toArray()[kc])%>&<%=previousQueryStr%>&fromUrl=recorddetails.jsf">
                                            <%= (valueMap.get(fullFieldNamesList.toArray()[kc]) == null?"":valueMap.get(fullFieldNamesList.toArray()[kc]))%>
@@ -617,9 +623,8 @@ if (results != null)   {
                                   String minorObjectType = fullfieldValue.substring(0,fullfieldValue.indexOf("."));
                                   
 								  %>
-									    <a href="javascript:void(0)" onclick="align(event,ajaxOutputdiv);javascript:ajaxURL('/<%=URI%>/ajaxservices/showeuidminorobjects.jsf?euid=<%=valueMap.get("EUID")%>&MOT=<%=minorObjectType%>','ajaxOutputdiv','')">
 				                           <%= (valueMap.get(fullFieldNamesList.toArray()[kc]) == null?"":valueMap.get(fullFieldNamesList.toArray()[kc]))%> 
-										</a>
+									    <a href="javascript:void(0)" title="<%=bundle.getString("more_details")%>" onclick="align(event,ajaxOutputdiv);javascript:ajaxURL('/<%=URI%>/ajaxservices/showeuidminorobjects.jsf?euid=<%=valueMap.get("EUID")%>&MOT=<%=minorObjectType%>','ajaxOutputdiv','')"><%= (valueMap.get(fullFieldNamesList.toArray()[kc]) == null?"":"...")%></a>
 
 									 <%}else {%>
                                         <%= (valueMap.get(fullFieldNamesList.toArray()[kc]) == null?"":valueMap.get(fullFieldNamesList.toArray()[kc]))%> 

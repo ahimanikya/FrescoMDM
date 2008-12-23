@@ -224,6 +224,7 @@ if (results != null)   {
 %>
 <%	//fix of 6703149
 	HashMap lidErrorMap = new HashMap(); 
+    Operations operations  = new Operations();
 	if(results.size()>0 && results.get(0) instanceof HashMap){
 		lidErrorMap = (results.get(0)!=null)?(HashMap)results.get(0):new HashMap();
 	}
@@ -234,12 +235,13 @@ if (results != null)   {
             <td style="width:85%;text-align:right">
                          <h:outputText value="#{msgs.total_records_text}"/>&nbsp;<%=results.size()%>&nbsp;
 			</td>
-			<td>
+			<td><nobr>
 				<% if (results.size() > 0)   {%>
-                    <h:panelGrid rendered="#{Operations.assumedMatch_Print}" >
-                        <a title="<%=print_text%>" class="button" href="javascript:void(0)" onclick="javascript:getRecordDetailsFormValues('advancedformData');openPrintWindow('/<%=URI%>/printservices/assumematch.jsf?random='+rand+'&'+queryStr)"><span><%=print_text%></span></a>
-					</h:panelGrid>             
+					<% if (operations.isAssumedMatch_Print())   {%>
+							<a title="<%=print_text%>" class="button" href="javascript:void(0)" onclick="javascript:getRecordDetailsFormValues('advancedformData');openPrintWindow('/<%=URI%>/printservices/assumematch.jsf?random='+rand+'&'+queryStr)"><span><%=print_text%></span></a>
+					<% } %>
 				<% } %>
+				</nobr>
             </td>
          </tr>
 <%}%>

@@ -154,7 +154,6 @@ function align(thisevent,divID) {
     <td>
     <div id="mainContent">
         <div id="advancedSearch" class="duplicaterecords" style="visibility:visible;display:block">
-     <div id="searchType">
             <table border="0" cellpadding="0" cellspacing="0" align="right">
                 <form id="searchTypeForm" >
                             <tr>
@@ -179,7 +178,6 @@ function align(thisevent,divID) {
                             </tr>
                 </form>
  </table>
-   </div>            
 
    <h:form id="advancedformData" >
                             <input id='lidmask' type='hidden' title='lidmask' name='lidmask' value='' />
@@ -378,19 +376,13 @@ function align(thisevent,divID) {
  			   </h:panelGroup>
 
 			</h:panelGrid>
+           <div class="reportresults" id="outputdiv"></div>
+    </div>     
+  </div>
+  </td></tr></table>
 			<form id="collectEuidsForm">
 			      <input type="hidden" id="collectEuids" title='collectEuids' />   
             </form>
-<div class="reportresults" id="outputdiv"></div>     		
-        </div>      
-</div>
-</td>
-</tr>
-<tr>
-  <td>
-  </td>
-</tr>
-</table>
 
 </body>
 <div class="alert" id="ajaxOutputdiv"></div> 

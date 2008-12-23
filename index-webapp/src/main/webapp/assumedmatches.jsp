@@ -94,6 +94,10 @@ function setRand(thisrand)  {
 
     <body class="yui-skin-sam">
     <%@include file="./templates/header.jsp"%>
+  <table>
+   <tr>
+    <td>
+
      <div id="mainContent" >   
 <%
    double rand = java.lang.Math.random();
@@ -329,6 +333,7 @@ function setRand(thisrand)  {
 <div class="reportresults" id="outputdiv"></div>
     </div>     
   </div>
+  </td></tr></table>
 </body>
         <%
           String[][] lidMaskingArray = assumeMatchHandler.getAllSystemCodes();          
