@@ -451,6 +451,22 @@ public class FieldConfig implements java.io.Serializable, Comparable {
         return this.name;
     }
 
+    public String getFieldName() {
+        int index = name.indexOf(".");
+        if (index >= 0) {
+            String objName = name.substring(0, index);
+            String fieldName = name.substring(index + 1);
+            index = fieldName.indexOf(".");
+            if (index >= 0) {
+                objName = fieldName.substring(0, index);
+                fieldName = fieldName.substring(index + 1);                
+            } 
+            objRef = objName;
+            return fieldName;
+        }
+        return name;
+    }
+    
     /**
      * @todo Document: Getter for ObjRef attribute of the FieldConfig object
      * @return the obj ref
