@@ -296,7 +296,8 @@ function searchRelationships() {
     
     // Get search criteria fieds value for Source domain
     var sourceqBuilder = document.getElementById("selectSourceQueryBuilder").value;
-    sourceDomainSearch["type"] = sourceqBuilder; // put search type.
+    var sourceSearchType = document.getElementById("select_source_searchtypes").value;
+    sourceDomainSearch["type"] = sourceSearchType; // put search type.
     var sourceDomainAttributes = [];
     for(i=0;i<selectSourceSearchFieldNames.length;i++){
         var sourceTempFieldName = selectSourceSearchFieldNames[i].domainFieldName;
@@ -312,7 +313,8 @@ function searchRelationships() {
     
     // Get search criteria fields value for Target domain
     var taragetqBuilder = document.getElementById("selectTargetQueryBuilder").value;
-    targetDomainSearch["type"] = taragetqBuilder; // put search type.
+    var targetSearchType = document.getElementById("select_target_searchtypes").value;
+    targetDomainSearch["type"] = targetSearchType; // put search type.
     var targetDomainAttributes = [];
     for(i=0;i<selectTargetSearchFieldNames.length;i++){
         
@@ -831,7 +833,8 @@ function addSourceDomainSearch() {
     var domainSearch = {name:selectedSourceDomain}; 
     var addSourceSearchFieldNames = document.getElementsByName('addSourceSearchFieldName');
     var qBuilder = document.getElementById("addSourceQueryBuilder").value;
-    domainSearch["type"] = qBuilder; // put search type.
+    var sourceSearchType = document.getElementById("add_source_criteria").value;
+    domainSearch["type"] = sourceSearchType; // put search type.
     var domainAttributes = [];
     for(i=0;i<addSourceSearchFieldNames.length;i++){
         var tempFieldName = addSourceSearchFieldNames[i].domainFieldName;
@@ -943,7 +946,8 @@ function addTargetDomainSearch() {
     var domainSearch = {name:selectedTargetDomain}; // need to add more parameters once done with search criteria section based on fieldconfig etc.,
     var addTargetSearchFieldNames = document.getElementsByName('addTargetSearchFieldName');
     var qBuilder = document.getElementById("addTargetQueryBuilder").value;
-    domainSearch["type"] = qBuilder;
+    var targetSearchType = document.getElementById("add_target_criteria").value;
+    domainSearch["type"] = targetSearchType;
     var domainAttributes = [];
     for(i=0;i<addTargetSearchFieldNames.length;i++){
         var tempFieldName = addTargetSearchFieldNames[i].domainFieldName;
