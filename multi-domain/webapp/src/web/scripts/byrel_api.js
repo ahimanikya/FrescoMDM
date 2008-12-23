@@ -536,7 +536,7 @@ function populateRelationshipDetails(relationshipId, indexNum) {
     var sourceDomain = cachedSearchResults[indexNum].sourceDomain;
     var targetDomain = cachedSearchResults[indexNum].targetDomain;
     var relationshipDefName = cachedSearchResults[indexNum].name;
-    
+
     var sourcePane = dijit.byId("sourceRecordDetailsTitlePane"); 
     var targetPane = dijit.byId("targetRecordDetailsTitlePane");
     if(cachedSearchResults != null && cachedSearchResults[indexNum]!= null) {
@@ -548,10 +548,12 @@ function populateRelationshipDetails(relationshipId, indexNum) {
     
         var relationshipRecordPane = dijit.byId("relationshipRecordDetailsPane"); 
         var strRecordPaneTitleHTML = "<table cellspacing='0' cellpadding='0'><tr><td>"+getMessageForI18N("relationship_Attributes")+getMessageForI18N("colon")+ " "
-        strRecordPaneTitleHTML += cachedSearchResults[indexNum].sourceHighLight;
-        strRecordPaneTitleHTML += " " + relationshipDef.name ;
-        strRecordPaneTitleHTML += "</td><td>" + getRelationshipDefDirectionIcon(relationshipDef.biDirection) + "</td><td>";
-        strRecordPaneTitleHTML += " " + cachedSearchResults[indexNum].targetHighLight;
+		if(relationshipDef!=null) {
+			strRecordPaneTitleHTML += cachedSearchResults[indexNum].sourceHighLight;
+			strRecordPaneTitleHTML += " " + relationshipDef.name ;
+			strRecordPaneTitleHTML += "</td><td>" + getRelationshipDefDirectionIcon(relationshipDef.biDirection) + "</td><td>";
+			strRecordPaneTitleHTML += " " + cachedSearchResults[indexNum].targetHighLight;
+		}
         strRecordPaneTitleHTML += "</td></tr></table>"
         relationshipRecordPane.attr("title", strRecordPaneTitleHTML);
     }
@@ -638,35 +640,36 @@ function populateRelationshipDetails_Callback (data) {
     // Populate relationship attributes.
     var relationshipDef = cachedRelationshipDefs[data.relationshipRecord.name];
 
-    
-    var startDate = getBoolean(relationshipDef.startDate);
-    var endDate = getBoolean(relationshipDef.endDate);
-    var purgeDate = getBoolean(relationshipDef.purgeDate);
-    var customAttributes = relationshipDef.extendedAttributes;
-    var recordCustomAttributes = data.relationshipRecord.attributes;
-    var blnShowEditAttributesSection = false;
-    
-    if(customAttributes != null && customAttributes.length > 0) {
-        createCustomAttributesSection ("editCustomAttributesTable", customAttributes, "edit_custom", true,false);
-        populateCustomAttributesValues (customAttributes, recordCustomAttributes, "edit_custom");
-        displayDiv("editCustomAttributesDiv", true);
-        blnShowEditAttributesSection = true;
-    } else {
-        displayDiv("editCustomAttributesDiv", false);
-    }
-    //data.relationshipRecord.endDate = "12/20/2008";
-    //data.relationshipRecord.purgeDate = "12/30/2008";
-    if(startDate==true || endDate==true || purgeDate == true ){ 
-        createPredefinedAttributesSection ("editPredefinedAttributesTable", relationshipDef,"edit_predefined", true);
-        populatePredefinedAttributesValues (relationshipDef, data.relationshipRecord, "edit_predefined");
-        displayDiv("editPredefinedAttributesDiv", true);
-        blnShowEditAttributesSection = true;
-    } else{
-        displayDiv("editPredefinedAttributesDiv", false);
-    }
-    
-    if(blnShowEditAttributesSection) displayDiv("editAttributesDiv", true);
-    else displayDiv("editAttributesDiv", false);
+    if(relationshipDef != null) {
+		var startDate = getBoolean(relationshipDef.startDate);
+		var endDate = getBoolean(relationshipDef.endDate);
+		var purgeDate = getBoolean(relationshipDef.purgeDate);
+		var customAttributes = relationshipDef.extendedAttributes;
+		var recordCustomAttributes = data.relationshipRecord.attributes;
+		var blnShowEditAttributesSection = false;
+		
+		if(customAttributes != null && customAttributes.length > 0) {
+			createCustomAttributesSection ("editCustomAttributesTable", customAttributes, "edit_custom", true,false);
+			populateCustomAttributesValues (customAttributes, recordCustomAttributes, "edit_custom");
+			displayDiv("editCustomAttributesDiv", true);
+			blnShowEditAttributesSection = true;
+		} else {
+			displayDiv("editCustomAttributesDiv", false);
+		}
+		//data.relationshipRecord.endDate = "12/20/2008";
+		//data.relationshipRecord.purgeDate = "12/30/2008";
+		if(startDate==true || endDate==true || purgeDate == true ){ 
+			createPredefinedAttributesSection ("editPredefinedAttributesTable", relationshipDef,"edit_predefined", true);
+			populatePredefinedAttributesValues (relationshipDef, data.relationshipRecord, "edit_predefined");
+			displayDiv("editPredefinedAttributesDiv", true);
+			blnShowEditAttributesSection = true;
+		} else{
+			displayDiv("editPredefinedAttributesDiv", false);
+		}
+		
+		if(blnShowEditAttributesSection) displayDiv("editAttributesDiv", true);
+		else displayDiv("editAttributesDiv", false);
+	}
     //alert(document.getElementById("edit_salary"));
     return;
 }
