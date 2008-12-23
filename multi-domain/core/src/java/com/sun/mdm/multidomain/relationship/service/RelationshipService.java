@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.sql.Connection;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -40,8 +39,7 @@ import com.sun.mdm.multidomain.relationship.ops.dao.RelationshipEavDao;
 import com.sun.mdm.multidomain.relationship.ops.impl.RelationshipDaoImpl;
 import com.sun.mdm.multidomain.relationship.ops.dao.RelationshipDao;
 import com.sun.mdm.multidomain.relationship.ops.dto.RelationshipDto;
-import com.sun.mdm.multidomain.relationship.ops.dto.RelationshipEavDto;
-import com.sun.mdm.multidomain.relationship.ops.impl.RelationshipEavDaoImpl;
+
 /**
  *
  * @author davidp
@@ -52,8 +50,6 @@ public class RelationshipService implements Serializable {
     private RelationshipDao mRelDef = null;
     private RelationshipEavDao mRelEav = null;
     private Connection mConn = null;
-    private Map<String, Set<String>> sourceMap = new HashMap<String, Set<String>>();
-    private Map<String, Set<String>> targetMap = new HashMap<String, Set<String>>();
 
     /**
      * Method 'RelationshipService'
@@ -101,13 +97,6 @@ public class RelationshipService implements Serializable {
             Logger.getLogger(RelationshipService.class.getName()).log(Level.SEVERE, null, ex);
             throw ex;
         }
-
-        /* Relationship Extend Attributes Values */
-        RelationshipEavDto attDto = new RelationshipEavDto();
-        attDto.setRelationshipId(relID);
-        attDto.setAttributes(rel.getAttributes());
-        RelationshipEavDaoImpl relEavDao = new RelationshipEavDaoImpl(mConn);
-        relEavDao.insert(attDto);
         return relID;
     }
 
@@ -115,19 +104,16 @@ public class RelationshipService implements Serializable {
      * Method 'delete'
      *
      */
-    public void delete(Relationship rel) {
+    public void delete(Relationship rel) throws RelationshipDaoException {
+        new RelationshipDaoImpl(mConn).delete(rel.getRelationshipId());
     }
 
     /**
      * Method 'update'
      *
      */
-    public void update(Relationship rel) throws RelationshipDaoException {
-        /* Relationship object */
-        RelationshipDto dto = new RelationshipDto();
-        copyToRelDto(rel, dto);
-        RelationshipDaoImpl dao = new RelationshipDaoImpl();
-    //dao.update(dto);
+    public int update(Relationship rel) throws RelationshipDaoException {
+        return new RelationshipDaoImpl(mConn).update(rel);
     }
 
     /**
