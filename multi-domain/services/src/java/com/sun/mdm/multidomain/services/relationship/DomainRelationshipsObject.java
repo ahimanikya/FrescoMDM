@@ -61,8 +61,15 @@ public class DomainRelationshipsObject {
         return relationshipsObjects;
     }
     
-    public void setRelationshipsObject(List<RelationshipsObject> relationshipsObjects){        
+    public void setRelationshipsObjects(List<RelationshipsObject> relationshipsObjects){        
         this.relationshipsObjects = relationshipsObjects;
+    }
+
+    public void setRelationshipsObject(RelationshipsObject relationshipsObject){        
+        if (relationshipsObjects == null) {
+            relationshipsObjects = new ArrayList<RelationshipsObject>();
+        }
+        relationshipsObjects.add(relationshipsObject);
     }
     
     public void addRelationshipView(RelationshipDefView relationshipDef, RelationshipView relationship) {

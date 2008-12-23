@@ -43,7 +43,7 @@ public class RelationshipsObject {
        this.relationshipDefView = relationshipDefView;
    }
       
-   public void setRelationshipDefinitionView(RelationshipDefView relationshipDefView) {
+   public void setRelationshipDefView(RelationshipDefView relationshipDefView) {
         this.relationshipDefView = relationshipDefView;
    }
    
