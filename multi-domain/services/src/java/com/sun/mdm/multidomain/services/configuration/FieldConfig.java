@@ -461,7 +461,11 @@ public class FieldConfig implements java.io.Serializable, Comparable {
                 objName = fieldName.substring(0, index);
                 fieldName = fieldName.substring(index + 1);                
             } 
-            objRef = objName;
+            if (objName.indexOf("[*]") >=0 ) {
+                objRef = objName.substring(0, objName.indexOf("[*]"));
+            } else {
+                objRef = objName;
+            }
             return fieldName;
         }
         return name;
