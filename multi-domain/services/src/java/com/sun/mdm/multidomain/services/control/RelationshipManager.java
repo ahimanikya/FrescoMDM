@@ -36,8 +36,6 @@ import com.sun.mdm.index.master.search.enterprise.EOSearchOptions;
 
 import com.sun.mdm.multidomain.ejb.service.MultiDomainMetaService;
 import com.sun.mdm.multidomain.ejb.service.MultiDomainService;
-import com.sun.mdm.multidomain.attributes.Attribute;
-import com.sun.mdm.multidomain.attributes.AttributeType;
 import com.sun.mdm.multidomain.relationship.RelationshipDef;
 import com.sun.mdm.multidomain.relationship.Relationship;    
 import com.sun.mdm.multidomain.relationship.MultiObject;
@@ -49,9 +47,10 @@ import com.sun.mdm.multidomain.query.MultiDomainSearchOptions.DomainSearchOption
 import com.sun.mdm.multidomain.services.core.ViewBuilder;
 import com.sun.mdm.multidomain.services.core.QueryBuilder;
 import com.sun.mdm.multidomain.services.model.DomainSearch;
-import com.sun.mdm.multidomain.services.model.AttributeDefExt;
 import com.sun.mdm.multidomain.services.relationship.RelationshipSearch;
+import com.sun.mdm.multidomain.services.relationship.RelationshipsObject;
 import com.sun.mdm.multidomain.services.relationship.RelationshipDefExt;
+import com.sun.mdm.multidomain.services.relationship.RelationshipDefView;
 import com.sun.mdm.multidomain.services.model.ObjectView;
 import com.sun.mdm.multidomain.services.model.ObjectRecord;
 import com.sun.mdm.multidomain.services.relationship.RelationshipView;
@@ -299,6 +298,18 @@ public class RelationshipManager {
     public DomainRelationshipsObject searchRelationshipsByRecord(DomainSearch domainSearch)
         throws ServiceException {
         DomainRelationshipsObject domainRelationshipsObject  = new DomainRelationshipsObject();
+        
+        //TDB
+        domainSearch = new DomainSearch();
+        domainSearch.setName("Person");
+        domainSearch.setType("Advanced Person Lookup (Alpha)");
+        domainSearch.setAttributeValue("Person.FirstName", "George");
+        domainSearch.setAttributeValue("Person.LastName", "Denise");
+        domainSearch.setAttributeValue("Person.SSN", "888888888");
+        domainSearch.setAttributeValue("Person.Address.AddressLine1", "100 Foo Avenue");
+        domainSearch.setAttributeValue("Person.Address.City", "Foo");
+        
+        if(!TBD) {
         try {
             DomainSearchOption mdSearchOption = QueryBuilder.buildMultiDomainSearchOption(domainSearch);            
             MultiDomainSearchOptions mdSearchOptions = new MultiDomainSearchOptions();            
@@ -313,6 +324,83 @@ public class RelationshipManager {
         } catch(UserException uex) {
             throw new ServiceException(uex);
         }        
+        }
+        
+        //TBD
+        domainRelationshipsObject.setDomain("Person");
+        
+        ObjectView personView = new ObjectView();
+        personView.setName("Person");
+        personView.setHighLight("John McCain");
+        personView.setEUID("0000000011");
+        domainRelationshipsObject.setPrimaryObject(personView);
+                        
+        RelationshipsObject relsObject1 = new RelationshipsObject();        
+        RelationshipDefView relDef1 = new RelationshipDefView();
+        relDef1.setName("EmployedBy");
+        relDef1.setSourceDomain("Person");
+        relDef1.setTargetDomain("Company");
+        relDef1.setBiDirection(true) ;
+        relDef1.setId("01");              
+        relsObject1.setRelationshipDefView(relDef1);        
+        
+        RelationshipView rel1 = new RelationshipView();
+        rel1.setId("01");
+        rel1.setName("EmployedBy");
+        rel1.setSourceDomain("Person");
+        rel1.setTargetDomain("Company");
+        rel1.setSourceEUID("0000000001");
+        rel1.setTargetEUID("0000000002");
+        rel1.setSourceHighLight("John McCain");
+        rel1.setTargetHighLight("Sun Microsystems Java");        
+        relsObject1.setRelationshipView(rel1);
+
+        RelationshipView rel2 = new RelationshipView();
+        rel2.setId("01");
+        rel2.setName("EmployedBy");
+        rel2.setSourceDomain("Person");
+        rel2.setTargetDomain("Company");
+        rel2.setSourceEUID("0000000001");
+        rel2.setTargetEUID("0000000002");
+        rel2.setSourceHighLight("John McCain");
+        rel2.setTargetHighLight("Sun Microsystems Java");        
+        relsObject1.setRelationshipView(rel2);
+        
+        domainRelationshipsObject.setRelationshipsObject(relsObject1);
+        
+        RelationshipsObject relsObject2 = new RelationshipsObject();        
+        RelationshipDefView relDef2 = new RelationshipDefView();
+        relDef2.setName("EmployedBy");
+        relDef2.setSourceDomain("Person");
+        relDef2.setTargetDomain("Company");
+        relDef2.setBiDirection(true) ;
+        relDef2.setId("01");              
+        relsObject2.setRelationshipDefView(relDef2);        
+        
+        rel1 = new RelationshipView();
+        rel1.setId("01");
+        rel1.setName("EmployedBy");
+        rel1.setSourceDomain("Person");
+        rel1.setTargetDomain("Company");
+        rel1.setSourceEUID("0000000001");
+        rel1.setTargetEUID("0000000002");
+        rel1.setSourceHighLight("John McCain");
+        rel1.setTargetHighLight("Sun Microsystems Java");        
+        relsObject2.setRelationshipView(rel1);
+
+        rel2 = new RelationshipView();
+        rel2.setId("01");
+        rel2.setName("EmployedBy");
+        rel2.setSourceDomain("Person");
+        rel2.setTargetDomain("Company");
+        rel2.setSourceEUID("0000000001");
+        rel2.setTargetEUID("0000000002");
+        rel2.setSourceHighLight("John McCain");
+        rel2.setTargetHighLight("Sun Microsystems Java");        
+        relsObject2.setRelationshipView(rel2);
+        
+        domainRelationshipsObject.setRelationshipsObject(relsObject2);
+                
         return domainRelationshipsObject;
     }    
     
