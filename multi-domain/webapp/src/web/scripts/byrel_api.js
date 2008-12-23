@@ -280,7 +280,7 @@ function searchRelationships() {
       var byRangeValue = "";
       if(byRangeObj != null){
           byRangeName = byRangeObj.name;
-          byRangevalue = byRangeObj.value;
+          byRangeValue = byRangeObj.value;
           //alert("byRangeName---"+byRangeName +"  byRangeValue----"+byRangeValue);
           if( ! isValidCustomAttribute( attributeType, byRangeObj.value) ) {
             alert(byRangeValue + " " + getMessageForI18N("isnotavalidvaluefor")+ " " + byRangeName + " " + getMessageForI18N("attribute")+ " " +getMessageForI18N("attributeTypeFor")+ " " +byRangeValue + " " +getMessageForI18N("is")+ " " +"'"+attributeType+"'");
@@ -301,9 +301,11 @@ function searchRelationships() {
     for(i=0;i<selectSourceSearchFieldNames.length;i++){
         var sourceTempFieldName = selectSourceSearchFieldNames[i].domainFieldName;
         var sourceTempFieldValue = selectSourceSearchFieldNames[i].value ;
-        var tempMap = {} ;
-        tempMap[sourceTempFieldName] = sourceTempFieldValue;
-        sourceDomainAttributes.push( tempMap );
+        var sourceTempMap = {} ;
+        //tempMap[sourceTempFieldName] = sourceTempFieldValue;
+        sourceTempMap["name"]= sourceTempFieldName;
+        sourceTempMap["value"]= sourceTempFieldValue;
+        sourceDomainAttributes.push( sourceTempMap );
         if(!isEmpty(sourceTempFieldValue)) isSelectSourceDomainCriteriaApplied = true;
     }
     sourceDomainSearch.attributes = sourceDomainAttributes;
@@ -317,7 +319,9 @@ function searchRelationships() {
         var targetTempFieldName = selectTargetSearchFieldNames[i].domainFieldName;
         var targetTempFieldValue = selectTargetSearchFieldNames[i].value ;
         var targetTempMap = {} ;
-        tempMap[targetTempFieldName] = targetTempFieldValue;
+        //tempMap[targetTempFieldName] = targetTempFieldValue;
+        targetTempMap["name"]= targetTempFieldName;
+        targetTempMap["value"]= targetTempFieldValue;
         targetDomainAttributes.push( targetTempMap );
         if(!isEmpty(targetTempFieldValue)) isSelectTargetDomainCriteriaApplied = true;
     }
@@ -337,7 +341,8 @@ function searchRelationships() {
           return;
       }
       if(!isEmpty(CustomAttributeValue)) isSelectRelationshipDefAttributeCriteriaApplied = true;
-      searchCustomAttributes.push( {CustomAttributeName : CustomAttributeValue} );
+      //searchCustomAttributes.push( {CustomAttributeName : CustomAttributeValue} );
+      searchCustomAttributes.push( {"name":CustomAttributeName, "value":CustomAttributeValue} );
      }
    var startDateField = document.getElementById('select_predefined_startDate');
    var endDateField = document.getElementById('select_predefined_endDate');
@@ -832,8 +837,9 @@ function addSourceDomainSearch() {
         var tempFieldName = addSourceSearchFieldNames[i].domainFieldName;
         var tempFieldValue = addSourceSearchFieldNames[i].value ;
         var tempMap = {} ;
-        tempMap[tempFieldName] = tempFieldValue;
-        //alert(tempFieldName);
+        //tempMap[tempFieldName] = tempFieldValue;
+        tempMap["name"] = tempFieldName;
+        tempMap["value"] = tempFieldValue;
         domainAttributes.push( tempMap );
     }
     domainSearch.attributes = domainAttributes;
@@ -943,8 +949,9 @@ function addTargetDomainSearch() {
         var tempFieldName = addTargetSearchFieldNames[i].domainFieldName;
         var tempFieldValue = addTargetSearchFieldNames[i].value ;
         var tempMap = {} ;
-        tempMap[tempFieldName] = tempFieldValue;
-        //alert(tempFieldName);
+        //tempMap[tempFieldName] = tempFieldValue;
+        tempMap["name"] = tempFieldName;
+        tempMap["value"] = tempFieldValue;
         domainAttributes.push( tempMap );
     }
     domainSearch.attributes = domainAttributes;
@@ -1073,8 +1080,8 @@ function ByRelAddRelationship(){
         attributeId.focus();
         return;
     }
-
-    relationshipCustomAttributes.push( {attributeName : attributeValue} );
+    relationshipCustomAttributes.push( {"name":attributeName, "value":attributeValue} );
+    
    }
 
    if(startDateField != null)
@@ -1135,7 +1142,7 @@ function ByRelAddRelationship(){
               newRelationshipRecord.startDate = startDate;
               newRelationshipRecord.endDate = endDate;
               newRelationshipRecord.purgeDate = purgeDate;
-              newRelationshipRecord.attributes = relationshipCustomAttributes ; 
+              newRelationshipRecord.attributes = relationshipCustomAttributes ;
               RelationshipHandler.addRelationship(newRelationshipRecord,addRelationshipCB);
             }    
           }     
@@ -1199,7 +1206,8 @@ function updateRelationship () {
           attributeId.focus();
           return;
       }
-      updateRelationshipCustomAttributes.push( {attributeName : attributeValue} );
+      //updateRelationshipCustomAttributes.push( {attributeName : attributeValue} );
+      updateRelationshipCustomAttributes.push( {"name":attributeName, "value":attributeValue} );
      }
      
     if(startDateField != null)
