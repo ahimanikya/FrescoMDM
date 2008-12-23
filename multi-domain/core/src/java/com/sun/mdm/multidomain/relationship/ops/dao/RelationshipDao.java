@@ -9,7 +9,6 @@
 package com.sun.mdm.multidomain.relationship.ops.dao;
 
 import com.sun.mdm.multidomain.relationship.Relationship;
-import com.sun.mdm.multidomain.relationship.ops.dto.RelationshipDto;
 import com.sun.mdm.multidomain.relationship.ops.exceptions.*;
 
 public interface RelationshipDao
@@ -22,7 +21,7 @@ public interface RelationshipDao
 	/** 
 	 * Updates a single row in the RelationshipDto table.
 	 */
-	public void update(long pk, RelationshipDto dto) throws RelationshipDaoException;
+	public int update(Relationship rel) throws RelationshipDaoException;
 
 	/** 
 	 * Deletes a single row in the RelationshipDto table.
