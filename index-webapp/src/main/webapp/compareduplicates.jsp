@@ -260,6 +260,7 @@ ajaxURL('/<%=URI%>/ajaxservices/searchduplicatesservice.jsf?compareEuids=true&ra
              </td></tr></table>
   			 <table width="100%">
 			        <tr><td><div id="mainDupSource" class="compareResults"></div></td></tr>
+			        <tr><td><div id="checkLatest"></div><!-- Fix for 671089--></td></tr>
  			 </table>
              </div> 
               <%if(request.getParameter("euids") != null) {%>

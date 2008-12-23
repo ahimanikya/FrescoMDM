@@ -419,6 +419,7 @@ if(session!=null){
                  </table>
              </form>
          </div>
+         <div id="checkLatest"></div><!-- Fix for 671089-->
 
         </body>
         <%

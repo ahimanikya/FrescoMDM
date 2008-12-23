@@ -1932,7 +1932,6 @@ FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(child
  			   <%} %>
 
 				<%} //isCheckLatest){ //Fix for 671089%>
-   <div id="checkLatest"></div>
  <%}%> <!-- if session is active -->
 
 </html>

@@ -1148,7 +1148,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
 												     if(ops.isTransLog_SearchView()){
 												  %>
                                                       <td valign="top"><!-- Fix for 671089-->
-                                                          <a class="viewbtn"   title="<h:outputText value="#{msgs.view_history_text}"/>" href="javascript:ajaxURL('/<%=URI%>/ajaxservices/euiddetailsservice.jsf?'+'&rand=<%=rand%>&euid=<%=euid%>&checkLatest=true&historysize=<%=eoHistory.size()%>&cnt=<%=countEnt%>&objectslength=<%=eoArrayListObjects.length%>&sourcesize=<%=eoSources.size()%>&sessionrevnumber=<%=sessionRevNumber%>','checkLatest','');" >  
+                                                          <a class="viewbtn" href="javascript:void(0)"  title="<h:outputText value="#{msgs.view_history_text}"/>" onclick="javascript:ajaxURL('/<%=URI%>/ajaxservices/euiddetailsservice.jsf?'+'&rand=<%=rand%>&euid=<%=euid%>&checkLatest=true&historysize=<%=eoHistory.size()%>&cnt=<%=countEnt%>&objectslength=<%=eoArrayListObjects.length%>&sourcesize=<%=eoSources.size()%>&sessionrevnumber=<%=sessionRevNumber%>','checkLatest','');" >  
                                                               <h:outputText value="#{msgs.view_history_text}"/>
                                                           </a>
                                                       </td>    
@@ -1462,7 +1462,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
 						 <tr><td>
 							  <script>
 								 window.location="#top";
-								 document.getElementById("activemessageDiv").innerHTML="<%=bundle.getString("concurrent_mod_text")%>";
+								 document.getElementById("activemessageDiv").innerHTML="<%=euidReq%> <%=bundle.getString("concurrent_mod_text")%>";
 								 document.getElementById('activeDiv').style.visibility='visible';
 								 document.getElementById('activeDiv').style.display='block';
 								 popUrl = '/<%=URI%>/euiddetails.jsf?euid=<%=revEuid%>';
@@ -1473,7 +1473,6 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
  			   <%} %>
 
    <%}%>
-   <div id="checkLatest"></div><!-- Fix for 671089-->
  <%}%> <!-- if session is active -->
 
 
