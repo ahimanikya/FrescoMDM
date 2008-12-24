@@ -4,10 +4,6 @@
     Author     : Harish
 --%>
 <%@ include file="/WEB-INF/jsp/include.jsp" %>
-<%
-    String dateFormat =  (String)session.getAttribute("mdwm_date_format");
-    String dateInputMask = (String)session.getAttribute("mdwm_date_input_mask");
-%>
 <html>
 <head>
     <title><f:message key="manage_text" /></title>
@@ -52,6 +48,7 @@
 
 
         dojo.require("dijit.Tree");
+		dojo.require("dijit.TreeCustom");
     </script>
     <script type="text/javascript">
         dwr.engine.setAsync(true);
@@ -60,9 +57,6 @@
         function exceptionHandler(message) {
             alert("invocation exception: " + message);
         }
-        
-        setDateFormat("<%=dateFormat%>");
-        setDateInputMask("<%=dateInputMask%>");
     </script>
 </head>
 <body class="mdwm">
