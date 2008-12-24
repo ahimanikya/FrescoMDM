@@ -289,11 +289,10 @@ function searchRelationships() {
           }
       }         
     }
-     
-    var sourceDomainSearch = {name: sourceDomain}; 
-    var targetDomainSearch = {name: targetDomain};
-    var relationshipDefSearch = {name: relationshipDef, sourceDomain: sourceDomain, targetDomain: targetDomain};
     
+    var sourceDomainSearch = {"name":sourceDomain}; 
+    var targetDomainSearch = {"name":targetDomain}; 
+    var relationshipDefSearch = {"name": relationshipDef, "sourceDomain": sourceDomain, "targetDomain": targetDomain};
     // Get search criteria fieds value for Source domain
     var sourceqBuilder = document.getElementById("selectSourceQueryBuilder").value;
     var sourceSearchType = document.getElementById("select_source_searchtypes").value;
@@ -365,11 +364,10 @@ function searchRelationships() {
            purgeDate =  document.getElementById('select_predefined_purgeDate').value;
            if(!isEmpty(purgeDate)) isSelectRelationshipDefAttributeCriteriaApplied = true;
      }
-    relationshipDefSearch.startDate =startDate;
+    relationshipDefSearch.startDate = startDate;
     relationshipDefSearch.endDate = endDate;
     relationshipDefSearch.purgeDate = purgeDate;
     relationshipDefSearch.attributes = searchCustomAttributes;
-
     hideByRelSelectDialog(); // hide the select dialog...
     
     displayDiv("selectSourceDomainFilterImg", isSelectSourceDomainCriteriaApplied);
@@ -402,7 +400,6 @@ function searchRelationships() {
     document.getElementById("selectedSourceDomain").innerHTML = sourceDomain;
     document.getElementById("selectedRelationshipDef").innerHTML = relationshipDef;
     document.getElementById("selectedTargetDomain").innerHTML = targetDomain;
-    
    RelationshipHandler.searchRelationships (sourceDomainSearch, targetDomainSearch, relationshipDefSearch, searchResultsCallback);
 
 }
@@ -1060,6 +1057,7 @@ function ByRelAddRelationship(){
    var RelationshipDefName = currentSelectedRelationshipDef;
    var relationshipCustomAttributes = [];
    var relationshipDef = cachedRelationshipDefs[RelationshipDefName];
+   var relationhsipDefId = relationshipDef.id;
     
    var startDateRequireField = (getBoolean(relationshipDef.startDateRequired)); 
    var endDateRequireField = (getBoolean(relationshipDef.endDateRequired)); 
@@ -1138,6 +1136,7 @@ function ByRelAddRelationship(){
               var targetRecordEUID = targetCheckedArray[j].value;
               var newRelationshipRecord = {};
               newRelationshipRecord.name = RelationshipDefName;
+              newRelationshipRecord.id = relationhsipDefId;                 
               newRelationshipRecord.sourceDomain = SourceDomain;
               newRelationshipRecord.sourceEUID = sourceRecordEUID;
               newRelationshipRecord.targetDomain = TargetDomain;
@@ -1249,7 +1248,7 @@ function updateRelationship () {
      }
     // Make DWR API Call to updateRelationship
       updateRelaltionshipRecord.name = relationshipDef;
-      updateRelaltionshipRecord.id = relationshipRecordId; 
+      updateRelaltionshipRecord.id = relationshipRecordId;
       updateRelaltionshipRecord.sourceDomain = sourceDomain;
       updateRelaltionshipRecord.sourceEUID = sourceEUID;
       updateRelaltionshipRecord.targetDomain = targetDomain;
@@ -1258,8 +1257,7 @@ function updateRelationship () {
       updateRelaltionshipRecord.startDate = startDate;
       updateRelaltionshipRecord.endDate = endDate;
       updateRelaltionshipRecord.purgeDate = purgeDate;
-      updateRelaltionshipRecord.attributes = updateRelationshipCustomAttributes ;
-
+      updateRelaltionshipRecord.attributes = updateRelationshipCustomAttributes;
       RelationshipHandler.updateRelationship(updateRelaltionshipRecord,updateRelationshipCB);
 
 }
