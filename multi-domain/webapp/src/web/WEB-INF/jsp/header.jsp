@@ -18,7 +18,7 @@
     String dateFormat =  (String)session.getAttribute("mdwm_date_format");
     String dateInputMask = (String)session.getAttribute("mdwm_date_input_mask");
 %>
-
+<script type="text/javascript" src="scripts/mdwm.js" ></script>
 <script>
 setMDWMDateFormat("<%=dateFormat%>");
 setMDWMDateInputMask("<%=dateInputMask%>");

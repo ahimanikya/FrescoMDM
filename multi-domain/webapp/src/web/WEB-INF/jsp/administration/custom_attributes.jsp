@@ -11,7 +11,6 @@ String prefixId = (String) request.getParameter("prefix");
 <script>
     var <%=prefixId%>_attributesArray = new Array(); // array for holding attributes list
     
-    // alert("dateFormat="+<%=dateFormat%>+" dateInputMask="+<%=dateInputMask%>); 
 </script>
 <div dojoType="dijit.layout.ContentPane" class="InnerBox" hasShadow="true">
     <div class="TitleBar"><f:message key="define_custom_attribute_text" /></div>

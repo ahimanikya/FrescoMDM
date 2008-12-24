@@ -10,5 +10,6 @@
 <%@ taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="h" uri="http://java.sun.com/jsf/html" %>
 
+
 <!-- For i18n: Load messages to be used in javascript -->
 <%@ include file="/WEB-INF/jsp/load_js_messages.jsp" %>
