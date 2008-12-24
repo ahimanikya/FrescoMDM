@@ -37,10 +37,11 @@ public class SelectBuilder extends AbstractBuilder {
     private String[] joinTables = new String[0];
     private Criteria joinConditions = null;
     private JoinCriteria.JOIN_TYPE joinType = null;
+    private boolean distinct = false;
 
     @Override
     public String getCommand() {
-        return "SELECT ";
+        return distinct ? "SELECT DISTINCT " : "SELECT ";
     }
 
     @Override
@@ -131,5 +132,13 @@ public class SelectBuilder extends AbstractBuilder {
         this.joinTables = joinTables;
         this.joinConditions = joinConditions;
         this.joinType = joinType;
+    }
+
+    public void setDistinct(boolean distinct) {
+        this.distinct = distinct;
+    }
+
+    public boolean getDistinct() {
+        return this.distinct;
     }
 }

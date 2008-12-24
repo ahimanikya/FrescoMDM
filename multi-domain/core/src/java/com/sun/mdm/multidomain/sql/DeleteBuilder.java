@@ -31,7 +31,6 @@ import java.util.List;
  */
 public class DeleteBuilder extends AbstractBuilder {
 
-    private ArrayList<String> criteriaList = new ArrayList<String>();
     private final List<Criteria> criteria = new ArrayList<Criteria>();
 
     @Override

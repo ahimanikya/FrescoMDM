@@ -27,11 +27,7 @@ package com.sun.mdm.multidomain.sql;
  * @author David Peh
  */
 public class OR extends BaseLogicCriteria {
-/*
-    public OR(Criteria left, Criteria right) {
-        super("OR", left, right);
-    }
-*/
+
     public OR(Criteria... expressions) {
         super("OR", expressions);
     }
