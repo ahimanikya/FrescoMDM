@@ -181,14 +181,11 @@ function createMainTree () {
         id: "mainTree",
         model: newModel,
         customOnClick: mainTreeClicked,
-		onClose: mainTreeNodeClosed,
+		//onClose: mainTreeNodeClosed,
         getIconClass: mainTreeGetIconClass
     }, document.createElement("div"));
     mainTreeObj.startup();
     dojo.byId("mainTreeContainer").appendChild(mainTreeObj.domNode);
-}
-// OnBlur event for main tree: Doing nothing for now.
-function mainTreeOnBlur(){
 }
 
 // function to delete items from main tree store.
@@ -203,10 +200,39 @@ var isDeleteButtonEnabled = false;
 var targetDomain = null, addToRelationship = null;
 
 // Main tree click event is captured by this function
-function mainTreeClicked(item, node) {
+function mainTreeClicked(item, node, allSelectedItems ) {
+	//alert('allSelectedItems ' + allSelectedItems.length);
 	isAddButtonEnabled = false, isDeleteButtonEnabled = false;
 	targetDomain = null, addToRelationship = null;
-
+	
+	for(i=0; i<allSelectedItems.length; i++) {
+		var tempItem = allSelectedItems[i];
+		
+		var itemType = mainTree_Store.getValue(tempItem, "type");
+		var itemName = mainTree_Store.getValue(tempItem, "name");	
+		//alert(itemType + " : " + itemName);
+		
+		switch (itemType) {
+			case item_types.DOMAIN:
+				if(itemName == byRecord_CurrentSelected_Domain) {
+					continue;
+				}
+				//alert("its a domain ");
+				break;
+			case item_types.RELATIONSHIP:
+				//alert("its a relationship");
+				break;
+			case item_types.RECORD:
+				var itemEUID = mainTree_Store.getValue(item, "EUID");
+				if(itemEUID == byRecord_CurrentSelected_EUID) 
+					continue;
+				//alert("its a record");
+				break;
+		}
+	}
+	
+	return;
+	
 	var itemType = mainTree_Store.getValue(item, "type");
 	var itemName = mainTree_Store.getValue(item, "name");
 
@@ -217,11 +243,13 @@ function mainTreeClicked(item, node) {
 			targetDomain = itemName;
 			addToRelationship = mainTree_Store.getValue(item, "underRelationship");
 		}
+
 	} else if(itemType == item_types.RELATIONSHIP) {
 		isAddButtonEnabled = true;
 		isDeleteButtonEnabled = true;
 		targetDomain = mainTree_Store.getValue(item, "otherDomain");
 		addToRelationship = itemName;
+
 	} else  if(itemType == item_types.RECORD) {
 		var itemEUID = mainTree_Store.getValue(item, "EUID");
 		if(itemEUID != byRecord_CurrentSelected_EUID) {
