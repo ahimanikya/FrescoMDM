@@ -177,13 +177,12 @@ function createMainTree () {
     });
     var mainTreeObj = dijit.byId("mainTree");
     if (dijit.byId("mainTree")) {dijit.byId("mainTree").destroy()}
-    mainTreeObj = new dijit.Tree({
+    mainTreeObj = new dijit.TreeCustom({
         id: "mainTree",
         model: newModel,
-        onClick: mainTreeClicked,
+        customOnClick: mainTreeClicked,
 		onClose: mainTreeNodeClosed,
-        getIconClass: mainTreeGetIconClass,
-		_onBlur:mainTreeOnBlur
+        getIconClass: mainTreeGetIconClass
     }, document.createElement("div"));
     mainTreeObj.startup();
     dojo.byId("mainTreeContainer").appendChild(mainTreeObj.domNode);
