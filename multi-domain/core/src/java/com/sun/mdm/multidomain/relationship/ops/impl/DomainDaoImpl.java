@@ -42,7 +42,7 @@ import java.util.ArrayList;
 
 public class DomainDaoImpl extends AbstractDAO implements DomainDao {
 
-    protected Connection mConn;
+    private Connection mConn;
     protected int maxRows;
     private long mPrimaryKey = 0;
 
