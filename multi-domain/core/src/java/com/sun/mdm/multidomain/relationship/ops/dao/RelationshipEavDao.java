@@ -36,20 +36,11 @@ public interface RelationshipEavDao {
     /**
      * Updates a single row in the relationship_eav table.
      */
-    public void update(long pk, RelationshipEavDto dto) throws RelationshipEavDaoException;
+    public int update(RelationshipEavDto dto) throws RelationshipEavDaoException;
 
     /**
      * Deletes a single row in the relationship_eav table.
      */
     public void delete(long pk) throws RelationshipEavDaoException;
 
-    /**
-     * Sets the value of maxRows
-     */
-    public void setMaxRows(int maxRows);
-
-    /**
-     * Gets the value of maxRows
-     */
-    public int getMaxRows();
 }
