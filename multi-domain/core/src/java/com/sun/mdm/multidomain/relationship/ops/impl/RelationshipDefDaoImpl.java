@@ -56,7 +56,7 @@ import static com.sun.mdm.multidomain.sql.DBSchema.*;
  */
 public class RelationshipDefDaoImpl extends AbstractDAO implements RelationshipDefDao {
 
-    protected Connection userConn;
+    private Connection userConn;
     private long mPrimaryKey = 0;
     private int maxRows;
 
@@ -85,12 +85,12 @@ public class RelationshipDefDaoImpl extends AbstractDAO implements RelationshipD
         ResultSet rs = null;
         try {
             // Build INSERT SQL
-            InsertBuilder builder = new InsertBuilder();
-            builder.setTable(RELATIONSHIP_DEF.getTableName());
+            InsertBuilder insert = new InsertBuilder();
+            insert.setTable(RELATIONSHIP_DEF.getTableName());
             for (RELATIONSHIP_DEF rel : RELATIONSHIP_DEF.values()) {
-                builder.addColumns(rel.columnName);
+                insert.addColumns(rel.columnName);
             }
-            String sqlStr = SQLBuilder.buildSQL(builder);
+            String sqlStr = SQLBuilder.buildSQL(insert);
             stmt = userConn.prepareStatement(sqlStr, Statement.RETURN_GENERATED_KEYS);
             stmt.setNull(RELATIONSHIP_DEF.RELATIONSHIP_DEF_ID.ordinal() + 1, java.sql.Types.NULL);
             stmt.setString(RELATIONSHIP_DEF.RELATIONSHIP_NAME.ordinal() + 1, relDef.getName());
@@ -147,17 +147,16 @@ public class RelationshipDefDaoImpl extends AbstractDAO implements RelationshipD
 
         try {
 
-            UpdateBuilder builder = new UpdateBuilder();
-            builder.setTable(RELATIONSHIP_DEF.getTableName());
+            UpdateBuilder update = new UpdateBuilder();
+            update.setTable(RELATIONSHIP_DEF.getTableName());
             for (RELATIONSHIP_DEF rel : RELATIONSHIP_DEF.values()) {
                 if (rel.columnName.equalsIgnoreCase(RELATIONSHIP_DEF.getPKColumName())) {
-
-                    builder.addCriteria(new Parameter(rel.columnName));
+                    update.addCriteria(new Parameter(rel.columnName));
                 } else {
-                    builder.addColumns(rel.columnName);
+                    update.addColumns(rel.columnName);
                 }
             }
-            String sqlStr = SQLBuilder.buildSQL(builder);
+            String sqlStr = SQLBuilder.buildSQL(update);
             stmt = userConn.prepareStatement(sqlStr);
 
             int index = 1;
@@ -211,24 +210,17 @@ public class RelationshipDefDaoImpl extends AbstractDAO implements RelationshipD
         PreparedStatement stmt = null;
 
         try {
-            // Build DELELE SQL for RELATIONSHIP_EA table
-            DeleteBuilder eaDelBld = new DeleteBuilder();
-            eaDelBld.setTable(RELATIONSHIP_EA.getTableName());
-            Criteria c1 = new Parameter(RELATIONSHIP_EA.RELATIONSHIP_DEF_ID.columnName);
-            eaDelBld.addCriteria(c1);
-            String sqlStr = SQLBuilder.buildSQL(eaDelBld);
+            // Delete the extend attributes
+            new RelationshipEaDaoImpl(userConn).delete(relDefId);
+
+            // Build DELETE SQL for RELATIONSHIP_DEF table
+            DeleteBuilder delete = new DeleteBuilder();
+            delete.setTable(RELATIONSHIP_DEF.getTableName());
+            delete.addCriteria(new Parameter(RELATIONSHIP_DEF.getPKColumName()));
+            String sqlStr = SQLBuilder.buildSQL(delete);
             stmt = userConn.prepareStatement(sqlStr);
             stmt.setLong(1, relDefId);
             int rows = stmt.executeUpdate();
-
-            // Build DELETE SQL for RELATIONSHIP_DEF table
-            DeleteBuilder relDelBld = new DeleteBuilder();
-            relDelBld.setTable(RELATIONSHIP_DEF.getTableName());
-            relDelBld.addCriteria(new Parameter(RELATIONSHIP_DEF.getPKColumName()));
-            sqlStr = SQLBuilder.buildSQL(relDelBld);
-            stmt = userConn.prepareStatement(sqlStr);
-            stmt.setLong(1, relDefId);
-            rows = stmt.executeUpdate();
         } catch (Exception _e) {
             _e.printStackTrace();
             throw new RelationshipDefDaoException("Exception: " + _e.getMessage(), _e);
@@ -319,7 +311,7 @@ public class RelationshipDefDaoImpl extends AbstractDAO implements RelationshipD
         Criteria c1 = new Parameter(RELATIONSHIP_DEF.SOURCE_DOMAIN.prefixedColumnName);
         Criteria c2 = new Parameter(RELATIONSHIP_DEF.TARGET_DOMAIN.prefixedColumnName);
         selectBld.addCriteria(new AND(c1, c2));
-        //Add JOIN criteria
+        //Add OUTER JOIN criteria
         Criteria j1 = new JoinCriteria(RELATIONSHIP_DEF.RELATIONSHIP_DEF_ID.prefixedColumnName, JoinCriteria.OPERATOR.EQUALS, RELATIONSHIP_EA.RELATIONSHIP_DEF_ID.prefixedColumnName);
         selectBld.addJoin(joinTables, JoinCriteria.JOIN_TYPE.LEFTJOIN, j1);
         // Add Order By Clause

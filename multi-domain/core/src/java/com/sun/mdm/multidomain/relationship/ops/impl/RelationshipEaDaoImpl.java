@@ -52,7 +52,7 @@ import java.util.Arrays;
  */
 public class RelationshipEaDaoImpl extends AbstractDAO implements RelationshipEaDao {
 
-    protected Connection mConn;
+    private Connection mConn;
     protected int maxRows;
     private long mPrimaryKey = 0;
 
@@ -114,45 +114,45 @@ public class RelationshipEaDaoImpl extends AbstractDAO implements RelationshipEa
      * @return List<Attribute> List of Attribute.
      * @throws RelationshipEaDaoException
      */
-    public List<RelationshipEaDto> search(RelationshipEaDto dto) 
-        throws RelationshipEaDaoException {
-        List<RelationshipEaDto> attributes = new ArrayList<RelationshipEaDto>();        
+    public List<RelationshipEaDto> search(RelationshipEaDto dto)
+            throws RelationshipEaDaoException {
+        List<RelationshipEaDto> attributes = new ArrayList<RelationshipEaDto>();
         PreparedStatement stmt = null;
         try {
             //Build SELECT SQL
             SelectBuilder selectBld = new SelectBuilder();
-            selectBld.setTable(RELATIONSHIP_EA.getTableName());     
-            
+            selectBld.setTable(RELATIONSHIP_EA.getTableName());
+
             for (RELATIONSHIP_EA ea : RELATIONSHIP_EA.values()) {
                 selectBld.addColumns(ea.prefixedColumnName);
             }
-            
+
             //Add WHERE criteria
             Criteria c1 = new Parameter(RELATIONSHIP_EA.RELATIONSHIP_DEF_ID.prefixedColumnName);
             Criteria c2 = new Parameter(RELATIONSHIP_EA.ATTRIBUTE_NAME.prefixedColumnName);
-            Criteria c3 = new Parameter(RELATIONSHIP_EA.COLUMN_NAME.prefixedColumnName);            
+            Criteria c3 = new Parameter(RELATIONSHIP_EA.COLUMN_NAME.prefixedColumnName);
             selectBld.addCriteria(new AND(c1, c2, c3));
             // Add Order By Clause
             selectBld.addOrderBy(new OrderBy(RELATIONSHIP_EA.EA_ID.prefixedColumnName, OrderBy.ORDER.ASC));
             // Build a complete SELECT SQL
             String sqlStr = SQLBuilder.buildSQL(selectBld);
             stmt = mConn.prepareStatement(sqlStr);
-            
+
             int index = 1;
             stmt.setLong(index++, dto.getRelationshipDefId());
-            stmt.setString(index++, dto.getAttributeName());            
+            stmt.setString(index++, dto.getAttributeName());
             stmt.setString(index, dto.getColumnName());
-            ResultSet rs = stmt.executeQuery();     
+            ResultSet rs = stmt.executeQuery();
             RelationshipEaDto[] rEaDtos = fetchMultiResults(rs);
             attributes = Arrays.asList(rEaDtos);
-            
+
         } catch (Exception _e) {
             _e.printStackTrace();
             throw new RelationshipEaDaoException("Exception: " + _e.getMessage(), _e);
         }
         return attributes;
     }
-                        
+
     /**
      * Updates a single row in the relationship_ea table.
      */
@@ -202,28 +202,22 @@ public class RelationshipEaDaoImpl extends AbstractDAO implements RelationshipEa
     /**
      * Deletes a single row in the relationship_ea table.
      */
-    public void delete(long pk) throws RelationshipEaDaoException {
+    public void delete(long relDefId) throws RelationshipEaDaoException {
 
         PreparedStatement stmt = null;
         try {
             // Build DELETE SQL
-            DeleteBuilder deleteBld = new DeleteBuilder();
-            deleteBld.setTable(RELATIONSHIP_DEF.getTableName());
-            for (RELATIONSHIP_DEF rd : RELATIONSHIP_DEF.values()) {
-                if (rd.columnName.equalsIgnoreCase(RELATIONSHIP_DEF.getPKColumName())) {
-                    deleteBld.addCriteria(new Parameter(rd.columnName));
-                }
-            }
-            String sqlStr = SQLBuilder.buildSQL(deleteBld);
+            DeleteBuilder delete = new DeleteBuilder();
+            delete.setTable(RELATIONSHIP_EA.getTableName());
+            Criteria c1 = new Parameter(RELATIONSHIP_EA.RELATIONSHIP_DEF_ID.columnName);
+            delete.addCriteria(c1);
+            String sqlStr = SQLBuilder.buildSQL(delete);
             stmt = mConn.prepareStatement(sqlStr);
-            stmt.setLong(1, pk);
+            stmt.setLong(1, relDefId);
             int rows = stmt.executeUpdate();
         } catch (Exception _e) {
             _e.printStackTrace();
             throw new RelationshipEaDaoException("Exception: " + _e.getMessage(), _e);
-        } finally {
-            ResourceManager.close(stmt);
-
         }
 
     }
@@ -274,5 +268,14 @@ public class RelationshipEaDaoImpl extends AbstractDAO implements RelationshipEa
      * Populates a DTO with data from a ResultSet
      */
     protected void populateDto(RelationshipEaDto dto, ResultSet rs) throws SQLException {
+        dto.setEaId(rs.getLong(RELATIONSHIP_EA.EA_ID.columnName));
+        dto.setRelationshipDefId(rs.getLong(RELATIONSHIP_EA.RELATIONSHIP_DEF_ID.columnName));
+        dto.setAttributeName(rs.getString(RELATIONSHIP_EA.ATTRIBUTE_NAME.columnName));
+        dto.setColumnName(rs.getString(RELATIONSHIP_EA.COLUMN_NAME.columnName));
+        dto.setColumnType(rs.getString(RELATIONSHIP_EA.COLUMN_TYPE.columnName));
+        dto.setDefaultValue(rs.getString(RELATIONSHIP_EA.DEFAULT_VALUE.columnName));
+        dto.setIsRequired(rs.getString(RELATIONSHIP_EA.IS_REQUIRED.columnName).equalsIgnoreCase("T") ? true : false);
+        dto.setIsSearchable(rs.getString(RELATIONSHIP_EA.IS_SEARCHABLE.columnName).equalsIgnoreCase("T") ? true : false);
+
     }
 }

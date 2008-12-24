@@ -7,38 +7,34 @@
  */
 package com.sun.mdm.multidomain.relationship.ops.impl;
 
-import com.sun.mdm.multidomain.attributes.Attribute;
-import com.sun.mdm.multidomain.relationship.ops.dao.AbstractDAO;
-import com.sun.mdm.multidomain.relationship.ops.dao.RelationshipEavDao;
-
-import com.sun.mdm.multidomain.relationship.ops.dto.RelationshipEavDto;
-import com.sun.mdm.multidomain.relationship.ops.exceptions.*;
-
-import com.sun.mdm.multidomain.sql.DBSchema.RELATIONSHIP_EAV;
-import com.sun.mdm.multidomain.sql.InsertBuilder;
-import com.sun.mdm.multidomain.sql.SQLBuilder;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
+import com.sun.mdm.multidomain.attributes.Attribute;
+import com.sun.mdm.multidomain.relationship.ops.dao.AbstractDAO;
+import com.sun.mdm.multidomain.relationship.ops.dao.RelationshipEavDao;
+import com.sun.mdm.multidomain.relationship.ops.dto.RelationshipEavDto;
+import com.sun.mdm.multidomain.relationship.ops.exceptions.*;
+import com.sun.mdm.multidomain.sql.Criteria;
+import com.sun.mdm.multidomain.sql.DBSchema.RELATIONSHIP_EAV;
+import com.sun.mdm.multidomain.sql.DeleteBuilder;
+import com.sun.mdm.multidomain.sql.InsertBuilder;
+import com.sun.mdm.multidomain.sql.Parameter;
+import com.sun.mdm.multidomain.sql.SQLBuilder;
+import com.sun.mdm.multidomain.sql.UpdateBuilder;
 
+/**
+ *
+ * @author David Peh
+ */
 public class RelationshipEavDaoImpl extends AbstractDAO implements RelationshipEavDao {
 
-    /**
-     * The factory class for this DAO has two versions of the create() method - one that
-    takes no arguments and one that takes a Connection argument. If the Connection version
-    is chosen then the connection will be stored in this attribute and will be used by all
-    calls to this DAO, otherwise a new Connection will be allocated for each operation.
-     */
-    protected java.sql.Connection userConn;
-    /**
-     * Finder methods will pass this value to the JDBC setMaxRows method
-     */
-    protected int maxRows;
-    private long mPrimaryKey = 0;
+    private Connection userConn;
 
     /**
      * Method 'RelationshipNodeEavDaoImpl'
@@ -60,34 +56,30 @@ public class RelationshipEavDaoImpl extends AbstractDAO implements RelationshipE
      * Inserts a new row in the relationship_eav table.
      */
     public long insert(RelationshipEavDto dto) throws RelationshipEavDaoException {
-        // declare variables
         PreparedStatement stmt = null;
         try {
-            InsertBuilder insertBld = new InsertBuilder();
-            insertBld.setTable(RELATIONSHIP_EAV.getTableName());
+            InsertBuilder insert = new InsertBuilder();
+            insert.setTable(RELATIONSHIP_EAV.getTableName());
             for (RELATIONSHIP_EAV eav : RELATIONSHIP_EAV.values()) {
-                insertBld.addColumns(eav.columnName);
+                insert.addColumns(eav.columnName);
             }
             Iterator iter = dto.getAttributes().keySet().iterator();
-            ArrayList<Attribute> attrList = new ArrayList<Attribute>();
             while (iter.hasNext()) {
                 Attribute attr = (Attribute) iter.next();
-                attrList.add(attr);
-                insertBld.addColumns(attr.getColumnName());
+                insert.addColumns(attr.getColumnName());
             }
-            String sql = SQLBuilder.buildSQL(insertBld);
-            stmt = userConn.prepareStatement(sql);
+            String sqlStr = SQLBuilder.buildSQL(insert);
+            stmt = userConn.prepareStatement(sqlStr, Statement.RETURN_GENERATED_KEYS);
             int index = 1;
-            stmt.setLong(index++, 0);
+            stmt.setNull(index++, java.sql.Types.NULL);  // primary key
             stmt.setLong(index++, dto.getRelationshipId());
-            for (int i = 0; i < attrList.size(); i++) {
-                Attribute attr = attrList.get(i);
+            Iterator iter2 = dto.getAttributes().keySet().iterator();
+            while (iter2.hasNext()) {
+                Attribute attr = (Attribute) iter2.next();
                 String strValue = (String) dto.getAttributes().get(attr);
                 switch (attr.getType()) {
                     case BOOLEAN:
                     case CHAR:
-                        stmt.setString(index++, strValue);
-                        break;
                     case STRING:
                         stmt.setString(index++, strValue);
                         break;
@@ -106,68 +98,90 @@ public class RelationshipEavDaoImpl extends AbstractDAO implements RelationshipE
             }
 
             int rows = stmt.executeUpdate();
+            long primaryKey = 0;
+            if (rows > 0) {
+                ResultSet rs = stmt.getGeneratedKeys();
+                if (rs != null && rs.next()) {
+                    primaryKey = rs.getLong(1);
+                }
+            }
+            return primaryKey;
+        } catch (Exception _e) {
+            _e.printStackTrace();
+            throw new RelationshipEavDaoException("Exception: " + _e.getMessage(), _e);
+        }
+
+    }
+
+    /**
+     * Deletes a single row in the RELATIONSHIP_EAV table.
+     */
+    public void delete(long relId) throws RelationshipEavDaoException {
+        PreparedStatement stmt = null;
+        try {
+            DeleteBuilder delete = new DeleteBuilder();
+            delete.setTable(RELATIONSHIP_EAV.getTableName());
+            Criteria c1 = new Parameter(RELATIONSHIP_EAV.RELATIONSHIP_ID.columnName);
+            delete.addCriteria(c1);
+            String sqlStr = SQLBuilder.buildSQL(delete);
+            stmt = userConn.prepareStatement(sqlStr);
+            stmt.setLong(1, relId);
+            int rows = stmt.executeUpdate();
+        } catch (Exception _e) {
+            _e.printStackTrace();
+            throw new RelationshipEavDaoException("Exception: " + _e.getMessage(), _e);
+        }
+    }
+
+    public int update(RelationshipEavDto dto) throws RelationshipEavDaoException {
+        PreparedStatement stmt = null;
+        try {
+            UpdateBuilder update = new UpdateBuilder();
+            update.setTable(RELATIONSHIP_EAV.getTableName());
+            Criteria c1 = new Parameter(RELATIONSHIP_EAV.RELATIONSHIP_ID.columnName);
+            update.addCriteria(c1);
+
+            Iterator iter = dto.getAttributes().keySet().iterator();
+            while (iter.hasNext()) {
+                Attribute attr = (Attribute) iter.next();
+                update.addColumns(attr.getColumnName());
+            }
+            int index = 1;
+            String sqlStr = SQLBuilder.buildSQL(update);
+            stmt = userConn.prepareStatement(sqlStr);
+            Iterator iter2 = dto.getAttributes().keySet().iterator();
+            while (iter2.hasNext()) {
+                Attribute attr = (Attribute) iter2.next();
+                String strValue = (String) dto.getAttributes().get(attr);
+                switch (attr.getType()) {
+                    case BOOLEAN:
+                    case CHAR:
+                    case STRING:
+                        stmt.setString(index++, strValue);
+                        break;
+                    case FLOAT:
+                        float floatVal = Float.valueOf(strValue.trim()).floatValue();
+                        stmt.setFloat(index++, floatVal);
+                    case INT:
+                        long longVal = Long.valueOf(strValue.trim()).longValue();
+                        stmt.setLong(index++, longVal);
+                        break;
+                    case DATE:
+                        stmt.setTimestamp(index++, java.sql.Timestamp.valueOf(strValue));
+                        break;
+                    default:
+                }
+                update.addColumns(attr.getColumnName());
+
+            }
+
+            stmt.setLong(index++, dto.getRelationshipId());
+            int rows = stmt.executeUpdate();
             return rows;
         } catch (Exception _e) {
             _e.printStackTrace();
             throw new RelationshipEavDaoException("Exception: " + _e.getMessage(), _e);
         }
-
-    }
-
-    /**
-     * Deletes a single row in the relationship_eav table.
-     */
-    public void delete(long pk) throws RelationshipEavDaoException {
-        long t1 = System.currentTimeMillis();
-        // declare variables
-        final boolean isConnSupplied = (userConn != null);
-        Connection conn = null;
-        PreparedStatement stmt = null;
-
-        try {
-            // get the user-specified connection or get a connection from the ResourceManager
-            conn = isConnSupplied ? userConn : ResourceManager.getConnection();
-
-            // System.out.println("Executing " + SQL_DELETE + " with PK: " + pk);
-            // stmt = conn.prepareStatement(SQL_DELETE);
-
-            int rows = stmt.executeUpdate();
-            long t2 = System.currentTimeMillis();
-            System.out.println(rows + " rows affected (" + (t2 - t1) + " ms)");
-        } catch (Exception _e) {
-            _e.printStackTrace();
-            throw new RelationshipEavDaoException("Exception: " + _e.getMessage(), _e);
-        } finally {
-            ResourceManager.close(stmt);
-            if (!isConnSupplied) {
-                ResourceManager.close(conn);
-            }
-
-        }
-
-    }
-
-    /**
-     * Sets the value of maxRows
-     */
-    public void setMaxRows(int maxRows) {
-        this.maxRows = maxRows;
-    }
-
-    /**
-     * Gets the value of maxRows
-     */
-    public int getMaxRows() {
-        return maxRows;
-    }
-
-    /**
-     * Method 'getTableName'
-     *
-     * @return String
-     */
-    public String getTableName() {
-        return "relationship_eav";
     }
 
     /**
@@ -194,7 +208,6 @@ public class RelationshipEavDaoImpl extends AbstractDAO implements RelationshipE
             populateDto(dto, rs);
             resultList.add(dto);
         }
-
         RelationshipEavDto ret[] = new RelationshipEavDto[resultList.size()];
         resultList.toArray(ret);
         return ret;
@@ -210,15 +223,5 @@ public class RelationshipEavDaoImpl extends AbstractDAO implements RelationshipE
             dto.setRelationshipIdNull(true);
         }
 
-    }
-
-    /**
-     * Resets the modified attributes in the DTO
-     */
-    protected void reset(RelationshipEavDto dto) {
-    }
-
-    public void update(long pk, RelationshipEavDto dto) throws RelationshipEavDaoException {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
