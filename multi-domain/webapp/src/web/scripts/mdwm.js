@@ -26,3 +26,23 @@ function isValidCustomAttribute(attributeType, attributeValue) {
       }
       return true;
 }
+
+var mdwm_date_format = "";
+function setDateFormat(date_format){
+    mdwm_date_format = date_format;
+}
+
+function getDateFormat()
+{
+    return mdwm_date_format;
+}
+
+var mdwm_date_input_mask = "";
+function setDateInputMask(date_input_mask){
+    mdwm_date_input_mask = date_input_mask
+}
+
+function getDateInputMask()
+{
+    return mdwm_date_input_mask;
+}

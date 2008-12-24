@@ -230,6 +230,7 @@ function createCustomAttributesSection (tableId, attributesArray, prefixToUse, s
       function(data) { return data; },
       function(data) { return data; }
     ];
+    var date_format = getDateFormat();
     if(showRequiredSymbol == null) showRequiredSymbol = true;
     if(showByRange == null) showByRange = false;
     // Destroy previously created widgets.
@@ -293,10 +294,13 @@ function createCustomAttributesSection (tableId, attributesArray, prefixToUse, s
                     datefield.size = 5; 
                     datefield.style.width = "100px";
                     td.appendChild(datefield);
+                    
                     var props = {
                           name: "custom_date_attr",
-                          promptMessage: getMessageForI18N("date_Format"),
+                          promptMessage: date_format,
                           invalidMessage: getMessageForI18N("invalid_date"),
+                          selector: "date", 
+                          datePattern: date_format,
                           //constraints: "{selector:'date', datePattern:'mm/dd/yyyy'}",
                           width:"150px"
                     }; 
@@ -341,8 +345,10 @@ function createCustomAttributesSection (tableId, attributesArray, prefixToUse, s
                       field_To.style.width = "100px";
                       var dateProps = {
                           name: "custom_date_attr",
-                          promptMessage: getMessageForI18N("date_Format"),
+                          promptMessage: date_format,
                           invalidMessage: getMessageForI18N("invalid_date"),
+                          selector: "date", 
+                          datePattern: date_format,
                           width:"150px"
                       }; 
                       field_To = new dijit.form.DateTextBox(dateProps, field_To);
@@ -389,6 +395,8 @@ function populateCustomAttributesValues (attributesArray, attributesValuesArray,
 // Function to create Predefined attributes section
 // Used in Add, Select & Edit Relationship Attributes screens
 function createPredefinedAttributesSection (tableId, dataObj, prefixToUse, showRequiredSymbol) {
+    var date_format=getDateFormat();
+    
     //alert("CREATING Predefined attributes section : " + tableId);
     if(showRequiredSymbol == null) showRequiredSymbol = true;
     var startDate =(getBoolean(dataObj.startDate));
@@ -436,8 +444,10 @@ function createPredefinedAttributesSection (tableId, dataObj, prefixToUse, showR
         //alert("fine till here");
         var startProps = {
             name: "start_date_textbox",
-            promptMessage: getMessageForI18N("date_Format"),
+            promptMessage: date_format,
             invalidMessage: getMessageForI18N("invalid_date"),
+            selector: "date", 
+            datePattern: date_format,
             width:"100px"
         }
         startDate_textBox = new dijit.form.DateTextBox(startProps, startDate_textBox);
@@ -456,8 +466,10 @@ function createPredefinedAttributesSection (tableId, dataObj, prefixToUse, showR
         SecondRow.cells[4].appendChild(endDate_textBox);
         var endProps = {
             name: "end_date_textbox",
-            promptMessage: getMessageForI18N("date_Format"),
+            promptMessage: date_format,
             invalidMessage: getMessageForI18N("invalid_date"),
+            selector: "date", 
+            datePattern: date_format,
             width:"100px"
         }
         endDate_textBox = new dijit.form.DateTextBox(endProps, endDate_textBox); 
@@ -482,8 +494,10 @@ function createPredefinedAttributesSection (tableId, dataObj, prefixToUse, showR
         SecondRowStart.cells[2].appendChild(start_date);
         var start_date_Props = {
             name: "start_date",
-            promptMessage: getMessageForI18N("date_Format"),
+            promptMessage: date_format,
             invalidMessage: getMessageForI18N("invalid_date"),
+            selector: "date", 
+            datePattern: date_format,
             width:"100px"
         }
         start_date = new dijit.form.DateTextBox(start_date_Props, start_date);
@@ -510,8 +524,10 @@ function createPredefinedAttributesSection (tableId, dataObj, prefixToUse, showR
         SecondRowEnd.cells[2].appendChild(end_date);
         var end_date_Props = {
             name: "end_date",
-            promptMessage: getMessageForI18N("date_Format"),
+            promptMessage: date_format,
             invalidMessage: getMessageForI18N("invalid_date"),
+            selector: "date", 
+            datePattern: date_format,
             width:"100px"
         }
         end_date = new dijit.form.DateTextBox(end_date_Props, end_date);
@@ -539,8 +555,10 @@ function createPredefinedAttributesSection (tableId, dataObj, prefixToUse, showR
         ThirdRow.cells[2].appendChild(Purge_date);
         var purge_date_Props = {
             name: "purge_date",
-            promptMessage: getMessageForI18N("date_Format"),
+            promptMessage: date_format,
             invalidMessage: getMessageForI18N("invalid_date"),
+            selector: "date", 
+            datePattern: date_format,
             width:"100px"
         }
         Purge_date = new dijit.form.DateTextBox(purge_date_Props, Purge_date);
