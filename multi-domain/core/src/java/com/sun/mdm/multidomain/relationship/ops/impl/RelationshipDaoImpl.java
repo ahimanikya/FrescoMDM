@@ -27,11 +27,11 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Iterator;
 import com.sun.mdm.multidomain.attributes.Attribute;
 import com.sun.mdm.multidomain.attributes.AttributeType;
 import com.sun.mdm.multidomain.relationship.Relationship;
@@ -54,7 +54,7 @@ import com.sun.mdm.multidomain.sql.Parameter;
 import com.sun.mdm.multidomain.sql.SQLBuilder;
 import com.sun.mdm.multidomain.sql.SelectBuilder;
 import com.sun.mdm.multidomain.sql.UpdateBuilder;
-import java.util.Iterator;
+import java.util.Date;
 import static com.sun.mdm.multidomain.sql.DBSchema.*;
 
 /**
@@ -69,10 +69,7 @@ public class RelationshipDaoImpl extends AbstractDAO implements RelationshipDao 
     is chosen then the connection will be stored in this attribute and will be used by all
     calls to this DAO, otherwise a new Connection will be allocated for each operation.
      */
-    protected java.sql.Connection userConn;
-    /**
-     * Finder methods will pass this value to the JDBC setMaxRows method
-     */
+    private Connection userConn;
     protected int maxRows;
     private long mPrimaryKey = 0;
     private long mRelationshipId = 0;
@@ -113,10 +110,12 @@ public class RelationshipDaoImpl extends AbstractDAO implements RelationshipDao 
             stmt.setLong(index++, rel.getRelationshipDef().getId());
             stmt.setString(index++, rel.getSourceEUID());
             stmt.setString(index++, rel.getTargetEUID());
-            stmt.setTimestamp(index++, new Timestamp(rel.getEffectiveFromDate().getTime()));
-            stmt.setTimestamp(index++, new Timestamp(rel.getEffectiveToDate().getTime()));
-            stmt.setTimestamp(index++, new Timestamp(rel.getPurgeDate().getTime()));
-
+            Date dt = rel.getEffectiveFromDate();
+            stmt.setTimestamp(index++, dt != null ? new java.sql.Timestamp(dt.getTime()) : null);
+            dt = rel.getEffectiveToDate();
+            stmt.setTimestamp(index++, dt != null ? new java.sql.Timestamp(dt.getTime()) : null);
+            dt = rel.getPurgeDate();
+            stmt.setTimestamp(index++, dt != null ? new java.sql.Timestamp(dt.getTime()) : null);
             int rows = stmt.executeUpdate();
 
             rs = stmt.getGeneratedKeys();
@@ -125,12 +124,11 @@ public class RelationshipDaoImpl extends AbstractDAO implements RelationshipDao 
             }
 
             /* Relationship Extend Attributes Values */
-            RelationshipEavDto attDto = new RelationshipEavDto();
-            attDto.setRelationshipId(mPrimaryKey);
             if (rel.getAttributes().isEmpty() == false) {
+                RelationshipEavDto attDto = new RelationshipEavDto();
+                attDto.setRelationshipId(mPrimaryKey);
                 attDto.setAttributes(rel.getAttributes());
-                RelationshipEavDaoImpl relEavDao = new RelationshipEavDaoImpl(userConn);
-                relEavDao.insert(attDto);
+                new RelationshipEavDaoImpl(userConn).insert(attDto);
             }
             return mPrimaryKey;
         } catch (Exception _e) {
@@ -161,12 +159,23 @@ public class RelationshipDaoImpl extends AbstractDAO implements RelationshipDao 
             stmt.setLong(index++, rel.getRelationshipDef().getId());
             stmt.setString(index++, rel.getSourceEUID());
             stmt.setString(index++, rel.getTargetEUID());
-            stmt.setTimestamp(index++, new Timestamp(rel.getEffectiveFromDate().getTime()));
-            stmt.setTimestamp(index++, new Timestamp(rel.getEffectiveToDate().getTime()));
-            stmt.setTimestamp(index++, new Timestamp(rel.getPurgeDate().getTime()));
+            Date dt = rel.getEffectiveFromDate();
+            stmt.setTimestamp(index++, dt != null ? new java.sql.Timestamp(dt.getTime()) : null);
+            dt = rel.getEffectiveToDate();
+            stmt.setTimestamp(index++, dt != null ? new java.sql.Timestamp(dt.getTime()) : null);
+            dt = rel.getPurgeDate();
+            stmt.setTimestamp(index++, dt != null ? new java.sql.Timestamp(dt.getTime()) : null);
 
             stmt.setLong(index++, rel.getRelationshipId());  // Primary key column
             int rows = stmt.executeUpdate();
+
+            /* RelationshipDef Extend Attributes */
+            if (rel.getAttributes().isEmpty() == false) {
+                RelationshipEavDto attDto = new RelationshipEavDto();
+                attDto.setRelationshipId(rel.getRelationshipId());
+                attDto.setAttributes(rel.getAttributes());
+                new RelationshipEavDaoImpl(userConn).update(attDto);
+            }
             return rows;
         } catch (Exception _e) {
             _e.printStackTrace();
@@ -181,25 +190,17 @@ public class RelationshipDaoImpl extends AbstractDAO implements RelationshipDao 
         PreparedStatement stmt = null;
 
         try {
-            // Build DELELE SQL for RELATIONSHIP_EAV table
-            DeleteBuilder eavDelete = new DeleteBuilder();
-            eavDelete.setTable(RELATIONSHIP_EAV.getTableName());
-            Criteria c1 = new Parameter(RELATIONSHIP_EAV.RELATIONSHIP_ID.columnName);
-            eavDelete.addCriteria(c1);
-            String sqlStr = SQLBuilder.buildSQL(eavDelete);
-            stmt = userConn.prepareStatement(sqlStr);
-            stmt.setLong(1, relId);
-
-            int rows = stmt.executeUpdate();
+            // Delete the extended attributes
+            new RelationshipEavDaoImpl(userConn).delete(relId);
 
             // Build DELETE SQL for RELATIONSHIP table
             DeleteBuilder relDelete = new DeleteBuilder();
             relDelete.setTable(RELATIONSHIP.getTableName());
             relDelete.addCriteria(new Parameter(RELATIONSHIP.getPKColumName()));
-            sqlStr = SQLBuilder.buildSQL(relDelete);
+            String sqlStr = SQLBuilder.buildSQL(relDelete);
             stmt = userConn.prepareStatement(sqlStr);
             stmt.setLong(1, relId);
-            rows = stmt.executeUpdate();
+            int rows = stmt.executeUpdate();
         } catch (Exception _e) {
             _e.printStackTrace();
             throw new RelationshipDaoException("Exception: " + _e.getMessage(), _e);
@@ -216,8 +217,8 @@ public class RelationshipDaoImpl extends AbstractDAO implements RelationshipDao 
 
             Criteria c1 = new MatchCriteria(RELATIONSHIP_DEF.RELATIONSHIP_DEF_ID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, RELATIONSHIP.RELATIONSHIP_DEF_ID.prefixedColumnName);
             //Criteria c2 = new MatchCriteria(RELATIONSHIP_DEF.RELATIONSHIP_DEF_ID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, RELATIONSHIP_EA.RELATIONSHIP_DEF_ID.prefixedColumnName);
-            Criteria c2 = new MatchCriteria(RELATIONSHIP.SOURCE_EUID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, "?");
-            Criteria c3 = new MatchCriteria(RELATIONSHIP.TARGET_EUID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, "?");
+            Criteria c2 = new Parameter(RELATIONSHIP.SOURCE_EUID.prefixedColumnName);
+            Criteria c3 = new Parameter(RELATIONSHIP.TARGET_EUID.prefixedColumnName);
             String sqlStr = buildSelectRelationshipDef(new AND(c1, c2, c3));
 
             PreparedStatement stmt = userConn.prepareStatement(sqlStr);
@@ -257,10 +258,10 @@ public class RelationshipDaoImpl extends AbstractDAO implements RelationshipDao 
         try {
             Criteria c1 = new MatchCriteria(RELATIONSHIP_DEF.RELATIONSHIP_DEF_ID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, RELATIONSHIP.RELATIONSHIP_DEF_ID.prefixedColumnName);
             Criteria c2 = new MatchCriteria(RELATIONSHIP_DEF.RELATIONSHIP_DEF_ID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, RELATIONSHIP_EA.RELATIONSHIP_DEF_ID.prefixedColumnName);
-            Criteria c3 = new MatchCriteria(RELATIONSHIP_DEF.SOURCE_DOMAIN.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, "?");
-            Criteria c4 = new MatchCriteria(RELATIONSHIP.SOURCE_EUID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, "?");
-            Criteria c5 = new MatchCriteria(RELATIONSHIP_DEF.TARGET_DOMAIN.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, "?");
-            Criteria c6 = new MatchCriteria(RELATIONSHIP.TARGET_EUID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, "?");
+            Criteria c3 = new Parameter(RELATIONSHIP_DEF.SOURCE_DOMAIN.prefixedColumnName);
+            Criteria c4 = new Parameter(RELATIONSHIP.SOURCE_EUID.prefixedColumnName);
+            Criteria c5 = new Parameter(RELATIONSHIP_DEF.TARGET_DOMAIN.prefixedColumnName);
+            Criteria c6 = new Parameter(RELATIONSHIP.TARGET_EUID.prefixedColumnName);
             String sqlStr = buildSelectRelationshipDef(new AND(c1, c2, new OR(new AND(c3, c4), new AND(c5, c6))));
 
             PreparedStatement stmt1 = userConn.prepareStatement(sqlStr);
@@ -272,7 +273,7 @@ public class RelationshipDaoImpl extends AbstractDAO implements RelationshipDao 
             rs = stmt1.executeQuery();
             RelationshipDef relDef = fetchRelationshipDef(rs);
 
-            Criteria c7 = new MatchCriteria(RELATIONSHIP.RELATIONSHIP_ID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, "?");
+            Criteria c7 = new Parameter(RELATIONSHIP.RELATIONSHIP_ID.prefixedColumnName);
 
             sqlStr = buildSelectRelationship(relDef, c7);
             // prepare statement
@@ -302,8 +303,8 @@ public class RelationshipDaoImpl extends AbstractDAO implements RelationshipDao 
 
         Criteria c1 = new MatchCriteria(RELATIONSHIP_DEF.RELATIONSHIP_DEF_ID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, RELATIONSHIP.RELATIONSHIP_DEF_ID.prefixedColumnName);
         Criteria c2 = new MatchCriteria(RELATIONSHIP_DEF.RELATIONSHIP_DEF_ID.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, RELATIONSHIP_EA.RELATIONSHIP_DEF_ID.prefixedColumnName);
-        Criteria c3 = new MatchCriteria(RELATIONSHIP_DEF.SOURCE_DOMAIN.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, "?");
-        Criteria c4 = new MatchCriteria(RELATIONSHIP_DEF.TARGET_DOMAIN.prefixedColumnName, MatchCriteria.OPERATOR.EQUALS, "?");
+        Criteria c3 = new Parameter(RELATIONSHIP_DEF.SOURCE_DOMAIN.prefixedColumnName);
+        Criteria c4 = new Parameter(RELATIONSHIP_DEF.TARGET_DOMAIN.prefixedColumnName);
 
         try {
             Iterator srcMapIter = sourceMap.keySet().iterator();
