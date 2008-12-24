@@ -4,10 +4,7 @@
     Author     : Harish
 --%>
 <%@ include file="/WEB-INF/jsp/include.jsp" %>
-<%
-    String dateFormat =  (String)session.getAttribute("mdwm_date_format");
-    String dateInputMask = (String)session.getAttribute("mdwm_date_input_mask");
-%>
+
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -35,8 +32,7 @@
                 alert("invocation exception: " + message);
             }
             
-            setDateFormat("<%=dateFormat%>");
-            setDateInputMask("<%=dateInputMask%>");
+            
         </script>
         <script>
             // initialize icons

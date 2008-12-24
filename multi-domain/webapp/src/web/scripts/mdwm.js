@@ -28,21 +28,21 @@ function isValidCustomAttribute(attributeType, attributeValue) {
 }
 
 var mdwm_date_format = "";
-function setDateFormat(date_format){
+var mdwm_date_input_mask = "";
+function setMDWMDateFormat(date_format){
     mdwm_date_format = date_format;
 }
 
-function getDateFormat()
+function getMDWMDateFormat()
 {
     return mdwm_date_format;
 }
 
-var mdwm_date_input_mask = "";
-function setDateInputMask(date_input_mask){
+function setMDWMDateInputMask(date_input_mask){
     mdwm_date_input_mask = date_input_mask
 }
 
-function getDateInputMask()
+function getMDWMDateInputMask()
 {
     return mdwm_date_input_mask;
 }

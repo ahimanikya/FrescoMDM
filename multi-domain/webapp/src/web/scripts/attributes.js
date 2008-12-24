@@ -2,13 +2,10 @@
 
 var selectOptions = new Array("string","date","int","float","char","boolean");
 
-function NewAttribute(tableId, attributesArray, prefixToUse, 
-   date_format, date_input_mask)
+function NewAttribute(tableId, attributesArray, prefixToUse)
 {
     var _this = this;
     
-    this.DateFormat = date_format;
-    this.DateInputMask = date_input_mask; 
     
     // Create our row  
     this.Row = document.getElementById(tableId).insertRow(document.getElementById(tableId).rows.length);
@@ -91,15 +88,14 @@ function NewAttribute(tableId, attributesArray, prefixToUse,
                 this.DefaultValueField.size = 5; 
                 this.DefaultValueField.style.width = "100px";
                 this.Row.cells[3].appendChild(this.DefaultValueField);
-                var date_format=this.DateFormat;
             //alert("date_format_as_passed_in="+date_format+ " date_input_mask="+this.DateInputMask);    
                 var props = {
                       name: "date_attr",
-                      promptMessage: date_format,
+                      promptMessage: getMDWMDateFormat(),
                       invalidMessage:  getMessageForI18N("invalid_date"),
                       //constraints: "{selector:'date', datePattern:'" + date_format + "'}",
                       selector: "date", 
-                      datePattern: date_format,
+                      datePattern: getMDWMDateFormat(),
                       width:"150px"
                 }; 
                 this.DefaultValueField = new dijit.form.DateTextBox(props, this.DefaultValueField);
@@ -329,8 +325,7 @@ function refreshCustomAttributesButtonsPalette (attributesArray, buttonIdPrefix)
 }
 
 // function to create set of custom attributes entry from data set.
-function createCustomAttributes (data, tableId, attributesArray, prefixToUse,
-  date_format, date_input_mask) {
+function createCustomAttributes (data, tableId, attributesArray, prefixToUse) {
     //alert("creating custom attributes now for " + prefixToUse + " table id " + tableId);
     attributesArray.splice(0, attributesArray.length); // Reset the array
     if(data.extendedAttributes != null) {

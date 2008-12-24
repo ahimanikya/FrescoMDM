@@ -14,6 +14,16 @@
 
 <link rel="stylesheet" type="text/css" href="css/styles.css" media="screen"/>
 
+<%
+    String dateFormat =  (String)session.getAttribute("mdwm_date_format");
+    String dateInputMask = (String)session.getAttribute("mdwm_date_input_mask");
+%>
+
+<script>
+setMDWMDateFormat("<%=dateFormat%>");
+setMDWMDateInputMask("<%=dateInputMask%>");
+</script>
+
 <% 
 
    

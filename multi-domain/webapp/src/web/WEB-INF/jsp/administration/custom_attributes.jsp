@@ -7,8 +7,6 @@
 <script type='text/javascript' src='scripts/attributes.js'></script>
 <%
 String prefixId = (String) request.getParameter("prefix");
- String dateFormat =  (String)session.getAttribute("mdwm_date_format");
- String dateInputMask = (String)session.getAttribute("mdwm_date_input_mask");
 %>
 <script>
     var <%=prefixId%>_attributesArray = new Array(); // array for holding attributes list
@@ -27,7 +25,7 @@ String prefixId = (String) request.getParameter("prefix");
                     <td><img src="images/spacer.gif" height="1" width="6"></td>
                     <td><a href="javascript:void(0);" title="<f:message key='de_select_all_text' />" onclick="deselectAllCustomAttributes(<%=prefixId%>_attributesArray);refreshCustomAttributesButtonsPalette (<%=prefixId%>_attributesArray, '<%=prefixId%>');"><img id="<%=prefixId%>_imgDeselectAllAttr" src="images/icons/deselect_multiple.png" alt="<f:message key='de_select_all_text' />" border="0"></a></td>
                     <td><img src="images/icons/actions_separator.gif" border="0"></td>
-                    <td><a href="javascript:void(0);" title="<f:message key='add_text' />..."  onclick="<%=prefixId%>_attributesArray.push( new NewAttribute('<%=prefixId%>_customAttributesTable', <%=prefixId%>_attributesArray, '<%=prefixId%>', '<%=dateFormat%>', '<%=dateInputMask%>') ); refreshCustomAttributesButtonsPalette (<%=prefixId%>_attributesArray, '<%=prefixId%>');"><img src="images/icons/add_button.png" alt="<f:message key='add_text' />" border="0"></a></td>
+                    <td><a href="javascript:void(0);" title="<f:message key='add_text' />..."  onclick="<%=prefixId%>_attributesArray.push( new NewAttribute('<%=prefixId%>_customAttributesTable', <%=prefixId%>_attributesArray, '<%=prefixId%>') ); refreshCustomAttributesButtonsPalette (<%=prefixId%>_attributesArray, '<%=prefixId%>');"><img src="images/icons/add_button.png" alt="<f:message key='add_text' />" border="0"></a></td>
                     <td><img src="images/spacer.gif" height="1" width="6"></td>
                     <td><a href="javascript:void(0);" title="<f:message key='delete_text' />" onclick="deleteAttributes('<%=prefixId%>_customAttributesTable',<%=prefixId%>_attributesArray); refreshCustomAttributesButtonsPalette (<%=prefixId%>_attributesArray, '<%=prefixId%>');" ><img id="<%=prefixId%>_imgDeleteCustAttr" src="images/icons/delete_button.png" alt="<f:message key='delete_text' />" border="0"></a></td>
                 </tr>

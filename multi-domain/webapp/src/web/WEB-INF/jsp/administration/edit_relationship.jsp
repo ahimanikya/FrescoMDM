@@ -230,8 +230,7 @@ function populateEditRelationshipDefForm(data) {
         // Populate custom attributes;
         //eval(editRelationshipPrefix+'_attributesArray').splice(0, 0);
     
-        createCustomAttributes (data, editRelationshipPrefix+'_customAttributesTable', eval(editRelationshipPrefix+'_attributesArray'), editRelationshipPrefix, dateFormat, 
-          dateInputMask    );
+        createCustomAttributes (data, editRelationshipPrefix+'_customAttributesTable', eval(editRelationshipPrefix+'_attributesArray'), editRelationshipPrefix);
         refreshCustomAttributesButtonsPalette(eval(editRelationshipPrefix+'_attributesArray'), editRelationshipPrefix );
     }
     showRelationshipDialog('editrelationship');  
