@@ -97,6 +97,7 @@ function changeViewToByRecord(contentPaneId) {
 function initializeByRecordScreen() {  
     isByRecordSelectDialogLoaded = false;
     isByRecordAddDialogLoaded = false;
+	isRearrangeTreeShown = false;
 }
 function initializeByRelationshipScreen() {
     currentSelectedSourceDomain = null; 

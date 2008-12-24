@@ -15,7 +15,7 @@ dojo.addOnLoad(function(){
 
 var item_types = {DOMAIN:"domain", RELATIONSHIP:"relationship", RECORD:"record"};
 
-
+var isRearrangeTreeShown = false;
 
 
 function getByRecordData () {
@@ -297,7 +297,7 @@ function chkstatus() {
 }
 
 
-var isRearrangeTreeShown = false;
+
 function showRearrangeTree(rearrangeButtonObj) {
 	if(isRearrangeTreeShown) {
 		isRearrangeTreeShown = false;
