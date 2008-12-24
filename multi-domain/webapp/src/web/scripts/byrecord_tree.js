@@ -160,6 +160,7 @@ function getByRecordDataCB (data) {
     
     // 3. Create tree now
     createMainTree();
+	displayDiv("mainTreeContainer", true);
 	
 	// 4. Reset button pallete (enable/disable add,delete, etc., buttons)
 	isAddButtonEnabled = false, isDeleteButtonEnabled = false;
@@ -293,4 +294,23 @@ function chkstatus() {
 	res += "\n target domain: " + targetDomain ;
 	res += "\n add to relationship def : " + addToRelationship;
 	alert(res);
+}
+
+
+var isRearrangeTreeShown = false;
+function showRearrangeTree(rearrangeButtonObj) {
+	if(isRearrangeTreeShown) {
+		isRearrangeTreeShown = false;
+		rearrangeButtonObj.value = "Rearrange >>";
+		rearrangeButtonObj.title = "Show Rearrange tree";
+		document.getElementById("mainTreeSection").style.width = "100%";
+		displayDiv("rearrangeTreeSection", false);
+	} else {
+		isRearrangeTreeShown = true;
+		rearrangeButtonObj.value = "<< Rearrange";
+		rearrangeButtonObj.title = "Hide Rearrange tree";
+		document.getElementById("mainTreeSection").style.width = "50%";
+		displayDiv("rearrangeTreeSection", true);
+	}
+
 }
