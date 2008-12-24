@@ -88,7 +88,7 @@ function NewAttribute(tableId, attributesArray, prefixToUse)
                 this.DefaultValueField.size = 5; 
                 this.DefaultValueField.style.width = "100px";
                 this.Row.cells[3].appendChild(this.DefaultValueField);
-            //alert("date_format_as_passed_in="+date_format+ " date_input_mask="+this.DateInputMask);    
+            //alert("dateFormat="+getMDWMDateFormat());
                 var props = {
                       name: "date_attr",
                       promptMessage: getMDWMDateFormat(),
@@ -332,8 +332,7 @@ function createCustomAttributes (data, tableId, attributesArray, prefixToUse) {
         for(i=0; i<data.extendedAttributes.length; i++) {
             var attrValue = data.extendedAttributes[i];
             //alert(i + " : " + attrValue.name + " : --- required:" + attrValue.required + " searchable:" + attrValue.searchable);
-            var tempAttr = new NewAttribute(tableId,attributesArray, prefixToUse,
-              date_format, date_input_mask);
+            var tempAttr = new NewAttribute(tableId,attributesArray, prefixToUse);
             attributesArray.push(tempAttr);
             // put values in fields
             tempAttr.AttributeNameField.value = attrValue.name;

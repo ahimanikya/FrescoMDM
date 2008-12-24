@@ -6,8 +6,6 @@
 <%@ include file="/WEB-INF/jsp/include.jsp" %>
 <%
     String prefixToUse = "editrelationship";
-    String dateFormat =  (String)session.getAttribute("mdwm_date_format");
-    String dateInputMask = (String)session.getAttribute("mdwm_date_input_mask");
 %>
 
 <script type="text/javascript" src="../scripts/dojo/dojo.js" djConfig="parseOnLoad:true, isDebug: true"></script>                
@@ -103,8 +101,6 @@
 <script language="javascript" 
   type="text/javascript">
 var editRelationshipPrefix = "<%=prefixToUse%>";
-var dateFormat = "<%=dateFormat%>";
-var dateInputMask = "<%=dateInputMask%>";
 
 function validateEditRelationshipForm() {
   var relationshipDefId = dojo.byId("relationship_edit_id").value;  

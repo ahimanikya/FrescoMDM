@@ -6,8 +6,6 @@
 <%@ include file="/WEB-INF/jsp/include.jsp" %>
 <%
     String prefixToUse = "addrelationship";
-    String dateFormat =  (String)session.getAttribute("mdwm_date_format");
-    String dateInputMask = (String)session.getAttribute("mdwm_date_input_mask");
 %>
 <script type="text/javascript" src="../scripts/dojo/dojo.js" djConfig="parseOnLoad:true, isDebug: false"></script>                
 <script type="text/javascript">
@@ -83,7 +81,7 @@
                             <td>
                                 <!-- Custom attributes section -->
                                 <jsp:include  page=
-                                    "/WEB-INF/jsp/administration/custom_attributes.jsp?prefix=addrelationship&date_format=<%=dateFormat%>&date_input_mask=<%=dateInputMask%>"  
+                                    "/WEB-INF/jsp/administration/custom_attributes.jsp?prefix=addrelationship"  
                                   flush="true" />
                             </td>
                         </tr>

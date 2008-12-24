@@ -7,8 +7,6 @@
 <%@ include file="/WEB-INF/jsp/include.jsp" %>
 <%
     String prefixToUse = "edithierarchy";
-    String dateFormat =  (String)session.getAttribute("mdwm_date_format");
-    String dateInputMask = (String)session.getAttribute("mdwm_date_input_mask");
 %>
 
 
@@ -91,8 +89,7 @@
 <script language="javascript" 
   type="text/javascript">
 var editHierarchyPrefix="<%=prefixToUse%>";
-var dateFormat = "<%=dateFormat%>";
-var dateInputMask = "<%=dateInputMask%>";
+
 function populateEditHierarchyDefForm(data) {
     //alert("editing " + data);
     showHierarchyDialog('edithierarchy');      
