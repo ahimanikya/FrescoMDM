@@ -40,6 +40,7 @@ dojo.declare("dijit.TreeCustom", dijit.Tree, {
 		if( ! isExists)
 			this.allFocusedNodes.push(node);
 		this.customOnClick (node.item, node, this.getSelectedItems() );
+		this.ctrlKeyPressed = false;
 	},
 
 	blurNode: function(){
