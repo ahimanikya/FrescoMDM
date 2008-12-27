@@ -152,6 +152,7 @@ function selectSourceSearchFields(searchTypeId){
 function selectSourceSearchTypeFields(data){
     dwr.util.removeAllRows("select_search_source_fields"); 
     var count = 0;
+	var guiTypeStr;
     // create a hidden field, put the querybuilder value in it. hidden field name=selectSourceQueryBuilder.
     hiddenField = document.createElement("input");
     hiddenField.type = "hidden";
@@ -160,25 +161,30 @@ function selectSourceSearchTypeFields(data){
     hiddenField.value = data.queryBuilder;
     document.getElementById('select_search_source_fields').appendChild(hiddenField);
     var fieldGroups = data.fieldGroups;
-     for (var fieldGrp in fieldGroups)  {
+    for (var fieldGrp in fieldGroups)  {
+		var descriptionRow = document.getElementById('select_search_source_fields').insertRow(count++);
+		descriptionRow.insertCell(0);
+		descriptionRow.cells[0].innerHTML = fieldGrp;   
         for(i=0; i<fieldGroups[fieldGrp].length; i++) {
              fieldCfg = fieldGroups[fieldGrp][i];
              var row = document.getElementById('select_search_source_fields').insertRow(count++);
              row.insertCell(0);
              row.insertCell(1);
-             var field; // = document.createElement("input");
+             guiTypeStr = fieldCfg.guiType;
+			 if(guiTypeStr.toLowerCase() == "textbox"){
+             var field; 
              try{
                  field = document.createElement('<input type="text" name="selectSourceSearchFieldName" />');
              }catch(err){
                  field = document.createElement("input");
              }
-             field.type="text";
-             field.size="5";
+             field.type="text"; 
+             field.size = fieldCfg.maxLength;
              field.name="selectSourceSearchFieldName";
-             field.domainFieldName = fieldCfg.name;
-             field.style.width="100px";
-             row.cells[0].innerHTML = fieldCfg.name;   
-             row.cells[1].appendChild(field);   
+             field.domainFieldName = fieldCfg.displayName;
+             row.cells[0].innerHTML = fieldCfg.displayName;   
+             row.cells[1].appendChild(field); 
+			 }
          }
         
      }
@@ -194,6 +200,7 @@ function selectTargetSearchFields(searchTypeId){
 function selectTargetSearchTypeFields(data){
     dwr.util.removeAllRows("select_search_target_fields"); 
     var count = 0;
+	var guiTypeStr;
     // create a hidden field, put the querybuilder value in it. hidden field name=selectTargetQueryBuilder.
     hiddenField = document.createElement("input");
     hiddenField.type = "hidden";
@@ -203,11 +210,16 @@ function selectTargetSearchTypeFields(data){
     document.getElementById('select_search_target_fields').appendChild(hiddenField);
     var fieldGroups = data.fieldGroups;
      for (var fieldGrp in fieldGroups)  {
+        var descriptionRow = document.getElementById('select_search_target_fields').insertRow(count++);
+		descriptionRow.insertCell(0);
+		descriptionRow.cells[0].innerHTML = fieldGrp;   
         for(i=0; i<fieldGroups[fieldGrp].length; i++) {
-             fieldCfg = fieldGroups[fieldGrp][i];
+             var fieldCfg = fieldGroups[fieldGrp][i];
              var row = document.getElementById('select_search_target_fields').insertRow(count++);
              row.insertCell(0);
              row.insertCell(1);
+			 guiTypeStr = fieldCfg.guiType;
+			 if(guiTypeStr.toLowerCase() == "textbox"){
              var field; // = document.createElement("input");
              try{
                  field = document.createElement('<input type="text" name="selectTargetSearchFieldName" />');
@@ -215,12 +227,12 @@ function selectTargetSearchTypeFields(data){
                  field = document.createElement("input");
              }
              field.type="text";
-             field.size="5";
+             field.size = fieldCfg.maxLength;
              field.name="selectTargetSearchFieldName";
-             field.domainFieldName = fieldCfg.name;
-             field.style.width="100px";
-             row.cells[0].innerHTML = fieldCfg.name;   
-             row.cells[1].appendChild(field);   
+             field.domainFieldName = fieldCfg.displayName;
+             row.cells[0].innerHTML = fieldCfg.displayName;
+             row.cells[1].appendChild(field);
+			 }
          }
      }
 }
@@ -758,13 +770,19 @@ function sourceSearchTypeFields(data){
     hiddenField.value = data.queryBuilder;
     document.getElementById('add_search_source_fields').appendChild(hiddenField);
     var count = 0;
-     var fieldGroups = data.fieldGroups;
-     for (var fieldGrp in fieldGroups)  {
+	var guiTypeStr;
+    var fieldGroups = data.fieldGroups;
+    for (var fieldGrp in fieldGroups)  {
+        var descriptionRow = document.getElementById('add_search_source_fields').insertRow(count++);
+		descriptionRow.insertCell(0);
+		descriptionRow.cells[0].innerHTML = fieldGrp;    
         for(i=0; i<fieldGroups[fieldGrp].length; i++) {
-             fieldCfg = fieldGroups[fieldGrp][i];
+             var fieldCfg = fieldGroups[fieldGrp][i];
              var row = document.getElementById('add_search_source_fields').insertRow(count++);
              row.insertCell(0);
              row.insertCell(1);
+			 guiTypeStr = fieldCfg.guiType;
+			 if(guiTypeStr.toLowerCase() == "textbox"){
              var field ;//= document.createElement("input");
              try{
                  field = document.createElement('<input type="text" name="addSourceSearchFieldName" />');
@@ -772,12 +790,12 @@ function sourceSearchTypeFields(data){
                  field = document.createElement("input");
               }
              field.type="text";
-             field.size="5";
+             field.size = fieldCfg.maxLength;
              field.name="addSourceSearchFieldName";
-             field.domainFieldName = fieldCfg.name;
-             field.style.width="100px";
-             row.cells[0].innerHTML = fieldCfg.name; 
+             field.domainFieldName = fieldCfg.displayName;
+             row.cells[0].innerHTML = fieldCfg.displayName;
              row.cells[1].appendChild(field); 
+		     }
          }
         
      }
@@ -792,6 +810,7 @@ function getTargetSearchFields(searchTypeId){
 
 function targetSearchTypeFields(data){
     var count = 0;
+	var guiTypeStr;
     dwr.util.removeAllRows("add_search_target_fields");
     // create a hidden field, put the querybuilder value in it. hidden field name=addTargetQueryBuilder.
     hiddenField = document.createElement("input");
@@ -802,12 +821,17 @@ function targetSearchTypeFields(data){
     document.getElementById('add_search_target_fields').appendChild(hiddenField);
     
     var fieldGroups = data.fieldGroups;
-     for (var fieldGrp in fieldGroups)  {
+    for (var fieldGrp in fieldGroups)  {
+        var descriptionRow = document.getElementById('add_search_target_fields').insertRow(count++);
+		descriptionRow.insertCell(0);
+		descriptionRow.cells[0].innerHTML = fieldGrp;    
         for(i=0; i<fieldGroups[fieldGrp].length; i++) {
-             fieldCfg = fieldGroups[fieldGrp][i];
+             var fieldCfg = fieldGroups[fieldGrp][i];
              var row = document.getElementById('add_search_target_fields').insertRow(count++);
              row.insertCell(0);
              row.insertCell(1); 
+			 guiTypeStr = fieldCfg.guiType;
+			 if(guiTypeStr.toLowerCase() == "textbox"){
              var field ; //= document.createElement("input");
              try{
                   field = document.createElement('<input type="text" name="addTargetSearchFieldName" />');
@@ -815,12 +839,12 @@ function targetSearchTypeFields(data){
                   field = document.createElement("input");
              }
              field.type="text";
-             field.size="5";
+             field.size = fieldCfg.maxLength;
              field.name="addTargetSearchFieldName";
-             field.domainFieldName = fieldCfg.name ;
-             field.style.width="100px";
-             row.cells[0].innerHTML = fieldCfg.name; 
+             field.domainFieldName = fieldCfg.displayName;
+             row.cells[0].innerHTML = fieldCfg.displayName;
              row.cells[1].appendChild(field); 
+			 }
          }
      }
 }

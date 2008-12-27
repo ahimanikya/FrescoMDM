@@ -26,6 +26,7 @@ import com.sun.mdm.multidomain.services.configuration.DomainScreenConfig;
 import com.sun.mdm.multidomain.services.configuration.FieldConfig;
 import com.sun.mdm.multidomain.services.configuration.FieldConfigGroup;
 import com.sun.mdm.multidomain.services.configuration.MDConfigManager;
+import com.sun.mdm.multidomain.services.configuration.ObjectNodeConfig;
 import com.sun.mdm.multidomain.services.configuration.SearchScreenConfig;
 import com.sun.mdm.multidomain.services.configuration.SearchScreenOptions;
 import java.util.List;
@@ -225,69 +226,53 @@ public class RelationshipDefHandler {
     }
 
     public HashMap<String,HashMap> getDomainSearchCriteria(String domain) throws ServiceException ,Exception{
-        HashMap searchCriteriaFields = new HashMap<String,FieldConfig>();
         HashMap searchTypesinDomain = new HashMap(); //HashMap of key SearchType and Value of HashMap<FieldGroupName,FieldConfig>
         DomainScreenConfig domainScreenConfig = (DomainScreenConfig)MDConfigManager.getDomainScreenConfig(domain);
         
         //Get the Search Types for the domain
         ArrayList searchScreenConfigs = domainScreenConfig.getSearchScreenConfigs();
-        
         for (int j = 0; j < searchScreenConfigs.size(); j++)   { 
              SearchScreenConfig searchScreenConfig = (SearchScreenConfig)searchScreenConfigs.get(j);
-             ArrayList fieldGroupArray = searchScreenConfig.getFieldConfigGroups();
-             
              SearchScreenOptions ssOptions = searchScreenConfig.getOptions();
-             System.out.println(" ---->>>>>> " + ssOptions.getQueryBuilder());
-             /*
-             for(int k=0;k < fieldGroupArray.size();k++)   {  //Field Config Group Array
-                  FieldConfigGroup  fieldConfigGrp= (FieldConfigGroup)fieldGroupArray.get(k);
-                  ArrayList fieldconfigsGroup =fieldConfigGrp.getFieldConfigs();                 
-                  for(int l=0;l < fieldconfigsGroup.size();l++)    {  //Field Config Array
-                        FieldConfig fieldConfig = (FieldConfig) fieldconfigsGroup.get(l);
-                        searchCriteriaFields.put(new Integer(l).toString(), fieldConfig);
-                  }
-              }
-              */
              searchTypesinDomain.put(searchScreenConfig.getScreenTitle(), ssOptions.getQueryBuilder() );
-           }
+        }
          return searchTypesinDomain;
     }
     
     public HashMap getSearchTypeCriteria(String domain,String searchType) throws ServiceException ,Exception{
         HashMap returnData = new HashMap();
         TreeMap fieldGroupsMap = new TreeMap();
+
         DomainScreenConfig domainScreenConfig = (DomainScreenConfig)MDConfigManager.getDomainScreenConfig(domain);
+        HashMap<String, ObjectNodeConfig> objNodeConfigMap = MDConfigManager.getObjectNodeConfig(domain);
         
         //Get the Search Types for the domain
-        ArrayList searchScreenConfigs = domainScreenConfig.getSearchScreenConfigs();
-        
-        for (int j = 0; j < searchScreenConfigs.size(); j++)   { 
-             SearchScreenConfig searchScreenConfig = (SearchScreenConfig)searchScreenConfigs.get(j);
-             String searchTypeTitle=searchScreenConfig.getScreenTitle();
-             if(searchTypeTitle.equalsIgnoreCase(searchType))   {
-                  ArrayList fieldGroupArray = searchScreenConfig.getFieldConfigGroups();
-                  System.out.println(fieldGroupArray + " : " + fieldGroupArray.size());
-                  
-                  SearchScreenOptions ssOptions = searchScreenConfig.getOptions();
-                  System.out.println(" query builder: " + ssOptions.getQueryBuilder());
-                  returnData.put("queryBuilder", ssOptions.getQueryBuilder());
-                  for(int k=0;k < fieldGroupArray.size();k++)   {  //Field Config Group Array
-                      FieldConfigGroup  fieldConfigGrp= (FieldConfigGroup)fieldGroupArray.get(k);
-                      System.out.println( k + " : " + fieldConfigGrp.getDescription());
-                      String fieldGroupDescription =  fieldConfigGrp.getDescription();
-                      ArrayList fieldconfigsGroup = fieldConfigGrp.getFieldConfigs();        
-                      ArrayList searchCriteriaFields = new ArrayList();  
-                      System.out.println(k + " : fields : " + fieldconfigsGroup.size());
-                      for(int l=0;l < fieldconfigsGroup.size();l++)    {  //Field Config Array
-                            FieldConfig fieldConfig = (FieldConfig) fieldconfigsGroup.get(l);
-                            searchCriteriaFields.add(fieldConfig);
-                      }
-                      if(fieldGroupDescription == null) fieldGroupDescription = "fDesc" + k;
-                      fieldGroupsMap.put(fieldGroupDescription, searchCriteriaFields);
-                }             
-            }
+        ArrayList<SearchScreenConfig> searchSCFGS = domainScreenConfig.getSearchScreenConfigs();
+
+        for (SearchScreenConfig searchCFG : searchSCFGS) {
+        ArrayList<FieldConfigGroup> searchFieldCGS = searchCFG.getFieldConfigGroups();
+        String searchTypeTitle=searchCFG.getScreenTitle();
+
+        SearchScreenOptions ssOptions = searchCFG.getOptions();
+        returnData.put("queryBuilder", ssOptions.getQueryBuilder());
+
+           if(searchTypeTitle.equalsIgnoreCase(searchType))   {
+               for (FieldConfigGroup fieldCG : searchFieldCGS) {
+                   ArrayList<FieldConfig> fields = fieldCG.getFieldConfigs();
+
+                   String fieldGroupDescription =  fieldCG.getDescription();
+                   ArrayList searchCriteriaFields = new ArrayList();
+                   for (FieldConfig field : fields) {
+                       String fieldName = field.getFieldName();  // note: use getFieldName instead.
+                       ObjectNodeConfig objNodeConfig = objNodeConfigMap.get(field.getObjRef());
+
+                       FieldConfig nField = objNodeConfig.getFieldConfig(fieldName);
+                       searchCriteriaFields.add(nField);
+                   }
+                   fieldGroupsMap.put(fieldGroupDescription, searchCriteriaFields);
+              }
+           }
         }
-        
         returnData.put("fieldGroups", fieldGroupsMap);
         return returnData;
     }
