@@ -179,7 +179,8 @@ function selectSourceSearchTypeFields(data){
                  field = document.createElement("input");
              }
              field.type="text"; 
-             field.size = fieldCfg.maxLength;
+             field.size = "20";
+			 field.maxlength = fieldCfg.maxLength;
              field.name="selectSourceSearchFieldName";
              field.domainFieldName = fieldCfg.displayName;
              row.cells[0].innerHTML = fieldCfg.displayName;   
@@ -227,7 +228,8 @@ function selectTargetSearchTypeFields(data){
                  field = document.createElement("input");
              }
              field.type="text";
-             field.size = fieldCfg.maxLength;
+             field.size = "20";
+			 field.maxlength = fieldCfg.maxLength;
              field.name="selectTargetSearchFieldName";
              field.domainFieldName = fieldCfg.displayName;
              row.cells[0].innerHTML = fieldCfg.displayName;
@@ -394,6 +396,14 @@ function searchRelationships() {
     DomainScreenHandler.getSummaryFields(targetDomain, { callback:function(dataFromServer) {
       loadSummaryFields(dataFromServer, targetDomain); }
     });
+
+    // Load fields for details display for source & target domain
+	DomainScreenHandler.getDetailFields(sourceDomain, { callback:function(dataFromServer) {
+      cacheFieldsForDomain (dataFromServer, sourceDomain); }
+    });
+    DomainScreenHandler.getDetailFields(targetDomain, { callback:function(dataFromServer) {
+      cacheFieldsForDomain (dataFromServer, targetDomain); }
+    });
     
     // Load fields for search results display for source & target domain, and store it for future use.
     DomainScreenHandler.getSearchResultFields(sourceDomain, { callback:function(dataFromServer) {
@@ -417,16 +427,59 @@ function searchRelationships() {
 }
 function loadSummaryFields(data, domainName) {
     if(domainName == null) return;
-    var fieldsList = []; var i=0;
-    for (var fieldGrp in data)  {
-        for (var fields in data[fieldGrp])  {
-          //alert(fieldGrp + " : "+data[fieldGrp][fields].name);
-          fieldsList[i ++] = data[fieldGrp][fields].name;
-        }
-     }
-     //alert(fieldsList);
-     summaryFields[domainName] = fieldsList;
+	var tempSummaryFields = [];
+	var fieldGroups = data.summaryFieldGroups;
+
+	var summaryMap= {};
+	var i=0;
+	for(fldGrp in fieldGroups ) {
+		var temp = fieldGroups [fldGrp];
+		for(f in temp) {
+			//alert(f + " : " + temp[f]["displayName"] );
+			tempSummaryFields [i++] = f;
+			summaryMap[f] =  temp[f] ;
+		}
+	}
+	summaryFields[domainName] = tempSummaryFields;
+
+	return;
 }
+
+
+var cachedFieldDisplayNames = {};
+// Cache the node properties(displayName,guiType etc.,)  for all fields for a given domain.
+function cacheFieldsForDomain (data, domainName){
+	if(domainName == null) return;
+	var tempDetailFields = [];
+	var fieldGroups = data.detailFieldGroups;
+
+	cachedFieldDisplayNames [domainName] = {};
+
+	var detailMap= {};
+	var j=0;
+	for(fldGrp in fieldGroups ) {
+		//alert("fldGrp   "+fldGrp);
+		var temp = fieldGroups [fldGrp];
+		for(f in temp) {
+			if(temp[f] != null ) detailMap[f] =  temp[f] ;
+		}
+	}
+	cachedFieldDisplayNames [domainName] = detailMap;
+	//alert(getDisplayNameForField (domainName,"Person.FirstName"));
+	return;
+}
+
+
+
+function getDisplayNameForField (domainName, fieldName) {
+	var temp = cachedFieldDisplayNames [domainName];
+	if(temp[fieldName] != null) {
+		return temp[fieldName].displayName;
+	} else {
+		return fieldName;
+	}
+}
+
 function loadSearchResultFields(data, domainName) {
     if(domainName == null) return;
     var fieldsList = []; var i=0;
@@ -582,11 +635,9 @@ var cachedRelationshipRecordDetails ;
 function populateRelationshipDetails_Callback (data) {
     var summaryFieldCount = 0;
     //alert("Source summary fields: " + data.sourceRecord.name + " : " + summaryFields[data.sourceRecord.name]); 
-    //alert("Targer summary fields: " + data.targetRecord.name + " : " + summaryFields[data.targetRecord.name]); 
-    // For testing, hardcoding..
-    summaryFields[data.sourceRecord.name].push("FirstName");
-    summaryFields[data.targetRecord.name].push("FirstName");
-    
+   // alert("Targer summary fields: " + data.targetRecord.name + " : " + summaryFields[data.targetRecord.name]); 
+	
+	 
     // Cache the relationship record details for further use.
     cachedRelationshipRecordDetails = data;
     var fieldName, fieldValue;
@@ -596,10 +647,11 @@ function populateRelationshipDetails_Callback (data) {
     dwr.util.removeAllRows("sourceRecordInSummary");    
     dwr.util.removeAllRows("sourceRecordInDetail");
     summaryFieldCount = 0;
+	
     for(i=0; i<sourceRecordDetails.length; i++) {
         fieldName = sourceRecordDetails[i].name;
         fieldValue = sourceRecordDetails[i].value;
-        
+        var displayName = getDisplayNameForField (data.sourceRecord.name, fieldName );
         //alert(i + " : " +  fieldName + " : " + fieldValue );
         var sourceSummaryTable = document.getElementById('sourceRecordInSummary');
         var sourceDetailTable = document.getElementById('sourceRecordInDetail');
@@ -607,20 +659,21 @@ function populateRelationshipDetails_Callback (data) {
         recordFieldRow = sourceDetailTable.insertRow(i);
         recordFieldRow.insertCell(0);recordFieldRow.cells[0].className = "label";
         recordFieldRow.insertCell(1);recordFieldRow.cells[1].className = "data";
-        recordFieldRow.cells[0].innerHTML = fieldName + ": ";
+        recordFieldRow.cells[0].innerHTML = displayName+ ": ";
         recordFieldRow.cells[1].innerHTML = fieldValue;
 
-        //alert(summaryFields[data.sourceRecord.name].contains(fieldName));
+        //alert(fieldName + " : " +summaryFields[data.sourceRecord.name].contains(fieldName));
         isSummaryField = summaryFields[data.sourceRecord.name].contains(fieldName);
         if( isSummaryField ) {
           recordFieldRow= sourceSummaryTable.insertRow(summaryFieldCount);
           recordFieldRow.insertCell(0);recordFieldRow.cells[0].className = "label";
           recordFieldRow.insertCell(1);recordFieldRow.cells[1].className = "data";
-          recordFieldRow.cells[0].innerHTML = fieldName + ": ";
+		  
+          recordFieldRow.cells[0].innerHTML = displayName + ": ";
           recordFieldRow.cells[1].innerHTML = fieldValue;
           summaryFieldCount ++;
         }
-    }
+    } 
     
     // Populate target record Details
     var targetRecordDetails =  data.targetRecord.attributes;
@@ -631,6 +684,7 @@ function populateRelationshipDetails_Callback (data) {
     for(i=0; i<targetRecordDetails.length; i++) {
         fieldName = targetRecordDetails[i].name;
         fieldValue = targetRecordDetails[i].value;
+		var displayName = getDisplayNameForField (data.targetRecord.name, fieldName );
         
         //alert(i + " : " +  fieldName + " : " + fieldValue );
         var targetSummaryTable = document.getElementById('targetRecordInSummary');
@@ -639,7 +693,7 @@ function populateRelationshipDetails_Callback (data) {
         recordFieldRow = targetDetailTable.insertRow(i);
         recordFieldRow.insertCell(0);recordFieldRow.cells[0].className = "label";
         recordFieldRow.insertCell(1);recordFieldRow.cells[1].className = "data";
-        recordFieldRow.cells[0].innerHTML = fieldName + ": ";
+        recordFieldRow.cells[0].innerHTML = displayName + ": ";
         recordFieldRow.cells[1].innerHTML = fieldValue;
 
         //alert(summaryFields[data.sourceRecord.name].contains(fieldName));
@@ -648,7 +702,7 @@ function populateRelationshipDetails_Callback (data) {
           recordFieldRow= targetSummaryTable.insertRow(summaryFieldCount);
           recordFieldRow.insertCell(0);recordFieldRow.cells[0].className = "label";
           recordFieldRow.insertCell(1);recordFieldRow.cells[1].className = "data";
-          recordFieldRow.cells[0].innerHTML = fieldName + ": ";
+          recordFieldRow.cells[0].innerHTML = displayName + ": ";
           recordFieldRow.cells[1].innerHTML = fieldValue;
           summaryFieldCount ++;
         }
@@ -790,7 +844,8 @@ function sourceSearchTypeFields(data){
                  field = document.createElement("input");
               }
              field.type="text";
-             field.size = fieldCfg.maxLength;
+             field.size = "20";
+			 field.maxlength = fieldCfg.maxLength;
              field.name="addSourceSearchFieldName";
              field.domainFieldName = fieldCfg.displayName;
              row.cells[0].innerHTML = fieldCfg.displayName;
@@ -839,7 +894,8 @@ function targetSearchTypeFields(data){
                   field = document.createElement("input");
              }
              field.type="text";
-             field.size = fieldCfg.maxLength;
+             field.size = "20";
+			 field.maxlength = fieldCfg.maxLength;
              field.name="addTargetSearchFieldName";
              field.domainFieldName = fieldCfg.displayName;
              row.cells[0].innerHTML = fieldCfg.displayName;

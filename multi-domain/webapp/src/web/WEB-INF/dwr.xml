@@ -13,6 +13,7 @@
       <param name="beanName" value="DomainScreenHandler"/>
       <include method="getSummaryFields" />
       <include method="getSearchResultFields" />
+	  <include method="getDetailFields" />
     </create>    
 
     <create creator="spring" javascript="RelationshipDefHandler" scope="session">

@@ -26,10 +26,11 @@ import com.sun.mdm.multidomain.services.configuration.DomainScreenConfig;
 import com.sun.mdm.multidomain.services.configuration.FieldConfig;
 import com.sun.mdm.multidomain.services.configuration.FieldConfigGroup;
 import com.sun.mdm.multidomain.services.configuration.MDConfigManager; 
+import com.sun.mdm.multidomain.services.configuration.ObjectNodeConfig;
+import com.sun.mdm.multidomain.services.configuration.SearchResultDetailsConfig;
 import com.sun.mdm.multidomain.services.configuration.SearchScreenConfig;
 import com.sun.mdm.multidomain.services.configuration.SearchResultsSummaryConfig;
 import com.sun.mdm.multidomain.services.configuration.SearchResultsConfig;
-import java.util.List;
 import java.util.ArrayList;
 
 import com.sun.mdm.multidomain.services.relationship.RelationshipDefExt;
@@ -38,6 +39,7 @@ import com.sun.mdm.multidomain.services.core.ServiceManagerFactory;
 import com.sun.mdm.multidomain.services.core.ServiceException;
 import com.sun.mdm.multidomain.services.relationship.DomainRelationshipDefsObject;
 import java.util.HashMap;
+import java.util.TreeMap;
 
 /**
  * DomainScreenHandler class.
@@ -56,32 +58,63 @@ public class DomainScreenHandler {
     public HashMap getSummaryFields(String domain) throws ServiceException ,Exception     {
         System.out.println("Getteing records summary fields for domain " + domain);
         HashMap recordSummaryGroup = new HashMap();
+        HashMap summaryFieldGroups = new HashMap();
         DomainScreenConfig domainScreenConfig = (DomainScreenConfig)MDConfigManager.getDomainScreenConfig(domain);
+        HashMap<String, ObjectNodeConfig> objNodeConfigMap = MDConfigManager.getObjectNodeConfig(domain);
         
         //Get the Search Records Summary for the domain
-        ArrayList recordSummaryResultsConfigs = domainScreenConfig.getSearchResultsSummaryConfigs();
-        
-        for (int j = 0; j < recordSummaryResultsConfigs.size(); j++)   {
-            SearchResultsSummaryConfig searchResultsSummaryConfig = (SearchResultsSummaryConfig)recordSummaryResultsConfigs.get(j);
-                  ArrayList fieldGroupArray = searchResultsSummaryConfig.getFieldGroupConfigs();
-                  System.out.println("-------fieldGroupArray.size()------" +fieldGroupArray.size());
-                  for(int k=0;k < fieldGroupArray.size();k++)   {  //Field Config Group Array
-                      
-                      FieldConfigGroup  fieldConfigGrp= (FieldConfigGroup)fieldGroupArray.get(k);
-                      ArrayList fieldconfigsGroup =fieldConfigGrp.getFieldConfigs();  
-                      System.out.println("-------fieldconfigsGroup.size()------" +fieldconfigsGroup.size());
-                      ArrayList recordSummaryResultsFields = new ArrayList();        
-                      for(int l=0;l < fieldconfigsGroup.size();l++)    {  //Field Config Array
-                          
-                            FieldConfig fieldConfig = (FieldConfig) fieldconfigsGroup.get(l);
-                            recordSummaryResultsFields.add(fieldConfig);
-                      }
-                      recordSummaryGroup.put(k,recordSummaryResultsFields);
-              }
-           }
+        ArrayList< SearchResultsSummaryConfig> summarySCFGS = domainScreenConfig.getSearchResultsSummaryConfigs();
+        for (SearchResultsSummaryConfig summaryCFG : summarySCFGS) {
+            ArrayList<FieldConfigGroup> summaryFieldCGS = summaryCFG.getFieldGroupConfigs();
+            for (FieldConfigGroup fieldCG : summaryFieldCGS) {
+                int k = 0;
+                ArrayList<FieldConfig> fields = fieldCG.getFieldConfigs();
+                HashMap summaryFieldMap = new HashMap();
+                for (FieldConfig field : fields) {
+                    String fieldName = field.getFieldName();
+                    String fieldConfigName = field.getName();
+                    ObjectNodeConfig objNodeConfig = objNodeConfigMap.get(field.getObjRef());
+                    FieldConfig nField = objNodeConfig.getFieldConfig(fieldName);
+                    summaryFieldMap.put(fieldConfigName, nField);
+                }
+                summaryFieldGroups.put(k, summaryFieldMap);
+                k++;
+            }
+        }
+        recordSummaryGroup.put("summaryFieldGroups", summaryFieldGroups);
+
         return recordSummaryGroup;
     }
-
+    
+    // Return list of fields for Detail, for the specified domain parameter
+    public HashMap getDetailFields(String domain) throws ServiceException ,Exception     {
+        System.out.println("Getteing records Detail fields for domain " + domain);
+        HashMap recordDetailsGroup = new HashMap();
+        HashMap detailsFieldGroups = new HashMap();
+        DomainScreenConfig domainScreenConfig = (DomainScreenConfig)MDConfigManager.getDomainScreenConfig(domain);
+        HashMap<String, ObjectNodeConfig> objNodeConfigMap = MDConfigManager.getObjectNodeConfig(domain);
+        
+        //Get the Search Records Detail for the domain
+        ArrayList<SearchResultDetailsConfig> detailsSCFGS = domainScreenConfig.getSearchResultDetailsConfigs();
+        for (SearchResultDetailsConfig detailsCFG : detailsSCFGS) {
+            ArrayList<FieldConfigGroup> detailsFieldCGS = detailsCFG.getFieldConfigs();
+            for (FieldConfigGroup fieldCG : detailsFieldCGS) {
+                ArrayList<FieldConfig> fields = fieldCG.getFieldConfigs();
+                String fieldGroupDescription =  fieldCG.getDescription();
+                HashMap detailFieldMap = new HashMap();
+                for (FieldConfig field : fields) {
+                    String fieldName = field.getFieldName();
+                    String fieldConfigName = field.getName();
+                    ObjectNodeConfig objNodeConfig = objNodeConfigMap.get(field.getObjRef());
+                    FieldConfig nField = objNodeConfig.getFieldConfig(fieldName);
+                    detailFieldMap.put(fieldConfigName, nField);
+                }
+                detailsFieldGroups.put(fieldGroupDescription, detailFieldMap);
+            }
+        }
+        recordDetailsGroup.put("detailFieldGroups", detailsFieldGroups);
+        return recordDetailsGroup;
+    }
     
     // Return list of fields for Search result, for the specified domain parameter
     public HashMap getSearchResultFields (String domain) throws ServiceException ,Exception{
@@ -92,17 +125,14 @@ public class DomainScreenHandler {
         //Get the Search Results for the domain
         ArrayList searchResultsConfigs = domainScreenConfig.getSearchResultsConfigs();
         
-        for (int j = 0; j < searchResultsConfigs.size(); j++)   { 
-            System.out.println("-------searchScreenConfigs.size()------" +searchResultsConfigs.size());
+        for (int j = 0; j < searchResultsConfigs.size(); j++)   {
             SearchResultsConfig searchResultsConfig = (SearchResultsConfig)searchResultsConfigs.get(j);
                   ArrayList fieldGroupArray = searchResultsConfig.getFieldGroupConfigs();
                   for(int k=0;k < fieldGroupArray.size();k++)   {  //Field Config Group Array
-                      System.out.println("-------fieldGroupArray.size()------" +fieldGroupArray.size());
                       FieldConfigGroup  fieldConfigGrp= (FieldConfigGroup)fieldGroupArray.get(k);
                       ArrayList fieldconfigsGroup =fieldConfigGrp.getFieldConfigs();                 
                       ArrayList searchResultsFields = new ArrayList();        
                       for(int l=0;l < fieldconfigsGroup.size();l++)    {  //Field Config Array
-                          System.out.println("-------fieldconfigsGroup.size()------" +fieldconfigsGroup.size());
                             FieldConfig fieldConfig = (FieldConfig) fieldconfigsGroup.get(l);
                             searchResultsFields.add(fieldConfig);
                       }
