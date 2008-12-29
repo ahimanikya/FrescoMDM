@@ -54,7 +54,6 @@
 					<tr><td width="100%" align="left"  valign="top">
 						<table cellspacing="0" cellpadding="0" border="0" style="height:25px;">
                            <tr>
-						   
                             <td><a href="javascript:void(0);" onclick="" title="<f:message key="add_text" />..."><img id="imgAddRelationshipListing" src="images/icons/add_button_faded.png" border="0"></a></td>
                             <td><img src="images/spacer.gif" height="1" width="6"></td>
                             <td><a href="javascript:void(0);" onclick="" title="Move"><img id="imgDeleteRelationshipListing" src="images/icons/move-left_button_faded.png" border="0"></a></td>
@@ -87,7 +86,7 @@
 
 <br><br>	
 	<input type="button" value="Add" onclick="showByRecordAddDialog();">
-	<input type="button" value="test" onclick="getByRecordData()">
+	<input type="button" value="test" onclick="getByRecordData(); getRearrangeTreeData();">
 	
 	<input type="button" value="chk status" onclick="chkstatus();">
 
