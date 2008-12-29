@@ -121,6 +121,12 @@
              
     ];
 
+    
+    dojo.addOnLoad(function () {
+        loadSourceDomains("selectSourceDomain");
+        loadTargetDomains("selectTargetDomain");
+        refreshRelationshipDefsButtonsPalette();
+    });
 
 </script>
 
@@ -267,8 +273,8 @@
 </div>
 
 <script>
-    loadSourceDomains("selectSourceDomain");
-    loadTargetDomains("selectTargetDomain");
+   // loadSourceDomains("selectSourceDomain");
+   // loadTargetDomains("selectTargetDomain");
 </script>    
 <script>
 
@@ -361,6 +367,6 @@ function prepareEditRelationshipDef(relationshipDefName) {
 }
 
 
-refreshRelationshipDefsButtonsPalette();
+
 
 </script>

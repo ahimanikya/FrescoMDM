@@ -31,8 +31,13 @@
             function exceptionHandler(message) {
                 alert("invocation exception: " + message);
             }
-            
-            
+			
+			function showMainContent() {
+			   // alert('loaded.. showing content now...');
+			   if(dojo.byId("hierarchyTabContent") != null ) dojo.byId("hierarchyTabContent").style.display = "block";
+			   if(dojo.byId("relationshipTabContent") != null ) dojo.byId("relationshipTabContent").style.display = "block";
+			}
+            dojo.addOnLoad(showMainContent);
         </script>
         <script>
             // initialize icons
@@ -53,7 +58,7 @@
         </script>
         
     </head>
-    <body class="mdwm" onLoad="showMainContent();">
+    <body class="mdwm">
         <%@ include file="/WEB-INF/jsp/header.jsp" %>
         <%
             Boolean showAdministerTabs = (Boolean)session.getAttribute("showAdminsterTab");
@@ -79,11 +84,7 @@
     </body>
 </html>
 <script>
-    function showMainContent() {
-       // alert('loaded.. showing content now...');
-       if(dojo.byId("hierarchyTabContent") != null ) dojo.byId("hierarchyTabContent").style.display = "block";
-       if(dojo.byId("relationshipTabContent") != null ) dojo.byId("relationshipTabContent").style.display = "block";
-    }
+
     
 
     

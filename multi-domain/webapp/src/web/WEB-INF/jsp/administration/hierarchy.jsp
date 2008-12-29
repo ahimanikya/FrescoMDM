@@ -101,7 +101,10 @@
              
     ];
 
-
+    dojo.addOnLoad(function () {
+        loadDomains();
+        refreshHierarchyDefsButtonsPalette ();
+    });
 </script>
 
 
@@ -224,7 +227,7 @@
 </div>
 
 <script>
-    loadDomains();
+    //loadDomains();
 </script>  
 <script>
 
@@ -313,5 +316,5 @@ function prepareEditHierachyDef(hierarchyDefName) {
 }
 
     
-refreshHierarchyDefsButtonsPalette ();
+
 </script>
