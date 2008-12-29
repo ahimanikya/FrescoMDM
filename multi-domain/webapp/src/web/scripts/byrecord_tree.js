@@ -8,8 +8,14 @@ var mainTree_Data = { identifier: 'id',
     items: []};
 var mainTree_Store = null;
 
+var rearrangeTree_Data = { identifier: 'id',
+    label: 'name',
+    items: []};
+var rearrangeTree_Store = null;
+
 dojo.addOnLoad(function(){
     mainTree_Store = new dojo.data.ItemFileWriteStore({data: mainTree_Data});
+	rearrangeTree_Store = new dojo.data.ItemFileWriteStore({data: rearrangeTree_Data});
 });
 
 
@@ -87,13 +93,13 @@ function getByRecordDataCB (data) {
     
     // 1b. Create root element, i.e., Domain eg., Person, UK Patient.
     var rootDomainItem = {};
-    rootDomainItem.id = "roodDomainID";
+    rootDomainItem.id = "rootDomainID";
     rootDomainItem.name = data.domain;
     rootDomainItem.type = item_types.DOMAIN;
     
     // 1c. Create node for the main record. eg., George Karlin.
     var rootRecordItem = {};
-    rootRecordItem.id = "roodRecordID";
+    rootRecordItem.id = "rootRecordID";
     rootRecordItem.EUID = data.primaryObject.EUID;
     rootRecordItem.name = data.primaryObject.highLight;
     rootRecordItem.type = item_types.RECORD;
@@ -120,10 +126,7 @@ function getByRecordDataCB (data) {
 			relationshipNode.otherDomain = tempRelObj.relationshipDefView.targetDomain;
 
         relationshipNode.type = item_types.RELATIONSHIP;
-        
         var rNodeItem = mainTree_Store.newItem(relationshipNode, {parent: rootRecord, attribute:"children"} );
-        
-
 
         var relationshipDomain = {};
         relationshipDomain.id = relationshipNode.id + "_" + tempRelObj.relationshipDefView.sourceDomain;
@@ -173,7 +176,7 @@ function getByRecordDataCB (data) {
 function createMainTree () {
     var newModel  = new dijit.tree.TreeStoreModel({
         store: mainTree_Store,
-        query: {id:'roodDomainID'},
+        query: {id:'rootDomainID'},
         childrenAttrs: ["children"]    
     });
     var mainTreeObj = dijit.byId("mainTree");
@@ -196,6 +199,7 @@ function deleteItemsFromStore(items, req) {
         mainTree_Store.save();
     }
 }
+
 var isAddButtonEnabled = false;
 var isDeleteButtonEnabled = false;
 var targetDomain = null, addToRelationship = null;
@@ -287,6 +291,22 @@ function mainTreeGetIconClass (item, opened) {
     }
     return "recordIcon";    
 }
+// Custom icons for our Rearrange tree (different icons for domain, relationship & record)
+function rearrangeTreeGetIconClass (item, opened) {
+    if(item != null) {
+		var itemType = rearrangeTree_Store.getValue(item, "type");
+        //alert(mainTree_Store.getValue(item, "id") + " : " +itemType);
+        if(itemType == item_types.DOMAIN) {
+            return "domainIcon";
+        } else if(itemType == item_types.RELATIONSHIP ) {
+            var relBiDirection = rearrangeTree_Store.getValue(item, "biDirection");
+            if(relBiDirection!=null && getBoolean(relBiDirection)) {
+                return "relationshipBiDirectionIcon"
+            } else return "relationshipOneDirectionIcon";
+        } else return "recordIcon";
+    }
+    return "recordIcon";    
+}
 
 function chkstatus() {
 	var res = "Add allowed: " + isAddButtonEnabled;
@@ -313,4 +333,101 @@ function showRearrangeTree(rearrangeButtonObj) {
 		displayDiv("rearrangeTreeSection", true);
 	}
 
+}
+
+// Function to get the data for rearrange tree.
+function getRearrangeTreeData () {
+	var selectedDomain = "Person";
+	var selectedEUID = "000-000-555";
+	if(byRecord_CurrentSelected_Domain != null) selectedDomain = byRecord_CurrentSelected_Domain;
+	if(byRecord_CurrentSelected_EUID != null) selectedEUID = byRecord_CurrentSelected_EUID;
+	
+	//RelationshipHandler.xyz(domainSearchObj, getRearrangeTreeData_CB);
+    
+    // For testing, simulate data and call callback method 
+	var data = {};
+    data.domain = selectedDomain;
+	
+	var recordObjs = []; // array of relationship objects
+    for(i=0; i<4; i++) {
+		var tempRecordObj = {};
+		tempRecordObj.EUID = "000-000-"+i;
+		tempRecordObj.recordHighLight = "Record Name " + i;
+		recordObjs.push (tempRecordObj);
+	}
+	
+	data.domainRecords = recordObjs;
+	
+	getRearrangeTreeData_CB(data);
+}
+
+// Callback function: for getting data for re-arrange tree
+function getRearrangeTreeData_CB (data) {
+    // 1. Populate store for tree
+    // 1a. delete existing data items from store.
+    rearrangeTree_Store.fetch ({query:{},onComplete: deleteItemsFromRearrangeTreeStore, queryOptions: {deep:true}});
+	
+	// 1b. Create root element, i.e., Domain eg., Person, UK Patient.
+    var rootDomainItem = {};
+    rootDomainItem.id = "rootDom";
+    rootDomainItem.name = data.domain;
+    rootDomainItem.type = item_types.DOMAIN;
+	
+	var rootDomain = rearrangeTree_Store.newItem( rootDomainItem , null);
+	for(i=0; i<data.domainRecords.length; i++) {
+		var tempRec = data.domainRecords[i];
+		var recordNode = {};
+        recordNode.id = tempRec.EUID;
+        recordNode.name = tempRec.recordHighLight;
+
+        recordNode.type = item_types.RECORD;
+        var recordNodeItem = rearrangeTree_Store.newItem(recordNode, {parent: rootDomain, attribute:"children"} );
+	}
+	
+	// 2. Save the items of store
+    rearrangeTree_Store.save();
+
+		
+    // 3. Create tree now
+    createRearrangeTree();
+	displayDiv("rearrangeTreeContainer", true);
+}
+
+// Custom function, for deciding if a node may have children or not. (For Rearrange tree)
+function customRearrangeTreeMayHaveChildren(item) {
+	var node = item.node;
+	alert(item + " : " + node);
+	return true;
+}
+
+// Function to create the Rearrange tree. Store should be populated before calling this.
+function createRearrangeTree () {
+    var rearrangeTreeModel  = new dijit.tree.TreeStoreModel({
+        store: rearrangeTree_Store,
+        query: {id:'rootDom'},
+        childrenAttrs: ["children"],
+		mayHaveChildren: customRearrangeTreeMayHaveChildren
+    });
+    var rearrangeTreeObj = dijit.byId("rearrangeTree");
+    if (dijit.byId("rearrangeTree")) {dijit.byId("rearrangeTree").destroy()}
+
+    rearrangeTreeObj = new dijit.TreeCustom({
+        id: "rearrangeTree",
+        model: rearrangeTreeModel,
+        customOnClick: rearrangeTreeClicked,
+        getIconClass: rearrangeTreeGetIconClass
+    }, document.createElement("div"));
+    rearrangeTreeObj.startup();
+    dojo.byId("rearrangeTreeContainer").appendChild(rearrangeTreeObj.domNode);
+}
+// function to delete items from rearrange tree store.
+function deleteItemsFromRearrangeTreeStore(items, req) {
+    for(i=0; i<items.length; i++) {
+        var status = rearrangeTree_Store.deleteItem(items[i]);
+        rearrangeTree_Store.save();
+    }
+}
+
+function rearrangeTreeClicked(item, node, allSelectedItems ) {
+	//alert("rearrange tree clicked");
 }
