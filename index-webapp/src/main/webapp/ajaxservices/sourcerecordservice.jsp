@@ -858,7 +858,7 @@ boolean isSessionActive = true;
 																	 </td>
 																	 <td>
 																	  <h:outputLink title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:editMinorObjectType='';
-																	  unsavedEditMinorObjectType='';alert(unsavedRootNodeValues);
+																	  unsavedEditMinorObjectType='';
 																	  if(unsavedRootNodeValues.length<1){
 																	  hideDivs('inactiveHeaders');showDivs('activeHeaders');}
 																	  ClearContents('#{childNodesName}InnerForm');setEditIndex('-1')">
