@@ -121,24 +121,31 @@ public class DomainScreenHandler {
         System.out.println("getting search result fields");
         
         HashMap searchResultFieldGroup = new HashMap();
+        HashMap resultsFieldGroups = new HashMap();
         DomainScreenConfig domainScreenConfig = (DomainScreenConfig)MDConfigManager.getDomainScreenConfig(domain);
-        //Get the Search Results for the domain
-        ArrayList searchResultsConfigs = domainScreenConfig.getSearchResultsConfigs();
+        HashMap<String, ObjectNodeConfig> objNodeConfigMap = MDConfigManager.getObjectNodeConfig(domain);
         
-        for (int j = 0; j < searchResultsConfigs.size(); j++)   {
-            SearchResultsConfig searchResultsConfig = (SearchResultsConfig)searchResultsConfigs.get(j);
-                  ArrayList fieldGroupArray = searchResultsConfig.getFieldGroupConfigs();
-                  for(int k=0;k < fieldGroupArray.size();k++)   {  //Field Config Group Array
-                      FieldConfigGroup  fieldConfigGrp= (FieldConfigGroup)fieldGroupArray.get(k);
-                      ArrayList fieldconfigsGroup =fieldConfigGrp.getFieldConfigs();                 
-                      ArrayList searchResultsFields = new ArrayList();        
-                      for(int l=0;l < fieldconfigsGroup.size();l++)    {  //Field Config Array
-                            FieldConfig fieldConfig = (FieldConfig) fieldconfigsGroup.get(l);
-                            searchResultsFields.add(fieldConfig);
-                      }
-                      searchResultFieldGroup.put(k,searchResultsFields);
-              }             
-           }
+        //Get the Search Results for the domain
+        ArrayList<SearchResultsConfig> resultsSCFGS = domainScreenConfig.getSearchResultsConfigs();
+        for (SearchResultsConfig resultsCFG : resultsSCFGS) {
+            ArrayList<FieldConfigGroup> resultsFieldCGS = resultsCFG.getFieldGroupConfigs();
+            for (FieldConfigGroup fieldCG : resultsFieldCGS) {
+                int k = 0;
+                ArrayList<FieldConfig> fields = fieldCG.getFieldConfigs();
+                HashMap resultsFieldMap = new HashMap();
+                for (FieldConfig field : fields) {
+                    String fieldName = field.getFieldName();
+                    String fieldConfigName = field.getName();
+                    ObjectNodeConfig objNodeConfig = objNodeConfigMap.get(field.getObjRef());
+                    FieldConfig nField = objNodeConfig.getFieldConfig(fieldName);
+                    resultsFieldMap.put(fieldConfigName, nField);
+                }
+                resultsFieldGroups.put(k, resultsFieldMap);
+                k++;
+            }
+        }
+        searchResultFieldGroup.put("resultsFieldGroups", resultsFieldGroups);
+
         return searchResultFieldGroup;
     }
 }

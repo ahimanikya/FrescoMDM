@@ -482,16 +482,19 @@ function getDisplayNameForField (domainName, fieldName) {
 
 function loadSearchResultFields(data, domainName) {
     if(domainName == null) return;
-    var fieldsList = []; var i=0;
-    for (var fieldGrp in data)  {
-        for (var fields in data[fieldGrp])  {
-          //alert(fieldGrp + " : "+data[fieldGrp][fields].name);
-          fieldsList[i ++] = data[fieldGrp][fields].name;
-        }
-     }
-     //alert(fieldsList);
-     searchResultsFields[domainName] = fieldsList;    
-   //  alert("fields loaded: " + searchResultsFields[domainName]);
+	var tempResultFields = [];
+	var fieldGroups = data.resultsFieldGroups;
+	var i=0;
+	for(fldGrp in fieldGroups ) {
+		var temp = fieldGroups [fldGrp];
+		for(f in temp) {
+			//alert(f + " : " + temp[f]["displayName"] );
+			tempResultFields [i++] = f;
+		}
+	}
+	searchResultsFields[domainName] = tempResultFields;
+
+	return;
 }
 function cacheRelationshipDefAttributes (data, relationshipDefName) {
     //alert("relationship def: " + data);
@@ -965,7 +968,6 @@ function addSourceSearchResults_Display (currentPage, itemsPerPage) {
     data = cachedSourceDomainSearchResults;
     dwr.util.removeAllRows("AddSource_TableId");
     var fieldsToShowInSearchResults = searchResultsFields[currentSelectedSourceDomain];
-    fieldsToShowInSearchResults.push("LastName"); fieldsToShowInSearchResults.push("FirstName"); // For testing purpose only.
     
     // show only records that should go in current page.
     var resultsToShow = new Array();
@@ -985,13 +987,15 @@ function addSourceSearchResults_Display (currentPage, itemsPerPage) {
       if(i==0){
           columnCount = 0;
           var header = document.getElementById('AddSource_TableId').insertRow(i);
+		  
           header.className = "header";
           header.insertCell(columnCount++);
           for(j=0; j<resultsToShow[i].attributes.length; j++) {
+		  var displayName = getDisplayNameForField (resultsToShow[i].name, resultsToShow[i].attributes[j].name );
             if(! fieldsToShowInSearchResults.contains (resultsToShow[i].attributes[j].name)) continue;
             header.insertCell(columnCount);
             header.cells[columnCount].className = "label";
-            header.cells[columnCount].innerHTML  = resultsToShow[i].attributes[j].name;
+            header.cells[columnCount].innerHTML  = displayName;
             columnCount++;
           }
      }
@@ -1071,8 +1075,7 @@ function addTargeSearchResults_Display_Refresh (currentPage) {
 function addTargeSearchResults_Display(currentPage, itemsPerPage) {
     data = cachedTaretDomainSearchResults;
     dwr.util.removeAllRows("AddTarget_TableId");     
-    var fieldsToShowInSearchResults = searchResultsFields[currentSelectedTargetDomain];   
-    fieldsToShowInSearchResults.push("LastName"); // For testing purpose only. need to be removed later.
+    var fieldsToShowInSearchResults = searchResultsFields[currentSelectedTargetDomain];
     // show only records that should go in current page.
     var resultsToShow = new Array();
     var itemsFrom = 0, itemsTill = 10;
@@ -1094,10 +1097,11 @@ function addTargeSearchResults_Display(currentPage, itemsPerPage) {
           header.insertCell(columnCount++);
 
           for(j=0; j<resultsToShow[i].attributes.length; j++) {
+             var displayName = getDisplayNameForField (resultsToShow[i].name, resultsToShow[i].attributes[j].name );
             if(! fieldsToShowInSearchResults.contains (resultsToShow[i].attributes[j].name)) continue;
             header.insertCell(columnCount);   
             header.cells[columnCount].className = "label";
-            header.cells[columnCount].innerHTML  = resultsToShow[i].attributes[j].name;
+            header.cells[columnCount].innerHTML  = displayName;
             columnCount ++;
           }
         }
