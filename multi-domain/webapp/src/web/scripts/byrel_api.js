@@ -121,6 +121,7 @@ function selectSourceSearchTypes(data)   {
         var opt =  document.createElement("option");
         opt.text = searchType;
         opt.value = searchType;
+		opt.title = searchType;
         document.getElementById('select_source_searchtypes').options.add(opt);
     }
     selectSourceSearchFields('select_source_searchtypes');
@@ -137,6 +138,7 @@ function selectTargetSearchTypes(data)   {
         var opt =  document.createElement("option");
         opt.text = searchType;
         opt.value = searchType;
+		opt.title = searchType;
         document.getElementById('select_target_searchtypes').options.add(opt);
     }
     selectTargetSearchFields('select_target_searchtypes');
@@ -164,7 +166,7 @@ function selectSourceSearchTypeFields(data){
     for (var fieldGrp in fieldGroups)  {
 		var descriptionRow = document.getElementById('select_search_source_fields').insertRow(count++);
 		descriptionRow.insertCell(0);
-		descriptionRow.cells[0].innerHTML = fieldGrp;   
+		descriptionRow.cells[0].innerHTML = "<b>"+ fieldGrp + "</b>";
         for(i=0; i<fieldGroups[fieldGrp].length; i++) {
              fieldCfg = fieldGroups[fieldGrp][i];
              var row = document.getElementById('select_search_source_fields').insertRow(count++);
@@ -182,6 +184,7 @@ function selectSourceSearchTypeFields(data){
              field.size = "20";
 			 field.maxlength = fieldCfg.maxLength;
              field.name="selectSourceSearchFieldName";
+             field.title =  fieldCfg.displayName;
              field.domainFieldName = fieldCfg.displayName;
              row.cells[0].innerHTML = fieldCfg.displayName;   
              row.cells[1].appendChild(field); 
@@ -213,7 +216,7 @@ function selectTargetSearchTypeFields(data){
      for (var fieldGrp in fieldGroups)  {
         var descriptionRow = document.getElementById('select_search_target_fields').insertRow(count++);
 		descriptionRow.insertCell(0);
-		descriptionRow.cells[0].innerHTML = fieldGrp;   
+		descriptionRow.cells[0].innerHTML = "<b>"+ fieldGrp + "</b>";
         for(i=0; i<fieldGroups[fieldGrp].length; i++) {
              var fieldCfg = fieldGroups[fieldGrp][i];
              var row = document.getElementById('select_search_target_fields').insertRow(count++);
@@ -231,6 +234,7 @@ function selectTargetSearchTypeFields(data){
              field.size = "20";
 			 field.maxlength = fieldCfg.maxLength;
              field.name="selectTargetSearchFieldName";
+			 field.title =  fieldCfg.displayName;
              field.domainFieldName = fieldCfg.displayName;
              row.cells[0].innerHTML = fieldCfg.displayName;
              row.cells[1].appendChild(field);
@@ -832,7 +836,7 @@ function sourceSearchTypeFields(data){
     for (var fieldGrp in fieldGroups)  {
         var descriptionRow = document.getElementById('add_search_source_fields').insertRow(count++);
 		descriptionRow.insertCell(0);
-		descriptionRow.cells[0].innerHTML = fieldGrp;    
+		descriptionRow.cells[0].innerHTML = "<b>"+ fieldGrp + "</b>";
         for(i=0; i<fieldGroups[fieldGrp].length; i++) {
              var fieldCfg = fieldGroups[fieldGrp][i];
              var row = document.getElementById('add_search_source_fields').insertRow(count++);
@@ -850,6 +854,7 @@ function sourceSearchTypeFields(data){
              field.size = "20";
 			 field.maxlength = fieldCfg.maxLength;
              field.name="addSourceSearchFieldName";
+			 field.title =  fieldCfg.displayName;
              field.domainFieldName = fieldCfg.displayName;
              row.cells[0].innerHTML = fieldCfg.displayName;
              row.cells[1].appendChild(field); 
@@ -882,7 +887,7 @@ function targetSearchTypeFields(data){
     for (var fieldGrp in fieldGroups)  {
         var descriptionRow = document.getElementById('add_search_target_fields').insertRow(count++);
 		descriptionRow.insertCell(0);
-		descriptionRow.cells[0].innerHTML = fieldGrp;    
+		descriptionRow.cells[0].innerHTML = "<b>"+ fieldGrp + "</b>";
         for(i=0; i<fieldGroups[fieldGrp].length; i++) {
              var fieldCfg = fieldGroups[fieldGrp][i];
              var row = document.getElementById('add_search_target_fields').insertRow(count++);
@@ -900,6 +905,7 @@ function targetSearchTypeFields(data){
              field.size = "20";
 			 field.maxlength = fieldCfg.maxLength;
              field.name="addTargetSearchFieldName";
+			 field.title =  fieldCfg.displayName;
              field.domainFieldName = fieldCfg.displayName;
              row.cells[0].innerHTML = fieldCfg.displayName;
              row.cells[1].appendChild(field); 
