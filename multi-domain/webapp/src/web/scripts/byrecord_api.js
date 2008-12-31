@@ -259,7 +259,7 @@ function byRecord_ShowDetails () {
 			+ byRecord_Selected_Relationship.targetDomain + " :"  + byRecord_Selected_Relationship.relationshipDefName);
 	} else if(byRecord_Selected_Record != null) {
 		alert("showing details for  record  : " + byRecord_Selected_Record);
-		alert(byRecord_Selected_Record.EUID );
+		alert(byRecord_Selected_Record.EUID + "  " + byRecord_Selected_Record.domain );
 	} else {
 		alert("details section show nothing. clear the currently shown details. ");
 	}
