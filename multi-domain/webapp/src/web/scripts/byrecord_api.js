@@ -12,8 +12,8 @@ function exceptionHandler(message) {
 }
 
 
-var byRecord_CurrentSelected_Domain = null; // Current working domain
-var byRecord_CurrentSelected_EUID = null; // Current working record EUID.
+var byRecord_CurrentWorking_Domain = null; // Current working domain
+var byRecord_CurrentWorking_EUID = null; // Current working record EUID.
 
 var byRecord_CurrentSelected_RelationshipDefName = null; // Populated when any operation happens in Tree
 var byRecord_CurrentSelected_TargetDomain = null; // Populated when any operation happens in Tree
@@ -232,14 +232,14 @@ function byRecordSelectRecord() {
         }
     }
     
-    byRecord_CurrentSelected_Domain = selectedDomain;
-    byRecord_CurrentSelected_EUID = selectedRecordEUID;
+    byRecord_CurrentWorking_Domain = selectedDomain;
+    byRecord_CurrentWorking_EUID = selectedRecordEUID;
 
     // Hard code assigning values, to be used for Add dialog
     byRecord_CurrentSelected_TargetDomain = "Company";
     byRecord_CurrentSelected_RelationshipDefName = "worksfor";
     
-    RelationshipDefHandler.getRelationshipDefByName(byRecord_CurrentSelected_RelationshipDefName, byRecord_CurrentSelected_Domain, 
+    RelationshipDefHandler.getRelationshipDefByName(byRecord_CurrentSelected_RelationshipDefName, byRecord_CurrentWorking_Domain, 
         byRecord_CurrentSelected_TargetDomain, cacheRelationshipDef);
         
     hideByRecordSelectDialog();
@@ -252,12 +252,17 @@ function cacheRelationshipDef(data) {
 
 // function to show right section details...
 function byRecord_ShowDetails () {
-	if(byRecord_Selected_RelationshipId != null)
+
+	if(byRecord_Selected_RelationshipId != null) {
 		alert("Showing details for relationshipId " + byRecord_Selected_RelationshipId);
-	else if(byRecord_Selected_EUID != null)
+	}
+	else if(byRecord_Selected_EUID != null) {
 		alert("showing details for  EUID  : " + byRecord_Selected_EUID);
-	else
-		alert("details section show nothing ");
+	}
+	else {
+		alert("details section show nothing. clear the currently shown details. ");
+	}
+	
 }
 
 
@@ -276,16 +281,16 @@ function byRecord_ShowDetails () {
 function byRecord_prepareAdd () {
     var relationshipDefObj = byRecord_CachedRelationshipDefs[byRecord_CurrentSelected_RelationshipDefName] ;
     
-   // alert("Soruce domain " + byRecord_CurrentSelected_Domain );
+   // alert("Soruce domain " + byRecord_CurrentWorking_Domain );
    // alert("target domain " + byRecord_CurrentSelected_TargetDomain);
-   // alert("Source EUID " + byRecord_CurrentSelected_EUID);
+   // alert("Source EUID " + byRecord_CurrentWorking_EUID);
    // alert("relationship def " + relationshipDefObj.name);
     // create search criteria section for target domain
     RelationshipDefHandler.getDomainSearchCriteria(byRecord_CurrentSelected_TargetDomain, showByRecordAddSearchTypes);
     // create attributes section for relationship def 
     
     populateAddRelationshipDefAttributes( relationshipDefObj );
-    //RelationshipDefHandler.getRelationshipDefByName(relationshipDefName, byRecord_CurrentSelected_Domain, byRecord_CurrentSelected_TargetDomain, populateAddRelationshipDefAttributes);
+    //RelationshipDefHandler.getRelationshipDefByName(relationshipDefName, byRecord_CurrentWorking_Domain, byRecord_CurrentSelected_TargetDomain, populateAddRelationshipDefAttributes);
     // Cache the search fields for this domain
     DomainScreenHandler.getSearchResultFields(byRecord_CurrentSelected_TargetDomain, { callback:function(dataFromServer) {
       loadSearchResultFields(dataFromServer, byRecord_CurrentSelected_TargetDomain); }
@@ -454,7 +459,7 @@ function byRecordAddRecord(){
     var endDateField = document.getElementById('add_predefined_endDate');
     var purgeDateField = document.getElementById('add_predefined_purgeDate');
     var startDate,endDate,purgeDate;
-    var SourceDomain = byRecord_CurrentSelected_Domain;
+    var SourceDomain = byRecord_CurrentWorking_Domain;
     var TargetDomain = byRecord_CurrentSelected_TargetDomain;
     var relationshipDefObj = byRecord_CachedRelationshipDefs[byRecord_CurrentSelected_RelationshipDefName] ;
     var RelationshipDefName = relationshipDefObj.name;
@@ -530,7 +535,7 @@ function byRecordAddRecord(){
           newRelationshipRecord.name = RelationshipDefName;
           newRelationshipRecord.sourceDomain = SourceDomain;
           newRelationshipRecord.targetDomain = TargetDomain;
-          newRelationshipRecord.sourceEUID = byRecord_CurrentSelected_EUID;
+          newRelationshipRecord.sourceEUID = byRecord_CurrentWorking_EUID;
           newRelationshipRecord.targetEUID = targetRecordEUID;
 
           newRelationshipRecord.startDate = startDate;

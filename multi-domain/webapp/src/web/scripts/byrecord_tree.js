@@ -28,8 +28,8 @@ function getByRecordData () {
 
 	var selectedDomain = "Person";
 	var selectedEUID = "000-000-555";
-	if(byRecord_CurrentSelected_Domain != null) selectedDomain = byRecord_CurrentSelected_Domain;
-	if(byRecord_CurrentSelected_EUID != null) selectedEUID = byRecord_CurrentSelected_EUID;
+	if(byRecord_CurrentWorking_Domain != null) selectedDomain = byRecord_CurrentWorking_Domain;
+	if(byRecord_CurrentWorking_EUID != null) selectedEUID = byRecord_CurrentWorking_EUID;
 
     var domainSearchObj = {name:selectedDomain, attributes:[{EUID: selectedEUID}]};
     
@@ -102,6 +102,7 @@ function getByRecordDataCB (data) {
     rootRecordItem.id = "rootRecordID";
     rootRecordItem.EUID = data.primaryObject.EUID;
     rootRecordItem.name = data.primaryObject.highLight;
+	rootRecordItem.underDomain = data.domain;
     rootRecordItem.type = item_types.RECORD;
  
     var rootDomain = mainTree_Store.newItem( rootDomainItem , null);
@@ -111,7 +112,7 @@ function getByRecordDataCB (data) {
     for(i=0; i<data.relationshipsObjects.length; i++) {
         var tempRelObj = data.relationshipsObjects[i];
 		var useSourceDomain = false;
-		if(tempRelObj.relationshipDefView.sourceDomain != byRecord_CurrentSelected_Domain)
+		if(tempRelObj.relationshipDefView.sourceDomain != byRecord_CurrentWorking_Domain)
 			useSourceDomain = true; 
 		else useSourceDomain = false;
 
@@ -223,7 +224,7 @@ function mainTreeClicked(item, node, allSelectedItems ) {
 		
 		switch (itemType) {
 			case item_types.DOMAIN:
-				if(itemName == byRecord_CurrentSelected_Domain) {
+				if(itemName == byRecord_CurrentWorking_Domain) {
 					continue;
 				}
 				//alert("its a domain ");
@@ -234,13 +235,12 @@ function mainTreeClicked(item, node, allSelectedItems ) {
 			case item_types.RECORD:
 				var itemEUID = mainTree_Store.getValue(item, "EUID");
 				
-				if(itemEUID == byRecord_CurrentSelected_EUID) {
+				if(itemEUID == byRecord_CurrentWorking_EUID) {
 					byRecord_Selected_EUID = itemEUID;
 				} else {
 					var tempRelationshipId = mainTree_Store.getValue(item, "underRelationshipId");
 					byRecord_Selected_RelationshipId = tempRelationshipId;
 				}
-				
 				//alert("its a record");
 				break;
 		}
@@ -252,7 +252,7 @@ function mainTreeClicked(item, node, allSelectedItems ) {
 	var itemName = mainTree_Store.getValue(item, "name");
 
 	if(itemType == item_types.DOMAIN) {
-		if(itemName != byRecord_CurrentSelected_Domain) {
+		if(itemName != byRecord_CurrentWorking_Domain) {
 			isAddButtonEnabled = true;
 			isDeleteButtonEnabled = true;
 			targetDomain = itemName;
@@ -267,7 +267,7 @@ function mainTreeClicked(item, node, allSelectedItems ) {
 
 	} else  if(itemType == item_types.RECORD) {
 		var itemEUID = mainTree_Store.getValue(item, "EUID");
-		if(itemEUID != byRecord_CurrentSelected_EUID) {
+		if(itemEUID != byRecord_CurrentWorking_EUID) {
 			isAddButtonEnabled = true;
 			targetDomain = itemName;
 			
@@ -349,8 +349,8 @@ function showRearrangeTree(rearrangeButtonObj) {
 function getRearrangeTreeData () {
 	var selectedDomain = "Person";
 	var selectedEUID = "000-000-555";
-	if(byRecord_CurrentSelected_Domain != null) selectedDomain = byRecord_CurrentSelected_Domain;
-	if(byRecord_CurrentSelected_EUID != null) selectedEUID = byRecord_CurrentSelected_EUID;
+	if(byRecord_CurrentWorking_Domain != null) selectedDomain = byRecord_CurrentWorking_Domain;
+	if(byRecord_CurrentWorking_EUID != null) selectedEUID = byRecord_CurrentWorking_EUID;
 	
 	//RelationshipHandler.xyz(domainSearchObj, getRearrangeTreeData_CB);
     
