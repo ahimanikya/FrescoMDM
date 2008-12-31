@@ -206,15 +206,15 @@ function deleteItemsFromStore(items, req) {
 // Main tree click event is captured by this function
 function mainTreeClicked(item, node, allSelectedItems ) {
 	//alert('allSelectedItems ' + allSelectedItems.length);
+	byRecord_Selected_Relationship = null;
+	byRecord_Selected_Record = null;
 	for(i=0; i<allSelectedItems.length; i++) {
 		var tempItem = allSelectedItems[i];
 		
 		var itemType = mainTree_Store.getValue(tempItem, "type");
 		var itemName = mainTree_Store.getValue(tempItem, "name");	
 		//alert(itemType + " : " + itemName);
-		byRecord_Selected_Relationship = null;
-		byRecord_Selected_Record = null;
-		
+
 		switch (itemType) {
 			case item_types.DOMAIN:
 				if(itemName == byRecord_CurrentWorking_Domain) {
@@ -246,6 +246,11 @@ function mainTreeClicked(item, node, allSelectedItems ) {
 				//alert("its a record");
 				break;
 		}
+	}
+	// If multi-selected, then no details can be shown.
+	if(allSelectedItems.length > 1) {
+		byRecord_Selected_Relationship = null;
+		byRecord_Selected_Record = null;
 	}
 	
 	return;
