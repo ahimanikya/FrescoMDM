@@ -135,7 +135,7 @@ function getByRecordDataCB (data) {
 			relationshipDomain.name = tempRelObj.relationshipDefView.sourceDomain;
 		else
 			relationshipDomain.name = tempRelObj.relationshipDefView.targetDomain;
-        relationshipDomain.underRelationship = relationshipNode.name;
+        relationshipDomain.underRelationshipDefName = relationshipNode.name;
         relationshipDomain.type = item_types.DOMAIN;
         var rDomainItem = mainTree_Store.newItem(relationshipDomain, {parent: rNodeItem, attribute:"children"} );
         
@@ -153,7 +153,7 @@ function getByRecordDataCB (data) {
 			}
 			recordNode.relationshipFromDomain = rootDomainItem.name;
 			recordNode.relationshipToDomain = relationshipDomain.name;
-			recordNode.underRelationship = relationshipNode.name;
+			recordNode.underRelationshipDefName = relationshipNode.name;
 			recordNode.underRelationshipId = relationships[j].id;
             recordNode.type = item_types.RECORD;
             var recordNodeItem = mainTree_Store.newItem(recordNode, {parent: rDomainItem, attribute:"children"} );
@@ -239,7 +239,9 @@ function mainTreeClicked(item, node, allSelectedItems ) {
 					byRecord_Selected_Relationship = {};
 					byRecord_Selected_Relationship["relationshipId"] = mainTree_Store.getValue(item, "underRelationshipId");
 					byRecord_Selected_Relationship["sourceDomain"] = mainTree_Store.getValue(item, "relationshipFromDomain");
-					byRecord_Selected_Relationship["targetDomain"] = mainTree_Store.getValue(item, "relationshipToDomain");;
+					byRecord_Selected_Relationship["targetDomain"] = mainTree_Store.getValue(item, "relationshipToDomain");
+					byRecord_Selected_Relationship["relationshipDefName"] = mainTree_Store.getValue(item, "underRelationshipDefName");
+					
 				}
 				//alert("its a record");
 				break;

@@ -255,7 +255,8 @@ function byRecord_ShowDetails () {
 
 	if(byRecord_Selected_Relationship != null) {
 		alert("Showing details for relationship: " + byRecord_Selected_Relationship);
-		alert(byRecord_Selected_Relationship.relationshipId + " : " + byRecord_Selected_Relationship.sourceDomain + " : " + byRecord_Selected_Relationship.targetDomain);
+		alert(byRecord_Selected_Relationship.relationshipId + " : " + byRecord_Selected_Relationship.sourceDomain + " : " 
+			+ byRecord_Selected_Relationship.targetDomain + " :"  + byRecord_Selected_Relationship.relationshipDefName);
 	} else if(byRecord_Selected_Record != null) {
 		alert("showing details for  record  : " + byRecord_Selected_Record);
 		alert(byRecord_Selected_Record.EUID );
