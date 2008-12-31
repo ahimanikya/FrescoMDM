@@ -254,12 +254,10 @@ function cacheRelationshipDef(data) {
 function byRecord_ShowDetails () {
 
 	if(byRecord_Selected_RelationshipId != null) {
-		alert("Showing details for relationshipId " + byRecord_Selected_RelationshipId);
-	}
-	else if(byRecord_Selected_EUID != null) {
+		alert("Showing details for relationship-Id: " + byRecord_Selected_RelationshipId);
+	} else if(byRecord_Selected_EUID != null) {
 		alert("showing details for  EUID  : " + byRecord_Selected_EUID);
-	}
-	else {
+	} else {
 		alert("details section show nothing. clear the currently shown details. ");
 	}
 	

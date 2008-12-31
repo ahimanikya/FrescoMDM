@@ -65,7 +65,7 @@ function getByRecordData () {
         for(j=0; j<2; j++) {
             // put some records for this relationship view
             var relationshipView = {};
-            relationshipView.id = j;
+            relationshipView.id = "relId"+j;
             if(i%2==0) {
               relationshipView.sourceEUID = selectedEUID;
               relationshipView.targetEUID = "T000-000-" + j;
@@ -136,7 +136,6 @@ function getByRecordDataCB (data) {
 		else
 			relationshipDomain.name = tempRelObj.relationshipDefView.targetDomain;
         relationshipDomain.underRelationship = relationshipNode.name;
-		relationshipDomain.underRelationshipId = relationshipNode.id;
         relationshipDomain.type = item_types.DOMAIN;
         var rDomainItem = mainTree_Store.newItem(relationshipDomain, {parent: rNodeItem, attribute:"children"} );
         
@@ -154,7 +153,7 @@ function getByRecordDataCB (data) {
 			}
 			recordNode.underDomain = relationshipDomain.name;
 			recordNode.underRelationship = relationshipNode.name;
-			recordNode.underRelationshipId = relationshipNode.id;
+			recordNode.underRelationshipId = relationships[j].id;
             recordNode.type = item_types.RECORD;
             var recordNodeItem = mainTree_Store.newItem(recordNode, {parent: rDomainItem, attribute:"children"} );
             //alert(j + " " + relationships[j].sourceEUID + " :: " + relationships[j].targetEUID);
