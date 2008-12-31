@@ -151,7 +151,8 @@ function getByRecordDataCB (data) {
 				recordNode.EUID = relationships[j].targetEUID;
 				recordNode.name = relationships[j].targetHighLight;
 			}
-			recordNode.underDomain = relationshipDomain.name;
+			recordNode.relationshipFromDomain = rootDomainItem.name;
+			recordNode.relationshipToDomain = relationshipDomain.name;
 			recordNode.underRelationship = relationshipNode.name;
 			recordNode.underRelationshipId = relationships[j].id;
             recordNode.type = item_types.RECORD;
@@ -168,8 +169,7 @@ function getByRecordDataCB (data) {
 	displayDiv("mainTreeContainer", true);
 	
 	// 4. Reset button pallete (enable/disable add,delete, etc., buttons)
-	isAddButtonEnabled = false, isDeleteButtonEnabled = false;
-	targetDomain = null, addToRelationship = null;
+
     return;
 }
 
@@ -202,24 +202,18 @@ function deleteItemsFromStore(items, req) {
     }
 }
 
-var isAddButtonEnabled = false;
-var isDeleteButtonEnabled = false;
-var targetDomain = null, addToRelationship = null;
 
 // Main tree click event is captured by this function
 function mainTreeClicked(item, node, allSelectedItems ) {
 	//alert('allSelectedItems ' + allSelectedItems.length);
-	isAddButtonEnabled = false, isDeleteButtonEnabled = false;
-	targetDomain = null, addToRelationship = null;
-	
 	for(i=0; i<allSelectedItems.length; i++) {
 		var tempItem = allSelectedItems[i];
 		
 		var itemType = mainTree_Store.getValue(tempItem, "type");
 		var itemName = mainTree_Store.getValue(tempItem, "name");	
 		//alert(itemType + " : " + itemName);
-		byRecord_Selected_RelationshipId = null;
-		byRecord_Selected_EUID = null;
+		byRecord_Selected_Relationship = null;
+		byRecord_Selected_Record = null;
 		
 		switch (itemType) {
 			case item_types.DOMAIN:
@@ -235,10 +229,17 @@ function mainTreeClicked(item, node, allSelectedItems ) {
 				var itemEUID = mainTree_Store.getValue(item, "EUID");
 				
 				if(itemEUID == byRecord_CurrentWorking_EUID) {
-					byRecord_Selected_EUID = itemEUID;
+					byRecord_Selected_Record = {};
+					byRecord_Selected_Record["EUID"] = itemEUID;
+					var tempDomain = mainTree_Store.getValue(item, "underDomain");
+					byRecord_Selected_Record["domain"] = tempDomain;
 				} else {
 					var tempRelationshipId = mainTree_Store.getValue(item, "underRelationshipId");
-					byRecord_Selected_RelationshipId = tempRelationshipId;
+					
+					byRecord_Selected_Relationship = {};
+					byRecord_Selected_Relationship["relationshipId"] = mainTree_Store.getValue(item, "underRelationshipId");
+					byRecord_Selected_Relationship["sourceDomain"] = mainTree_Store.getValue(item, "relationshipFromDomain");
+					byRecord_Selected_Relationship["targetDomain"] = mainTree_Store.getValue(item, "relationshipToDomain");;
 				}
 				//alert("its a record");
 				break;
@@ -246,40 +247,9 @@ function mainTreeClicked(item, node, allSelectedItems ) {
 	}
 	
 	return;
-	
-	var itemType = mainTree_Store.getValue(item, "type");
-	var itemName = mainTree_Store.getValue(item, "name");
-
-	if(itemType == item_types.DOMAIN) {
-		if(itemName != byRecord_CurrentWorking_Domain) {
-			isAddButtonEnabled = true;
-			isDeleteButtonEnabled = true;
-			targetDomain = itemName;
-			addToRelationship = mainTree_Store.getValue(item, "underRelationship");
-		}
-
-	} else if(itemType == item_types.RELATIONSHIP) {
-		isAddButtonEnabled = true;
-		isDeleteButtonEnabled = true;
-		targetDomain = mainTree_Store.getValue(item, "otherDomain");
-		addToRelationship = itemName;
-
-	} else  if(itemType == item_types.RECORD) {
-		var itemEUID = mainTree_Store.getValue(item, "EUID");
-		if(itemEUID != byRecord_CurrentWorking_EUID) {
-			isAddButtonEnabled = true;
-			targetDomain = itemName;
-			
-			targetDomain = mainTree_Store.getValue(item, "underDomain");
-			addToRelationship = mainTree_Store.getValue(item, "underRelationship");
-		}
-		isDeleteButtonEnabled = true;
-	}
 }
 
 function mainTreeNodeClosed(item, node) {
-	isAddButtonEnabled = false, isDeleteButtonEnabled = false;
-	targetDomain = null, addToRelationship = null;
 
 	var itemName = mainTree_Store.getValue(item, "name"); //alert(itemName);
 }
@@ -318,10 +288,11 @@ function rearrangeTreeGetIconClass (item, opened) {
 }
 
 function chkstatus() {
-	var res = "Add allowed: " + isAddButtonEnabled;
-	res += "\nDelete allowed: " + isDeleteButtonEnabled;
-	res += "\n target domain: " + targetDomain ;
-	res += "\n add to relationship def : " + addToRelationship;
+	var res = "";
+	//res +=	"Add allowed: " + isAddButtonEnabled;
+	//res += "\nDelete allowed: " + isDeleteButtonEnabled;
+	//res += "\n target domain: " + targetDomain ;
+	//res += "\n add to relationship def : " + addToRelationship;
 	alert(res);
 }
 

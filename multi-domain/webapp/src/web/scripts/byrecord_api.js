@@ -18,8 +18,8 @@ var byRecord_CurrentWorking_EUID = null; // Current working record EUID.
 var byRecord_CurrentSelected_RelationshipDefName = null; // Populated when any operation happens in Tree
 var byRecord_CurrentSelected_TargetDomain = null; // Populated when any operation happens in Tree
 
-var byRecord_Selected_RelationshipId = null; // Populated when anything clicked in tree
-var byRecord_Selected_EUID = null; // Populated when anything clicked in tree
+var byRecord_Selected_Relationship = null; //Relationship Object - Populated when anything clicked in tree
+var byRecord_Selected_Record = null; // Record Object - Populated when anything clicked in tree
 
 var byRecord_CachedRelationshipDefs = {};
 
@@ -253,10 +253,12 @@ function cacheRelationshipDef(data) {
 // function to show right section details...
 function byRecord_ShowDetails () {
 
-	if(byRecord_Selected_RelationshipId != null) {
-		alert("Showing details for relationship-Id: " + byRecord_Selected_RelationshipId);
-	} else if(byRecord_Selected_EUID != null) {
-		alert("showing details for  EUID  : " + byRecord_Selected_EUID);
+	if(byRecord_Selected_Relationship != null) {
+		alert("Showing details for relationship: " + byRecord_Selected_Relationship);
+		alert(byRecord_Selected_Relationship.relationshipId + " : " + byRecord_Selected_Relationship.sourceDomain + " : " + byRecord_Selected_Relationship.targetDomain);
+	} else if(byRecord_Selected_Record != null) {
+		alert("showing details for  record  : " + byRecord_Selected_Record);
+		alert(byRecord_Selected_Record.EUID );
 	} else {
 		alert("details section show nothing. clear the currently shown details. ");
 	}
