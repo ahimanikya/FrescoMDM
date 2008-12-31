@@ -135,6 +135,7 @@ function getByRecordDataCB (data) {
 		else
 			relationshipDomain.name = tempRelObj.relationshipDefView.targetDomain;
         relationshipDomain.underRelationship = relationshipNode.name;
+		relationshipDomain.underRelationshipId = relationshipNode.id;
         relationshipDomain.type = item_types.DOMAIN;
         var rDomainItem = mainTree_Store.newItem(relationshipDomain, {parent: rNodeItem, attribute:"children"} );
         
@@ -152,6 +153,7 @@ function getByRecordDataCB (data) {
 			}
 			recordNode.underDomain = relationshipDomain.name;
 			recordNode.underRelationship = relationshipNode.name;
+			recordNode.underRelationshipId = relationshipNode.id;
             recordNode.type = item_types.RECORD;
             var recordNodeItem = mainTree_Store.newItem(recordNode, {parent: rDomainItem, attribute:"children"} );
             //alert(j + " " + relationships[j].sourceEUID + " :: " + relationships[j].targetEUID);
@@ -216,6 +218,8 @@ function mainTreeClicked(item, node, allSelectedItems ) {
 		var itemType = mainTree_Store.getValue(tempItem, "type");
 		var itemName = mainTree_Store.getValue(tempItem, "name");	
 		//alert(itemType + " : " + itemName);
+		byRecord_Selected_RelationshipId = null;
+		byRecord_Selected_EUID = null;
 		
 		switch (itemType) {
 			case item_types.DOMAIN:
@@ -229,8 +233,14 @@ function mainTreeClicked(item, node, allSelectedItems ) {
 				break;
 			case item_types.RECORD:
 				var itemEUID = mainTree_Store.getValue(item, "EUID");
-				if(itemEUID == byRecord_CurrentSelected_EUID) 
-					continue;
+				
+				if(itemEUID == byRecord_CurrentSelected_EUID) {
+					byRecord_Selected_EUID = itemEUID;
+				} else {
+					var tempRelationshipId = mainTree_Store.getValue(item, "underRelationshipId");
+					byRecord_Selected_RelationshipId = tempRelationshipId;
+				}
+				
 				//alert("its a record");
 				break;
 		}
@@ -396,7 +406,6 @@ function getRearrangeTreeData_CB (data) {
 // Custom function, for deciding if a node may have children or not. (For Rearrange tree)
 function customRearrangeTreeMayHaveChildren(item) {
 	var node = item.node;
-	alert(item + " : " + node);
 	return true;
 }
 

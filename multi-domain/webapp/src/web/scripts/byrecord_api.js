@@ -12,12 +12,14 @@ function exceptionHandler(message) {
 }
 
 
-var byRecord_CurrentSelected_Domain = null;
-var byRecord_CurrentSelected_EUID = null;
+var byRecord_CurrentSelected_Domain = null; // Current working domain
+var byRecord_CurrentSelected_EUID = null; // Current working record EUID.
 
 var byRecord_CurrentSelected_RelationshipDefName = null; // Populated when any operation happens in Tree
 var byRecord_CurrentSelected_TargetDomain = null; // Populated when any operation happens in Tree
 
+var byRecord_Selected_RelationshipId = null; // Populated when anything clicked in tree
+var byRecord_Selected_EUID = null; // Populated when anything clicked in tree
 
 var byRecord_CachedRelationshipDefs = {};
 
@@ -246,6 +248,16 @@ function byRecordSelectRecord() {
 // function to cache the realtionship def details.
 function cacheRelationshipDef(data) {
     byRecord_CachedRelationshipDefs [data.name] = data;
+}
+
+// function to show right section details...
+function byRecord_ShowDetails () {
+	if(byRecord_Selected_RelationshipId != null)
+		alert("Showing details for relationshipId " + byRecord_Selected_RelationshipId);
+	else if(byRecord_Selected_EUID != null)
+		alert("showing details for  EUID  : " + byRecord_Selected_EUID);
+	else
+		alert("details section show nothing ");
 }
 
 
