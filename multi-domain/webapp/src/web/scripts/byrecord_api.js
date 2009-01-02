@@ -249,8 +249,10 @@ function byRecordSelectRecord() {
 
 }
 // function to cache the realtionship def details.
-function cacheRelationshipDef(data) {
+function cacheRelationshipDef(data, onCompleteCallback) {
     byRecord_CachedRelationshipDefs [data.name] = data;
+	if(onCompleteCallback)
+		onCompleteCallback(); 
 }
 
 // function to show right section details...
@@ -263,10 +265,20 @@ function byRecord_ShowDetails () {
 
 		// for testing, hardcoding some value
 		var relationshipId = "000001";
-        var relationshipDefName = "Employed By";
+        var relationshipDefName = "EmployedBy";
 	    var sourceDomain = "Person";
 		var targetDomain = "Company";
 		
+		if(byRecord_CachedRelationshipDefs[relationshipDefName] == null) {
+			// Call API & cache the relationship def & callback this method again.
+			RelationshipDefHandler.getRelationshipDefByName(relationshipDefName, sourceDomain, 
+				targetDomain, { callback:function(dataFromServer) {
+					cacheRelationshipDef(dataFromServer, byRecord_ShowDetails);
+				}
+			});
+			return; // Dont proceed anything, until the data is cached and this method is called back.
+		}
+
 
 		var sourcePane = dijit.byId("sourceRecordDetailsTitlePane"); 
         var targetPane = dijit.byId("targetRecordDetailsTitlePane");
@@ -276,7 +288,9 @@ function byRecord_ShowDetails () {
            targetPane.attr("title",byRecord_Selected_Relationship.targetDomain);
            sourcePane.toggleSummaryIcon(); // revert back the view to summary
            targetPane.toggleSummaryIcon(); // revert back the view to summary
-          // var relationshipDef = byRecord_CachedRelationshipDefs[relationshipDefName];
+		   
+           var relationshipDef = byRecord_CachedRelationshipDefs[relationshipDefName]; 
+			
 		   var relationshipRecordPane = dijit.byId("relationshipRecordDetailsPane"); 
 		   var strRecordPaneTitleHTML = "<table cellspacing='0' cellpadding='0'><tr><td>"+getMessageForI18N("relationship_Attributes")+getMessageForI18N("colon")+ " "
 
