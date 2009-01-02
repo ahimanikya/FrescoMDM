@@ -58,6 +58,7 @@ function getByRecordData () {
           relationshipDefView.sourceDomain = "Hospital";
           relationshipDefView.targetDomain = selectedDomain;
           relationshipDefView.biDirection = false;
+
         }
         tempRelationshipObj.relationshipDefView = relationshipDefView;
         
@@ -69,12 +70,16 @@ function getByRecordData () {
             if(i%2==0) {
               relationshipView.sourceEUID = selectedEUID;
               relationshipView.targetEUID = "T000-000-" + j;
+			  relationshipView.targetHighLight = "T_Highlight_" + j;
+			  relationshipView.sourceHighLight = primaryObj.highLight ;
             } else {
               relationshipView.sourceEUID = "S000-000-" + j;
+			  relationshipView.sourceHighLight = "S_Highlight_" + j;
+			  relationshipView.targetHighLight = primaryObj.highLight ;
               relationshipView.targetEUID = selectedEUID;
             }
-            relationshipView.sourceHighLight = "S_Highlight_" + j;
-            relationshipView.targetHighLight = "T_Highlight_" + j;
+            
+            
             relationshipViews.push(relationshipView);
         }
         tempRelationshipObj.relationshipViews = relationshipViews;
@@ -153,6 +158,10 @@ function getByRecordDataCB (data) {
 			}
 			recordNode.relationshipFromDomain = rootDomainItem.name;
 			recordNode.relationshipToDomain = relationshipDomain.name;
+
+			recordNode.fromRecordHighLight = relationships[j].sourceHighLight;
+			recordNode.toRecordHighLight = relationships[j].targetHighLight;
+
 			recordNode.underRelationshipDefName = relationshipNode.name;
 			recordNode.underRelationshipId = relationships[j].id;
             recordNode.type = item_types.RECORD;
@@ -241,6 +250,9 @@ function mainTreeClicked(item, node, allSelectedItems ) {
 					byRecord_Selected_Relationship["sourceDomain"] = mainTree_Store.getValue(item, "relationshipFromDomain");
 					byRecord_Selected_Relationship["targetDomain"] = mainTree_Store.getValue(item, "relationshipToDomain");
 					byRecord_Selected_Relationship["relationshipDefName"] = mainTree_Store.getValue(item, "underRelationshipDefName");
+					
+					byRecord_Selected_Relationship["sourceRecordHighLight"] = mainTree_Store.getValue(item, "fromRecordHighLight");
+					byRecord_Selected_Relationship["targetRecordHighLight"] = mainTree_Store.getValue(item, "toRecordHighLight");
 					
 				}
 				//alert("its a record");

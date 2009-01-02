@@ -262,12 +262,18 @@ function byRecord_ShowDetails () {
 		//alert("Showing details for relationship: " + byRecord_Selected_Relationship);
 		//alert(byRecord_Selected_Relationship.relationshipId + " : " + byRecord_Selected_Relationship.sourceDomain + " : " 
 		//	+ byRecord_Selected_Relationship.targetDomain + " :"  + byRecord_Selected_Relationship.relationshipDefName);
-
+        //alert(byRecord_Selected_Relationship.sourceRecordHighLight);
+        //alert(byRecord_Selected_Relationship.targetRecordHighLight);
 		// for testing, hardcoding some value
-		var relationshipId = "000001";
-        var relationshipDefName = "EmployedBy";
-	    var sourceDomain = "Person";
-		var targetDomain = "Company";
+		byRecord_Selected_Relationship.relationshipId = "000001";
+		byRecord_Selected_Relationship.sourceDomain = "Person";
+		byRecord_Selected_Relationship.targetDomain = "Company";
+		byRecord_Selected_Relationship.relationshipDefName = "EmployedBy";
+
+		var relationshipId = byRecord_Selected_Relationship.relationshipId;
+        var relationshipDefName = byRecord_Selected_Relationship.relationshipDefName;
+	    var sourceDomain = byRecord_Selected_Relationship.sourceDomain;
+		var targetDomain = byRecord_Selected_Relationship.targetDomain;
 		
 		if(byRecord_CachedRelationshipDefs[relationshipDefName] == null) {
 			// Call API & cache the relationship def & callback this method again.
@@ -284,21 +290,20 @@ function byRecord_ShowDetails () {
         var targetPane = dijit.byId("targetRecordDetailsTitlePane");
         if(cachedByRecordSelectSearchResults != null) {
 
-           sourcePane.attr("title",byRecord_Selected_Relationship.sourceDomain);
-           targetPane.attr("title",byRecord_Selected_Relationship.targetDomain);
+           sourcePane.attr("title",byRecord_Selected_Relationship.sourceRecordHighLight);
+           targetPane.attr("title",byRecord_Selected_Relationship.targetRecordHighLight);
            sourcePane.toggleSummaryIcon(); // revert back the view to summary
            targetPane.toggleSummaryIcon(); // revert back the view to summary
 		   
-           var relationshipDef = byRecord_CachedRelationshipDefs[relationshipDefName]; 
-			
+           var relationshipDef = byRecord_CachedRelationshipDefs[relationshipDefName];
 		   var relationshipRecordPane = dijit.byId("relationshipRecordDetailsPane"); 
 		   var strRecordPaneTitleHTML = "<table cellspacing='0' cellpadding='0'><tr><td>"+getMessageForI18N("relationship_Attributes")+getMessageForI18N("colon")+ " "
 
-		   if(relationshipDefName!=null) {
-			  strRecordPaneTitleHTML += byRecord_Selected_Relationship.sourceDomain;
-			  strRecordPaneTitleHTML += " " + relationshipDefName ;
-			  strRecordPaneTitleHTML += "</td><td>" + getRelationshipDefDirectionIcon(relationshipDefName.biDirection) + "</td><td>";
-			  strRecordPaneTitleHTML += " " + byRecord_Selected_Relationship.targetDomain;
+		   if(relationshipDef!=null) {
+			  strRecordPaneTitleHTML += byRecord_Selected_Relationship.sourceRecordHighLight;
+			  strRecordPaneTitleHTML += " " + relationshipDef.name ;
+			  strRecordPaneTitleHTML += "</td><td>" + getRelationshipDefDirectionIcon(relationshipDef.biDirection) + "</td><td>";
+			  strRecordPaneTitleHTML += " " + byRecord_Selected_Relationship.targetRecordHighLight;
 		   }
            strRecordPaneTitleHTML += "</td></tr></table>"
            relationshipRecordPane.attr("title", strRecordPaneTitleHTML);
@@ -328,6 +333,8 @@ function byRecord_ShowDetails () {
 	} else if(byRecord_Selected_Record != null) {
 		alert("showing details for  record  : " + byRecord_Selected_Record);
 		displayDiv("byRecord_SourceRecordDetails", true);
+		displayDiv("byRecord_TargetRecordDetails", false);
+		displayDiv("byRecord_editAttributes", false);
 		alert(byRecord_Selected_Record.EUID + "  " + byRecord_Selected_Record.domain );
 	} else {
 		alert("details section show nothing. clear the currently shown details. ");
@@ -343,7 +350,6 @@ function populateByRecordRelationshipDetails_Callback(data){
     var summaryFieldCount = 0;
 	var fieldName, fieldValue;
     var recordFieldRow,isSummaryField;
-    byRecord_CachedRelationshipDefs[data.relationshipRecord.name] = data;
 	// Populate source record details
 	var sourceRecordDetails =  data.sourceRecord.attributes;
     dwr.util.removeAllRows("sourceRecordInSummary");    
@@ -414,14 +420,14 @@ function populateByRecordRelationshipDetails_Callback(data){
     var relationshipDef = byRecord_CachedRelationshipDefs[data.relationshipRecord.name];
 
     if(relationshipDef != null) {
-		var startDate = getBoolean(relationshipDef.relationshipRecord.startDate);
-		var endDate = getBoolean(relationshipDef.relationshipRecord.endDate);
-		var purgeDate = getBoolean(relationshipDef.relationshipRecord.purgeDate);
+		var startDate = getBoolean(relationshipDef.startDate);
+		var endDate = getBoolean(relationshipDef.endDate);
+		var purgeDate = getBoolean(relationshipDef.purgeDate);
 		var customAttributes = relationshipDef.extendedAttributes;
 		var recordCustomAttributes = data.relationshipRecord.attributes;
 		var blnShowEditAttributesSection = false;
 		if(recordCustomAttributes != null && recordCustomAttributes.length > 0) {
-			createCustomAttributesSection ("byRecordEditCustomAttributesTable", recordCustomAttributes, "edit_custom", true,false);
+			createCustomAttributesSection ("byRecordEditCustomAttributesTable", customAttributes, "edit_custom", true,false);
 			populateCustomAttributesValues (customAttributes, recordCustomAttributes, "edit_custom");
 			displayDiv("byRecordEditCustomAttributesDiv", true);
 			blnShowEditAttributesSection = true;
@@ -429,8 +435,8 @@ function populateByRecordRelationshipDetails_Callback(data){
 			displayDiv("byRecordEditCustomAttributesDiv", false);
 		}
 		if(startDate==true || endDate==true || purgeDate == true ){ 
-			createPredefinedAttributesSection ("byRecordEditPredefinedAttributesTable", relationshipDef.relationshipRecord,"edit_predefined", true);
-			populatePredefinedAttributesValues (relationshipDef.relationshipRecord, data.relationshipRecord, "edit_predefined");
+			createPredefinedAttributesSection ("byRecordEditPredefinedAttributesTable", relationshipDef,"edit_predefined", true);
+			populatePredefinedAttributesValues (relationshipDef, data.relationshipRecord, "edit_predefined");
 			displayDiv("byRecordEditPredefinedAttributesDiv", true);
 			blnShowEditAttributesSection = true;
 		} else{
