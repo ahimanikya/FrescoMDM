@@ -51,6 +51,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
                 <prop key="/m_byrecord_select_record.htm">manage_byrecord_select_record</prop>
                 <prop key="/m_byrecord_add_relationship.htm">manage_byrecord_add_relationship</prop>
                 <prop key="/m_byrecord_tree_section.htm">manage_byrecord_tree_section</prop>
+				<prop key="/m_byrecord_details_section.htm">manage_byrecord_details_section</prop>
+				<prop key="/m_byrecord_edit_attributes.htm">manage_byrecord_edit_attributes</prop>
                 
                 
                 
@@ -131,5 +133,11 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
         class="com.sun.mdm.multidomain.presentation.web.ManageByRecordAddRelationshipController" />       
     <bean name="manage_byrecord_tree_section"  
         class="com.sun.mdm.multidomain.presentation.web.ManageByRecordTreeSectionController" />       
+
+	<bean name="manage_byrecord_details_section"  
+        class="com.sun.mdm.multidomain.presentation.web.ManageByRecordDetailsSectionController" />       
+
+	<bean name="manage_byrecord_edit_attributes"  
+        class="com.sun.mdm.multidomain.presentation.web.ManageByRecordEditAttributesController" />       
 
 </beans>

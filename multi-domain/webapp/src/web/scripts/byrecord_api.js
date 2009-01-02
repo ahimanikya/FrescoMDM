@@ -23,6 +23,9 @@ var byRecord_Selected_Record = null; // Record Object - Populated when anything 
 
 var byRecord_CachedRelationshipDefs = {};
 
+
+
+
 /*
  * Scripts for Select Record screen <START>
  */ 
@@ -254,18 +257,186 @@ function cacheRelationshipDef(data) {
 function byRecord_ShowDetails () {
 
 	if(byRecord_Selected_Relationship != null) {
-		alert("Showing details for relationship: " + byRecord_Selected_Relationship);
-		alert(byRecord_Selected_Relationship.relationshipId + " : " + byRecord_Selected_Relationship.sourceDomain + " : " 
-			+ byRecord_Selected_Relationship.targetDomain + " :"  + byRecord_Selected_Relationship.relationshipDefName);
+		//alert("Showing details for relationship: " + byRecord_Selected_Relationship);
+		//alert(byRecord_Selected_Relationship.relationshipId + " : " + byRecord_Selected_Relationship.sourceDomain + " : " 
+		//	+ byRecord_Selected_Relationship.targetDomain + " :"  + byRecord_Selected_Relationship.relationshipDefName);
+
+		// for testing, hardcoding some value
+		var relationshipId = "000001";
+        var relationshipDefName = "Employed By";
+	    var sourceDomain = "Person";
+		var targetDomain = "Company";
+		
+
+		var sourcePane = dijit.byId("sourceRecordDetailsTitlePane"); 
+        var targetPane = dijit.byId("targetRecordDetailsTitlePane");
+        if(cachedByRecordSelectSearchResults != null) {
+
+           sourcePane.attr("title",byRecord_Selected_Relationship.sourceDomain);
+           targetPane.attr("title",byRecord_Selected_Relationship.targetDomain);
+           sourcePane.toggleSummaryIcon(); // revert back the view to summary
+           targetPane.toggleSummaryIcon(); // revert back the view to summary
+          // var relationshipDef = byRecord_CachedRelationshipDefs[relationshipDefName];
+		   var relationshipRecordPane = dijit.byId("relationshipRecordDetailsPane"); 
+		   var strRecordPaneTitleHTML = "<table cellspacing='0' cellpadding='0'><tr><td>"+getMessageForI18N("relationship_Attributes")+getMessageForI18N("colon")+ " "
+
+		   if(relationshipDefName!=null) {
+			  strRecordPaneTitleHTML += byRecord_Selected_Relationship.sourceDomain;
+			  strRecordPaneTitleHTML += " " + relationshipDefName ;
+			  strRecordPaneTitleHTML += "</td><td>" + getRelationshipDefDirectionIcon(relationshipDefName.biDirection) + "</td><td>";
+			  strRecordPaneTitleHTML += " " + byRecord_Selected_Relationship.targetDomain;
+		   }
+           strRecordPaneTitleHTML += "</td></tr></table>"
+           relationshipRecordPane.attr("title", strRecordPaneTitleHTML);
+        }
+
+        DomainScreenHandler.getSummaryFields(sourceDomain, { callback:function(dataFromServer) {
+        loadSummaryFields(dataFromServer, sourceDomain); }
+        });
+        DomainScreenHandler.getSummaryFields(targetDomain, { callback:function(dataFromServer) {
+        loadSummaryFields(dataFromServer, targetDomain); }
+        });
+     
+        // Load fields for details display for source & target domain
+	    DomainScreenHandler.getDetailFields(sourceDomain, { callback:function(dataFromServer) {
+        cacheFieldsForDomain (dataFromServer, sourceDomain); }
+        });
+        DomainScreenHandler.getDetailFields(targetDomain, { callback:function(dataFromServer) {
+        cacheFieldsForDomain (dataFromServer, targetDomain); }
+        });
+        displayDiv("byRecord_SourceRecordDetails", true);
+		displayDiv("byRecord_TargetRecordDetails", true);
+		displayDiv("byRecord_editAttributes", true);
+    
+		var relationshipView = {name:relationshipDefName, id:relationshipId, sourceDomain:sourceDomain, targetDomain:targetDomain}; 
+        RelationshipHandler.getRelationship (relationshipView, populateByRecordRelationshipDetails_Callback);
+		
 	} else if(byRecord_Selected_Record != null) {
 		alert("showing details for  record  : " + byRecord_Selected_Record);
+		displayDiv("byRecord_SourceRecordDetails", true);
 		alert(byRecord_Selected_Record.EUID + "  " + byRecord_Selected_Record.domain );
 	} else {
 		alert("details section show nothing. clear the currently shown details. ");
+		displayDiv("byRecord_SourceRecordDetails", false);
+		displayDiv("byRecord_TargetRecordDetails", false);
+		displayDiv("byRecord_editAttributes", false);
+		byRecord_clearDetailsSection();
 	}
-	
+}
+function populateByRecordRelationshipDetails_Callback(data){
+	//alert("populating by record relationship deatials..." +data);
+     
+    var summaryFieldCount = 0;
+	var fieldName, fieldValue;
+    var recordFieldRow,isSummaryField;
+    byRecord_CachedRelationshipDefs[data.relationshipRecord.name] = data;
+	// Populate source record details
+	var sourceRecordDetails =  data.sourceRecord.attributes;
+    dwr.util.removeAllRows("sourceRecordInSummary");    
+    dwr.util.removeAllRows("sourceRecordInDetail");
+    summaryFieldCount = 0;
+
+	for(i=0; i<sourceRecordDetails.length; i++) {
+        fieldName = sourceRecordDetails[i].name;
+        fieldValue = sourceRecordDetails[i].value;
+
+		var displayName = getDisplayNameForField (data.sourceRecord.name, fieldName );
+		//alert("fieldName  "+fieldName +"   fieldValue  "+fieldValue);
+		var sourceSummaryTable = document.getElementById('sourceRecordInSummary');
+        var sourceDetailTable = document.getElementById('sourceRecordInDetail');
+
+		recordFieldRow = sourceDetailTable.insertRow(i);
+        recordFieldRow.insertCell(0);recordFieldRow.cells[0].className = "label";
+        recordFieldRow.insertCell(1);recordFieldRow.cells[1].className = "data";
+        recordFieldRow.cells[0].innerHTML = displayName+ ": ";
+        recordFieldRow.cells[1].innerHTML = fieldValue;
+
+		isSummaryField = summaryFields[data.sourceRecord.name].contains(fieldName);
+        if( isSummaryField ) {
+          recordFieldRow= sourceSummaryTable.insertRow(summaryFieldCount);
+          recordFieldRow.insertCell(0);recordFieldRow.cells[0].className = "label";
+          recordFieldRow.insertCell(1);recordFieldRow.cells[1].className = "data";
+		  
+          recordFieldRow.cells[0].innerHTML = displayName + ": ";
+          recordFieldRow.cells[1].innerHTML = fieldValue;
+          summaryFieldCount ++;
+        }
+    }
+
+	// Populate target record Details
+    var targetRecordDetails =  data.targetRecord.attributes;
+    dwr.util.removeAllRows("targetRecordInSummary");    
+    dwr.util.removeAllRows("targetRecordInDetail");
+    
+    summaryFieldCount = 0;
+    for(i=0; i<targetRecordDetails.length; i++) {
+        fieldName = targetRecordDetails[i].name;
+        fieldValue = targetRecordDetails[i].value;
+		var displayName = getDisplayNameForField (data.targetRecord.name, fieldName );
+        
+        //alert(i + " : " +  fieldName + " : " + fieldValue );
+        var targetSummaryTable = document.getElementById('targetRecordInSummary');
+        var targetDetailTable = document.getElementById('targetRecordInDetail');
+        
+        recordFieldRow = targetDetailTable.insertRow(i);
+        recordFieldRow.insertCell(0);recordFieldRow.cells[0].className = "label";
+        recordFieldRow.insertCell(1);recordFieldRow.cells[1].className = "data";
+        recordFieldRow.cells[0].innerHTML = displayName + ": ";
+        recordFieldRow.cells[1].innerHTML = fieldValue;
+
+        //alert(summaryFields[data.sourceRecord.name].contains(fieldName));
+        isSummaryField = summaryFields[data.targetRecord.name].contains(fieldName);
+        if( isSummaryField ) {
+          recordFieldRow= targetSummaryTable.insertRow(summaryFieldCount);
+          recordFieldRow.insertCell(0);recordFieldRow.cells[0].className = "label";
+          recordFieldRow.insertCell(1);recordFieldRow.cells[1].className = "data";
+          recordFieldRow.cells[0].innerHTML = displayName + ": ";
+          recordFieldRow.cells[1].innerHTML = fieldValue;
+          summaryFieldCount ++;
+        }
+    }
+
+	// Populate relationship attributes.
+    var relationshipDef = byRecord_CachedRelationshipDefs[data.relationshipRecord.name];
+
+    if(relationshipDef != null) {
+		var startDate = getBoolean(relationshipDef.relationshipRecord.startDate);
+		var endDate = getBoolean(relationshipDef.relationshipRecord.endDate);
+		var purgeDate = getBoolean(relationshipDef.relationshipRecord.purgeDate);
+		var customAttributes = relationshipDef.extendedAttributes;
+		var recordCustomAttributes = data.relationshipRecord.attributes;
+		var blnShowEditAttributesSection = false;
+		if(recordCustomAttributes != null && recordCustomAttributes.length > 0) {
+			createCustomAttributesSection ("byRecordEditCustomAttributesTable", recordCustomAttributes, "edit_custom", true,false);
+			populateCustomAttributesValues (customAttributes, recordCustomAttributes, "edit_custom");
+			displayDiv("byRecordEditCustomAttributesDiv", true);
+			blnShowEditAttributesSection = true;
+		} else {
+			displayDiv("byRecordEditCustomAttributesDiv", false);
+		}
+		if(startDate==true || endDate==true || purgeDate == true ){ 
+			createPredefinedAttributesSection ("byRecordEditPredefinedAttributesTable", relationshipDef.relationshipRecord,"edit_predefined", true);
+			populatePredefinedAttributesValues (relationshipDef.relationshipRecord, data.relationshipRecord, "edit_predefined");
+			displayDiv("byRecordEditPredefinedAttributesDiv", true);
+			blnShowEditAttributesSection = true;
+		} else{
+			displayDiv("byRecordEditPredefinedAttributesDiv", false);
+		}
+		
+		if(blnShowEditAttributesSection) {
+			displayDiv("byRecordEditAttributesDiv", true);
+		}
+		else displayDiv("byRecordEditAttributesDiv", false);
+	}
+    return;
 }
 
+function byRecord_clearDetailsSection() {
+	displayDiv("byRecord_SourceRecordDetails", false);
+	displayDiv("byRecord_TargetRecordDetails", false);
+	displayDiv("byRecord_editAttributes", false);
+	
+}
 
 /*
  * Scripts for Main (listing, details) screen <END>
