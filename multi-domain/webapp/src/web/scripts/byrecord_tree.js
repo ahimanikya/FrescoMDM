@@ -241,7 +241,9 @@ function mainTreeClicked(item, node, allSelectedItems ) {
 					byRecord_Selected_Record = {};
 					byRecord_Selected_Record["EUID"] = itemEUID;
 					var tempDomain = mainTree_Store.getValue(item, "underDomain");
-					byRecord_Selected_Record["domain"] = tempDomain;
+					var tempName = mainTree_Store.getValue(item, "name");
+				    byRecord_Selected_Record["domain"] = tempDomain;
+					byRecord_Selected_Record["sourceRecordHighLight"] = tempName;
 				} else {
 					var tempRelationshipId = mainTree_Store.getValue(item, "underRelationshipId");
 					

@@ -57,6 +57,7 @@ function byRecordSelectSearchTypes(data){
         var opt =  document.createElement("option");
         opt.text = searchType;
         opt.value = searchType;
+		opt.title = searchType;
         document.getElementById('byRecord_select_searchtypes').options.add(opt);
      }
      byRecordSelectSearchFields('byRecord_select_searchtypes');
@@ -69,6 +70,7 @@ function byRecordSelectSearchFields(searchTypeId){
 function showByRecordSelectSearchFields(data){
     dwr.util.removeAllRows("byRecord_select_search_fields");
     var count = 0;
+	var guiTypeStr;
     // create a hidden field, put the querybuilder value in it. hidden field name=byRecordSelectQueryBuilder.
     hiddenField = document.createElement("input");
     hiddenField.type = "hidden";
@@ -78,11 +80,16 @@ function showByRecordSelectSearchFields(data){
     document.getElementById('byRecord_select_search_fields').appendChild(hiddenField);
     var fieldGroups = data.fieldGroups;
      for (var fieldGrp in fieldGroups)  {
+		var descriptionRow = document.getElementById('byRecord_select_search_fields').insertRow(count++);
+		descriptionRow.insertCell(0);
+		descriptionRow.cells[0].innerHTML = "<b>"+ fieldGrp + "</b>";
         for(i=0; i<fieldGroups[fieldGrp].length; i++) {
              fieldCfg = fieldGroups[fieldGrp][i];
              var row = document.getElementById('byRecord_select_search_fields').insertRow(count++);
              row.insertCell(0);
              row.insertCell(1);
+			 guiTypeStr = fieldCfg.guiType;
+			 if(guiTypeStr.toLowerCase() == "textbox"){
              var field;
              try{
                  field = document.createElement('<input type="text" name="byRecordSelectSearchFieldName" />');
@@ -90,12 +97,14 @@ function showByRecordSelectSearchFields(data){
                  field = document.createElement("input");
              }
              field.type="text";
-             field.size="5";
+             field.size = "20";
+			 field.maxlength = fieldCfg.maxLength;
              field.name="byRecordSelectSearchFieldName";
-             field.domainFieldName = fieldCfg.name;
-             field.style.width="100px";
-             row.cells[0].innerHTML = fieldCfg.name;   
-             row.cells[1].appendChild(field);   
+			 field.title =  fieldCfg.displayName;
+             field.domainFieldName = fieldCfg.displayName;
+             row.cells[0].innerHTML = fieldCfg.displayName;
+             row.cells[1].appendChild(field);
+			 }
          }
      }
 }
@@ -114,6 +123,16 @@ function byRecordSelectRecordSearch(){
         //alert(tempFieldName);
         domainAttributes.push( tempMap );
     }
+
+	    // Cache the fields name for this domain
+	DomainScreenHandler.getDetailFields(selectedDomain, { callback:function(dataFromServer) {
+      cacheFieldsForDomain (dataFromServer, selectedDomain); }
+    });
+	   // Cache the search fields for this domain
+    DomainScreenHandler.getSearchResultFields(selectedDomain, { callback:function(dataFromServer) {
+      loadSearchResultFields(dataFromServer, selectedDomain); }
+    });  
+
     domainSearch.attributes = domainAttributes;
     RelationshipHandler.searchEnterprises (domainSearch, byRecordSelectSearchResults);
     
@@ -156,8 +175,8 @@ function byRecordSelectSearchResults_Display(currentPage,itemsPerPage){
     data = cachedByRecordSelectSearchResults;
     var selectedDomain =document.getElementById("byRecord_SelectDomain").value;
     dwr.util.removeAllRows("byRecord_Select_SearchResults_tableId");
+	
     var fieldsToShowInSearchResults = searchResultsFields[selectedDomain];
-    fieldsToShowInSearchResults.push("LastName"); fieldsToShowInSearchResults.push("FirstName"); // For testing purpose only.
    
     // show only records that should go in current page.
     var resultsToShow = new Array();
@@ -179,10 +198,12 @@ function byRecordSelectSearchResults_Display(currentPage,itemsPerPage){
           header.className = "header";
           header.insertCell(columnCount++);
           for(j=0; j<resultsToShow[i].attributes.length; j++) {
+			//  alert("resultsToShow[i].name  " +resultsToShow[i].name +"  resultsToShow[i].attributes[j].name  " +resultsToShow[i].attributes[j].name);
+            var displayName = getDisplayNameForField (resultsToShow[i].name, resultsToShow[i].attributes[j].name );
             if(! fieldsToShowInSearchResults.contains (resultsToShow[i].attributes[j].name)) continue;
             header.insertCell(columnCount);
             header.cells[columnCount].className = "label";
-            header.cells[columnCount].innerHTML  = resultsToShow[i].attributes[j].name;
+            header.cells[columnCount].innerHTML  = displayName;
             columnCount++;
           }
        }
@@ -332,10 +353,24 @@ function byRecord_ShowDetails () {
 		
 	} else if(byRecord_Selected_Record != null) {
 		alert("showing details for  record  : " + byRecord_Selected_Record);
+		alert(byRecord_Selected_Record.EUID + "  " + byRecord_Selected_Record.domain );
+
+		var sourceDomain = byRecord_Selected_Record.domain;
+		var sourcePane = dijit.byId("sourceRecordDetailsTitlePane"); 
+
+		if(cachedByRecordSelectSearchResults != null) {
+           sourcePane.attr("title",byRecord_Selected_Record.sourceRecordHighLight);
+           sourcePane.toggleSummaryIcon(); // revert back the view to summary
+        }
+
+        // we need to get the summary fields once API is ready. The below commented lines are testing purpose
+		//var recordSummary = {name:sourceDomain,EUID:byRecord_Selected_Record.EUID}; 
+		//RelationshipHandler.getEnterprise(recordSummary, polulateByRecordSourceDetails_Callback);
+
 		displayDiv("byRecord_SourceRecordDetails", true);
 		displayDiv("byRecord_TargetRecordDetails", false);
 		displayDiv("byRecord_editAttributes", false);
-		alert(byRecord_Selected_Record.EUID + "  " + byRecord_Selected_Record.domain );
+		
 	} else {
 		alert("details section show nothing. clear the currently shown details. ");
 		displayDiv("byRecord_SourceRecordDetails", false);
@@ -450,7 +485,6 @@ function populateByRecordRelationshipDetails_Callback(data){
 	}
     return;
 }
-
 function byRecord_clearDetailsSection() {
 	displayDiv("byRecord_SourceRecordDetails", false);
 	displayDiv("byRecord_TargetRecordDetails", false);
@@ -483,6 +517,11 @@ function byRecord_prepareAdd () {
     
     populateAddRelationshipDefAttributes( relationshipDefObj );
     //RelationshipDefHandler.getRelationshipDefByName(relationshipDefName, byRecord_CurrentWorking_Domain, byRecord_CurrentSelected_TargetDomain, populateAddRelationshipDefAttributes);
+
+	    // Cache the field names for this domain
+	DomainScreenHandler.getDetailFields(byRecord_CurrentSelected_TargetDomain, { callback:function(dataFromServer) {
+      cacheFieldsForDomain (dataFromServer, byRecord_CurrentSelected_TargetDomain); }
+    });
     // Cache the search fields for this domain
     DomainScreenHandler.getSearchResultFields(byRecord_CurrentSelected_TargetDomain, { callback:function(dataFromServer) {
       loadSearchResultFields(dataFromServer, byRecord_CurrentSelected_TargetDomain); }
@@ -494,6 +533,7 @@ function showByRecordAddSearchTypes(data){
         var opt =  document.createElement("option");
         opt.text = searchType;
         opt.value = searchType;
+		opt.title = searchType;
         document.getElementById('byRecord_add_searchtypes').options.add(opt);
     }
     var selectedSearchType = document.getElementById('byRecord_add_searchtypes').value;
@@ -514,26 +554,34 @@ function showByRecordAddSearchFields(data){
     hiddenField.value = data.queryBuilder;
     document.getElementById('byRecord_add_search_fields').appendChild(hiddenField);
     var count = 0;
-     var fieldGroups = data.fieldGroups;
-     for (var fieldGrp in fieldGroups)  {
+	var guiTypeStr;
+    var fieldGroups = data.fieldGroups;
+    for (var fieldGrp in fieldGroups)  {
+		var descriptionRow = document.getElementById('byRecord_add_search_fields').insertRow(count++);
+		descriptionRow.insertCell(0);
+		descriptionRow.cells[0].innerHTML = "<b>"+ fieldGrp + "</b>";
         for(i=0; i<fieldGroups[fieldGrp].length; i++) {
              fieldCfg = fieldGroups[fieldGrp][i];
              var row = document.getElementById('byRecord_add_search_fields').insertRow(count++);
              row.insertCell(0);
              row.insertCell(1);
-             var field ;
-             try{
-                 field = document.createElement('<input type="text" name="byRecordAddSearchFieldName" />');
-              }catch(err){
-                 field = document.createElement("input");
-              }
-             field.type="text";
-             field.size="5";
-             field.name="byRecordAddSearchFieldName";
-             field.domainFieldName = fieldCfg.name;
-             field.style.width="100px";
-             row.cells[0].innerHTML = fieldCfg.name; 
-             row.cells[1].appendChild(field); 
+			 guiTypeStr = fieldCfg.guiType;
+			 if(guiTypeStr.toLowerCase() == "textbox"){
+               var field ;
+               try{
+                  field = document.createElement('<input type="text" name="byRecordAddSearchFieldName" />');
+               }catch(err){
+                  field = document.createElement("input");
+               }
+               field.type="text";
+               field.size = "20";
+			   field.maxlength = fieldCfg.maxLength;
+               field.name="byRecordAddSearchFieldName";
+			   field.title =  fieldCfg.displayName;
+               field.domainFieldName = fieldCfg.displayName;
+               row.cells[0].innerHTML = fieldCfg.displayName;
+               row.cells[1].appendChild(field); 
+			 }
          }
     }
 }
@@ -612,11 +660,12 @@ function byRecordAddSearchResults_Display(currentPage,itemsPerPage){
         header.className = "header";
         header.insertCell(columnCount++);
         for(j=0; j<resultsToShow[i].attributes.length; j++) {
-          if(! fieldsToShowInSearchResults.contains (resultsToShow[i].attributes[j].name)) continue;
-          header.insertCell(columnCount);
-          header.cells[columnCount].className = "label";
-          header.cells[columnCount].innerHTML  = resultsToShow[i].attributes[j].name;
-          columnCount++;
+			var displayName = getDisplayNameForField (resultsToShow[i].name, resultsToShow[i].attributes[j].name );
+            if(! fieldsToShowInSearchResults.contains (resultsToShow[i].attributes[j].name)) continue;
+            header.insertCell(columnCount);
+            header.cells[columnCount].className = "label";
+            header.cells[columnCount].innerHTML  = displayName;
+            columnCount++;
         }
      }
      columnCount = 0;
