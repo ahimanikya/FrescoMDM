@@ -440,6 +440,12 @@ public class ViewBuilder {
                 
         return relationshipComposite;
     }
+
+    public static List<ObjectView> buildObjectViews(String domain, PageIterator<ObjectNode> pages)
+        throws ConfigException {
+        List<ObjectView> records = new ArrayList<ObjectView>();         
+        return records;
+    }
     
     public static List<ObjectRecord> buildObjectRecords(String domain, PageIterator<ObjectNode> pages, boolean isWeighted)
         throws ConfigException {
