@@ -37,6 +37,7 @@
       <include method="getRelationship" />
       <include method="searchEnterprises" />
       <include method="getEnterprise" />
+      <include method="getEnterprises" />      
       <include method="addRelationship" />
       <include method="updateRelationship" />
       <include method="deleteRelationship" />
