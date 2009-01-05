@@ -569,6 +569,55 @@ public class RelationshipManager {
     }
     
     /**
+     * Get all domain records regardless of search options and criteria.
+     * @param domainSearch DomainSearch.
+     * @return List<ObjectView> List of object view records.
+     * @throws ServiceException Thrown if an error occurs during processing.
+     */
+    public List<ObjectView> getEnterprises(DomainSearch domainSearch) 
+        throws ServiceException {
+        List<ObjectView> objects = new ArrayList<ObjectView>();  
+        if (!TBD) {
+        try {
+            PageIterator<ObjectNode> pages = multiDomainService.searchEnterprises(domainSearch.getName(), null, null);
+            // TBD: should return a lits of ObjectNode, EUID, and ComparisonScore.
+            objects = ViewBuilder.buildObjectViews(domainSearch.getName(), pages);
+        } catch (ConfigException cex) {
+            throw new ServiceException(cex);
+        } catch (ProcessingException pex) {
+            throw new ServiceException(pex);
+        } catch(UserException uex) {
+            throw new ServiceException(uex);
+        }
+        }        
+        //TBD
+        if ("Person".equals(domainSearch.getName())) {
+            ObjectView record1 = new ObjectView();
+            record1.setName("Person");
+            record1.setEUID("0000000001");
+            record1.setHighLight("George Denise");
+            objects.add(record1);            
+            ObjectView record2 = new ObjectView();
+            record2.setName("Person");
+            record2.setEUID("0000000002");
+            record2.setHighLight("Mary Denise");
+            objects.add(record2);                       
+        } else if ("Company".equals(domainSearch.getName())) {          
+            ObjectView record1 = new ObjectView(); 
+            record1.setName("Company");
+            record1.setEUID("0000000001");
+            record1.setHighLight("SunSet Sun");
+            objects.add(record1);  
+            ObjectView record2 = new ObjectView(); 
+            record2.setName("Company");
+            record2.setEUID("0000000002");
+            record2.setHighLight("SunShine Sun");
+            objects.add(record2);
+        }        
+        return objects;
+    }
+                        
+    /**
      * Get a list of Enterprise objects for the give domain search.
      * @param domainSearch DomainSearch.
      * @return List<ObjectView> List of ObjectView.
