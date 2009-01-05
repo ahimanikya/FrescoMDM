@@ -662,6 +662,7 @@ public class RelationshipManager {
         throws ServiceException {
         
         ObjectRecord objectRecord = null;
+        if (!TBD) {        
         try {           
             // need to add a new method in multiDomainService to getObject
             ObjectNode objectNoe = multiDomainService.getEnterprise(object.getName(), object.getEUID());
@@ -673,6 +674,34 @@ public class RelationshipManager {
         } catch (ConfigException cex) {
             throw new ServiceException(cex);
         }
+        }
+        
+        //TBD
+        if ("Person".equals(object.getName())) {
+            objectRecord = new ObjectRecord();
+            objectRecord.setName("Person");
+            objectRecord.setEUID("0000000001");
+            objectRecord.setAttributeValue("Person.FirstName", "George");
+            objectRecord.setAttributeValue("Person.MiddleName", "Denise");
+            objectRecord.setAttributeValue("Person.LastName", "Denise");
+            objectRecord.setAttributeValue("Person.SSN", "888888888");
+            objectRecord.setAttributeValue("Person.DOB", "11/01/2008");
+            objectRecord.setAttributeValue("Person.Gender", "M");
+            objectRecord.setAttributeValue("Person.Address.AddressLine1", "100 Foo Avenue");
+            objectRecord.setAttributeValue("Person.Address.AddressLine2", "APT# 001");
+            objectRecord.setAttributeValue("Person.Address.City", "Foo");
+        } else if ("Company".equals(object.getName())) {          
+            objectRecord = new ObjectRecord(); 
+            objectRecord.setName("Company");
+            objectRecord.setEUID("0000000001");
+            objectRecord.setAttributeValue("Company.CompanyName", "SunSet");         
+            objectRecord.setAttributeValue("Company.StockSymbol", "Sun"); 
+            objectRecord.setAttributeValue("Company.TaxPayerID", "0001");
+            objectRecord.setAttributeValue("Company.Address.AddressLine1", "100 Foo Avenue");
+            objectRecord.setAttributeValue("Company.Address.AddressLine2", "APT# 001");
+            objectRecord.setAttributeValue("Company.Address.City", "Foo");
+        }
+        
         return objectRecord;        
     } 
     
