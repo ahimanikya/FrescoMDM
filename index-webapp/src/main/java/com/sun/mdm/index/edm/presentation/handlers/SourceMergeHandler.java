@@ -744,6 +744,18 @@ public class SourceMergeHandler {
                     destnMap.put(sourceEuidFull[0], sourceEuidFull[1]);
                 }
             }
+            // added as fix of #80
+	    HashMap minorObjectListMap = (session.getAttribute("minorObjectListMap") != null ) ? (HashMap) session.getAttribute("minorObjectListMap"): new HashMap();
+            if(minorObjectListMap!=null && minorObjectListMap.size()>0){
+                Object[] keysSet  = minorObjectListMap.keySet().toArray();
+                for (int i = 0; i < keysSet.length; i++) {
+                    String key = keysSet[i].toString();
+                    destnMinorobjectsList.add( (HashMap) minorObjectListMap.get(key));
+                }
+                
+            }
+   
+            
             SystemObject finalMergredDestnSO  = masterControllerService.mergeSystemObject(this.lidsource, 
                                                                                           sourceLid, 
                                                                                           destnLid, 
@@ -753,11 +765,8 @@ public class SourceMergeHandler {
             finalMergredDestnEOArrayList.add(midmUtilityManager.getSystemObjectAsHashMap(finalMergredDestnSO, screenObject));
             
             session.removeAttribute("soHashMapArrayList");
-            
+            session.removeAttribute("minorObjectListMap");
             session.setAttribute("soHashMapArrayList",finalMergredDestnEOArrayList);            
-            //request.setAttribute("lids", lids);
-            //request.setAttribute("lidsource", this.lidsource);
-            //request.setAttribute("mergeComplete", "mergeComplete");			
 
 
          } catch (Exception ex) {

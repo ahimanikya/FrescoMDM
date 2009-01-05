@@ -153,8 +153,12 @@ String localIdDesignation =	 ConfigManager.getInstance().getConfigurableQwsValue
 HashMap rootNodesHashMap = new HashMap();
 
 //Variables for adding new source fields
-String saveString = request.getParameter("save");
-boolean isSave= (null == saveString?false:true);
+String searchString = request.getParameter("search");
+boolean isSearch= (null == searchString ?false:true);
+
+//Variables for adding new source fields
+String cancelString = request.getParameter("cancel");
+boolean isCancel= (null == cancelString?false:true);
 
 //Variables for lid merge preview 
 String mergePreviewStr = request.getParameter("mergePreview");
@@ -167,6 +171,7 @@ boolean isPopulateMergeFields = (null == populateMergeFieldsStr?false:true);
 
 String epathValue = new String();  
 HashMap soMergePreviewMap = null;
+ArrayList newSoArrayList = null;
 HashMap mergePersonfieldValuesMapEO = new HashMap();
 String previewEuidValue = new String();
 HashMap previewEuidsHashMap = new HashMap();
@@ -177,8 +182,16 @@ HashMap  minorObjectCompareHashMap = new HashMap();
 //Variables for lid merge preview 
 String showEuidStr = request.getParameter("showEuid");
 boolean isShowEuid = (null == showEuidStr?false:true);
+boolean isReload = false;
 String soLID = request.getParameter("LID");
 String soSystemCode  = request.getParameter("SYSTEM_CODE");
+String movedMinorObjectType = ""; // added as a fix of Bug with Id 80
+String toAlertMinorObjectType = "";
+String toAlertMinorObjectId = "";
+String toAlertKeyType = "";
+String keyTypeToUnHighlight = "";
+String minorObjectKeyType = "";
+boolean highlight = true;
  
 if(isShowEuid) {
   SystemObject systemObject  = masterControllerService.getSystemObject(soSystemCode,soLID);
@@ -243,7 +256,231 @@ if(  (request.getParameter(bundle.getString("transaction_source")) != null &&  r
     (request.getParameter(localIdDesignation+" 3") != null &&  request.getParameter(localIdDesignation+" 3").trim().length()  == 0 ) &&    
     (request.getParameter(localIdDesignation+" 4") != null &&  request.getParameter(localIdDesignation+" 4").trim().length()  == 0 ) ) {
      validationFailed = true; 
- }
+ 
+ //  modified  on 08-10-08 as a fix of bug with Id 80 START 
+ }else if(request.getParameter("moveMap")!=null){ 
+  	 soMergePreviewMap = sourceMergeHandler.getSoMergePreviewMap();
+ 	 int mapIndex = 0;
+	 String keyType = "";
+	 String minorObjectType = "";
+	 String minorObjectId = "";
+	 String moveMapStatus = "";
+
+	 if(request.getParameter("mapIndex")!=null && request.getParameter("minorObjectType")!=null && request.getParameter("minorObjectId")!=null && request.getParameter("keyType")!=null){
+
+ 		 mapIndex = Integer.parseInt(request.getParameter("mapIndex").toString());
+		 keyType = request.getParameter("keyType");
+		 minorObjectType = request.getParameter("minorObjectType");
+		 minorObjectId = request.getParameter("minorObjectId");
+		 moveMapStatus = request.getParameter("moveMap");
+		 minorObjectKeyType  = request.getParameter("minorObjectKeyType");
+		 keyTypeToUnHighlight = request.getParameter("keyTypeToUnHighlight");
+         Object[] soHashMapArrayListObjects = sourceMergeHandler.getSoArrayList().toArray();		 
+		 HashMap soHashMap = (HashMap) soHashMapArrayListObjects[mapIndex];
+ 		 HashMap mapTobeMoved = null;
+ 		 HashMap mapTobeMovedEdit = null;
+         ObjectNodeConfig childObjectNodeConfigMatch = null;
+		/* for (int i = 0; i < arrObjectNodeConfig.length; i++) {
+          ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[i];
+		  if(childObjectNodeConfig.getName().equalsIgnoreCase(minorObjectType)) {
+             childObjectNodeConfigMatch  = childObjectNodeConfig;
+
+		  }
+ 		 } */
+         
+		ArrayList minorObjectList = (ArrayList)soHashMap.get("SO"+minorObjectType+"ArrayList");
+
+		HashMap minorObjectListMap = (session.getAttribute("minorObjectListMap") != null ) ? (HashMap) session.getAttribute("minorObjectListMap"): new HashMap();
+
+
+		for(Object obj:minorObjectList){
+			HashMap tempMap = (HashMap)obj;
+            
+			if(tempMap.get(MasterControllerService.MINOR_OBJECT_TYPE).toString().equals(minorObjectType)&& tempMap.get(MasterControllerService.MINOR_OBJECT_ID).toString().equals(minorObjectId)){
+				mapTobeMoved = tempMap;
+		  
+			if(moveMapStatus.equals(MasterControllerService.MINOR_OBJECT_BRAND_NEW)) {
+ 				ArrayList previewMinoList= (ArrayList)soMergePreviewMap.get("SO"+minorObjectType+"ArrayList");
+ 				mapTobeMoved.put(MasterControllerService.HASH_MAP_TYPE,MasterControllerService.MINOR_OBJECT_BRAND_NEW);
+ 				mapTobeMoved.put(MasterControllerService.SYSTEM_CODE,soMergePreviewMap.get("LID_SOURCE").toString());
+ 				mapTobeMoved.put(MasterControllerService.LID,soMergePreviewMap.get(MasterControllerService.LID).toString());
+                mapTobeMoved.remove("MINOR_OBJECT_ID");
+ 				previewMinoList.add(mapTobeMoved);
+
+				ArrayList previewMinoListEdit= (ArrayList)soMergePreviewMap.get("SOEDIT"+minorObjectType+"ArrayList");
+ 				previewMinoListEdit.add(mapTobeMoved);
+
+                
+				int minorObjectSize  =  ((Integer) soMergePreviewMap.get("SO" + minorObjectType + "ArrayListSize")).intValue();
+                int arrSize = (minorObjectSize > 0 ) ? minorObjectSize + 1 : 1;
+
+                soMergePreviewMap.put("SO"+minorObjectType+"ArrayListSize",new Integer(arrSize));
+
+  				sourceMergeHandler.setSoMergePreviewMap(soMergePreviewMap);
+				sourceMergeHandler.setSoArrayList(previewMinoList);
+
+  			} else if(moveMapStatus.equals(MasterControllerService.MINOR_OBJECT_UPDATE)) {
+ 				String targetKeyType = "";
+				allNodefieldsMap = sourceHandler.getAllNodeFieldConfigs();
+				FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(mapTobeMoved.get(MasterControllerService.MINOR_OBJECT_TYPE));
+				ArrayList keyTypeList = new ArrayList();
+ 				boolean updateFlag = false;
+ 				ArrayList minorObjectListToBeUpdated = (ArrayList)soMergePreviewMap.get("SO"+minorObjectType+"ArrayList");
+               
+				HashMap mapTobeUpdated = new HashMap();
+				HashMap toBeremoved = null;
+				Object removeObject = null;
+				for(Object obj1:minorObjectListToBeUpdated){
+					 updateFlag = false;
+					 HashMap mapTobeUpdatedTemp  = (HashMap)obj1; 
+ 					 if(mapTobeUpdatedTemp.get(MasterControllerService.MINOR_OBJECT_TYPE).toString().equals(minorObjectType)){ 
+ 						 removeObject = obj1; 
+						 targetKeyType  = midmUtilityManager.getKeyTypeForMinorObjectsWithDesc(minorObjectType,mapTobeMoved);
+						 keyType = midmUtilityManager.getKeyTypeForMinorObjectsWithDesc(minorObjectType,mapTobeUpdatedTemp);
+ 						 if(targetKeyType.equalsIgnoreCase(keyType)){
+							  mapTobeUpdated  = mapTobeUpdatedTemp;
+						 }
+
+ 					}
+                 }
+
+
+
+ 				 Object[] keySet = mapTobeMoved.keySet().toArray();						 
+ 				for(int i= 0; i<keySet.length;i++){
+ 					if(mapTobeUpdated.get(keySet[i])!= null ){
+						for(int j= i; j<keySet.length;j++){
+							if(!keySet[j].equals(MasterControllerService.MINOR_OBJECT_ID)  ){
+ 								mapTobeUpdated.put(keySet[j],mapTobeMoved.get(keySet[j]));
+  								updateFlag = true;
+							} 
+						}
+					} 			
+				} 	
+ 			}
+		 }
+	}
+
+			ArrayList minorObjectListEdit = (ArrayList)soHashMap.get("SOEDIT"+minorObjectType+"ArrayList");
+
+		for(Object obj:minorObjectListEdit){
+			HashMap tempMap = (HashMap)obj;
+            
+			if(tempMap.get(MasterControllerService.MINOR_OBJECT_TYPE).toString().equals(minorObjectType)&& tempMap.get(MasterControllerService.MINOR_OBJECT_ID).toString().equals(minorObjectId)){
+				mapTobeMovedEdit = tempMap;
+		  
+			if(moveMapStatus.equals(MasterControllerService.MINOR_OBJECT_BRAND_NEW)){
+ 				ArrayList previewMinoListEdit = (ArrayList)soMergePreviewMap.get("SOEDIT"+minorObjectType+"ArrayList");
+ 				mapTobeMovedEdit.put(MasterControllerService.HASH_MAP_TYPE,MasterControllerService.MINOR_OBJECT_BRAND_NEW);
+ 				
+                mapTobeMovedEdit.put(MasterControllerService.SYSTEM_CODE,soMergePreviewMap.get("LID_SOURCE").toString());
+         		mapTobeMovedEdit.put(MasterControllerService.LID,soMergePreviewMap.get(MasterControllerService.LID).toString());
+
+				mapTobeMovedEdit.remove("MINOR_OBJECT_ID");
+ 				previewMinoListEdit.add(mapTobeMovedEdit);
+  				sourceMergeHandler.setSoMergePreviewMap(soMergePreviewMap);
+				sourceMergeHandler.setSoArrayList(previewMinoListEdit);
+				minorObjectListMap.put(midmUtilityManager.getKeyTypeForMinorObjects(minorObjectType,mapTobeMovedEdit),mapTobeMovedEdit);
+
+  			} else if(moveMapStatus.equals(MasterControllerService.MINOR_OBJECT_UPDATE)) {
+ 				String targetKeyType = "";
+				allNodefieldsMap = sourceHandler.getAllNodeFieldConfigs();
+				FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(mapTobeMoved.get(MasterControllerService.MINOR_OBJECT_TYPE));
+				ArrayList keyTypeList = new ArrayList();
+ 				boolean updateFlag = false;
+ 				ArrayList minorObjectListToBeUpdatedEdit = (ArrayList)soMergePreviewMap.get("SOEDIT"+minorObjectType+"ArrayList");
+
+				HashMap mapTobeUpdated = new HashMap();
+				HashMap mapTobeUpdatedEdit = new HashMap();
+				HashMap toBeremoved = null;
+				Object removeObject = null;
+				for(Object obj1:minorObjectListToBeUpdatedEdit){
+					 updateFlag = false;
+					 HashMap mapTobeUpdatedEditTemp = (HashMap)obj1; 
+ 					 if(mapTobeUpdatedEditTemp.get(MasterControllerService.MINOR_OBJECT_TYPE).toString().equals(minorObjectType)){ 
+						 targetKeyType  = midmUtilityManager.getKeyTypeForMinorObjects(minorObjectType,mapTobeMovedEdit);
+						 keyType = midmUtilityManager.getKeyTypeForMinorObjects(minorObjectType,mapTobeUpdatedEditTemp);
+ 					     if(targetKeyType.equalsIgnoreCase(keyType)){
+                            mapTobeUpdatedEdit  = mapTobeUpdatedEditTemp;
+ 						    removeObject = obj1; 
+						 }
+ 					}
+                 }
+
+
+                 //Move the updated values in to the target hashmap
+				 Object[] keySet = mapTobeMovedEdit.keySet().toArray();						 
+				 for(int i= 0; i<keySet.length;i++){
+					if(mapTobeUpdatedEdit.get(keySet[i])!= null){
+						for(int j= i; j<keySet.length;j++){
+							if(!keySet[j].equals(MasterControllerService.MINOR_OBJECT_ID)  ){
+								mapTobeUpdatedEdit.put(keySet[j],mapTobeMovedEdit.get(keySet[j]));
+							} 
+						}
+					} 			
+				 }
+
+
+					if(!mapTobeUpdatedEdit.isEmpty()) {
+						mapTobeUpdatedEdit.put(MasterControllerService.SYSTEM_CODE,soMergePreviewMap.get("LID_SOURCE").toString());
+						mapTobeUpdatedEdit.put(MasterControllerService.LID,soMergePreviewMap.get(MasterControllerService.LID).toString());
+
+						//minorObjectListToBeUpdatedEdit.add(mapTobeUpdatedEdit); 						 
+						//minorObjectListToBeUpdatedEdit.remove(removeObject); 						 
+
+ 				        ArrayList previewMinoListEdit = (ArrayList)soMergePreviewMap.get("SOEDIT"+minorObjectType+"ArrayList");
+
+						for(int i = 0;i<previewMinoListEdit.size();i++) {
+                                  HashMap existingMap  = (HashMap) previewMinoListEdit.get(i);
+                				  String existingKey = midmUtilityManager.getKeyTypeForMinorObjects(minorObjectType,existingMap);
+                				  String mapTobeUpdatedEditKey = midmUtilityManager.getKeyTypeForMinorObjects(minorObjectType,mapTobeUpdatedEdit);
+
+								  if(mapTobeUpdatedEditKey.equalsIgnoreCase(existingKey)) {
+									//previewMinoListEdit.add(mapTobeUpdatedEdit); 						 
+									//previewMinoListEdit.remove(existingMap); 						 
+									existingMap  = mapTobeUpdatedEdit;
+								  }
+				        }
+
+						sourceMergeHandler.setSoMergePreviewMap(soMergePreviewMap);
+
+						newSoArrayList = sourceMergeHandler.getSoArrayList();
+						newSoArrayList.add(soMergePreviewMap);
+						sourceMergeHandler.setSoArrayList(newSoArrayList);
+					    sourceMergeHandler.getDestnMinorobjectsList().add(mapTobeUpdatedEdit); 
+						minorObjectListMap.put(midmUtilityManager.getKeyTypeForMinorObjects(minorObjectType,mapTobeUpdatedEdit),mapTobeUpdatedEdit);
+					}
+
+			}
+		 }
+	}
+
+
+
+
+    if(minorObjectListMap != null && !minorObjectListMap.isEmpty()) {
+     session.setAttribute("minorObjectListMap",minorObjectListMap) ;
+	}
+
+%>
+  <table>
+	<tr>
+	  <td>
+	   <script> 
+		getFormValues('basicMergeformData');
+ 		ajaxURL('/<%=URI%>/ajaxservices/lidmergeservice.jsf?'+queryStr+'&rand=<%=rand%>&reload=true&PREVIEW_SRC_DEST_LIDS=<%=request.getParameter("PREVIEW_SRC_DEST_LIDS")%>&PREVIEW_SYSTEM_CODE=<%=request.getParameter("PREVIEW_SYSTEM_CODE")%>&movedMinorObjectType=<%=minorObjectType%>&keyTypeToUnHighlight=<%=keyTypeToUnHighlight%>','sourceRecordMergeDiv','');
+ 		</script>
+	  </td>
+	 </tr>
+  </table> 
+<%		 
+  	}
+    }else if(request.getParameter("reload")!=null && request.getParameter("reload").toString().equals("true")){
+ 			isReload = true;
+			movedMinorObjectType = request.getParameter("movedMinorObjectType");
+			keyTypeToUnHighlight = request.getParameter("keyTypeToUnHighlight");
+   }
+ //  modified   on 08-10-08 as a fix of bug with Id 80 END 
   
  int countLid1 = 0;
  
@@ -288,7 +525,12 @@ sourceMergeHandler.setLid1(request.getParameter(localIdDesignation+" 1"));
 //Variables for lid merge preview 
 String mergeFinalStr = request.getParameter("mergeFinal");
 boolean isMergeFinal = (null == mergeFinalStr?false:true);
- 	
+
+//Remove the unnecessary values from session memory
+if(isCancel || isSearch ) {
+	session.removeAttribute("minorObjectListMap");
+}
+
  
 %>
  <% //If it is final merge 
@@ -301,11 +543,47 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
 <%  
 	//if validation fails null value is returned to newSoArrayList
     // if validation sucessfull or final merge array list of system objects are returned to newSoArrayList
-	ArrayList newSoArrayList= (isPopulateMergeFields || isShowEuid || validationFailed) ? null : (isMergeFinal)?sourceMergeHandler.mergeSystemObject():sourceMergeHandler.sourcerecordMergeSearch();
+   	  newSoArrayList = (isPopulateMergeFields || isShowEuid || validationFailed) ? null : (isMergeFinal)?sourceMergeHandler.mergeSystemObject():sourceMergeHandler.sourcerecordMergeSearch();
+	  sourceMergeHandler.setSoArrayList(newSoArrayList);
+      messagesIter = FacesContext.getCurrentInstance().getMessages();  
+	  if(isReload){
+	  String[] srcs = null;
+		  String  lidsSource = "";
+			newSoArrayList = sourceMergeHandler.getSoArrayList();
+			soMergePreviewMap = sourceMergeHandler.getSoMergePreviewMap();
+			if(soMergePreviewMap != null ) { //if preview is found 
+				  srcs  = request.getParameter("PREVIEW_SRC_DEST_LIDS").split(":");
+				  lidsSource  = request.getParameter("PREVIEW_SYSTEM_CODE");		
+				for(int i=0;i<srcs.length;i++) {
+				 //set the selected values involved in getting the preview for the selection
+				 previewEuidsHashMap.put(srcs[i],srcs[i]);
+				}
+			  }
 
-    messagesIter = FacesContext.getCurrentInstance().getMessages();  %>
+ %>
+  <table>
+	<tr>
+	  <td>
+	   <script> 
+ 		   document.getElementById("confirmationButton").style.visibility = "visible";
+		   document.getElementById("confirmationButton").style.display = "block";
+		   document.getElementById("soMergeConfirmContent").innerHTML = "<%=srcs[1]%>";
+		   document.getElementById("mergeFinalForm:previewhiddenLid1").value = "<%=sourceMergeHandler.getFormlids()%>";
+		   document.getElementById("mergeFinalForm:previewhiddenLid1source").value = "<%=lidsSource%>";
+		   
+		 </script>
+	  </td>
+	 </tr>
+  </table> 
 
- <% //If it is final merge 
+<%
+ 	  }// added on 08-10-08 as a fix of bug with Id 80
+	 
+%>
+
+ <% 
+	 
+ //If it is final merge 
   if(isMergeFinal && newSoArrayList != null && newSoArrayList.size() > 0 ) {
  	
 	String[] srcs  = request.getParameter("mergeFinalForm_LIDS").split(":");
@@ -415,7 +693,9 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
 
 
  
-<% if(isMergePreview) {
+<% 		    
+
+	if(isMergePreview) {
    //Clear the values here
    sourceMergeHandler.getDestnRootNodeHashMap().clear();
    sourceMergeHandler.getDestnMinorobjectsList().clear();
@@ -449,7 +729,8 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
  </tr>
 </table>
   
-<%  } else {%>
+<%  } else {
+	soMergePreviewMap =  null;%>
     <div class="ajaxalert" id="lidmsg3">
 	  <table>
 			<tr>
@@ -469,7 +750,7 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
 
 <%  } %>
 
- <%} %>
+ <%}%>
 
 
 
@@ -486,7 +767,7 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
   </td>
  </tr>
 </table>
-  <%if(!validationFailed && newSoArrayList != null && newSoArrayList.size() > 0) {	   %>
+  <%if(!validationFailed && newSoArrayList != null && newSoArrayList.size() > 0) {%>
 
     <table cellpadding="0" cellspacing="0">  
                                             <tr>
@@ -496,8 +777,9 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
                                                           <tr>
                                                               
                                                                <%
-																  
-                                                    Object[] soHashMapArrayListObjects = newSoArrayList.toArray();
+													
+                                                    Object[] soHashMapArrayListObjects = newSoArrayList.toArray(); 
+													sourceMergeHandler.setSoArrayList(newSoArrayList); //modified as a fix of bug with Id 80 on 08-10-08		  
                                                     String cssClass = "dynaw169";
                                                     String cssMain = "maineuidpreview";
                                                     String menuClass = "menutop";
@@ -853,21 +1135,30 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
 																	   <%
                                                                     ObjectNodeConfig childObjectNodeConfig = arrObjectNodeConfig[io];
                                                                     ArrayList  minorObjectMapList =  (ArrayList) soHashMap.get("SO" + childObjectNodeConfig.getName() + "ArrayList");
+                                                                    ArrayList  minorObjectMapListEdit =  (ArrayList) soHashMap.get("SOEDIT" + childObjectNodeConfig.getName() + "ArrayList");
+
                                                                     HashMap minorObjectHashMap = new HashMap();
+                                                                    HashMap minorObjectHashMapEdit = new HashMap();
                                                                     int  maxMinorObjectsMinorDB =  ((Integer) soHashMap.get("SO" + childObjectNodeConfig.getName() + "ArrayListSize")).intValue();
                                                 int  maxMinorObjectsPreview =  (soMergePreviewMap  != null) ?((Integer) soMergePreviewMap.get("SO" + childObjectNodeConfig.getName() + "ArrayListSize")).intValue():0;
-                                                ArrayList minorObjectsListPreview =  (soMergePreviewMap  != null) ?((ArrayList) soMergePreviewMap.get("SO" + childObjectNodeConfig.getName() + "ArrayList")):new ArrayList();
+                                                ArrayList minorObjectsListPreview =  (soMergePreviewMap  != null) ?((ArrayList) soMergePreviewMap.get("SOEDIT" + childObjectNodeConfig.getName() + "ArrayList")):new ArrayList();
+												 //boolean hasPreview = false;
                                        if(soMergePreviewMap  != null) {
-										  	 minorObjectCompareHashMap.put("SO" + childObjectNodeConfig.getName() + "ArrayList",minorObjectsListPreview);
-										} else {
+										  	 minorObjectCompareHashMap.put("SOEDIT" + childObjectNodeConfig.getName() + "ArrayList",minorObjectsListPreview);
+											 newSoArrayList.add(soMergePreviewMap);
+											// hasPreview = true;
+ 										} else {
 											 if(countEnt  == 0 ) {
-											    minorObjectCompareHashMap.put("SO" + childObjectNodeConfig.getName() + "ArrayList",minorObjectMapList);
+											    minorObjectCompareHashMap.put("SOEDIT" + childObjectNodeConfig.getName() + "ArrayList",minorObjectMapList);
 											 }
 										}
 												String minorObjectStatus = new String();
                                                  int maxMinorObjectsMAX  = midmUtilityManager.getSOMinorObjectsMaxSize(newSoArrayList,objScreenObject,childObjectNodeConfig.getName());
 												 int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
-                                                 FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(childObjectNodeConfig.getName());
+                                                 //Remove the preview map after calculating the max size
+                                                 if(soMergePreviewMap  != null) newSoArrayList.remove(soMergePreviewMap);
+
+												 FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(childObjectNodeConfig.getName());
  			 %>
                                                                     <tr>
 																	    <td>
@@ -880,10 +1171,12 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
 																     </tr>
 		                                                        <% for (int ii = 0; ii < minorObjectMapList.size(); ii++) {
                                                                          minorObjectHashMap = (HashMap) minorObjectMapList.get(ii);
+                                                                         minorObjectHashMapEdit = (HashMap) minorObjectMapListEdit.get(ii);
+																		 
                                                                     %>
                                                                     <!-- modified  on 17-09-08 (removed if countEnt>0 condition) -->	
 																	<%
-																	minorObjectMapCompare =  midmUtilityManager.getDifferenceMinorObjectMapWithKeyType((ArrayList)minorObjectCompareHashMap.get("SO" + childObjectNodeConfig.getName() + "ArrayList"),minorObjectHashMap);
+ 																	minorObjectMapCompare =  midmUtilityManager.getDifferenceMinorObjectMapWithKeyType((ArrayList)minorObjectCompareHashMap.get("SOEDIT" + childObjectNodeConfig.getName() + "ArrayList"),minorObjectHashMapEdit);
                                                                     %>
                                                                     <%
                                                                     for (int ifc = 0; ifc < fieldConfigArrayMinor.length; ifc++) {
@@ -891,9 +1184,8 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
                                                                      epathValue = fieldConfigMap.getFullFieldName();
                                                                     %>  
                                                               <tr>
-                                                                  <td>
-																	 <%if(fieldConfigMap.isKeyType()) {%><b><%}%>
-                                                                      
+                                                                  <td> 
+																  <%if(fieldConfigMap.isKeyType()) {%><b><%} %> 
 																	 <!-- if minor objects exists -->
 																  <%if (minorObjectMapList.size() >0 && minorObjectHashMap.get(epathValue) != null) {%>
 																	<%if (soMergePreviewMap != null  && minorObjectMapCompare != null 
@@ -903,7 +1195,11 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
 																			<!-- added  on 17-09-08 -->
 																			<%if(previewEuidsHashMap.get((String) personfieldValuesMapEO.get("LID")) != null){
 																				%>
+																			    <%/*if(keyTypeToUnHighlight!=null && minorObjectHashMap.get(epathValue)!=null &&
+																				!minorObjectHashMap.get(epathValue).toString().equals(keyTypeToUnHighlight)){
+ 																				*/%>
 																				  <font class="highlight">
+																				<%//}%>
 																				<%}%>
 																					   <%if(soHashMap.get("hasSensitiveData") != null && fieldConfigMap.isSensitive() && !operations.isField_VIP()){%> 
 																						 <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
@@ -913,19 +1209,29 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
 																			<!-- added  on 17-09-08 -->
 																			<%if(previewEuidsHashMap.get((String) personfieldValuesMapEO.get("LID")) != null){
 																			%>
+																			<%if(highlight){%> 
 																			   </font>
+																			<%}%>
 																			<%}%>
 																					
 																	   <%}else if (countEnt > 0 && minorObjectMapCompare != null 
 																			&& minorObjectMapCompare.get(epathValue) != null  &&
 																			minorObjectMapCompare.get(epathValue).toString().equalsIgnoreCase("true") ){%>
+																			    <%/*if(keyTypeToUnHighlight!=null && minorObjectHashMap.get(epathValue)!=null &&
+																				!minorObjectHashMap.get(epathValue).toString().equals(keyTypeToUnHighlight)){
+ 																				*/%>
 																				  <font class="highlight">
+																				<%//}%>
 																					   <%if(soHashMap.get("hasSensitiveData") != null && fieldConfigMap.isSensitive() && !operations.isField_VIP()){%> 
 																						 <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
 																					  <%}else{%>
 																						  <%=minorObjectHashMap.get(epathValue)%>
 																					 <%}%>
+																					<%/*if(keyTypeToUnHighlight!=null && minorObjectHashMap.get(epathValue)!=null &&
+																					!minorObjectHashMap.get(epathValue).toString().equals(keyTypeToUnHighlight)){
+																					*/%>
 																					 </font>
+																					 <%//}%>
 																	   <%}	
 																		else {%>
 																					 <%if(soHashMap.get("hasSensitiveData") != null && fieldConfigMap.isSensitive() && !operations.isField_VIP()){%> 
@@ -938,18 +1244,92 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
 																	   <%if (countEnt > 0 && minorObjectMapCompare !=null 
 																		   && minorObjectMapCompare.get(epathValue) != null  
 																		   && minorObjectMapCompare.get(epathValue).toString().equalsIgnoreCase("true") ){%>
-																			<font class="highlight">
+																		   <%if(previewEuidsHashMap.get((String) personfieldValuesMapEO.get("LID")) != null){%>
+																			<%/*if(keyTypeToUnHighlight!=null && minorObjectHashMap.get(epathValue)!=null &&
+																			!minorObjectHashMap.get(epathValue).toString().equals(keyTypeToUnHighlight)){
+																			*/%>
+ 																			<font class="highlight">
+																		   <%//}%>
 																			 <%if(soHashMap.get("hasSensitiveData") != null && fieldConfigMap.isSensitive() && !operations.isField_VIP()){%> 
 																				 <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
 																			 <%}else{%>
+																			<%/*if(keyTypeToUnHighlight!=null && minorObjectHashMap.get(epathValue)!=null &&
+																			!minorObjectHashMap.get(epathValue).toString().equals(keyTypeToUnHighlight)){
+																			*/%>
 																				 <img src="./images/calup.gif" border="0" alt="Blank Value"/>
+																				<%//}else{%>
+																				<!-- &nbsp; -->
+																				<%//}%>
+																				
 																			 <%}%>
+																			<%/*if(keyTypeToUnHighlight!=null && minorObjectHashMap.get(epathValue)!=null &&
+																			!minorObjectHashMap.get(epathValue).toString().equals(keyTypeToUnHighlight)){
+																			*/%>
 																			 </font>
+																			 <%//}%>
+																		<%}%>
 																	   <%} else {%>
 																		 &nbsp;
 																	   <%}%>
 																<%}%>
-																	 <%if(fieldConfigMap.isKeyType()) {%></b><%}%>
+																<!--  modified on 08-10-08 as a fix of bug with Id 80 START -->
+																	 <%if(fieldConfigMap.isKeyType()) {%> 
+																	 </b> 
+ 																	 <%
+																		 if (minorObjectMapList!=null && minorObjectMapList.size() >0 && minorObjectHashMap.get(epathValue) != null) {
+																			if(previewEuidsHashMap.get((String) personfieldValuesMapEO.get("LID")) != null){
+if(minorObjectMapCompare!=null && (minorObjectMapCompare.get(MasterControllerService.HASH_MAP_TYPE)!=null && (minorObjectMapCompare.get(MasterControllerService.HASH_MAP_TYPE).toString().equals(MasterControllerService.MINOR_OBJECT_BRAND_NEW) || minorObjectMapCompare.get(MasterControllerService.HASH_MAP_TYPE).toString().equals(MasterControllerService.MINOR_OBJECT_UPDATE)))){  
+String moveUpdate  = (minorObjectMapCompare.get(MasterControllerService.HASH_MAP_TYPE).toString().equals(MasterControllerService.MINOR_OBJECT_BRAND_NEW)) ? bundle.getString("move_text") : bundle.getString("update_text");
+String targetKeyType  = midmUtilityManager.getKeyTypeForMinorObjectsWithDesc((String)minorObjectHashMap.get(MasterControllerService.MINOR_OBJECT_TYPE),minorObjectHashMap);
+String[] keyTypeArray = targetKeyType.split(":");
+
+ 																		%>
+ 										 								 <%if(childObjectNodeConfig.getMustDelete()) {%>
+																			<a href="javascript:void(0);" onclick="javascript:
+																				document.getElementById('mapIndex').value = '<%=countEnt%>';
+																				document.getElementById('keyType').value = '<%=minorObjectHashMap.get(epathValue)%>';
+																				document.getElementById('minorObjectType').value = '<%=minorObjectHashMap.get(MasterControllerService.MINOR_OBJECT_TYPE)%>';
+																				document.getElementById('minorObjectId').value = '<%=minorObjectHashMap.get(MasterControllerService.MINOR_OBJECT_ID)%>';
+																				document.getElementById('moveMap').value = '<%=minorObjectMapCompare.get(MasterControllerService.HASH_MAP_TYPE)%>';
+
+																				document.getElementById('confirmMoveMinorObjectType').innerHTML= '<%=keyTypeArray[1]%> <%=keyTypeArray[0]%>';
+
+																				document.getElementById('PREVIEW_SRC_DEST_LIDS').value = '<%=request.getParameter("PREVIEW_SRC_DEST_LIDS")%>';
+																				document.getElementById('PREVIEW_SYSTEM_CODE').value = '<%=request.getParameter("PREVIEW_SYSTEM_CODE")%>';
+																				showLIDDiv('confirmMoveDiv',event);	
+ 																			">
+																			<%/*if(keyTypeToUnHighlight!=null && minorObjectHashMap.get(epathValue)!=null &&
+																			!minorObjectHashMap.get(epathValue).toString().equals(keyTypeToUnHighlight)){
+																			*/%>
+																				<font class="highlight">
+																					<img src="./images/calup.gif" title="<%=moveUpdate%> <%=keyTypeArray[1]%> <%=keyTypeArray[0]%>" border="0" alt="<%=moveUpdate%>  <%=keyTypeArray[1]%> <%=keyTypeArray[0]%>"/>
+																				</font>
+																				<%//}%>
+																			</a>
+																		 <%} else {%>
+																		    <%  
+																					
+																				String minorKeyType  = midmUtilityManager.getKeyTypeForMinorObjects(minorObjectHashMap.get(MasterControllerService.MINOR_OBJECT_TYPE).toString(),minorObjectHashMapEdit);
+																					%>
+ 																			<a href="javascript:void(0);" onclick="javascript:
+																			ajaxMinorObjects('/<%=URI%>/ajaxservices/lidmergeservice.jsf?&rand=<%=rand%>&mapIndex=<%=countEnt%>&keyType=<%=minorKeyType%>&minorObjectType=<%=minorObjectHashMap.get(MasterControllerService.MINOR_OBJECT_TYPE)%>&minorObjectId=<%=minorObjectHashMap.get(MasterControllerService.MINOR_OBJECT_ID)%>&moveMap=<%=minorObjectMapCompare.get(MasterControllerService.HASH_MAP_TYPE)%>&PREVIEW_SRC_DEST_LIDS=<%=request.getParameter("PREVIEW_SRC_DEST_LIDS")%>&PREVIEW_SYSTEM_CODE=<%=request.getParameter("PREVIEW_SYSTEM_CODE")%>&keyTypeToUnHighlight=<%=minorObjectHashMap.get(epathValue)%>', 'sourceRecordMergeDiv',event);
+																			">
+																			<%/*if(keyTypeToUnHighlight!=null && minorObjectHashMap.get(epathValue)!=null &&
+																			!minorObjectHashMap.get(epathValue).toString().equals(keyTypeToUnHighlight)){
+																			*/%>
+																				<font class="highlight">
+																					<img src="./images/calup.gif" border="0" title="<%=moveUpdate%> <%=keyTypeArray[1]%> <%=keyTypeArray[0]%>" alt="<%=moveUpdate%> <%=keyTypeArray[1]%> <%=keyTypeArray[0]%>"/>
+																				</font>
+																				<%//}%>  
+																			</a>
+																			<%}%>
+																		<%  }
+																		   }
+																	     }
+
+																	 %>
+																	 <%}%>
+																	 <!--  modified  on 08-10-08 as a fix of bug with Id 80 END -->
                                                                       </td>
                                                                     </tr>
  
@@ -980,6 +1360,7 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
 
 
                                                                     <%} //MINOR OBJECT TYPES LOOPS
+
                                                                     %>
 
                                                                 </table>
@@ -992,10 +1373,14 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
                                                                           HashMap mergedSOMap = new HashMap();
                                                                           String styleclass = "yellow";
 													                      ArrayList mergePreviewMinorObjectList = new ArrayList();
+													                      ArrayList mergePreviewMinorObjectListEdit = new ArrayList();
                                                                           HashMap previewpersonfieldValuesMapEO = new HashMap();
                                                                          if(soMergePreviewMap != null) {
-                                                                          mergedSOMap = soMergePreviewMap;
+
+                                                                          mergedSOMap = sourceMergeHandler.getSoMergePreviewMap();
                                                                           previewpersonfieldValuesMapEO = (HashMap) mergedSOMap.get("SYSTEM_OBJECT");
+
+
                                                                           styleclass ="blue";
                                                                          } 
                                                                 
@@ -1067,60 +1452,75 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
 																   %>
                                                                     <%
                                                                     FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(childObjectNodeConfig.getName());
-                                                                    int maxMinorObjectsMAX  = midmUtilityManager.getSOMinorObjectsMaxSize(newSoArrayList,objScreenObject,childObjectNodeConfig.getName());
-                                                                    int  maxMinorObjectsMinorDB =  (soMergePreviewMap  != null) ?((Integer) mergedSOMap.get("SO" + childObjectNodeConfig.getName() + "ArrayListSize")).intValue():0;
-								    int  maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
-								    mergePreviewMinorObjectList = (soMergePreviewMap  != null)?(ArrayList) mergedSOMap.get("SO" + childObjectNodeConfig.getName() + "ArrayList"):new ArrayList();
+																	if(soMergePreviewMap  != null) {
+																		newSoArrayList.add(soMergePreviewMap);
+																	}
+
+																	int maxMinorObjectsMAX  = midmUtilityManager.getSOMinorObjectsMaxSize(newSoArrayList,objScreenObject,childObjectNodeConfig.getName());
+
+																	int  maxMinorObjectsMinorDB =  (soMergePreviewMap  != null) ?((Integer) soMergePreviewMap.get("SO" + childObjectNodeConfig.getName() + "ArrayListSize")).intValue():0;
+								int  maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB;
+                                
+								//Remove the preview map after calculating the max size
+                                if(soMergePreviewMap  != null) newSoArrayList.remove(soMergePreviewMap);
+
+								    
+									mergePreviewMinorObjectListEdit = (soMergePreviewMap  != null)?(ArrayList) soMergePreviewMap.get("SOEDIT" + childObjectNodeConfig.getName() + "ArrayList"):new ArrayList();
+								    mergePreviewMinorObjectList = (soMergePreviewMap  != null)?(ArrayList) soMergePreviewMap.get("SO" + childObjectNodeConfig.getName() + "ArrayList"):new ArrayList();
+
                                                                    %>
-                                                                    <tr><td>
-																		    <% if(maxMinorObjectsMinorDB ==0) {%>
-																	         <b><%=bundle.getString("source_inpatient2_text")%> <%=childObjectNodeConfig.getName()%></b>
+                                                                    <tr><td>							 
+																	<!-- modified as fix of Bug with Id 80 on 08-10-08 -->
+																		    <% if(maxMinorObjectsMinorDB ==0 && !movedMinorObjectType.equals(childObjectNodeConfig.getName())) {%>
+																	         <b><%=bundle.getString("source_inpatient2_text")%> <%=childObjectNodeConfig.getName()%>
 																			 <%}else{%>
 																	         &nbsp;
 																			 <%}%>
 																	  </td></tr>
                                                                     <%
                                                                      for(int ar = 0; ar < mergePreviewMinorObjectList.size() ;ar ++) {
-                                                                       minorObjectHashMapPreview = (HashMap) mergePreviewMinorObjectList.get(ar);                                                                    %>
+minorObjectHashMapPreview = (HashMap) mergePreviewMinorObjectList.get(ar);                                
+
+                                 %>
                                                                   
 								    <%
-                               		 		            for (int ifc = 0; ifc < fieldConfigArrayMinor.length; ifc++) {
+                               		 		            
+									
+									for (int ifc = 0; ifc < fieldConfigArrayMinor.length; ifc++) {
                                                                        FieldConfig fieldConfigMap =  fieldConfigArrayMinor[ifc];
 								       previewepathValue = fieldConfigMap.getFullFieldName();
                                                                       %>  
                                                                     <tr>
                                                                         <td>
-                                                                                <%if(soMergePreviewMap != null) {%>
- <!-- Added  on 05-09-08  -->
-                                                                                         <%if(soMergePreviewMap.get("hasSensitiveData") != null && !operations.isField_VIP() && fieldConfigMap.isSensitive()){%> 
+                                                                            <%if(soMergePreviewMap != null) {%>
+																			<!-- Added  on 05-09-08  -->
+                                                                           <!-- added on 13-10-08 as a fix of bug id 80 -->
+ 				                                                              <%if(minorObjectHashMapPreview.get(MasterControllerService.HASH_MAP_TYPE).toString().equals(MasterControllerService.MINOR_OBJECT_BRAND_NEW)) {%><font class="highlight"><%}%>
+                                                                                       <%if(soMergePreviewMap.get("hasSensitiveData") != null && !operations.isField_VIP() && fieldConfigMap.isSensitive()){%> 
 																					        <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                           <%}else{%>
                                                                                           <%if (minorObjectHashMapPreview.get(previewepathValue) != null) {%> 
-                                                                                     <span id="<%=previewepathValue%>">
-																						<%if(fieldConfigMap.isKeyType()) {%>
+ 																						<%if(fieldConfigMap.isKeyType()) {%>
                                                                                           <b><%=minorObjectHashMapPreview.get(previewepathValue)%></b>
 																					   <%}else {%>
 																					      <%=minorObjectHashMapPreview.get(previewepathValue)%>
 																					   <%}%>
-
-
-
-
-  																					  </span>
-                                                                                    <%} else {%>
-                                                                                        <span id="<%=previewepathValue%>">&nbsp;</span>
-                                                                                    <%}%>
+                                                                                       <%} else {%>
+                                                                                         <span id="<%=previewepathValue%>">&nbsp;</span>
                                                                                         <%}%>
-
- <!-- Added  on 05-09-08  ends here-->
-                                                                                    
-																																					                                                                                <%}else{  %>
+                                                                                        <%}%>
+                                                                               <!-- Added on 05-09-08  ends here-->
+																				
+                                                                        <!-- added  on 13-10-08 as a fix of bug id 80 -->
+																		<%if(minorObjectHashMapPreview.get(MasterControllerService.HASH_MAP_TYPE).toString().equals(MasterControllerService.MINOR_OBJECT_BRAND_NEW)) {%></font><%}%>
+																																					                                                                     <%}else{  %>
                                                                                     &nbsp;
                                                                                 <%} %>
                                                                         </td>
                                                                     </tr>
                                                                     <%
                                                                       } // field config loop
+
 								    %>
 																	 <tr><td>&nbsp;</td></tr>
 								    <%
@@ -1141,6 +1541,7 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
 																	   <tr><td>&nbsp;</td></tr> 
 																	 <%
                                                                         }//Extra minor objects loop
+
 								  %>
 
                                                                
@@ -1206,8 +1607,7 @@ boolean isMergeFinal = (null == mergeFinalStr?false:true);
                                                                                 <td valign="top">
                                                                                  <%if(operations.isEO_SearchViewSBR()) {%>
                                                                                  <a href="javascript:void(0)"  
-                                                                                       onclick="javascript:
-																					   ajaxURL('/<%=URI%>/ajaxservices/lidmergeservice.jsf?'+queryStr+'&showEuid=true&SYSTEM_CODE=<%=soHashMap.get("SYSTEM_CODE")%>&LID=<%=soHashMap.get("LID")%>&rand=<%=rand%>','sourceRecordEuidDiv','');"   
+                                                                                       onclick="javascript:ajaxURL('/<%=URI%>/ajaxservices/lidmergeservice.jsf?'+queryStr+'&showEuid=true&SYSTEM_CODE=<%=soHashMap.get("SYSTEM_CODE")%>&LID=<%=soHashMap.get("LID")%>&rand=<%=rand%>','sourceRecordEuidDiv','');"   
 																					   title="<h:outputText value="#{msgs.source_rec_vieweuid_but}"/>"  class="button" ><span><h:outputText value="#{msgs.source_rec_vieweuid_but}"/></span>
                                                                                     </a>                                                    
 																					<%}%>
@@ -1269,7 +1669,7 @@ ValueExpression keepLid2ValueExpression = ExpressionFactory.newInstance().create
                                                                             <td>
                                                                             <a title="<h:outputText value="#{msgs.cancel_but_text}" />"
                                                                               href="javascript:void(0)"
-                                                                             onclick="javascript:getFormValues('basicMergeformData');ajaxURL('/<%=URI%>/ajaxservices/lidmergeservice.jsf?'+queryStr+'&save=true&rand=<%=rand%>','sourceRecordMergeDiv','');"  
+                                                                             onclick="javascript:getFormValues('basicMergeformData');ajaxURL('/<%=URI%>/ajaxservices/lidmergeservice.jsf?'+queryStr+'&cancel=true&rand=<%=rand%>','sourceRecordMergeDiv','');"  
                                                                              class="button" ><span><h:outputText value="#{msgs.cancel_but_text}" /></span></a>                                      
                                                                             </td>
                                                                         </tr>
@@ -1280,7 +1680,9 @@ ValueExpression keepLid2ValueExpression = ExpressionFactory.newInstance().create
                                                      </td>
                                                <%}%>
                                                
-                                            <%}%>
+                                            <%}
+											
+											%>
 											    </tr>
                                                    </table>
                                                </div>
@@ -1323,10 +1725,54 @@ ValueExpression keepLid2ValueExpression = ExpressionFactory.newInstance().create
 
 <%}%>
 
-<%}%> <!-- if duplicate LIDS not found-->
-
-
-           
+<%}%>  
+<div id="confirmMoveDiv" class="confirmPreview" style="top:500px;left:560px;visibility:hidden">
+ 		   <form id="confirmMoveForm" name="confirmMoveForm">
+ 			  <input type="hidden" id="mapIndex" title="mapIndex" name="mapIndex"/>
+			  <input type="hidden" id="keyType" title="keyType" name="keyType"/>
+			  <input type="hidden" id="minorObjectType" title="minorObjectType" name="minorObjectType"/>
+ 			  <input type="hidden" id="minorObjectId" title="minorObjectId" name="minorObjectId"/>
+			  <input type="hidden" id="moveMap" title="moveMap" name="moveMap"/>
+			  <input type="hidden" id="PREVIEW_SYSTEM_CODE" title="PREVIEW_SYSTEM_CODE" name="PREVIEW_SYSTEM_CODE"/>
+			  <input type="hidden" id="PREVIEW_SRC_DEST_LIDS" title="PREVIEW_SRC_DEST_LIDS" name="PREVIEW_SRC_DEST_LIDS"/>
+ 				<table cellspacing="0" cellpadding="0" border="0">
+                     <tr><th align="center" title="<%=bundle.getString("move")%>"><h:outputText value="#{msgs.pop_up_confirmation_heading}"/></th> 
+					     <th>
+				          <a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('confirmMoveDiv',event)"><h:outputText value="#{msgs.View_MergeTree_close_text}"/></a>
+                          <a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('confirmMoveDiv',event)"><img src="images/close.gif" border="0" alt="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>"/></a>
+				        </th>
+					</tr>
+                     <tr><td colspan="2">&nbsp;</td></tr> 
+					 <tr>
+					     <td  colspan="2" style="color:#ffffff;font-weight:bold;"><nobr><%=bundle.getString("confirm_move_1_text")%> '<span id="confirmMoveMinorObjectType" style="color:#ffffff;font-weight:bold;"></span>'.&nbsp;<%=bundle.getString("confirm_move_2_text")%></nobr></td>
+					 </tr>
+                     <tr><td colspan="2">&nbsp;</td></tr>
+                     <tr id="actions">
+                         <td colspan="2">
+						 <table align="center">
+						<tr>
+						<td>
+                            <a title="<h:outputText value="#{msgs.ok_text_button}"/>"
+                                href="javascript:void(0)"
+                                onclick="javascript: getFormValues('confirmMoveForm');
+							    ajaxURL('/<%=URI%>/ajaxservices/lidmergeservice.jsf?'+queryStr+'&rand=<%=rand%>','sourceRecordMergeDiv','');"  
+                                class="button" >
+                                <span><h:outputText value="#{msgs.ok_text_button}"/></span>
+                             </a>
+						</td>
+						<td>
+						     <a  class="button" onclick="javascript:showExtraDivs('confirmMoveDiv',event)" href="javascript:void(0)" title="<h:outputText value="#{msgs.cancel_but_text}" />"   
+										<span><h:outputText value="#{msgs.cancel_but_text}"/></span>
+						     </a>
+						</td>
+						</tr>
+						</table>
+					     </td>
+                     </tr> 
+                 </table>
+		   </form>
+         </div>		
+	
            <%}%> <!-- if session is active -->
 
 </html>

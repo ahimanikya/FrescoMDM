@@ -851,7 +851,7 @@ boolean isSessionActive = true;
 																hideDivs('inactiveHeaders');showDivs('activeHeaders');
 															   }
 															   getFormValues('<h:outputText value="#{childNodesName}"/>InnerForm');
-															   ajaxMinorObjects('/<%=URI%>/ajaxservices/editminorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&LID=<%=systemObjectAsHashMap.get("LID")%>&SYS=<%=systemObjectAsHashMap.get("SYSTEM_CODE")%>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/>NewDiv',event);
+															   ajaxMinorObjects('/<%=URI%>/ajaxservices/editminorobjects.jsf?'+queryStr+'&MOT=<h:outputText value="#{childNodesName}"/>&rand=<%=rand%>&minorObjSave=save','<h:outputText value="#{childNodesName}"/>NewDiv',event);
 															   ">
 																		 <span id="<h:outputText value='#{childNodesName}'/>buttonspan"><h:outputText value="#{msgs.source_rec_save_but}"/> <h:outputText value='#{childNodesName}'/> </span>
 																	 </a>     

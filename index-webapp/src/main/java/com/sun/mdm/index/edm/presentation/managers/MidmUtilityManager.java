@@ -20,16 +20,14 @@
  * fields enclosed by brackets [] replaced by your own identifying 
  * information: "Portions Copyrighted [year] [name of copyright owner]"
  */
-
-     
 /*
  * MidmUtilityManager.java 
  * Created on November 29, 2007
  * Author : Anil, Pratibha
  *  
  */
-
 package com.sun.mdm.index.edm.presentation.managers;
+
 import com.sun.mdm.index.edm.control.QwsController;
 import com.sun.mdm.index.edm.presentation.handlers.NavigationHandler;
 import com.sun.mdm.index.edm.presentation.handlers.SourceHandler;
@@ -73,12 +71,13 @@ import javax.servlet.http.HttpSession;
 import javax.xml.bind.ValidationException;
 
 public class MidmUtilityManager {
+
     private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.managers.MidmUtilityManager");
     private static transient final Localizer mLocalizer = Localizer.get();
     public static final String MINOR_OBJECT_TYPE = "MINOR_OBJECT_TYPE";
     private MasterControllerService masterControllerService = new MasterControllerService();
     ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());
-     String exceptionMessaage =bundle.getString("EXCEPTION_MSG");
+    String exceptionMessaage = bundle.getString("EXCEPTION_MSG");
     /**
      *Http session variable
      */
@@ -88,7 +87,6 @@ public class MidmUtilityManager {
     public MidmUtilityManager() {
     }
 
-     
     public EPathArrayList retrieveResultsFields(ArrayList arlResultsConfig) throws Exception {
         EPathArrayList arlResultFields = new EPathArrayList();
         SearchResultsConfig searchResultConfig = null;
@@ -107,7 +105,7 @@ public class MidmUtilityManager {
         return arlResultFields;
     }
 
-        public EPathArrayList retrieveEpathResultsFields(ArrayList arlResultsConfig) throws Exception {
+    public EPathArrayList retrieveEpathResultsFields(ArrayList arlResultsConfig) throws Exception {
         EPathArrayList arlResultFields = new EPathArrayList();
         SearchResultsConfig searchResultConfig = null;
         ArrayList arlEPaths = null;
@@ -119,14 +117,14 @@ public class MidmUtilityManager {
             ePathsIterator = arlEPaths.iterator();
             while (ePathsIterator.hasNext()) {
                 String strEPath = (String) ePathsIterator.next();
-                  // copy EPath strings to the EPathArrayList
+                // copy EPath strings to the EPathArrayList
                 arlResultFields.add(strEPath);
             }
         }
-       return arlResultFields;
+        return arlResultFields;
     }
 
-        public static Collection getFieldValue(ObjectNode objNode, EPath epath) {
+    public static Collection getFieldValue(ObjectNode objNode, EPath epath) {
 
         int ePathIndicesCount = epath.getIndices().length;
         // the last parent object in the hierarchy will be located here
@@ -139,11 +137,11 @@ public class MidmUtilityManager {
                 return c;
             } catch (ObjectException ex) {
                 //Throwing object exception
-                mLogger.error(mLocalizer.x("MUM001: Failed to get field values :{0}", ex.getMessage()),ex);
+                mLogger.error(mLocalizer.x("MUM001: Failed to get field values :{0}", ex.getMessage()), ex);
             }
         } else {    // Check the children using a depth-first search.
             ArrayList childNodes = objNode.pGetChildren();
-            
+
             if (childNodes != null && childNodes.size() > 0) {
                 Iterator childIter = childNodes.iterator();
                 while (childIter.hasNext() && c == null) {
@@ -171,18 +169,17 @@ public class MidmUtilityManager {
         return false;
     }
 
-
     /**
      * 
      * @param EUID
      * @return
      */
-    public EnterpriseObject getEnterpriseObject(String EUID)  {
+    public EnterpriseObject getEnterpriseObject(String EUID) {
         EnterpriseObject enterpriseObject = null;
         try {
             enterpriseObject = masterControllerService.getEnterpriseObject(EUID);
         } catch (Exception ex) {
-           mLogger.error(mLocalizer.x("MUM002: Failed to get EnterpriseObject :{0}", ex.getMessage()),ex);
+            mLogger.error(mLocalizer.x("MUM002: Failed to get EnterpriseObject :{0}", ex.getMessage()), ex);
         }
         return enterpriseObject;
     }
@@ -196,10 +193,9 @@ public class MidmUtilityManager {
     public EPathArrayList retrieveEPathArrayList(ScreenObject screenObject) throws Exception {
         // arlResultsConfig ArrayList to be used by Service Layer to fetch serach results from EDM.xml
         ArrayList arlResultsConfig = screenObject.getSearchResultsConfig();
-        return  retrieveResultsFields(arlResultsConfig);
-  }
+        return retrieveResultsFields(arlResultsConfig);
+    }
 
-    
     /**
      * 
      * @param enterpriseObject
@@ -207,32 +203,32 @@ public class MidmUtilityManager {
      * @return java.util.HashMap
      * @throws java.lang.Exception 
      */
-    public HashMap getEOFieldValues(EnterpriseObject enterpriseObject, ScreenObject screenObjectVar,Object[] resultsConfigFeilds) throws Exception {
+    public HashMap getEOFieldValues(EnterpriseObject enterpriseObject, ScreenObject screenObjectVar, Object[] resultsConfigFeilds) throws Exception {
         //get EPathArrayList using the screen object      
         EPathArrayList ePathArrayList = retrieveEPathArrayList(screenObjectVar);
 
         HashMap eoFieldValuesMap = new HashMap();
-       
+
         Collection fieldvalues;
         ArrayList fieldValuesArrayList = new ArrayList();
 
         //ObjectNode objectNode = systemObject.getObject();
         ObjectNode objectNode = enterpriseObject.getSBR().getObject();
         //for (int m = 0; m < ePathArrayList.size(); m++) {
-          //  EPath ePath = ePathArrayList.get(m);
-        for(int i=0 ;i < resultsConfigFeilds.length;i++) {
+        //  EPath ePath = ePathArrayList.get(m);
+        for (int i = 0; i < resultsConfigFeilds.length; i++) {
             FieldConfig fieldConfig = (FieldConfig) resultsConfigFeilds[i];
             String field = fieldConfig.getFullFieldName();
             if (!field.startsWith(screenObjectVar.getRootObj().getName())) {
                 field = screenObjectVar.getRootObj().getName() + "." + field;
             }
-            
+
             // ObjectField field  = objectNode.getField(ePath.getName());  
             try {
                 Object value = EPathAPI.getFieldValue(field, objectNode);
                 eoFieldValuesMap.put(field, value);
             } catch (Exception npe) {
-              mLogger.error(mLocalizer.x("MUM003: Unable to get value from child objects  :{0}", npe.getMessage()),npe);
+                mLogger.error(mLocalizer.x("MUM003: Unable to get value from child objects  :{0}", npe.getMessage()), npe);
             // THIS SHOULD BE FIXED
             // npe.printStackTrace();
             }
@@ -241,14 +237,14 @@ public class MidmUtilityManager {
 
         return eoFieldValuesMap;
     }
-    
+
     public HashMap getEOFieldValues(EnterpriseObject enterpriseObject, ScreenObject screenObjectVar) throws Exception {
 
         //get EPathArrayList using the screen object      
         EPathArrayList ePathArrayList = retrieveEPathArrayList(screenObjectVar);
-      
+
         HashMap eoFieldValuesMap = new HashMap();
-       
+
         Collection fieldvalues;
         ArrayList fieldValuesArrayList = new ArrayList();
 
@@ -256,13 +252,13 @@ public class MidmUtilityManager {
         ObjectNode objectNode = enterpriseObject.getSBR().getObject();
         for (int m = 0; m < ePathArrayList.size(); m++) {
             EPath ePath = ePathArrayList.get(m);
-            
+
             // ObjectField field  = objectNode.getField(ePath.getName());  
             try {
                 Object value = EPathAPI.getFieldValue(ePath, objectNode);
                 eoFieldValuesMap.put(ePath.toString(), value);
             } catch (Exception npe) {
-               mLogger.error(mLocalizer.x("MUM004: Unable to get value from child objects  :{0}", npe.getMessage()),npe);
+                mLogger.error(mLocalizer.x("MUM004: Unable to get value from child objects  :{0}", npe.getMessage()), npe);
             // THIS SHOULD BE FIXED
             // npe.printStackTrace();
             }
@@ -271,12 +267,13 @@ public class MidmUtilityManager {
 
         return eoFieldValuesMap;
     }
+
     /**
      * 
      * @param EUID
      * @return ArrayList
      */
-    public ArrayList viewHistoryForEuid(String EUID)  {
+    public ArrayList viewHistoryForEuid(String EUID) {
         ArrayList euidHistoryArrayList = null;
         try {
             euidHistoryArrayList = masterControllerService.viewHistory(EUID);
@@ -292,45 +289,39 @@ public class MidmUtilityManager {
         try {
             dupStatus = masterControllerService.getPotentialDuplicateStatus(mainEuid, dupId);
         } catch (ProcessingException ex) {
-            mLogger.error(mLocalizer.x("MUM005: Failed to get Potential duplicate status  :{0}", ex.getMessage()),ex);
+            mLogger.error(mLocalizer.x("MUM005: Failed to get Potential duplicate status  :{0}", ex.getMessage()), ex);
         } catch (UserException ex) {
-            mLogger.error(mLocalizer.x("MUM006: Failed to get Potential duplicate status  :{0}", ex.getMessage()),ex);
+            mLogger.error(mLocalizer.x("MUM006: Failed to get Potential duplicate status  :{0}", ex.getMessage()), ex);
         } catch (RemoteException ex) {
-           mLogger.error(mLocalizer.x("MUM007: Failed to get Potential duplicate status   :{0}", ex.getMessage()),ex);
+            mLogger.error(mLocalizer.x("MUM007: Failed to get Potential duplicate status   :{0}", ex.getMessage()), ex);
         }
         return dupStatus;
-    
+
     }
-    
     // Added by Pratibha for fetching Header subscripts
-    public String[] getSubscript(int size)
-	{  String subscript[] = new String[size];
-           String  strCounter = new String("");
-           
-           for(int counter=0;counter<size;counter++)
-           {    strCounter = Integer.toString(counter);
-                if (strCounter.endsWith("11")||strCounter.endsWith("12")||strCounter.endsWith("13"))
-                    {subscript[counter] = "th";
-                    }
-		else if (strCounter.endsWith("1"))
-                    {subscript[counter] = "st";
-                    }
-		else if (strCounter.endsWith("2"))
-                    {subscript[counter] = "nd";
-                    }
-		else 	if (strCounter.endsWith("3"))
-                    {subscript[counter] = "rd";
-                    }
-                //FIXED the multiple of 10s bug 
-                else if (counter == 0) {
-                    subscript[counter] = "Main EUID";
-                }
-                else
-                    {subscript[counter] = "th";
-                    }
-           }        
-		return subscript;
-	}
+    public String[] getSubscript(int size) {
+        String subscript[] = new String[size];
+        String strCounter = new String("");
+
+        for (int counter = 0; counter < size; counter++) {
+            strCounter = Integer.toString(counter);
+            if (strCounter.endsWith("11") || strCounter.endsWith("12") || strCounter.endsWith("13")) {
+                subscript[counter] = "th";
+            } else if (strCounter.endsWith("1")) {
+                subscript[counter] = "st";
+            } else if (strCounter.endsWith("2")) {
+                subscript[counter] = "nd";
+            } else if (strCounter.endsWith("3")) {
+                subscript[counter] = "rd";
+            } //FIXED the multiple of 10s bug 
+            else if (counter == 0) {
+                subscript[counter] = "Main EUID";
+            } else {
+                subscript[counter] = "th";
+            }
+        }
+        return subscript;
+    }
 
     public HashMap getSystemObjectAsHashMap(SystemObject systemObject, ScreenObject screenObject) {
         SourceHandler sourceHandler = new SourceHandler();
@@ -338,19 +329,19 @@ public class MidmUtilityManager {
         HashMap systemObjectHashMap = new HashMap();
 
         try {
-            
+
             ConfigManager.init();
             //check if the EO has sensitive data for ex: VIP, EMPOLYEE data
             //Check if the object-sensitive-plug-in-class exists in the midm.xml file and check for the object senstitve data
             boolean hasEOSensitiveData = (ConfigManager.getInstance().getSecurityPlugIn() != null) ? ConfigManager.getInstance().getSecurityPlugIn().isDataSensitive(masterControllerService.getEnterpriseObjectForSO(systemObject).getSBR()) : true;
- 
+
             //add SystemCode and LID value to the new Hash Map
             systemObjectHashMap.put(MasterControllerService.LID, systemObject.getLID()); // set LID here
             systemObjectHashMap.put(MasterControllerService.SYSTEM_CODE, masterControllerService.getSystemDescription(systemObject.getSystemCode()));
             systemObjectHashMap.put("Status", systemObject.getStatus()); // set Status here
 
             HashMap editSystemObjectHashMap = masterControllerService.getSystemObjectAsHashMap(systemObject, sourceHandler.buildSystemObjectEpaths(rootNodeName));
-            
+
             HashMap editSystemObjectHashMapUpdate = masterControllerService.getSystemObjectAsHashMap(systemObject, sourceHandler.buildSystemObjectEpaths(rootNodeName));
 
             //add SystemCode and LID value to the new Hash Map
@@ -363,11 +354,11 @@ public class MidmUtilityManager {
             editSystemObjectHashMapUpdate.put(MasterControllerService.SYSTEM_CODE, systemObject.getSystemCode()); // set System code here
             editSystemObjectHashMapUpdate.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.SYSTEM_OBJECT_UPDATE); // set UPDATE TYPE HERE
             systemObjectHashMap.put("SYSTEM_OBJECT_EDIT", editSystemObjectHashMapUpdate); // Set the edit SystemObject here
-            
-            if(hasEOSensitiveData) {
-               systemObjectHashMap.put("hasSensitiveData", "true"); // Set the boolean value if the object node contains VIP Data
+
+            if (hasEOSensitiveData) {
+                systemObjectHashMap.put("hasSensitiveData", "true"); // Set the boolean value if the object node contains VIP Data
             }
-            
+
             FieldConfig[] rootFieldConfigs = screenObject.getRootObj().getFieldConfigs();
 
             String strVal = new String();
@@ -393,8 +384,8 @@ public class MidmUtilityManager {
                 } else if (fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0) {
                     if (value != null) {
                         //Mask the value as per the masking 
-                         value = fieldConfig.mask(value.toString());
-                         editSystemObjectHashMap.put(fieldConfig.getFullFieldName(), value);
+                        value = fieldConfig.mask(value.toString());
+                        editSystemObjectHashMap.put(fieldConfig.getFullFieldName(), value);
                     }
                 }
 
@@ -414,12 +405,13 @@ public class MidmUtilityManager {
 
                 //get the child object node configs
                 ObjectNodeConfig objectNodeConfig = childNodeConfigs[i];
-                FieldConfig[] minorFiledConfigs = objectNodeConfig.getFieldConfigs(); 
+                FieldConfig[] minorFiledConfigs = objectNodeConfig.getFieldConfigs();
 
                 //set address array list of hasmap for editing
                 ArrayList soMinorObjectsMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(systemObject, sourceHandler.buildSystemObjectEpaths(objectNodeConfig.getName()), objectNodeConfig.getName(), MasterControllerService.MINOR_OBJECT_UPDATE);
-                
-                ArrayList soMinorObjectsMapArrayListEdit = masterControllerService.getSystemObjectChildrenArrayList(systemObject, sourceHandler.buildSystemObjectEpaths(objectNodeConfig.getName()), objectNodeConfig.getName(), MasterControllerService.MINOR_OBJECT_UPDATE);;
+
+                ArrayList soMinorObjectsMapArrayListEdit = masterControllerService.getSystemObjectChildrenArrayList(systemObject, sourceHandler.buildSystemObjectEpaths(objectNodeConfig.getName()), objectNodeConfig.getName(), MasterControllerService.MINOR_OBJECT_UPDATE);
+                ;
 
 
                 for (int k = 0; k < soMinorObjectsMapArrayList.size(); k++) {
@@ -433,7 +425,7 @@ public class MidmUtilityManager {
                 //set the values for the minor objects with keys only
                 systemObjectHashMap.put("SOEDIT" + objectNodeConfig.getName() + "ArrayList", soMinorObjectsMapArrayListEdit); // set SO addresses as arraylist here
 
-                
+
                 for (int k = 0; k < soMinorObjectsMapArrayList.size(); k++) {
                     HashMap minorObjectHashMap = (HashMap) soMinorObjectsMapArrayList.get(k);
                     for (int m = 0; m < minorFiledConfigs.length; m++) {
@@ -457,20 +449,20 @@ public class MidmUtilityManager {
                         } else if (fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0) {
                             if (value != null) {
                                 //Mask the value as per the masking 
-                                 value = fieldConfig.mask(value.toString());
-                                 minorObjectHashMap.put(fieldConfig.getFullFieldName(), value);
+                                value = fieldConfig.mask(value.toString());
+                                minorObjectHashMap.put(fieldConfig.getFullFieldName(), value);
                             }
                         }
 
                     }
-                    
+
                     minorObjectHashMap.put(MasterControllerService.LID, systemObject.getLID()); // set LID here
                     minorObjectHashMap.put(MasterControllerService.SYSTEM_CODE, systemObject.getSystemCode()); // set System code here
                     minorObjectHashMap.put(MasterControllerService.MINOR_OBJECT_TYPE, objectNodeConfig.getName()); // set MINOR_OBJECT_TYPE
                 }
                 systemObjectHashMap.put("SO" + objectNodeConfig.getName() + "ArrayList", soMinorObjectsMapArrayList); // set SO addresses as arraylist here
                 systemObjectHashMap.put("SO" + objectNodeConfig.getName() + "ArrayListSize", new Integer(soMinorObjectsMapArrayList.size())); // set SO addresses as arraylist here
-                
+
             }
 
         } catch (Exception ex) {
@@ -498,71 +490,69 @@ public class MidmUtilityManager {
                 }
             }
         }
-           
+
 
         return systemObjectHashMap;
 
     }
-    
-     
-     /** 
+
+    /** 
      * Modified  on 11/07/2008
      * 
      * This method is used to get the enterprise object as hash map.  The returned hashmap will contain the in information about <br>
-       * SBR - root node information as hashmap  <br>
-       * SBR - minorobjects as arraylist of hashmaps <br>
-       * History as ArrayList of hashmap with function+date as key <br>
-       * Sources as Arraylist of hashmap with SystemCode/LID <br>
-       * Link/Lock related informatin <br>
-       * 
+     * SBR - root node information as hashmap  <br>
+     * SBR - minorobjects as arraylist of hashmaps <br>
+     * History as ArrayList of hashmap with function+date as key <br>
+     * Sources as Arraylist of hashmap with SystemCode/LID <br>
+     * Link/Lock related informatin <br>
+     * 
      * 
      * @param enterpriseObject 
      * @param screenObject 
      * @return HashMap 
      * 
      */
-
     public HashMap getEnterpriseObjectAsHashMap(EnterpriseObject enterpriseObject, ScreenObject screenObject) {
-            HashMap enterpriseObjectHashMap = new HashMap();
-            SourceHandler sourceHandler = new SourceHandler();
-            String rootNodeName = screenObject.getRootObj().getName();
-         try {
+        HashMap enterpriseObjectHashMap = new HashMap();
+        SourceHandler sourceHandler = new SourceHandler();
+        String rootNodeName = screenObject.getRootObj().getName();
+        try {
             //add SystemCode and LID value to the new Hash Map
             HashMap editEnterpriseObjectHashMap = masterControllerService.getEnterpriseObjectAsHashMap(enterpriseObject, sourceHandler.buildSystemObjectEpaths(rootNodeName));
             HashMap codesEnterpriseObjectHashMap = masterControllerService.getEnterpriseObjectAsHashMap(enterpriseObject, sourceHandler.buildSystemObjectEpaths(rootNodeName));
-            
+
             FieldConfig[] rootFieldConfigs = screenObject.getRootObj().getFieldConfigs();
 
             String strVal = new String();
 
             for (int i = 0; i < rootFieldConfigs.length; i++) {
-                 FieldConfig fieldConfig = rootFieldConfigs[i];
-                Object value  = editEnterpriseObjectHashMap.get(fieldConfig.getFullFieldName());
+                FieldConfig fieldConfig = rootFieldConfigs[i];
+                Object value = editEnterpriseObjectHashMap.get(fieldConfig.getFullFieldName());
                 //set the menu list values here
-                if(fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
-                    if(value != null) {
+                if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
+                    if (value != null) {
                         //SET THE VALUES WITH USER CODES AND VALUE LIST 
                         if (fieldConfig.getUserCode() != null) {
                             strVal = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), value.toString());
                         } else {
                             strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
                         }
-                                  
-                       // strVal= ValidationService.getInstance().getDescription(fieldConfig.getValueList(),value.toString()); 
+
+                        // strVal= ValidationService.getInstance().getDescription(fieldConfig.getValueList(),value.toString()); 
                         editEnterpriseObjectHashMap.put(fieldConfig.getFullFieldName(), strVal);
                     }
-                    
+
                 } else if (fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0) {
-                     if (value != null) {
+                    if (value != null) {
                         //Mask the value as per the masking 
-                         value = fieldConfig.mask(value.toString());
-                         editEnterpriseObjectHashMap.put(fieldConfig.getFullFieldName(), value);
-                     }
+                        value = fieldConfig.mask(value.toString());
+                        editEnterpriseObjectHashMap.put(fieldConfig.getFullFieldName(), value);
+                    }
 
                 }
-            
+
             }
- 
+
             HashMap newLinkedHashMap = new HashMap();
             HashMap eoWithLinkedHashMap = masterControllerService.getLinkedFields(enterpriseObject);
             Object[] keySet = editEnterpriseObjectHashMap.keySet().toArray();
@@ -570,7 +560,7 @@ public class MidmUtilityManager {
             for (int i = 0; i < keySet.length; i++) {
                 String key = (String) keySet[i];
                 if (eoWithLinkedHashMap.get(key) != null) {
-                    String[] sysLid = ((String)eoWithLinkedHashMap.get(key)).split(":");
+                    String[] sysLid = ((String) eoWithLinkedHashMap.get(key)).split(":");
                     if (sysLid.length == 2) {
                         HashMap soHashMapCodes = (HashMap) getSystemObjectAsHashMap(masterControllerService.getSystemObject(sysLid[0], sysLid[1]), screenObject).get("SYSTEM_OBJECT_EDIT");
                         HashMap soHashMap = (HashMap) getSystemObjectAsHashMap(masterControllerService.getSystemObject(sysLid[0], sysLid[1]), screenObject).get("SYSTEM_OBJECT");
@@ -578,7 +568,7 @@ public class MidmUtilityManager {
                         editEnterpriseObjectHashMap.put(key, soHashMap.get(key));
                         codesEnterpriseObjectHashMap.put(key, soHashMapCodes.get(key));
                     }
-                    
+
                     newLinkedHashMap.put(key, true);
                 } else {
                     newLinkedHashMap.put(key, false);
@@ -587,10 +577,10 @@ public class MidmUtilityManager {
 
             //add SystemCode and LID value to the new Hash Map  
             editEnterpriseObjectHashMap.put("EUID", enterpriseObject.getEUID()); // set EUID here
-             
-            session.setAttribute("SBR_REVISION_NUMBER"+enterpriseObject.getEUID(), enterpriseObject.getSBR().getRevisionNumber());
-            
-            
+
+            session.setAttribute("SBR_REVISION_NUMBER" + enterpriseObject.getEUID(), enterpriseObject.getSBR().getRevisionNumber());
+
+
             editEnterpriseObjectHashMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.SBR_UPDATE); //SBR_UPDATE HASH MAP type here
             enterpriseObjectHashMap.put("ENTERPRISE_OBJECT", editEnterpriseObjectHashMap); // Set the edit EnterpriseObject here
             enterpriseObjectHashMap.put("ENTERPRISE_OBJECT_CODES", codesEnterpriseObjectHashMap); // Set the edit EnterpriseObject here
@@ -604,12 +594,12 @@ public class MidmUtilityManager {
             ConfigManager.init();
             //check if the EO has sensitive data for ex: VIP, EMPOLYEE data
             //Check if the object-sensitive-plug-in-class exists in the midm.xml file and check for the object senstitve data
-            boolean hasSensitiveData = (ConfigManager.getInstance().getSecurityPlugIn() != null ) ? ConfigManager.getInstance().getSecurityPlugIn().isDataSensitive(enterpriseObject.getSBR()):true;
+            boolean hasSensitiveData = (ConfigManager.getInstance().getSecurityPlugIn() != null) ? ConfigManager.getInstance().getSecurityPlugIn().isDataSensitive(enterpriseObject.getSBR()) : true;
 
-            if(hasSensitiveData) {
-               enterpriseObjectHashMap.put("hasSensitiveData", "true"); // Set the boolean value if the object node contains VIP Data
+            if (hasSensitiveData) {
+                enterpriseObjectHashMap.put("hasSensitiveData", "true"); // Set the boolean value if the object node contains VIP Data
             }
-             
+
             ObjectNodeConfig[] childNodeConfigs = screenObject.getRootObj().getChildConfigs();
 
             //Build and array of minor object values from the screen object child object nodes
@@ -617,7 +607,7 @@ public class MidmUtilityManager {
 
                 //get the child object node configs
                 ObjectNodeConfig objectNodeConfig = childNodeConfigs[i];
-                FieldConfig[] minorFiledConfigs = objectNodeConfig.getFieldConfigs(); 
+                FieldConfig[] minorFiledConfigs = objectNodeConfig.getFieldConfigs();
 
                 //set address array list of hasmap for editing
                 ArrayList soMinorObjectsMapArrayList = masterControllerService.getEnterpriseObjectChildrenArrayList(enterpriseObject, sourceHandler.buildSystemObjectEpaths(objectNodeConfig.getName()), objectNodeConfig.getName(), MasterControllerService.MINOR_OBJECT_UPDATE);
@@ -628,14 +618,14 @@ public class MidmUtilityManager {
                     minorObjectHashMapCodes.put("keyTypeValue", getKeyTypeForMinorObjects(objectNodeConfig.getName(), minorObjectHashMapCodes)); // Fix for link minor objects - 6692028
                 }
                 enterpriseObjectHashMap.put("EOCODES" + objectNodeConfig.getName() + "ArrayList", soMinorObjectsMapArrayListCodes); // set SO addresses as arraylist here
-                
+
                 for (int k = 0; k < soMinorObjectsMapArrayList.size(); k++) {
                     HashMap minorObjectHashMap = (HashMap) soMinorObjectsMapArrayList.get(k);
                     minorObjectHashMap.put(MasterControllerService.MINOR_OBJECT_TYPE, objectNodeConfig.getName()); // set MINOR_OBJECT_TYPE
 
                     for (int m = 0; m < minorFiledConfigs.length; m++) {
                         FieldConfig fieldConfig = minorFiledConfigs[m];
-                       Object value = minorObjectHashMap.get(fieldConfig.getFullFieldName());
+                        Object value = minorObjectHashMap.get(fieldConfig.getFullFieldName());
                         //set the menu list values here
                         if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
                             if (value != null) {
@@ -652,8 +642,8 @@ public class MidmUtilityManager {
                         } else if (fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0) {
                             if (value != null) {
                                 //Mask the value as per the masking 
-                                 value = fieldConfig.mask(value.toString());
-                                 minorObjectHashMap.put(fieldConfig.getFullFieldName(), value);
+                                value = fieldConfig.mask(value.toString());
+                                minorObjectHashMap.put(fieldConfig.getFullFieldName(), value);
                             }
                         }
                         minorObjectHashMap.put("keyTypeValue", getKeyTypeForMinorObjects(objectNodeConfig.getName(), minorObjectHashMap)); //Fix for link minor objects - 6692028
@@ -699,7 +689,7 @@ public class MidmUtilityManager {
 
 
             return enterpriseObjectHashMap;
-         } catch (Exception ex) {
+        } catch (Exception ex) {
             if (ex instanceof ValidationException) {
                 mLogger.error(mLocalizer.x("MUM013: Failed to get EnterpriseObject  :{0}", ex.getMessage()), ex);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
@@ -724,13 +714,11 @@ public class MidmUtilityManager {
                 }
             }
         }
-                   
 
-            return enterpriseObjectHashMap;
+
+        return enterpriseObjectHashMap;
     }
-    
-    
-    
+
     public ArrayList getEoHistory(String euid, ScreenObject screenObject) {
         EnterpriseObject eoHist = null;
         ArrayList newArrayListHistory = new ArrayList();
@@ -743,23 +731,23 @@ public class MidmUtilityManager {
             String strVal = new String();
 
             ArrayList viewHistoryEOList = masterControllerService.viewHistory(euid);
-           // Commented By Anil (fix for 6677999,6681656,6685729), this Hashmap has to be local 
-		   //HashMap histEOMap = new HashMap();
+            // Commented By Anil (fix for 6677999,6681656,6685729), this Hashmap has to be local 
+            //HashMap histEOMap = new HashMap();
             for (int i = 0; i < viewHistoryEOList.size(); i++) {
-			
-				// Start fix for 6677999,6681656,6685729
-				HashMap histEOMap = new HashMap();
 
-				// End fix  
+                // Start fix for 6677999,6681656,6685729
+                HashMap histEOMap = new HashMap();
+
+                // End fix  
 
                 HashMap objectHistMap = (HashMap) viewHistoryEOList.get(i);
                 String key = (String) objectHistMap.keySet().toArray()[0];
                 HashMap objectHistMapUpdated = new HashMap();
                 if (objectHistMap.get(key) != null) {
                     eoHist = (EnterpriseObject) objectHistMap.get(key);
-                    
+
                     HashMap editEnterpriseObjectHashMap = masterControllerService.getEnterpriseObjectAsHashMap(eoHist, sourceHandler.buildSystemObjectEpaths(rootNodeName));
-                   
+
                     for (int r = 0; r < rootFieldConfigs.length; r++) {
                         FieldConfig fieldConfig = rootFieldConfigs[r];
                         Object value = editEnterpriseObjectHashMap.get(fieldConfig.getFullFieldName());
@@ -772,8 +760,8 @@ public class MidmUtilityManager {
                         } else if (fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0) {
                             if (value != null) {
                                 //Mask the value as per the masking 
-                                 value = fieldConfig.mask(value.toString());
-                                 editEnterpriseObjectHashMap.put(fieldConfig.getFullFieldName(), value);
+                                value = fieldConfig.mask(value.toString());
+                                editEnterpriseObjectHashMap.put(fieldConfig.getFullFieldName(), value);
                             }
                         }
 
@@ -782,7 +770,7 @@ public class MidmUtilityManager {
                     //add SystemCode and LID value to the new Hash Map  
                     histEOMap.put("EUID", eoHist.getEUID()); // set EUID 
                     histEOMap.put("EO_STATUS", eoHist.getStatus()); // set Status of EO here
-                     histEOMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.SBR_UPDATE); //SBR_UPDATE HASH MAP type here
+                    histEOMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.SBR_UPDATE); //SBR_UPDATE HASH MAP type here
 
                     histEOMap.put("ENTERPRISE_OBJECT", editEnterpriseObjectHashMap); // Set the edit EnterpriseObject here
 
@@ -795,7 +783,7 @@ public class MidmUtilityManager {
                         //get the child object node configs
                         ObjectNodeConfig objectNodeConfig = childNodeConfigs[j];
 
-                        FieldConfig[] minorFiledConfigs = objectNodeConfig.getFieldConfigs(); 
+                        FieldConfig[] minorFiledConfigs = objectNodeConfig.getFieldConfigs();
 
                         //set address array list of hasmap for editing
                         ArrayList soMinorObjectsMapArrayList = masterControllerService.getEnterpriseObjectChildrenArrayList(eoHist, sourceHandler.buildSystemObjectEpaths(objectNodeConfig.getName()), objectNodeConfig.getName(), MasterControllerService.MINOR_OBJECT_UPDATE);
@@ -815,18 +803,18 @@ public class MidmUtilityManager {
                                         } else {
                                             strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
                                         }
-                                        
+
                                         //strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
                                         minorObjectHashMap.put(fieldConfig.getFullFieldName(), strVal);
                                     }
-                                    
-                                }  else if (fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0) {
+
+                                } else if (fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0) {
                                     if (value != null) {
                                         //Mask the value as per the masking 
-                                         value = fieldConfig.mask(value.toString());
-                                         minorObjectHashMap.put(fieldConfig.getFullFieldName(), value);
+                                        value = fieldConfig.mask(value.toString());
+                                        minorObjectHashMap.put(fieldConfig.getFullFieldName(), value);
                                     }
-                                 }
+                                }
 
                             }
                         }
@@ -866,11 +854,10 @@ public class MidmUtilityManager {
                 }
             }
         }
-                   
+
         return newArrayListHistory;
     }
 
-    
     public ArrayList getEoSources(EnterpriseObject enterpriseObject, ScreenObject screenObject) {
         ArrayList newArrayList = new ArrayList();
         Collection itemsSource = enterpriseObject.getSystemObjects();
@@ -879,7 +866,7 @@ public class MidmUtilityManager {
 
         SourceHandler sourceHandler = new SourceHandler();
         String rootNodeName = screenObject.getRootObj().getName();
-        
+
         FieldConfig[] rootFieldConfigs = screenObject.getRootObj().getFieldConfigs();
 
         String strVal = new String();
@@ -900,7 +887,7 @@ public class MidmUtilityManager {
                 editSystemObjectHashMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.SYSTEM_OBJECT_UPDATE); // set UPDATE TYPE HERE
 
                 systemObjectHashMap.put("SYSTEM_OBJECT_EDIT", editSystemObjectHashMap); // Set the edit EnterpriseObject here
-                
+
                 for (int r = 0; r < rootFieldConfigs.length; r++) {
                     FieldConfig fieldConfig = rootFieldConfigs[r];
                     Object value = editSystemObjectHashMap.get(fieldConfig.getFullFieldName());
@@ -920,22 +907,22 @@ public class MidmUtilityManager {
                     } else if (fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0) {
                         if (value != null) {
                             //Mask the value as per the masking 
-                             value = fieldConfig.mask(value.toString());
-                             editSystemObjectHashMap.put(fieldConfig.getFullFieldName(), value);
+                            value = fieldConfig.mask(value.toString());
+                            editSystemObjectHashMap.put(fieldConfig.getFullFieldName(), value);
                         }
                     }
 
                 }
-                
-                
-                
+
+
+
                 //add SystemCode and LID value to the new Hash Map
                 editSystemObjectHashMap.put(MasterControllerService.LID, systemObject.getLID());
                 editSystemObjectHashMap.put(MasterControllerService.SYSTEM_CODE, systemObject.getSystemCode()); // set System code here
                 editSystemObjectHashMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.SYSTEM_OBJECT_UPDATE); // set UPDATE TYPE HERE
                 systemObjectHashMap.put("SYSTEM_OBJECT", editSystemObjectHashMap); // Set the edit SystemObject here
 
-                
+
                 ObjectNodeConfig[] childNodeConfigs = screenObject.getRootObj().getChildConfigs();
 
                 //get the child object node configs
@@ -944,8 +931,8 @@ public class MidmUtilityManager {
                     //get the child object node configs
                     ObjectNodeConfig objectNodeConfig = childNodeConfigs[i];
 
-                    FieldConfig[] minorFiledConfigs = objectNodeConfig.getFieldConfigs(); 
-                    
+                    FieldConfig[] minorFiledConfigs = objectNodeConfig.getFieldConfigs();
+
                     ArrayList soMinorObjectsMapArrayList = masterControllerService.getSystemObjectChildrenArrayList(systemObject, sourceHandler.buildSystemObjectEpaths(objectNodeConfig.getName()), objectNodeConfig.getName(), MasterControllerService.MINOR_OBJECT_UPDATE);
                     ArrayList soMinorObjectsMapArrayListEdit = masterControllerService.getSystemObjectChildrenArrayList(systemObject, sourceHandler.buildSystemObjectEpaths(objectNodeConfig.getName()), objectNodeConfig.getName(), MasterControllerService.MINOR_OBJECT_UPDATE);
                     for (int k = 0; k < soMinorObjectsMapArrayList.size(); k++) {
@@ -953,7 +940,7 @@ public class MidmUtilityManager {
 
                         //Build an array of edit so minor objects here 
                         HashMap minorObjectHashMapEdit = (HashMap) soMinorObjectsMapArrayListEdit.get(k);
-                        
+
                         for (int m = 0; m < minorFiledConfigs.length; m++) {
                             FieldConfig fieldConfig = minorFiledConfigs[m];
                             Object value = minorObjectHashMap.get(fieldConfig.getFullFieldName());
@@ -973,13 +960,13 @@ public class MidmUtilityManager {
                             } else if (fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0) {
                                 if (value != null) {
                                     //Mask the value as per the masking 
-                                     value = fieldConfig.mask(value.toString());
-                                     minorObjectHashMap.put(fieldConfig.getFullFieldName(), value);
+                                    value = fieldConfig.mask(value.toString());
+                                    minorObjectHashMap.put(fieldConfig.getFullFieldName(), value);
                                 }
                             }
 
                         }
-                        
+
                         minorObjectHashMap.put(MasterControllerService.LID, systemObject.getLID()); // set LID here
                         minorObjectHashMap.put(MasterControllerService.SYSTEM_CODE, systemObject.getSystemCode()); // set System code here
                         minorObjectHashMap.put(MasterControllerService.MINOR_OBJECT_TYPE, objectNodeConfig.getName()); // set MINOR_OBJECT_TYPE
@@ -1023,32 +1010,32 @@ public class MidmUtilityManager {
                 }
             }
         }
-                   
+
         return newArrayList;
     }
 
     public int getMinorObjectsMaxSize(ArrayList enterpriseObjectHashMapList, ScreenObject screenObject, String childObjectName) {
 
         ObjectNodeConfig[] childNodeConfigs = screenObject.getRootObj().getChildConfigs();
-        
-        ArrayList maxMinorObjectsCount  = new ArrayList();
-        
+
+        ArrayList maxMinorObjectsCount = new ArrayList();
+
         for (int j = 0; j < enterpriseObjectHashMapList.size(); j++) {
-            
-           //Build and array of minor object values from the screen object child object nodes for the EO
+
+            //Build and array of minor object values from the screen object child object nodes for the EO
             HashMap valuesObjectHashMap = (HashMap) enterpriseObjectHashMapList.get(j);
             for (int i = 0; i < childNodeConfigs.length; i++) {
                 //get the child object node configs
                 ObjectNodeConfig objectNodeConfig = childNodeConfigs[i];
                 if (childObjectName.equalsIgnoreCase(objectNodeConfig.getName())) {
                     //add minor objects count for the Enterprise objects here
-                    maxMinorObjectsCount.add((Integer) valuesObjectHashMap.get("EO" + childObjectName + "ArrayListSize")) ;
+                    maxMinorObjectsCount.add((Integer) valuesObjectHashMap.get("EO" + childObjectName + "ArrayListSize"));
                 }
             }
-            
+
 //            enterpriseObjectHashMap.put("ENTERPRISE_OBJECT_SOURCES", getEoSources(enterpriseObject, screenObject));
             //Build and array of minor object values from the screen object child object nodes for the EO
-            ArrayList soMinorObjectsList  = (ArrayList) valuesObjectHashMap.get("ENTERPRISE_OBJECT_SOURCES");
+            ArrayList soMinorObjectsList = (ArrayList) valuesObjectHashMap.get("ENTERPRISE_OBJECT_SOURCES");
             for (int so = 0; so < soMinorObjectsList.size(); so++) {
                 HashMap soHashMap = (HashMap) soMinorObjectsList.get(so);
 
@@ -1061,12 +1048,12 @@ public class MidmUtilityManager {
                     }
                 }
             }
-           
+
             //Build and array of minor object values from the screen object child object nodes for the EO
 //            enterpriseObjectHashMap.put("", getEoHistory(enterpriseObject.getEUID(), screenObject));
 
-            
-            ArrayList historyMinorObjectsList  = (ArrayList) valuesObjectHashMap.get("ENTERPRISE_OBJECT_HISTORY");
+
+            ArrayList historyMinorObjectsList = (ArrayList) valuesObjectHashMap.get("ENTERPRISE_OBJECT_HISTORY");
             for (int hi = 0; hi < historyMinorObjectsList.size(); hi++) {
                 HashMap historyHashMap = (HashMap) historyMinorObjectsList.get(hi);
 
@@ -1079,27 +1066,27 @@ public class MidmUtilityManager {
                     }
                 }
             }
-           
+
         }
-   
+
         //build and array of integers for sorting
         int[] countsFinalArray = new int[maxMinorObjectsCount.size()];
 
         //filter the array list for the array list of max minor object sizes
         for (int j = 0; j < maxMinorObjectsCount.size(); j++) {
-            countsFinalArray[j] = ((Integer)  maxMinorObjectsCount.get(j) != null)?((Integer)  maxMinorObjectsCount.get(j)).intValue():0;
+            countsFinalArray[j] = ((Integer) maxMinorObjectsCount.get(j) != null) ? ((Integer) maxMinorObjectsCount.get(j)).intValue() : 0;
         }
-   
+
         //Sort the final array to get the max value out of all values
         Arrays.sort(countsFinalArray);
-       
-        return countsFinalArray[countsFinalArray.length-1];
+
+        return countsFinalArray[countsFinalArray.length - 1];
     }
 
     public int getSOMinorObjectsMaxSize(ArrayList valuesObjectHashMapList, ScreenObject screenObject, String childObjectName) {
         ObjectNodeConfig[] childNodeConfigs = screenObject.getRootObj().getChildConfigs();
         int[] countsArray = new int[valuesObjectHashMapList.size()];
-   
+
         //Build and array of minor object values from the screen object child object nodes
         for (int j = 0; j < valuesObjectHashMapList.size(); j++) {
             HashMap valuesObjectHashMap = (HashMap) valuesObjectHashMapList.get(j);
@@ -1112,10 +1099,10 @@ public class MidmUtilityManager {
             }
         }
         Arrays.sort(countsArray);
-        return countsArray[countsArray.length-1];
+        return countsArray[countsArray.length - 1];
     }
-    
-	// Method Added for initcap function
+
+    // Method Added for initcap function
     public String getStatus(String strStatus) {
         String name = "";
         if (strStatus != null) {
@@ -1125,7 +1112,7 @@ public class MidmUtilityManager {
         return name;
     }
 
-     /** 
+    /** 
      * Added  on 07/08/2008 <br>
      * 
      * This method is used to check the overwrites for the entered minor object.
@@ -1134,12 +1121,10 @@ public class MidmUtilityManager {
      * @param editEuid  - EUID
      * @param minorObjectHashMap - Minor object hashmap
      * @return boolean  
-        * <b>true</b> - if the overwrites are found for all the minor object keys <br>
-        * <b>false</b> - if total number of overwrites doesnot match the minor object keys<br>
+     * <b>true</b> - if the overwrites are found for all the minor object keys <br>
+     * <b>false</b> - if total number of overwrites doesnot match the minor object keys<br>
      * 
      **/
-
-    
     public boolean checkOverWrites(String editEuid, HashMap minorObjectHashMap) throws ObjectException, ProcessingException, UserException {
         boolean ovwerWriteFound = false;
         EnterpriseObject enterpriseObject = masterControllerService.getEnterpriseObject(editEuid);
@@ -1160,24 +1145,23 @@ public class MidmUtilityManager {
                         !key.toString().equals(MasterControllerService.MINOR_OBJECT_TYPE) &&
                         !key.toString().equals("keyTypeValue") &&
                         !key.toString().equals(MasterControllerService.HASH_MAP_TYPE)) {
-                     key = key.substring(key.indexOf(".")+1, key.length());
-                     SBROverWrite overWriteObj = QwsUtil.getOverWrite(sbr, minorObjectNode, key);
+                    key = key.substring(key.indexOf(".") + 1, key.length());
+                    SBROverWrite overWriteObj = QwsUtil.getOverWrite(sbr, minorObjectNode, key);
                     if (overWriteObj != null) {
-                         //increment the number of overwrites here
+                        //increment the number of overwrites here
                         countOverwrites++;
                     }
                 }
             }
 
-             if (countOverwrites == totalKeysSize) {
+            if (countOverwrites == totalKeysSize) {
                 ovwerWriteFound = true;
             }
         }
-         return ovwerWriteFound;
+        return ovwerWriteFound;
     }
-    
     // Method added by Anil to get Merged euid.
-    public String getMergedEuid(String euid)  {
+    public String getMergedEuid(String euid) {
         String mergedEuid = null;
         try {
 
@@ -1190,15 +1174,15 @@ public class MidmUtilityManager {
             } else {
                 MergeHistoryNode mhn = masterControllerService.getMergeHistory(euid);
                 //if the merge history is found return the merged EUID else return "invalid euid" String
-                if(mhn != null ) { 
+                if (mhn != null) {
                     mergedEuid = mhn.getEUID();
-                } else { 
+                } else {
                     return "Invalid EUID";
                 }
             }
 
-            
-        }catch (Exception ex) {
+
+        } catch (Exception ex) {
             if (ex instanceof ValidationException) {
                 mLogger.error(mLocalizer.x("MUM028: Service Layer Validation Exception has occurred"), ex);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
@@ -1223,11 +1207,11 @@ public class MidmUtilityManager {
                 }
             }
             return "Exception_Occured";
-           }
+        }
         return mergedEuid;
     }
 
-    public String  getEnterpriseObjectStatusForSO(SystemObject so) {
+    public String getEnterpriseObjectStatusForSO(SystemObject so) {
         String eoStatus = null;
         EnterpriseObject enterpriseObject = null;
         try {
@@ -1240,11 +1224,12 @@ public class MidmUtilityManager {
             mLogger.severe(mLocalizer.x("MUM033: Could not retrieve an EnterpriseObject Status for SystemObject : {0}", ex.getMessage()));
         } catch (UserException ex) {
             mLogger.severe(mLocalizer.x("MUM034: Could not retrieve an EnterpriseObject: Status for SystemObject : {0}", ex.getMessage()));
-        } 
+        }
         return eoStatus;
 
-    } 
-   /** 
+    }
+
+    /** 
      * Added  on 05/08/2008 <br>
      * 
      * This method is used to compare the minor objects hashmap with the arraylist of hashmap <br>
@@ -1258,7 +1243,6 @@ public class MidmUtilityManager {
      *                         <b>false</b> - if the values are same <br>
      * 
      **/
-
     public HashMap getDifferenceMinorObjectMap(ArrayList minorObjectList, HashMap checkMinorObjectMap) {
         HashMap returnHashMap = new HashMap();
         Object[] keyset = checkMinorObjectMap.keySet().toArray();
@@ -1285,13 +1269,13 @@ public class MidmUtilityManager {
             return returnHashMap;
         }
 
-        
+
         HashMap matchHashMap = new HashMap();
         if (keyTypeList.size() == 1) { //for keyed minor objects
-             matchHashMap = getMatchHashMap(minorObjectList, checkMinorObjectMap);
+            matchHashMap = getMatchHashMap(minorObjectList, checkMinorObjectMap);
         }
 
- 
+
         //If the matching map is not empty 
         if (!matchHashMap.isEmpty()) {
             if (checkMinorObjectMap.get(MasterControllerService.MINOR_OBJECT_ID).toString().equals(matchHashMap.get(MasterControllerService.MINOR_OBJECT_ID).toString()) && checkMinorObjectMap.get(MasterControllerService.MINOR_OBJECT_TYPE).toString().equals(matchHashMap.get(MasterControllerService.MINOR_OBJECT_TYPE).toString())) {
@@ -1313,7 +1297,7 @@ public class MidmUtilityManager {
                     }
                 }
             }
-         }
+        }
         return returnHashMap;
     }
 
@@ -1332,7 +1316,7 @@ public class MidmUtilityManager {
      *                         <b>false</b> - if the values are same <br>
      * 
      **/
- public HashMap getDifferenceMinorObjectMapWithKeyType(ArrayList minorObjectList, HashMap checkMinorObjectMap) {
+    public HashMap getDifferenceMinorObjectMapWithKeyType(ArrayList minorObjectList, HashMap checkMinorObjectMap) {
         HashMap returnHashMap = new HashMap();
         Object[] keyset = checkMinorObjectMap.keySet().toArray();
         SourceHandler sourceHandler = new SourceHandler();
@@ -1345,10 +1329,58 @@ public class MidmUtilityManager {
                 keyTypeList.add(fieldConfigMap.getFullFieldName());
             }
         }
+
+
+        // added on 01-10-08  as a fix of bug #80
+        // if no minor object found in the previous transaction to compare
+        if (minorObjectList.size() == 0) {
+            returnHashMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.MINOR_OBJECT_BRAND_NEW);
+            for (int j = 0; j < checkMinorObjectMap.size(); j++) {
+                if (!keyset[j].toString().equals(MasterControllerService.MINOR_OBJECT_ID) &&
+                        !keyset[j].toString().equals(MasterControllerService.MINOR_OBJECT_TYPE) &&
+                        !keyset[j].toString().equals(MasterControllerService.HASH_MAP_TYPE)) {
+                    returnHashMap.put(keyset[j], "true");
+                }
+            }
+            return returnHashMap;
+        }
+
+        String checkMinorObjectMapKeyType = getKeyTypeForMinorObjects(checkMinorObjectMap.get(MasterControllerService.MINOR_OBJECT_TYPE).toString(), checkMinorObjectMap);
+
+        //Check if minor object found in the arraylist of minor objects, then return the hashmap accordingly
+        if (minorObjectList.size() > 0) {
+
+            boolean matchNotFound = true;
+            for (int i = 0; i < minorObjectList.size(); i++) {
+                HashMap minorMap = (HashMap) minorObjectList.get(i);
+                String minorMapKeyType = getKeyTypeForMinorObjects(minorMap.get(MasterControllerService.MINOR_OBJECT_TYPE).toString(), minorMap);
+                if (checkMinorObjectMapKeyType.equalsIgnoreCase(minorMapKeyType)) {
+                    matchNotFound = false;
+                }
+            }
+
+            if (matchNotFound) {
+                returnHashMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.MINOR_OBJECT_BRAND_NEW);
+                for (int j = 0; j < checkMinorObjectMap.size(); j++) {
+                    if (!keyset[j].toString().equals(MasterControllerService.MINOR_OBJECT_ID) &&
+                            !keyset[j].toString().equals(MasterControllerService.MINOR_OBJECT_TYPE) &&
+                            !keyset[j].toString().equals(MasterControllerService.HASH_MAP_TYPE)) {
+                        returnHashMap.put(keyset[j], "true");
+                    }
+                }
+                return returnHashMap;
+            }
+        }
+
+
         HashMap matchHashMap = new HashMap();
         if (keyTypeList.size() == 1) {
             matchHashMap = getMatchHashMap(minorObjectList, checkMinorObjectMap);
         }
+
+
+
+        boolean updateFlag = false;
         //If the matching map is not empty 
         if (!matchHashMap.isEmpty()) {
             //if (checkMinorObjectMap.get(MasterControllerService.MINOR_OBJECT_ID).toString().equals(matchHashMap.get(MasterControllerService.MINOR_OBJECT_ID).toString()) && checkMinorObjectMap.get(MasterControllerService.MINOR_OBJECT_TYPE).toString().equals(matchHashMap.get(MasterControllerService.MINOR_OBJECT_TYPE).toString())) {
@@ -1360,76 +1392,83 @@ public class MidmUtilityManager {
                         returnHashMap.put(keyset[i], new Boolean(false));
                     } else if (matchHashMap.get(keyset[i]) != null && checkMinorObjectMap.get(keyset[i]) == null) {
                         returnHashMap.put(keyset[i], new Boolean(true));
+                        updateFlag = true;
                     } else if (matchHashMap.get(keyset[i]) == null && checkMinorObjectMap.get(keyset[i]) != null) {
                         returnHashMap.put(keyset[i], new Boolean(true));
+                        updateFlag = true;
                     } else if (matchHashMap.get(keyset[i]) != null && checkMinorObjectMap.get(keyset[i]) != null && !matchHashMap.get(keyset[i]).toString().equalsIgnoreCase(checkMinorObjectMap.get(keyset[i]).toString())) {
                         returnHashMap.put(keyset[i], new Boolean(true));
+                        updateFlag = true;
                     } else {
                         returnHashMap.put(keyset[i], new Boolean(false));
                     }
                 }
             }
-        // }
+            if (updateFlag) {
+                returnHashMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.MINOR_OBJECT_UPDATE);
+            // }
+            }
         }
+
+
         return returnHashMap;
     }
-    
+
     /** 
      * Modified  on 11/07/2008
      * 
      * This method is used to get the enterprise object as hash map.  The returned hashmap will contain the in information about <br>
-       * SBR - root node information as hashmap  <br>
-       * SBR - minorobjects as arraylist of hashmaps <br>
-       * 
+     * SBR - root node information as hashmap  <br>
+     * SBR - minorobjects as arraylist of hashmaps <br>
+     * 
      * 
      * @param enterpriseObject 
      * @param screenObject 
      * @return HashMap 
      * 
      */
-        
-     public HashMap getEnterpriseObjectAsHashMapFromDB(EnterpriseObject enterpriseObject, ScreenObject screenObject) {
-            HashMap enterpriseObjectHashMap = new HashMap();
-            SourceHandler sourceHandler = new SourceHandler();
-            String rootNodeName = screenObject.getRootObj().getName();
-         try {
+    public HashMap getEnterpriseObjectAsHashMapFromDB(EnterpriseObject enterpriseObject, ScreenObject screenObject) {
+        HashMap enterpriseObjectHashMap = new HashMap();
+        SourceHandler sourceHandler = new SourceHandler();
+        String rootNodeName = screenObject.getRootObj().getName();
+        try {
 
             //add SystemCode and LID value to the new Hash Map
             HashMap editEnterpriseObjectHashMap = masterControllerService.getEnterpriseObjectAsHashMap(enterpriseObject, sourceHandler.buildSystemObjectEpaths(rootNodeName));
             HashMap codesEnterpriseObjectHashMap = masterControllerService.getEnterpriseObjectAsHashMap(enterpriseObject, sourceHandler.buildSystemObjectEpaths(rootNodeName));
-            
+
             FieldConfig[] rootFieldConfigs = screenObject.getRootObj().getFieldConfigs();
 
             String strVal = new String();
 
             for (int i = 0; i < rootFieldConfigs.length; i++) {
-                 FieldConfig fieldConfig = rootFieldConfigs[i];
-                Object value  = editEnterpriseObjectHashMap.get(fieldConfig.getFullFieldName());
+                FieldConfig fieldConfig = rootFieldConfigs[i];
+                Object value = editEnterpriseObjectHashMap.get(fieldConfig.getFullFieldName());
                 //set the menu list values here
-                if(fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
-                    if(value != null) {
+                if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
+                    if (value != null) {
                         //SET THE VALUES WITH USER CODES AND VALUE LIST 
                         if (fieldConfig.getUserCode() != null) {
                             strVal = ValidationService.getInstance().getUserCodeDescription(fieldConfig.getUserCode(), value.toString());
                         } else {
                             strVal = ValidationService.getInstance().getDescription(fieldConfig.getValueList(), value.toString());
                         }
-                                  
-                       // strVal= ValidationService.getInstance().getDescription(fieldConfig.getValueList(),value.toString()); 
+
+                        // strVal= ValidationService.getInstance().getDescription(fieldConfig.getValueList(),value.toString()); 
                         editEnterpriseObjectHashMap.put(fieldConfig.getFullFieldName(), strVal);
                     }
-                    
+
                 } else if (fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0) {
-                     if (value != null) {
+                    if (value != null) {
                         //Mask the value as per the masking 
-                         value = fieldConfig.mask(value.toString());
-                         editEnterpriseObjectHashMap.put(fieldConfig.getFullFieldName(), value);
-                     }
+                        value = fieldConfig.mask(value.toString());
+                        editEnterpriseObjectHashMap.put(fieldConfig.getFullFieldName(), value);
+                    }
 
                 }
-            
+
             }
- 
+
             HashMap newLinkedHashMap = new HashMap();
             HashMap eoWithLinkedHashMap = masterControllerService.getLinkedFields(enterpriseObject);
             Object[] keySet = editEnterpriseObjectHashMap.keySet().toArray();
@@ -1437,7 +1476,7 @@ public class MidmUtilityManager {
             for (int i = 0; i < keySet.length; i++) {
                 String key = (String) keySet[i];
                 if (eoWithLinkedHashMap.get(key) != null) {
-                    String[] sysLid = ((String)eoWithLinkedHashMap.get(key)).split(":");
+                    String[] sysLid = ((String) eoWithLinkedHashMap.get(key)).split(":");
                     if (sysLid.length == 2) {
                         HashMap soHashMapCodes = (HashMap) getSystemObjectAsHashMap(masterControllerService.getSystemObject(sysLid[0], sysLid[1]), screenObject).get("SYSTEM_OBJECT_EDIT");
                         HashMap soHashMap = (HashMap) getSystemObjectAsHashMap(masterControllerService.getSystemObject(sysLid[0], sysLid[1]), screenObject).get("SYSTEM_OBJECT");
@@ -1445,7 +1484,7 @@ public class MidmUtilityManager {
                         editEnterpriseObjectHashMap.put(key, soHashMap.get(key));
                         codesEnterpriseObjectHashMap.put(key, soHashMapCodes.get(key));
                     }
-                    
+
                     newLinkedHashMap.put(key, true);
                 } else {
                     newLinkedHashMap.put(key, false);
@@ -1454,16 +1493,16 @@ public class MidmUtilityManager {
 
             //add SystemCode and LID value to the new Hash Map  
             editEnterpriseObjectHashMap.put("EUID", enterpriseObject.getEUID()); // set EUID here
-             
-             
-            
+
+
+
             editEnterpriseObjectHashMap.put(MasterControllerService.HASH_MAP_TYPE, MasterControllerService.SBR_UPDATE); //SBR_UPDATE HASH MAP type here
             enterpriseObjectHashMap.put("ENTERPRISE_OBJECT", editEnterpriseObjectHashMap); // Set the edit EnterpriseObject here
             enterpriseObjectHashMap.put("ENTERPRISE_OBJECT_CODES", codesEnterpriseObjectHashMap); // Set the edit EnterpriseObject here
 
- 
+
             enterpriseObjectHashMap.put("EO_STATUS", enterpriseObject.getStatus()); // Set the edit EnterpriseObject here
-  
+
             ObjectNodeConfig[] childNodeConfigs = screenObject.getRootObj().getChildConfigs();
 
             //Build and array of minor object values from the screen object child object nodes
@@ -1471,7 +1510,7 @@ public class MidmUtilityManager {
 
                 //get the child object node configs
                 ObjectNodeConfig objectNodeConfig = childNodeConfigs[i];
-                FieldConfig[] minorFiledConfigs = objectNodeConfig.getFieldConfigs(); 
+                FieldConfig[] minorFiledConfigs = objectNodeConfig.getFieldConfigs();
 
                 //set address array list of hasmap for editing
                 ArrayList soMinorObjectsMapArrayList = masterControllerService.getEnterpriseObjectChildrenArrayList(enterpriseObject, sourceHandler.buildSystemObjectEpaths(objectNodeConfig.getName()), objectNodeConfig.getName(), MasterControllerService.MINOR_OBJECT_UPDATE);
@@ -1481,14 +1520,14 @@ public class MidmUtilityManager {
                     minorObjectHashMapCodes.put(MasterControllerService.MINOR_OBJECT_TYPE, objectNodeConfig.getName()); // set MINOR_OBJECT_TYPE
                 }
                 enterpriseObjectHashMap.put("EOCODES" + objectNodeConfig.getName() + "ArrayList", soMinorObjectsMapArrayListCodes); // set SO addresses as arraylist here
-                
+
                 for (int k = 0; k < soMinorObjectsMapArrayList.size(); k++) {
                     HashMap minorObjectHashMap = (HashMap) soMinorObjectsMapArrayList.get(k);
                     minorObjectHashMap.put(MasterControllerService.MINOR_OBJECT_TYPE, objectNodeConfig.getName()); // set MINOR_OBJECT_TYPE
 
                     for (int m = 0; m < minorFiledConfigs.length; m++) {
                         FieldConfig fieldConfig = minorFiledConfigs[m];
-                       Object value = minorObjectHashMap.get(fieldConfig.getFullFieldName());
+                        Object value = minorObjectHashMap.get(fieldConfig.getFullFieldName());
                         //set the menu list values here
                         if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
                             if (value != null) {
@@ -1505,8 +1544,8 @@ public class MidmUtilityManager {
                         } else if (fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0) {
                             if (value != null) {
                                 //Mask the value as per the masking 
-                                 value = fieldConfig.mask(value.toString());
-                                 minorObjectHashMap.put(fieldConfig.getFullFieldName(), value);
+                                value = fieldConfig.mask(value.toString());
+                                minorObjectHashMap.put(fieldConfig.getFullFieldName(), value);
                             }
                         }
 
@@ -1552,34 +1591,34 @@ public class MidmUtilityManager {
 
 
             return enterpriseObjectHashMap;
-         } catch (Exception ex) {
-             if (ex instanceof ValidationException) {
-                 mLogger.error(mLocalizer.x("MUM035: Failed to get EnterpriseObject  :{0}", ex.getMessage()), ex);
-                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
-             } else if (ex instanceof UserException) {
-                 mLogger.error(mLocalizer.x("MUM036: Failed to get EnterpriseObject  :{0}", ex.getMessage()), ex);
-                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
-             } else if (!(ex instanceof ProcessingException)) {
-                 mLogger.error(mLocalizer.x("MUM037: Failed to get EnterpriseObject  :{0}", ex.getMessage()), ex);
-                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
-             } else if (ex instanceof ProcessingException) {
-                 String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
-                 if (exceptionMessage.indexOf("stack trace") != -1) {
-                     String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
-                     if (exceptionMessage.indexOf("message=") != -1) {
-                         parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
-                     }
-                     mLogger.error(mLocalizer.x("MUM038: Failed to get EnterpriseObject due to ProcessingException"), ex);
-                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
-                 } else {
-                     mLogger.error(mLocalizer.x("MUM039: Error  occurred"), ex);
-                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
-                 }
-             }
-         }
+        } catch (Exception ex) {
+            if (ex instanceof ValidationException) {
+                mLogger.error(mLocalizer.x("MUM035: Failed to get EnterpriseObject  :{0}", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof UserException) {
+                mLogger.error(mLocalizer.x("MUM036: Failed to get EnterpriseObject  :{0}", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (!(ex instanceof ProcessingException)) {
+                mLogger.error(mLocalizer.x("MUM037: Failed to get EnterpriseObject  :{0}", ex.getMessage()), ex);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, QwsUtil.getRootCause(ex).getMessage(), exceptionMessaage));
+            } else if (ex instanceof ProcessingException) {
+                String exceptionMessage = QwsUtil.getRootCause(ex).getMessage();
+                if (exceptionMessage.indexOf("stack trace") != -1) {
+                    String parsedString = exceptionMessage.substring(0, exceptionMessage.indexOf("stack trace"));
+                    if (exceptionMessage.indexOf("message=") != -1) {
+                        parsedString = parsedString.substring(exceptionMessage.indexOf("message=") + 8, parsedString.length());
+                    }
+                    mLogger.error(mLocalizer.x("MUM038: Failed to get EnterpriseObject due to ProcessingException"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, parsedString, exceptionMessaage));
+                } else {
+                    mLogger.error(mLocalizer.x("MUM039: Error  occurred"), ex);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, exceptionMessage, exceptionMessaage));
+                }
+            }
+        }
         return enterpriseObjectHashMap;
     }
- 
+
     /** 
      * Added  on 18/09/2008
      * 
@@ -1614,8 +1653,8 @@ public class MidmUtilityManager {
         }
         return new HashMap();
     }
-    
-   /** 
+
+    /** 
      * Added  on 03/12/2008 
      * 
      * This method is used to get the key Types for the keyed Child objects. For Ex: Address:Home, Alias: Sam M Jack, Phone:Business
@@ -1626,20 +1665,19 @@ public class MidmUtilityManager {
      * @return keyTypeValue 
      * 
      */
-     
     public String getKeyTypeForMinorObjects(String minorObjectType, HashMap thisMinorObject) {
         StringBuffer keyTypeValue = new StringBuffer();
         //get the child object node configs
         ObjectNodeConfig objectNodeConfig = ConfigManager.getInstance().getObjectNodeConfig(minorObjectType);
         FieldConfig[] keyFieldConfigs = objectNodeConfig.getKeyFieldConfigs();
         //For Non-Keyed minor objects return null
-        if(keyFieldConfigs.length == 0 ) return null;
-        
-        //build an hashmap of minorObjectsLinkedHashMap with key type Ex: Address:Home,Phone:Office, Alias:Sam+V+Kim...etc
+        if (keyFieldConfigs.length == 0) {
+            return null;        //build an hashmap of minorObjectsLinkedHashMap with key type Ex: Address:Home,Phone:Office, Alias:Sam+V+Kim...etc
+        }
         keyTypeValue.append(objectNodeConfig.getName() + ":");
-         for (int kk = 0; kk < keyFieldConfigs.length; kk++) {
+        for (int kk = 0; kk < keyFieldConfigs.length; kk++) {
             FieldConfig fieldConfig = keyFieldConfigs[kk];
-             if (thisMinorObject.get(fieldConfig.getFullFieldName()) != null) {
+            if (thisMinorObject.get(fieldConfig.getFullFieldName()) != null) {
                 Object value = thisMinorObject.get(fieldConfig.getFullFieldName());
                 //set the menu list values here
                 if (fieldConfig.getValueList() != null && fieldConfig.getValueList().length() > 0) {
@@ -1664,5 +1702,44 @@ public class MidmUtilityManager {
         }
         return keyTypeValue.toString();
     }
-   
+
+    /** 
+     * Added  on 03/12/2008 
+     * 
+     * This method is used to get the key Types for the keyed Child objects. For Ex: Address:Home, Alias: Sam M Jack, Phone:Business
+     * 
+     * 
+     * @param minorObjectType  
+     * @param thisMinorObject  
+     * @return keyTypeValue 
+     * 
+     */
+    public String getKeyTypeForMinorObjectsWithDesc(String minorObjectType, HashMap thisMinorObject) {
+        StringBuffer keyTypeValue = new StringBuffer();
+        //get the child object node configs
+        ObjectNodeConfig objectNodeConfig = ConfigManager.getInstance().getObjectNodeConfig(minorObjectType);
+        FieldConfig[] keyFieldConfigs = objectNodeConfig.getKeyFieldConfigs();
+        //For Non-Keyed minor objects return null
+        if (keyFieldConfigs.length == 0) {
+            return null;        //build an hashmap of minorObjectsLinkedHashMap with key type Ex: Address:Home,Phone:Office, Alias:Sam+V+Kim...etc
+        }
+        keyTypeValue.append(objectNodeConfig.getName() + ":");
+        for (int kk = 0; kk < keyFieldConfigs.length; kk++) {
+            FieldConfig fieldConfig = keyFieldConfigs[kk];
+            if (thisMinorObject.get(fieldConfig.getFullFieldName()) != null) {
+                Object value = thisMinorObject.get(fieldConfig.getFullFieldName());
+                //set the menu list values here
+                if (fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0) {
+                    if (value != null) {
+                        value = fieldConfig.mask(value.toString());
+                    }
+                }
+                keyTypeValue.append(value);
+                if (kk != keyFieldConfigs.length - 1) {
+                    keyTypeValue.append(" ");
+                }
+            }
+        }
+        return keyTypeValue.toString();
+    }
 }
