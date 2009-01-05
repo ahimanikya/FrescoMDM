@@ -2092,11 +2092,16 @@ public EnterpriseObject removeLocks(HashMap hm, EnterpriseObject eo) throws Proc
                 }
 
                 if (minorObjectsMap.get(MasterControllerService.HASH_MAP_TYPE).equals(MasterControllerService.MINOR_OBJECT_BRAND_NEW)) {
-                    String objectType = (String) hm.get(MINOR_OBJECT_TYPE);
+                    String objectType = (String) minorObjectsMap.get(MINOR_OBJECT_TYPE);
                     addMinorObject(sysObj, objectType, minorObjectsMap);
-                } else if (hm.get(MasterControllerService.HASH_MAP_TYPE).equals(MasterControllerService.MINOR_OBJECT_UPDATE)) {
-                    String objectType = (String) hm.get(MINOR_OBJECT_TYPE);
-                    modifyMinorObject(majorObject, minorObjectsMap);
+                } else if (minorObjectsMap.get(MasterControllerService.HASH_MAP_TYPE).equals(MasterControllerService.MINOR_OBJECT_UPDATE)) {
+                    type = (String) minorObjectsMap.get(MasterControllerService.MINOR_OBJECT_TYPE);
+                    String id = (String) minorObjectsMap.get(MasterControllerService.MINOR_OBJECT_ID);
+                    if (type == null || id == null) {
+                        throw new UserException(mLocalizer.t("SRM525: Hashmap should provide MINOR_OBJECT_TYPE, MINOR_OBJECT_ID for ading a MinorObject"));
+                    }
+                    ObjectNode child = sysObj.getObject().getChild(type, id);
+                    modifyMinorObject(child, minorObjectsMap);
                 }
             }
 
