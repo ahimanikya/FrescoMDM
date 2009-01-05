@@ -178,7 +178,7 @@ function validateEditRelationshipForm() {
             return false;
         }
         if( !isValidCustomAttribute (tempAttr.dataType, tempAttr.defaultValue) ) {
-            alert(tempAttr.defaultValue + " " + getMessageForI18N("isnotavalidvaluefor")+ " " + tempAttr.name + " " + getMessageForI18N("attribute")+ " " +getMessageForI18N("attributeTypeFor")+ " " +tempAttr.defaultValue + " " +getMessageForI18N("is")+ " " +"'"+tempAttr.dataType+"'");
+            alert(tempAttr.defaultValue + " " + getMessageForI18N("isnotavalidvaluefor")+ " " + tempAttr.name + " " + getMessageForI18N("attribute")+ " " +getMessageForI18N("attributeTypeFor")+ " " + tempAttr.name + " " +getMessageForI18N("is")+ " " +"'"+tempAttr.dataType+"'");
             return false;
         }
         customAttributes.push(tempAttr);

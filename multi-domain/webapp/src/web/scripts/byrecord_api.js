@@ -724,7 +724,7 @@ function byRecordAddRecord(){
         }
      }
      if( ! isValidCustomAttribute( attributeType, attributeValue) ) {
-        alert(attributeValue + " " +getMessageForI18N("isnotavalidvaluefor")+ " " +attributeName + " " +getMessageForI18N("attribute")+ " " +getMessageForI18N("attributeTypeFor")+ " " +attributeValue + " " +getMessageForI18N("is")+ " " +"'"+attributeType+"'");
+        alert(attributeValue + " " +getMessageForI18N("isnotavalidvaluefor")+ " " +attributeName + " " +getMessageForI18N("attribute")+ " " +getMessageForI18N("attributeTypeFor")+ " " +tempAttr.name  + " " +getMessageForI18N("is")+ " " +"'"+attributeType+"'");
         attributeId.focus();
         return;
     }

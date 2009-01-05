@@ -289,7 +289,7 @@ function searchRelationships() {
       var attributeValue =  document.getElementById("select_custom_" + relationshipDefObj.extendedAttributes[c].name).value;
       var attributeType = relationshipDefObj.extendedAttributes[c].dataType;
       if( ! isValidCustomAttribute( attributeType, attributeValue) ) {
-          alert(attributeValue + " " + getMessageForI18N("isnotavalidvaluefor")+ " " + attributeName + " " + getMessageForI18N("attribute")+ " " +getMessageForI18N("attributeTypeFor")+ " " +attributeValue + " " +getMessageForI18N("is")+ " " +"'"+attributeType+"'");
+          alert(attributeValue + " " + getMessageForI18N("isnotavalidvaluefor")+ " " + attributeName + " " + getMessageForI18N("attribute")+ " " +getMessageForI18N("attributeTypeFor")+ " " +tempAttr.name  + " " +getMessageForI18N("is")+ " " +"'"+attributeType+"'");
           attributeId.focus(); 
           return;
       }
@@ -301,7 +301,7 @@ function searchRelationships() {
           byRangeValue = byRangeObj.value;
           //alert("byRangeName---"+byRangeName +"  byRangeValue----"+byRangeValue);
           if( ! isValidCustomAttribute( attributeType, byRangeObj.value) ) {
-            alert(byRangeValue + " " + getMessageForI18N("isnotavalidvaluefor")+ " " + byRangeName + " " + getMessageForI18N("attribute")+ " " +getMessageForI18N("attributeTypeFor")+ " " +byRangeValue + " " +getMessageForI18N("is")+ " " +"'"+attributeType+"'");
+            alert(byRangeValue + " " + getMessageForI18N("isnotavalidvaluefor")+ " " + byRangeName + " " + getMessageForI18N("attribute")+ " " +getMessageForI18N("attributeTypeFor")+ " " +byRangeName + " " +getMessageForI18N("is")+ " " +"'"+attributeType+"'");
             byRangeObj.focus(); 
             return;
           }
@@ -355,7 +355,8 @@ function searchRelationships() {
       var CustomAttributeValue =  document.getElementById("select_custom_" + relationshipDefObj.extendedAttributes[cc].name).value;
       var CustomAttributeType = relationshipDefObj.extendedAttributes[cc].dataType;
       if( ! isValidCustomAttribute( CustomAttributeType, CustomAttributeValue) ) {
-          alert(CustomAttributeValue + " " +getMessageForI18N("isnotavalidvaluefor")+ " " + CustomAttributeName + " " + getMessageForI18N("attribute"));
+          alert(CustomAttributeValue + " " +getMessageForI18N("isnotavalidvaluefor")+ " " + CustomAttributeName + " " + getMessageForI18N("attribute")
+           + " " +getMessageForI18N("attributeTypeFor")+ " " +CustomAttributeName + " " +getMessageForI18N("is")+ " " +"'"+CustomAttributeType+"'");
           CustomAttributeId.focus();
           return;
       }
@@ -1168,7 +1169,7 @@ function ByRelAddRelationship(){
         }
     }
     if( ! isValidCustomAttribute( attributeType, attributeValue) ) {
-        alert(attributeValue + " " +getMessageForI18N("isnotavalidvaluefor")+ " " +attributeName + " " +getMessageForI18N("attribute")+ " " +getMessageForI18N("attributeTypeFor")+ " " +attributeValue + " " +getMessageForI18N("is")+ " " +"'"+attributeType+"'");
+        alert(attributeValue + " " +getMessageForI18N("isnotavalidvaluefor")+ " " +attributeName + " " +getMessageForI18N("attribute")+ " " +getMessageForI18N("attributeTypeFor")+ " " +attributeName + " " +getMessageForI18N("is")+ " " +"'"+attributeType+"'");
         attributeId.focus();
         return;
     }
@@ -1295,7 +1296,7 @@ function updateRelationship () {
           }
       }
       if( ! isValidCustomAttribute( attributeType, attributeValue) ) {
-          alert(attributeValue + " " +getMessageForI18N("isnotavalidvaluefor")+ " " +attributeName + " " +getMessageForI18N("attribute")+ " " +getMessageForI18N("attributeTypeFor")+ " " +attributeValue + " " +getMessageForI18N("is")+ " " +"'"+attributeType+"'");
+          alert(attributeValue + " " +getMessageForI18N("isnotavalidvaluefor")+ " " +attributeName + " " +getMessageForI18N("attribute")+ " " +getMessageForI18N("attributeTypeFor")+ " " +attributeName + " " +getMessageForI18N("is")+ " " +"'"+attributeType+"'");
           attributeId.focus();
           return;
       }
