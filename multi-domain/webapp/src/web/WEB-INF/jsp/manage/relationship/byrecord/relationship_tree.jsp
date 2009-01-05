@@ -23,16 +23,16 @@
 					<tr><td width="100%" align="left"  valign="top">
 						<table cellspacing="0" cellpadding="0" border="0" width="100%" style="height:25px;">
                            <tr>
-                            <td><a href="javascript:void(0);" onclick="" title="<f:message key="add_text" />..."><img id="imgAddRelationshipListing" src="images/icons/add_button_faded.png" border="0"></a></td>
+                            <td><a href="javascript:void(0);" onclick="" title="<f:message key="add_text" />..."><img id="imgMainTreeAddButton" src="images/icons/add_button_faded.png" border="0"></a></td>
                             <td><img src="images/spacer.gif" height="1" width="6"></td>
-                            <td><a href="javascript:void(0);" onclick="" title="Move"><img id="imgDeleteRelationshipListing" src="images/icons/move-right_button_faded.png" border="0"></a></td>
+                            <td><a href="javascript:void(0);" onclick="" title="Move"><img id="imgMainTreeMoveButton" src="images/icons/move-right_button_faded.png" border="0"></a></td>
 							<td><img src="images/spacer.gif" height="1" width="6"></td>
-                            <td><a href="javascript:void(0);" onclick="" title="<f:message key="delete_text" />"><img id="imgDeleteRelationshipListing" src="images/icons/delete_button_faded.png" border="0"></a></td>
+                            <td><a href="javascript:void(0);" onclick="" title="<f:message key="delete_text" />"><img id="imgMainTreeDeleteButton" src="images/icons/delete_button_faded.png" border="0"></a></td>
 							<!--<td><img src="images/spacer.gif" height="1" width="6"></td>
-                            <td><a href="javascript:void(0);" onclick="" title="Replace"><img id="imgDeleteRelationshipListing" src="images/icons/replace_button_faded.png" border="0"></a></td>
+                            <td><a href="javascript:void(0);" onclick="" title="Replace"><img id="imgMainTreeReplaceButton" src="images/icons/replace_button_faded.png" border="0"></a></td>
 							-->
 							<td><img src="images/spacer.gif" height="1" width="6"></td>
-                            <td><a href="javascript:void(0);" onclick="" title="Find"><img id="imgDeleteRelationshipListing" src="images/icons/find_button_faded.png" border="0"></a></td>
+                            <td><a href="javascript:void(0);" onclick="" title="Find"><img id="imgMainTreeFindButton" src="images/icons/find_button_faded.png" border="0"></a></td>
 							<!--<td><img src="images/spacer.gif" height="1" width="6"></td>
                             <td><a href="javascript:void(0);" onclick="" title="Filter"><img id="imgDeleteRelationshipListing" src="images/icons/filter_button_faded.png" border="0"></a></td>
 							-->

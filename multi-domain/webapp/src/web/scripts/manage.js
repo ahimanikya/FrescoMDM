@@ -19,6 +19,16 @@ addButtonEnabled.src = "images/icons/add_button.png";
 var addButtonDisabled = new Image();
 addButtonDisabled.src = "images/icons/add_button_faded.png";   
 
+var findButtonEnabled = new Image();
+findButtonEnabled.src = "images/icons/find_button.png";
+var findButtonDisabled = new Image();
+findButtonDisabled.src = "images/icons/find_button_faded.png";   
+
+var moveRightButtonEnabled = new Image();
+moveRightButtonEnabled.src = "images/icons/move-right_button.png";
+var moveRightButtonDisabled = new Image();
+moveRightButtonDisabled.src = "images/icons/move-right_button_faded.png";  
+
 var isByRelSelectDialogLoaded = false; // Global flag to find out if Select dialog is already loaded for ByRelationship screen
 var isByRelAddDialogLoaded = false; // Global flag to find out if Add dialog is already loaded for ByRelationship screen
 

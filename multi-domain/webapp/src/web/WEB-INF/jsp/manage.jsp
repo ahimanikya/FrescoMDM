@@ -49,6 +49,7 @@
 
         dojo.require("dijit.Tree");
 		dojo.require("dijit.TreeCustom");
+		dojo.require("dijit._tree.dndSource");
     </script>
     <script type="text/javascript">
         dwr.engine.setAsync(true);

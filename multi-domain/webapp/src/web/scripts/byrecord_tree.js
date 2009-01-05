@@ -107,7 +107,7 @@ function getByRecordDataCB (data) {
     rootRecordItem.id = "rootRecordID";
     rootRecordItem.EUID = data.primaryObject.EUID;
     rootRecordItem.name = data.primaryObject.highLight;
-	rootRecordItem.underDomain = data.domain;
+	rootRecordItem.parentDomain = data.domain;
     rootRecordItem.type = item_types.RECORD;
  
     var rootDomain = mainTree_Store.newItem( rootDomainItem , null);
@@ -140,7 +140,7 @@ function getByRecordDataCB (data) {
 			relationshipDomain.name = tempRelObj.relationshipDefView.sourceDomain;
 		else
 			relationshipDomain.name = tempRelObj.relationshipDefView.targetDomain;
-        relationshipDomain.underRelationshipDefName = relationshipNode.name;
+        relationshipDomain.parentRelationshipDefName = relationshipNode.name;
         relationshipDomain.type = item_types.DOMAIN;
         var rDomainItem = mainTree_Store.newItem(relationshipDomain, {parent: rNodeItem, attribute:"children"} );
         
@@ -156,14 +156,15 @@ function getByRecordDataCB (data) {
 				recordNode.EUID = relationships[j].targetEUID;
 				recordNode.name = relationships[j].targetHighLight;
 			}
+			recordNode.parentDomain = relationshipDomain.name;
 			recordNode.relationshipFromDomain = rootDomainItem.name;
 			recordNode.relationshipToDomain = relationshipDomain.name;
 
 			recordNode.fromRecordHighLight = relationships[j].sourceHighLight;
 			recordNode.toRecordHighLight = relationships[j].targetHighLight;
 
-			recordNode.underRelationshipDefName = relationshipNode.name;
-			recordNode.underRelationshipId = relationships[j].id;
+			recordNode.parentRelationshipDefName = relationshipNode.name;
+			recordNode.parentRelationshipId = relationships[j].id;
             recordNode.type = item_types.RECORD;
             var recordNodeItem = mainTree_Store.newItem(recordNode, {parent: rDomainItem, attribute:"children"} );
             //alert(j + " " + relationships[j].sourceEUID + " :: " + relationships[j].targetEUID);
@@ -197,10 +198,17 @@ function createMainTree () {
         model: newModel,
         customOnClick: mainTreeClicked,
 		//onClose: mainTreeNodeClosed,
-        getIconClass: mainTreeGetIconClass
+        getIconClass: mainTreeGetIconClass,
+		dndController:"dijit._tree.dndSource",
+		checkAcceptance: mainTreeDnDCheckAcceptance
     }, document.createElement("div"));
     mainTreeObj.startup();
     dojo.byId("mainTreeContainer").appendChild(mainTreeObj.domNode);
+}
+function mainTreeDnDCheckAcceptance(source, nodes)  {
+	//Dont accept if the source is the same tree
+	if(this.tree == source.tree) return false;	
+	else return true;
 }
 
 // function to delete items from main tree store.
@@ -211,15 +219,27 @@ function deleteItemsFromStore(items, req) {
     }
 }
 
+var mainTree_isAddPossible = false;
+var mainTree_isDeletePossible = false;
+var mainTree_isFindPossible = false;
+var mainTree_isMovePossible = false;
 
 // Main tree click event is captured by this function
 function mainTreeClicked(item, node, allSelectedItems ) {
 	//alert('allSelectedItems ' + allSelectedItems.length);
 	byRecord_Selected_Relationship = null;
 	byRecord_Selected_Record = null;
+	
+	mainTree_isAddPossible = false; 
+	mainTree_isDeletePossible = true;
+	mainTree_isFindPossible = false;
+	mainTree_isMovePossible = true;
+	
+	var recFromSameDomainCount = 0, prevRecDomainName = null;
+	var isRootDomainSelected = false, isRootRecordSelected = false;
+	
 	for(i=0; i<allSelectedItems.length; i++) {
 		var tempItem = allSelectedItems[i];
-		
 		var itemType = mainTree_Store.getValue(tempItem, "type");
 		var itemName = mainTree_Store.getValue(tempItem, "name");	
 		//alert(itemType + " : " + itemName);
@@ -227,34 +247,51 @@ function mainTreeClicked(item, node, allSelectedItems ) {
 		switch (itemType) {
 			case item_types.DOMAIN:
 				if(itemName == byRecord_CurrentWorking_Domain) {
+					mainTree_isDeletePossible = false;
+					isRootDomainSelected = true;
 					continue;
 				}
+				var parentRelationshipDefName = mainTree_Store.getValue(tempItem, "parentRelationshipDefName");
+				byRecord_CurrentSelected_RelationshipDefName = parentRelationshipDefName; // Used for Add
+				byRecord_CurrentSelected_TargetDomain = itemName; // User for add
+				mainTree_isAddPossible = true;
+				mainTree_isFindPossible = true;
 				//alert("its a domain ");
 				break;
 			case item_types.RELATIONSHIP:
+				mainTree_isAddPossible = false;
 				//alert("its a relationship");
 				break;
 			case item_types.RECORD:
-				var itemEUID = mainTree_Store.getValue(item, "EUID");
+				var itemEUID = mainTree_Store.getValue(tempItem, "EUID");
+				var tempDomain = mainTree_Store.getValue(tempItem, "parentDomain");
+				
+				if(prevRecDomainName == null) prevRecDomainName = tempDomain;
+				if(tempDomain == prevRecDomainName) 
+					recFromSameDomainCount ++;
+				else
+					recFromSameDomainCount --;
+				prevRecDomainName = tempDomain;
 				
 				if(itemEUID == byRecord_CurrentWorking_EUID) {
 					byRecord_Selected_Record = {};
 					byRecord_Selected_Record["EUID"] = itemEUID;
-					var tempDomain = mainTree_Store.getValue(item, "underDomain");
+					
 					var tempName = mainTree_Store.getValue(item, "name");
 				    byRecord_Selected_Record["domain"] = tempDomain;
 					byRecord_Selected_Record["sourceRecordHighLight"] = tempName;
+					isRootRecordSelected = true;
 				} else {
-					var tempRelationshipId = mainTree_Store.getValue(item, "underRelationshipId");
+					var tempRelationshipId = mainTree_Store.getValue(tempItem, "parentRelationshipId");
 					
 					byRecord_Selected_Relationship = {};
-					byRecord_Selected_Relationship["relationshipId"] = mainTree_Store.getValue(item, "underRelationshipId");
-					byRecord_Selected_Relationship["sourceDomain"] = mainTree_Store.getValue(item, "relationshipFromDomain");
-					byRecord_Selected_Relationship["targetDomain"] = mainTree_Store.getValue(item, "relationshipToDomain");
-					byRecord_Selected_Relationship["relationshipDefName"] = mainTree_Store.getValue(item, "underRelationshipDefName");
+					byRecord_Selected_Relationship["relationshipId"] = mainTree_Store.getValue(tempItem, "parentRelationshipId");
+					byRecord_Selected_Relationship["sourceDomain"] = mainTree_Store.getValue(tempItem, "relationshipFromDomain");
+					byRecord_Selected_Relationship["targetDomain"] = mainTree_Store.getValue(tempItem, "relationshipToDomain");
+					byRecord_Selected_Relationship["relationshipDefName"] = mainTree_Store.getValue(tempItem, "parentRelationshipDefName");
 					
-					byRecord_Selected_Relationship["sourceRecordHighLight"] = mainTree_Store.getValue(item, "fromRecordHighLight");
-					byRecord_Selected_Relationship["targetRecordHighLight"] = mainTree_Store.getValue(item, "toRecordHighLight");
+					byRecord_Selected_Relationship["sourceRecordHighLight"] = mainTree_Store.getValue(tempItem, "fromRecordHighLight");
+					byRecord_Selected_Relationship["targetRecordHighLight"] = mainTree_Store.getValue(tempItem, "toRecordHighLight");
 					
 				}
 				//alert("its a record");
@@ -265,8 +302,24 @@ function mainTreeClicked(item, node, allSelectedItems ) {
 	if(allSelectedItems.length > 1) {
 		byRecord_Selected_Relationship = null;
 		byRecord_Selected_Record = null;
+		
+		mainTree_isAddPossible = false;
+		mainTree_isFindPossible = true;
+	}
+	// If all selected items are records & from same domain, then enable add,find button.s
+	if(recFromSameDomainCount == allSelectedItems.length) {
+		mainTree_isAddPossible = true;
+		mainTree_isFindPossible = true;
 	}
 	
+	// If root nodes (either root-domain or root-record) are selected, disable add, move, find buttons
+	if(isRootRecordSelected || isRootDomainSelected) {
+		mainTree_isAddPossible = false;
+		mainTree_isMovePossible = false;
+		mainTree_isFindPossible = false;
+	}
+
+	byRecord_refreshMainTreeButtonsPallete();
 	return;
 }
 
@@ -430,4 +483,53 @@ function deleteItemsFromRearrangeTreeStore(items, req) {
 
 function rearrangeTreeClicked(item, node, allSelectedItems ) {
 	//alert("rearrange tree clicked");
+}
+
+
+// function to find out if move Right is possible (From Main tree to rearrange tree)
+function getIsMoveRightPossible() {
+	if(! isRearrangeTreeShown) return false;
+
+	
+	// TODO: return proper value based on node selections in both trees.
+	
+	return true;
+}
+
+//function to refresh buttons pallete for main tree
+function byRecord_refreshMainTreeButtonsPallete () {
+	//alert("add : " + mainTree_isAddPossible +"\n delete:"+ mainTree_isDeletePossible);
+	
+	var imgDeleteButtonObj = dojo.byId("imgMainTreeDeleteButton");
+    if(imgDeleteButtonObj != null) {
+        if(mainTree_isDeletePossible)
+            imgDeleteButtonObj.src =   deleteButtonEnabled.src;
+        else
+            imgDeleteButtonObj.src =   deleteButtonDisabled.src;
+    }
+	
+	var imgAddButtonObj = dojo.byId("imgMainTreeAddButton");
+    if(imgAddButtonObj != null) {
+        if(mainTree_isAddPossible)
+            imgAddButtonObj.src =   addButtonEnabled.src;
+        else
+            imgAddButtonObj.src =   addButtonDisabled.src;
+    }
+	var imgFindButtonObj = dojo.byId("imgMainTreeFindButton");
+    if(imgFindButtonObj != null) {
+        if(mainTree_isFindPossible)
+            imgFindButtonObj.src =   findButtonEnabled.src;
+        else
+            imgFindButtonObj.src =   findButtonDisabled.src;
+    }
+
+	
+	var imgMoveButtonObj = dojo.byId("imgMainTreeMoveButton");
+    if(imgMoveButtonObj != null) {
+        if(mainTree_isMovePossible && getIsMoveRightPossible())
+            imgMoveButtonObj.src =   moveRightButtonEnabled.src;
+        else
+            imgMoveButtonObj.src =   moveRightButtonDisabled.src;
+    }
+	
 }

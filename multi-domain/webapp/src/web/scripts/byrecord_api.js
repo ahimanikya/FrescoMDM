@@ -506,7 +506,7 @@ function byRecord_clearDetailsSection() {
 
 function byRecord_prepareAdd () {
     var relationshipDefObj = byRecord_CachedRelationshipDefs[byRecord_CurrentSelected_RelationshipDefName] ;
-    
+    alert(relationshipDefObj);
    // alert("Soruce domain " + byRecord_CurrentWorking_Domain );
    // alert("target domain " + byRecord_CurrentSelected_TargetDomain);
    // alert("Source EUID " + byRecord_CurrentWorking_EUID);
