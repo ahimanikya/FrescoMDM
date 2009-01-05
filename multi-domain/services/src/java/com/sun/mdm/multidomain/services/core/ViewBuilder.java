@@ -443,7 +443,22 @@ public class ViewBuilder {
 
     public static List<ObjectView> buildObjectViews(String domain, PageIterator<ObjectNode> pages)
         throws ConfigException {
-        List<ObjectView> records = new ArrayList<ObjectView>();         
+        MDConfigManager configManager =  MDConfigManager.getInstance();         
+        List<ObjectView> records = new ArrayList<ObjectView>();
+        DomainScreenConfig domainConfig = configManager.getDomainScreenConfig(domain);
+        SummaryLabel domainSummaryLabel = domainConfig.getSummaryLabel();
+        List<FieldConfig> recordIdConfigFields = domainSummaryLabel.getFieldConfigs();
+        EPathArrayList recordIdEPathFields = Helper.toEPathArrayList(recordIdConfigFields);
+        
+        while(pages.hasNext()) {
+            ObjectNode objectNode = pages.next();                      
+            String highLight = buildHighLight(domain, recordIdConfigFields, recordIdEPathFields, objectNode);
+            ObjectView record = new ObjectView();
+            record.setName(domain);
+            record.setHighLight(highLight);
+            //TBD EUID
+            records.add(record);
+        }
         return records;
     }
     
