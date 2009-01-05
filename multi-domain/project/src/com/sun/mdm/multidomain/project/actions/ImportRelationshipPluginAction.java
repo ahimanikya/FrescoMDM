@@ -22,18 +22,21 @@
  */
 package com.sun.mdm.multidomain.project.actions;
 
+import com.sun.mdm.multidomain.project.EjbProjectManager;
+import com.sun.mdm.multidomain.project.MultiDomainProjectProperties;
 import com.sun.mdm.multidomain.project.nodes.*;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import org.openide.ErrorManager;
 import org.openide.util.actions.CookieAction;
 import org.openide.util.HelpCtx;
-import org.openide.util.RequestProcessor;
 import org.openide.util.NbBundle;
 import org.openide.nodes.Node;
 import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileUtil;
 import org.openide.NotifyDescriptor;
 import org.openide.DialogDisplayer;
-import org.openide.modules.InstalledFileLocator;
+import org.netbeans.api.project.Project;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
@@ -41,8 +44,11 @@ import javax.swing.filechooser.FileFilter;
 import java.io.File;
 import org.netbeans.api.progress.ProgressHandle;
 import org.netbeans.api.progress.ProgressHandleFactory;
-//import com.sun.mdm.index.util.Logger;
 import com.sun.mdm.multidomain.util.Logger;
+import java.util.ArrayList;
+import org.netbeans.api.project.ProjectManager;
+import org.netbeans.spi.project.support.ant.AntProjectHelper;
+import org.netbeans.spi.project.support.ant.EditableProperties;
 
 
 /**
@@ -88,7 +94,8 @@ public class ImportRelationshipPluginAction extends CookieAction {
                     JFileChooser fc = new JFileChooser();
                     try {
                         fc.setMultiSelectionEnabled(false);
-                        fc.setFileFilter(new RelationsipPlugInFilter()); // look for relationship plug-in
+                        FileFilter fileFilter = new RelationsipPlugInFilter();
+                        fc.setFileFilter(fileFilter); // look for relationship plug-in
                         fc.setAcceptAllFileFilterUsed(false);
             
                         int returnVal = fc.showOpenDialog(null);
@@ -97,11 +104,9 @@ public class ImportRelationshipPluginAction extends CookieAction {
                             mLoadProgress = ProgressHandleFactory.createHandle(
                                 NbBundle.getMessage(ImportRelationshipPluginAction.class, "MSG_Importing_Relationship_Plugin"));
                             mLoadProgress.start();
-                            mLoadProgress.switchToIndeterminate();
-                            
-
+                            mLoadProgress.switchToIndeterminate();                          
+                                                  
                             mLoadProgress.finish();
-                            
                         }                          
                     } catch (Exception e) {
                         mLog.severe(NbBundle.getMessage(ImportRelationshipPluginAction.class, "MSG_FAILED_To_Import_Relationship_Plugin")); // NOI18N
@@ -156,15 +161,49 @@ public class ImportRelationshipPluginAction extends CookieAction {
         return CookieAction.MODE_EXACTLY_ONE;
     }
     
+    private void AddPlugInJarToEjbProject(File plugInJarFile, Node activatedNode  ) 
+            throws IOException, FileNotFoundException, Exception{
+        
+//        File file = fc.getSelectedFile();
+//        MultiDomainPlugInsCookieImpl cookie = 
+//                activatedNodes[0].getCookie(MultiDomainPlugInsCookieImpl.class);
+        MultiDomainPlugInsCookieImpl cookie = 
+                activatedNode.getCookie(MultiDomainPlugInsCookieImpl.class);
+        final MultiDomainPlugInsFolderNode node = cookie.getMultiDomainPlugInsFolderNode();
+        FileObject plugInDir = node.getFileObject();
+        File mdProjectFile = FileUtil.toFile(plugInDir).getParentFile().getParentFile();
+        FileObject mdProjectDir = FileUtil.toFileObject(FileUtil.normalizeFile(mdProjectFile));
+        Project mdProject = ProjectManager.getDefault().findProject(mdProjectDir);
+        AntProjectHelper aph = (AntProjectHelper) mdProject.getLookup().lookup(AntProjectHelper.class);
+        EditableProperties ep = aph.getProperties(AntProjectHelper.PROJECT_PROPERTIES_PATH);
+        String ejbProjectLocation = ep.getProperty(MultiDomainProjectProperties.EJB_DIR);
+        File ejbProjectDir = new File(mdProjectFile.getCanonicalPath() + 
+                File.separator + ejbProjectLocation);
+        if (!ejbProjectDir.exists() || plugInJarFile ==null) {
+            DialogDisplayer.getDefault().notify(
+                new NotifyDescriptor.Message(
+                    NbBundle.getMessage(ImportRelationshipPluginAction.class, 
+                        "MSG_FAILED_To_Perform_ImportRelationshipPluginAction"),
+                    NotifyDescriptor.ERROR_MESSAGE));
+            return;
+        }
+        ArrayList<String> libs = new ArrayList<String>();
+        libs.add(plugInJarFile.getName());
+        String relativeLocation = "../src/Plug-ins";
+        EjbProjectManager.addLibsToEjbProject(ejbProjectDir, libs, relativeLocation ); 
+    
+    }
+    
     private class RelationsipPlugInFilter extends FileFilter {
         
         public boolean accept(java.io.File file) {
-            return ( file.isDirectory() || file.getName().endsWith(".zip") );
+            return ( file.isDirectory() || file.getName().endsWith(".jar") );
         }
         
         public String getDescription() {
             return NbBundle.getMessage(ImportRelationshipPluginAction.class, "MSG_Relationship_Plugin_Files");
         }
         
-    }    
+    }
+    
 }

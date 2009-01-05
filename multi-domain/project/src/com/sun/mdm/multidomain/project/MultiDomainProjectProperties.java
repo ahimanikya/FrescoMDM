@@ -23,7 +23,6 @@
 package com.sun.mdm.multidomain.project;
 
 import java.io.File;
-import com.sun.mdm.multidomain.parser.ConfigurationFiles;
 
 /** Defines constants for properties used in Multi-Domain Master Index. 
  */
@@ -84,7 +83,9 @@ public class MultiDomainProjectProperties {
     public static final String JBI_SE_TYPE = "com.sun.jbi.ui.devtool.jbi.setype.prefix";
     public static final String ARTIFACT_TYPE_JBI_ASA = "CAPS.asa";
     public static final String JAVA_EE_SE_COMPONENT_NAME = "sun-javaee-engine";
-
+    
+    public static final String MDWM_CONTEXT_ROOT_TOEKN = "/MDWM"; //NOI18N
+    
     //following properties are from ear project
     public static final String WEB_PROJECT_NAME = "web.project.name"; //NOI18N
     public static final String JAVA_PLATFORM = "platform.active"; //NOI18N
@@ -144,6 +145,5 @@ public class MultiDomainProjectProperties {
     public static final String J2EE_PLATFORM_WSGEN_CLASSPATH="j2ee.platform.wsgen.classpath"; //NOI18N
     public static final String J2EE_PLATFORM_WSIMPORT_CLASSPATH="j2ee.platform.wsimport.classpath"; //NOI18N
     public static final String J2EE_PLATFORM_JSR109_SUPPORT = "j2ee.platform.is.jsr109"; //NOI18N
-    public static final String MDWM_CONTEXT_ROOT_TOEKN = "/MDWM"; //NOI18N
     
 }

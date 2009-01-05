@@ -8,6 +8,7 @@ package com.sun.mdm.multidomain.project.anttasks;
 import com.sun.mdm.multidomain.parser.MultiDomainModel;
 import com.sun.mdm.multidomain.parser.ParserException;
 import com.sun.mdm.multidomain.parser.Utils;
+import com.sun.mdm.multidomain.project.EjbProjectManager;
 import com.sun.mdm.multidomain.project.MultiDomainProjectProperties;
 import com.sun.mdm.multidomain.project.generator.FileUtil;
 import com.sun.mdm.multidomain.project.generator.descriptor.JbiXmlWriter;
@@ -100,9 +101,9 @@ public class MultidomainGeneratorTask extends Task {
             // put ejb files in ebj project
             generateEbjFiles();
 
-            // add lib to ejb project by modifing ejb project's
+            // add libs to ejb project by modifing ejb project's
             // project.properties file.
-            addEjbLib();
+            addEjbLibs();
 
             // put the web files into war project
             generateWarFiles();
@@ -395,58 +396,14 @@ public class MultidomainGeneratorTask extends Task {
                   
     }
     
-    private void addEjbLib() throws FileNotFoundException, IOException {
+    private void addEjbLibs() throws FileNotFoundException, IOException, Exception {
         ArrayList<String> libs =new ArrayList<String>();
         libs.add("multidomain-core.jar");
         libs.add("multidomain-client.jar");
         libs.add("resources.jar");
         libs.add("index-core.jar");
         libs.add("net.java.hulp.i18n.jar");
-        
-        ArrayList<String> newLibs =new ArrayList<String>();
-        File ejbProjectXml = new File(mEjbdir,"nbproject/project.xml");
-        String ejbProjectXmlString = FileUtil.readFileToString(ejbProjectXml);
-        for (String libName:libs){
-            if(ejbProjectXmlString.indexOf(libName)<0){
-                newLibs.add(libName);
-            }
-        }
-
-        File ejbPropertyFile = new File(mEjbdir, "nbproject/project.properties");
-        java.util.Properties properties = new java.util.Properties();
-        properties.load(new FileInputStream(ejbPropertyFile));
-        
-        StringBuffer includedLibrary = new StringBuffer();
-        
-        StringBuffer classpath;       
-        if (null==properties.getProperty("javac.classpath")){
-            classpath = new StringBuffer();
-        }else{
-            classpath = new StringBuffer(properties.getProperty("javac.classpath").trim());
-        }
-        
-        for (String newLibName:newLibs){
-            
-            properties.setProperty("file.reference." + newLibName,
-                "../lib/" + newLibName);
-            
-            if (classpath.length()< 1){
-                classpath.append("${file.reference." + newLibName +"}");
-            }else{
-                classpath = classpath.append(":${file.reference." + newLibName +"}");
-            }
-            
-            includedLibrary.append(
-                    "<included-library files=\"1\">file.reference." + newLibName+"</included-library>\n");
-        }
-        properties.setProperty("javac.classpath", classpath.toString() );
-
-        properties.store(new FileOutputStream(ejbPropertyFile), null);
-        
-        String token = "</data>";
-        String values = includedLibrary.toString() + token;        
-        
-        FileUtil.updateFile(ejbProjectXml, ejbProjectXmlString.replaceFirst(token, values));
+        EjbProjectManager.addLibsToEjbProject(mEjbdir, libs, "../lib");
     }
     
     private void generateJars() throws FileNotFoundException, IOException,

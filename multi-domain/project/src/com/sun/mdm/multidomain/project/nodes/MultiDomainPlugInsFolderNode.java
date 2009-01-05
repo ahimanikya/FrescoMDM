@@ -40,6 +40,7 @@ public class MultiDomainPlugInsFolderNode extends MultiDomainFolderNode {
     public MultiDomainPlugInsFolderNode(String displayName, DataFolder folder) {
         super(displayName, folder);
         this.folder = folder;
+        this.getCookieSet().add(new MultiDomainPlugInsCookieImpl(this));
     }
     
     @Override

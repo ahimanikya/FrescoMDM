@@ -25,12 +25,25 @@ package com.sun.mdm.multidomain.project.generator;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Result;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import org.openide.util.Exceptions;
+import org.w3c.dom.DOMConfiguration;
+import org.w3c.dom.Document;
 
 /**
  *
@@ -38,6 +51,13 @@ import java.io.OutputStreamWriter;
  */
 public class FileUtil {
     
+    /**
+     * read a file into a String.
+     *
+     * @param inputFile The input file.
+     * @return The content of the file in String
+     * @throws IOException if an error occurs during reading file.
+     */
     public static String readFileToString(File inputFile) throws java.io.IOException{
         StringBuffer strBuffer = new StringBuffer(1000);
         BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(inputFile), "UTF-8"));
@@ -50,6 +70,13 @@ public class FileUtil {
         return strBuffer.toString();
     }
     
+    /**
+     * Write a string to a file.
+     *
+     * @param outFile The output file.
+     * @param content The content to be written to file.
+     * @throws IOException if an error occurs during writing file.
+     */
     public static void writeStringToFile(File outFile, String content ) throws IOException{
 
         BufferedWriter output = new BufferedWriter(
@@ -59,6 +86,13 @@ public class FileUtil {
         output.close();
     }
     
+    /**
+     * update a file.
+     *
+     * @param file The file to be updated.
+     * @param content The content to be written to file.
+     * @throws IOException if an error occurs during writing file.
+     */
     public static void updateFile(File file, String content) throws IOException {
         String fileName = file.getAbsolutePath();
         File tempFile = new File(fileName + ".tmp");
@@ -83,10 +117,42 @@ public class FileUtil {
         }
     }
     
+    /**
+     * replace a token in the content of a file.
+     *
+     * @param file The file to update.
+     * @param token The token to be replaced.
+     * @param value The replacement value.
+     * @throws IOException if an error occurs during writing file.
+     */
     public static void replaceTokenInFile(File file, String token, String value) 
             throws IOException {
         String content = readFileToString(file);
         updateFile(file, content.replaceAll(token, value));        
+    }
+    
+    /**
+     * transform a XML file to String
+     *
+     * @param Document The XML document
+     * @return The content of the XML in String
+     * @throws TransformerException if an error occurs.
+     */
+    public static String transformXMLtoString(Document xmldoc) throws TransformerException{
+        DOMConfiguration domConfig = xmldoc.getDomConfig();
+        //domConfig.setParameter("format-pretty-print", "true");
+        DOMSource domSource = new DOMSource(xmldoc);
+        TransformerFactory tf = TransformerFactory.newInstance();
+        tf.setAttribute("indent-number", 4);
+        Transformer serializer = tf.newTransformer();
+        serializer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+
+        serializer.setOutputProperty(OutputKeys.INDENT, "yes");
+        serializer.setOutputProperty(OutputKeys.VERSION, "1.0");
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        Result result = new StreamResult(new OutputStreamWriter(out));
+        serializer.transform(domSource, result);
+        return out.toString(); 
     }
 
 }
