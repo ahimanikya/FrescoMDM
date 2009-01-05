@@ -386,7 +386,7 @@ function showRearrangeTree(rearrangeButtonObj) {
 		document.getElementById("mainTreeSection").style.width = "50%";
 		displayDiv("rearrangeTreeSection", true);
 	}
-
+	byRecord_refreshMainTreeButtonsPallete();
 }
 
 // Function to get the data for rearrange tree.
