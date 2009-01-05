@@ -129,6 +129,18 @@ public class RelationshipHandler {
     }
     
     /**
+     * Get all domain records regardless of search option and criteria.
+     * @param domainSearch DomainSearch.
+     * @return List<ObjectView> List of ObjectView.
+     * @throws ServiceException ServiceException Thrown if an error occurs during processing.
+     */
+    public List<ObjectView> getEnterprises(DomainSearch domainSearch) 
+        throws ServiceException {
+        initialize();
+        return relationshipManager.getEnterprises(domainSearch);
+    }
+            
+    /**
      * Add a new relationship for the given relationship information.
      * @param relationship The relationship information.
      * @return String Relationship Id if a new relationship is created successfully.
