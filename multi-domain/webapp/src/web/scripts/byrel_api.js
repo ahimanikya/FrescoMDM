@@ -636,7 +636,7 @@ function populateRelationshipDetails(relationshipId, indexNum) {
 			strRecordPaneTitleHTML += "<td>&nbsp;&nbsp;" + cachedSearchResults[indexNum].targetHighLight;
 		}
         strRecordPaneTitleHTML += "</td></tr></table>" 
-alert("strRecordPaneTitleHTML="+strRecordPaneTitleHTML);        
+//alert("strRecordPaneTitleHTML="+strRecordPaneTitleHTML);        
         relationshipRecordPane.attr("title", strRecordPaneTitleHTML);
     }
 

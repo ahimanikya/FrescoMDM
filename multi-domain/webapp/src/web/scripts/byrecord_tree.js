@@ -121,7 +121,7 @@ function getByRecordDataCB (data) {
 			useSourceDomain = true; 
 		else useSourceDomain = false;
 
-  alert(i + "  useSourceDomain=" + useSourceDomain + " " +  tempRelObj.relationshipDefView.id + " -- " + tempRelObj.relationshipDefView.sourceDomain + " : "+ tempRelObj.relationshipDefView.targetDomain);
+ // alert(i + "  useSourceDomain=" + useSourceDomain + " " +  tempRelObj.relationshipDefView.id + " -- " + tempRelObj.relationshipDefView.sourceDomain + " : "+ tempRelObj.relationshipDefView.targetDomain);
         var relationshipNode = {};
         relationshipNode.id = tempRelObj.relationshipDefView.id;
         relationshipNode.name = tempRelObj.relationshipDefView.name;
@@ -226,7 +226,7 @@ var mainTree_isMovePossible = false;
 
 // Main tree click event is captured by this function
 function mainTreeClicked(item, node, allSelectedItems ) {
-alert('allSelectedItems ' + allSelectedItems.length);
+//alert('allSelectedItems ' + allSelectedItems.length);
 	byRecord_Selected_Relationship = null;
 	byRecord_Selected_Record = null;
 	
