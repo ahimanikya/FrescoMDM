@@ -261,7 +261,7 @@ function byRecordSelectRecord() {
 
     // Hard code assigning values, to be used for Add dialog
     byRecord_CurrentSelected_TargetDomain = "Company";
-    byRecord_CurrentSelected_RelationshipDefName = "worksfor";
+    byRecord_CurrentSelected_RelationshipDefName = "EmployedBy";
     
     RelationshipDefHandler.getRelationshipDefByName(byRecord_CurrentSelected_RelationshipDefName, byRecord_CurrentWorking_Domain, 
         byRecord_CurrentSelected_TargetDomain, cacheRelationshipDef);
@@ -339,7 +339,7 @@ function byRecord_ShowDetails () {
         loadSummaryFields(dataFromServer, targetDomain); }
         });
      
-        // Load fields for details display for source & target domain
+        // Load fields to display record details for source & target domains
 	    DomainScreenHandler.getDetailFields(sourceDomain, { callback:function(dataFromServer) {
         cacheFieldsForDomain (dataFromServer, sourceDomain); }
         });
@@ -365,13 +365,22 @@ function byRecord_ShowDetails () {
            sourcePane.toggleSummaryIcon(); // revert back the view to summary
         }
 
-        // we need to get the summary fields once API is ready. The below commented lines are testing purpose
-		//var recordSummary = {name:sourceDomain,EUID:byRecord_Selected_Record.EUID}; 
-		//RelationshipHandler.getEnterprise(recordSummary, polulateByRecordSourceDetails_Callback);
+		DomainScreenHandler.getSummaryFields(sourceDomain, { callback:function(dataFromServer) {
+        loadSummaryFields(dataFromServer, sourceDomain); }
+        });
+     
+        // Load fields to display record details for source 
+	    DomainScreenHandler.getDetailFields(sourceDomain, { callback:function(dataFromServer) {
+        cacheFieldsForDomain (dataFromServer, sourceDomain); }
+        });
 
 		displayDiv("byRecord_SourceRecordDetails", true);
 		displayDiv("byRecord_TargetRecordDetails", false);
 		displayDiv("byRecord_editAttributes", false);
+        
+		// To get record derails for the source domain
+		var recordSummary = {name:sourceDomain,EUID:byRecord_Selected_Record.EUID}; 
+		RelationshipHandler.getEnterprise(recordSummary, polulateByRecordSourceDetails_Callback);
 		
 	} else {
 		alert("details section show nothing. clear the currently shown details. ");
@@ -487,6 +496,47 @@ function populateByRecordRelationshipDetails_Callback(data){
 	}
     return;
 }
+
+function polulateByRecordSourceDetails_Callback(data){
+
+	//alert("getEnterprisse data  "+data);
+	var summaryFieldCount = 0;
+	var fieldName, fieldValue;
+    var recordFieldRow,isSummaryField;
+	// Populate source record details
+	var sourceRecordDetails =  data.attributes;
+    dwr.util.removeAllRows("sourceRecordInSummary");    
+    dwr.util.removeAllRows("sourceRecordInDetail");
+    summaryFieldCount = 0;
+
+	for(i=0; i<sourceRecordDetails.length; i++) {
+        fieldName = sourceRecordDetails[i].name;
+        fieldValue = sourceRecordDetails[i].value;
+
+		var displayName = getDisplayNameForField (data.name, fieldName );
+		//alert("fieldName  "+fieldName +"   fieldValue  "+fieldValue +"	displayName  "+displayName);
+		var sourceSummaryTable = document.getElementById('sourceRecordInSummary');
+        var sourceDetailTable = document.getElementById('sourceRecordInDetail');
+
+		recordFieldRow = sourceDetailTable.insertRow(i);
+        recordFieldRow.insertCell(0);recordFieldRow.cells[0].className = "label";
+        recordFieldRow.insertCell(1);recordFieldRow.cells[1].className = "data";
+        recordFieldRow.cells[0].innerHTML = displayName+ ": ";
+        recordFieldRow.cells[1].innerHTML = fieldValue;
+
+		isSummaryField = summaryFields[data.name].contains(fieldName);
+        if( isSummaryField ) {
+          recordFieldRow= sourceSummaryTable.insertRow(summaryFieldCount);
+          recordFieldRow.insertCell(0);recordFieldRow.cells[0].className = "label";
+          recordFieldRow.insertCell(1);recordFieldRow.cells[1].className = "data";
+		  
+          recordFieldRow.cells[0].innerHTML = displayName + ": ";
+          recordFieldRow.cells[1].innerHTML = fieldValue;
+          summaryFieldCount ++;
+        }
+    }
+}
+
 function byRecord_clearDetailsSection() {
 	displayDiv("byRecord_SourceRecordDetails", false);
 	displayDiv("byRecord_TargetRecordDetails", false);
