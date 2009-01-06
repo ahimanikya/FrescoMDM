@@ -111,19 +111,16 @@ public class MIDMObjectDef {
             if (children.item(i).getNodeType() == Node.ELEMENT_NODE) {
                 element = children.item(i);
                  String name = ((Element) children.item(i)).getTagName();
-                if (!name.equals("node")) {
+                if (!name.equals("node") && !name.equals("relationships")) {
                     root.removeChild(element);
                 }
             }
         }
         
-        //root.setAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "noNamespaceSchemaLocation", "schema/MultiDomainWebManager.xsd");
         root.removeAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "schema/midm.xsd");
         root.removeAttribute("xmlns:xsi"); 
         root.removeAttribute("xsi:noNamespaceSchemaLocation");
-        //root.removeAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "noNamespaceSchemaLocation");
         byte[] webXml = transformToXML(doc);
-
         return new String(webXml);
     }
     
