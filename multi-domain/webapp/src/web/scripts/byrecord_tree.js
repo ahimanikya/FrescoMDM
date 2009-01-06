@@ -34,7 +34,7 @@ function getByRecordData () {
     var domainSearchObj = {name:selectedDomain, attributes:[{EUID: selectedEUID}]};
     
     RelationshipHandler.searchDomainRelationshipsByRecord(domainSearchObj, getByRecordDataCB);
-   return;
+    return;
     // For testing, simulate data and call callback method <START>
     var data = {};
     data.domain = domainSearchObj.name;
@@ -481,7 +481,8 @@ function createRearrangeTree () {
         id: "rearrangeTree",
         model: rearrangeTreeModel,
         customOnClick: rearrangeTreeClicked,
-        getIconClass: rearrangeTreeGetIconClass
+        getIconClass: rearrangeTreeGetIconClass,
+		lazyLoadItems: lazyLoadRearrangeTreeRelationships
     }, document.createElement("div"));
     rearrangeTreeObj.startup();
     dojo.byId("rearrangeTreeContainer").appendChild(rearrangeTreeObj.domNode);
@@ -492,6 +493,12 @@ function deleteItemsFromRearrangeTreeStore(items, req) {
         var status = rearrangeTree_Store.deleteItem(items[i]);
         rearrangeTree_Store.save();
     }
+}
+// Function called when tree (rearrange Tree) is trying load the childrens for expanded node.
+function lazyLoadRearrangeTreeRelationships(node, callback_function) {
+	//TODO: Get child nodes for the node and create entries in tree
+	
+	callback_function();
 }
 
 function rearrangeTreeClicked(item, node, allSelectedItems ) {
