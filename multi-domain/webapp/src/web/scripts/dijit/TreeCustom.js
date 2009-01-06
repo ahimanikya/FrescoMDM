@@ -103,7 +103,18 @@ dojo.declare("dijit.TreeCustom", dijit.Tree, {
 
 	customOnClick: function () {
 		alert("in custom on click");
-	}
+	},
 
+	_expandNode: function (node) {
+		if(node.state == "UNCHECKED") {
+			this.lazyLoadItems(node , function() {
+				node.unmarkProcessing();
+			});
+		}
+		this.inherited(arguments); 
+	},
+	lazyLoadItems: function(node, callback_function) {
+		callback_function();
+	}
 
 });
