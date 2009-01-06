@@ -60,7 +60,7 @@ public class MDConfigManagerTest extends TestCase {
         try {
             // count the number of domain screen configurations
             HashMap<String, DomainScreenConfig> domainScreenConfigs = configManager.getDomainScreenConfigs();
-            int domainScreenConfigsSize = 5;
+            int domainScreenConfigsSize = 2;
             int size = domainScreenConfigs.size();
             if (size != domainScreenConfigsSize) {
                 System.out.println("Error: expected "  + domainScreenConfigsSize +
@@ -68,9 +68,47 @@ public class MDConfigManagerTest extends TestCase {
                                    " retrieved " + size + " domain screen configurations.");
                 assertTrue(false);
             } else {
-                assertTrue(true);
-                // TODO
-                // count the screens for each domain screen configuration
+                DomainScreenConfig dsc = domainScreenConfigs.get("Person");
+                HashMap<String, ObjectNodeConfig> objNodeConfigMap = configManager.getObjectNodeConfig("Person");
+                ObjectNodeConfig objNodeConfig = objNodeConfigMap.get("Person");
+                
+                //Count the FieldGroup instances and FieldConfig instances.
+
+                ArrayList searchScreenConfigs = dsc.getSearchScreenConfigs();
+                int fieldConfigCount = 0;
+                int fieldGroupCount = 0;
+
+                for (int j = 0; j < searchScreenConfigs.size(); j++)   {
+                     SearchScreenConfig searchScreenConfig = (SearchScreenConfig)searchScreenConfigs.get(j);
+                     ArrayList fieldGroupArray = searchScreenConfig.getFieldConfigGroups();
+                     fieldGroupCount++;
+                     for(int k = 0; k < fieldGroupArray.size(); k++)   {  
+                          FieldConfigGroup  fieldConfigGrp = (FieldConfigGroup)fieldGroupArray.get(k);
+                          ArrayList fieldconfigsGroup =fieldConfigGrp.getFieldConfigs();      
+                          for(int l = 0; l < fieldconfigsGroup.size(); l++)    {  
+                                FieldConfig fieldConfig = (FieldConfig) fieldconfigsGroup.get(l);
+                                String fieldName = fieldConfig.getName();
+                                FieldConfig midmFieldConfig = objNodeConfig.getFieldConfig(fieldName);
+                                if (midmFieldConfig != null) {
+                                    fieldConfigCount++;
+                                }
+                          }     
+                     }
+                }
+                int expectedFieldGroupCount = 3;
+                if (fieldGroupCount != expectedFieldGroupCount) {
+                    System.out.println("Error: expected "  + expectedFieldGroupCount  +
+                                       " field groups but retrieved " + fieldGroupCount + 
+                                       " field groups.");
+                    assertTrue(false);
+                }
+                int expectedFieldConfigCount = 13;
+                if (fieldConfigCount != expectedFieldConfigCount) {
+                    System.out.println("Error: expected "  + expectedFieldConfigCount  +
+                                       " FieldConfig objects but retrieved " + fieldConfigCount + 
+                                       " FieldConfig objects.");
+                    assertTrue(false);
+                }
             }
         } catch(Exception ex) {
             fail(ex.getMessage());
@@ -81,7 +119,7 @@ public class MDConfigManagerTest extends TestCase {
         try {
             // count the number of relationship screen configurations
             HashMap<String, RelationshipScreenConfig> relationshipScreenConfigs = configManager.getRelationshipScreenConfigs();
-            int relationshipScreenConfigsSize = 5;
+            int relationshipScreenConfigsSize = 2;
             int size = relationshipScreenConfigs.size();
             if (size != relationshipScreenConfigsSize) {
                 System.out.println("Error: expected "  + relationshipScreenConfigsSize +
@@ -98,7 +136,7 @@ public class MDConfigManagerTest extends TestCase {
                                 = rsc.getRelationships().values();
                     relationshipConfigCount += relConfigs.size();
                 }
-                int relationshipScreenConfigInstancesSize = 7;
+                int relationshipScreenConfigInstancesSize = 2;
                 if (relationshipConfigCount != relationshipScreenConfigInstancesSize) {
                     System.out.println("Error: expected "  + relationshipScreenConfigInstancesSize +
                                        " relationship screen configuration instances " + 
@@ -118,7 +156,7 @@ public class MDConfigManagerTest extends TestCase {
             // count the number of screens
             HashMap<Integer, ScreenObject> screenObjects = configManager.getScreens();
             int size = screenObjects.size();
-            int pageDefConfigSize = 1;
+            int pageDefConfigSize = 4;
             if (size != pageDefConfigSize) {
                 System.out.println("Error: expected "  + pageDefConfigSize +
                                    " screen object configurations but actually" +
@@ -134,7 +172,19 @@ public class MDConfigManagerTest extends TestCase {
                                        " but actually retrieved " + initialScreenID);
                     assertTrue(false);
                 }
+                
+                // check all screens
+                String expectedViewPaths[] = {"manage/manage_group",
+                                              "manage/history_group",
+                                              "manage/manage_hierarchy",
+                                              "manage/history_hierarchy",
+                                              "manage/manage_category",
+                                              "manage/history_category",
+                                              "manage/manage_relationship",
+                                              "manage/history_relationship"};
+                                                
                 Collection<ScreenObject> values = screenObjects.values();
+                int i = 0;
                 for (ScreenObject scrObj : values) {
                     int initialSubscreenID = scrObj.getInitialSubscreenID();
                     int pageDefInitialSubscreenID = 0;
@@ -153,42 +203,41 @@ public class MDConfigManagerTest extends TestCase {
                             assertTrue(false);
                         } else {
                             ArrayList<ScreenObject> subScreensList = new ArrayList<ScreenObject>(subscreens);
-                            int expectedPageSize = 15;
+                            int expectedPageSize = 100;
                             int expectedMaxRecords = 100;
-                            String expectedViewPath = "manage/history_relationship";
                             
                             scrObj = subScreensList.get(0);
                             int pageSize = scrObj.getPageSize();
                             if (pageSize != expectedPageSize) {
                                 System.out.println("Error: expected first subscreen " +
-                                                   " to have a page size of " + 
+                                                   "to have a page size of " + 
                                                    expectedPageSize + " but retrieved " +
-                                                   " a page size of " + pageSize);
+                                                   "a page size of " + pageSize);
                                 assertTrue(false);
                             }
                             int maxRecords = scrObj.getMaxRecords();
                             if (maxRecords != expectedMaxRecords) {
                                 System.out.println("Error: expected first subscreen " +
-                                                   " to have a max records of " + 
+                                                   "to have a max records of " + 
                                                    expectedMaxRecords + " but retrieved " +
-                                                   " a page size of " + maxRecords);
+                                                   "a page size of " + maxRecords);
                                 assertTrue(false);
                             }
 
                             String viewpath = scrObj.getViewPath();
-                            if (expectedViewPath.compareTo(viewpath) != 0) {
+                            if (expectedViewPaths[i].compareTo(viewpath) != 0) {
                                 System.out.println("Error: expected first subscreen " +
-                                                   " to have a view path of " + 
-                                                   expectedViewPath + " but retrieved " +
-                                                   " a view path of " + viewpath);
+                                                   "to have a view path of " + 
+                                                   expectedViewPaths[i] + " but retrieved " +
+                                                   "a view path of " + viewpath);
                                 assertTrue(false);
                             }
                             
+                            i++;
                             scrObj = subScreensList.get(1);
-                            expectedPageSize = 12;
-                            expectedMaxRecords = 97;
+                            expectedPageSize = 100;
+                            expectedMaxRecords = 100;
                             pageSize = scrObj.getPageSize();
-                            expectedViewPath = "manage/manage_relationship";
                             if (pageSize != expectedPageSize) {
                                 System.out.println("Error: expected second subscreen " +
                                                    " to have a page size of " + 
@@ -205,14 +254,14 @@ public class MDConfigManagerTest extends TestCase {
                                 assertTrue(false);
                             }
                             viewpath = scrObj.getViewPath();
-                            if (expectedViewPath.compareTo(viewpath) != 0) {
+                            if (expectedViewPaths[i].compareTo(viewpath) != 0) {
                                 System.out.println("Error: expected second subscreen " +
                                                    " to have a view path of " + 
-                                                   expectedViewPath + " but retrieved " +
+                                                   expectedViewPaths[i] + " but retrieved " +
                                                    " a view path of " + viewpath);
-                                assertTrue(false);
+                              assertTrue(false);
                             }
-                            
+                            i++;
                             assertTrue(true);
                         }
                     }
@@ -267,6 +316,7 @@ public class MDConfigManagerTest extends TestCase {
                     for (FieldConfig field : fields) {
                         
                         String fieldName = field.getFieldName();
+//                        String fieldName = field.getName();
                         ObjectNodeConfig objNodeConfig = objNodeConfigMap.get(field.getObjRef());
                         FieldConfig nField = objNodeConfig.getFieldConfig(fieldName);
                         if (nField != null) {

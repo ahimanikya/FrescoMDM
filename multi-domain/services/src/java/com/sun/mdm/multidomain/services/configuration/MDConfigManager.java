@@ -372,18 +372,25 @@ public class MDConfigManager {
                 Element element = (Element)itr.next();
 
                 if (element.getTagName().startsWith(NODE_TAG)) {
-                  try {
-                    ObjectNodeConfig objNodeConfig = buildObjectNodeConfig(element, domainName);
+                    try {
+                        ObjectNodeConfig objNodeConfig = buildObjectNodeConfig(element, domainName);
 
-                    // build a node
-                    objNodeConfigMap.put(objNodeConfig.getName(), objNodeConfig);
-                  } catch (Exception ex) {
-                      throw new Exception(mLocalizer.t("CFG559: Error occurred in node definition: {0}", 
+                        // build a node
+                        objNodeConfigMap.put(objNodeConfig.getName(), objNodeConfig);
+                    } catch (Exception ex) {
+                        throw new Exception(mLocalizer.t("CFG559: Error occurred in node definition: {0}", 
                                                         ex.getMessage()));
-                  }
-                } 
+                    }
+                } else if (element.getTagName().equalsIgnoreCase("relationships")) {
+                    // Node definitions have been processed.  Store these configurations.
+                    mDomainObjNodeConfigMap.put(domainName, objNodeConfigMap);
+                    try {
+                        buildObjectNodeRelationship(element, domainName);
+                    } catch (Exception ex) {
+                        throw new Exception(mLocalizer.t("CFG577: Error in relationship definition: {0}", ex.getMessage()));
+                    }                
+                }
             }
-            mDomainObjNodeConfigMap.put(domainName, objNodeConfigMap);
             input.close();
         } catch (Exception e) {
             throw new ConfigException(mLocalizer.t("CFG569: Could not parse the " +
@@ -524,6 +531,36 @@ public class MDConfigManager {
         }
 
         return objNodeConfig;
+    }
+
+    /**
+     * Builds the object node relationships
+     *
+     * @param element The XML element to processes.
+     * @param domainName  The domain name.
+     * @return An object representing the configuration for a domain.
+     * @throws ConfigException if an error is encountered.
+     */
+    private static void buildObjectNodeRelationship(Element element, String domainName) 
+            throws ConfigException {
+
+        ChildElementIterator itr = new ChildElementIterator(element,"children");
+        String childName = null;
+        try {
+            while ( itr.hasNext() ) {
+                Element childElement = (Element)itr.next();
+                childName = NodeUtil.getNodeText(childElement);
+        
+                // This is not a root object
+                HashMap<String, ObjectNodeConfig> objNodeConfigMap = mDomainObjNodeConfigMap.get(domainName);
+                ObjectNodeConfig objNodeConfig = objNodeConfigMap.get(domainName);
+                objNodeConfig.addChildConfig((ObjectNodeConfig) (objNodeConfigMap.get(
+                        childName)));
+            }
+        } catch (Exception ex) {
+            throw new ConfigException(mLocalizer.t("CFG578: Error occurred while building object " + 
+                                             "relationship for childName = {0}: {1}", childName, ex.getMessage()));
+        }
     }
     
     /**
@@ -686,7 +723,7 @@ public class MDConfigManager {
         }
         ArrayList<FieldConfig> fieldConfigs = new ArrayList<FieldConfig>();
         for (FieldGroup.FieldRef field : fieldRefs) {
-            String objRef = null;
+            String objRef = field.getObjectRef();
             String name = field.getFieldName();
             String displayName = null;
             String guiType = null;

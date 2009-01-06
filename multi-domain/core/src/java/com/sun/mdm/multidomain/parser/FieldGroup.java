@@ -68,6 +68,31 @@ public class FieldGroup {
             return this.mFieldName;
         }
         
+        /* Retrieves the object references for a field.  This is the object to
+         * which a field belongs.  For example, in "Person.Address.City", "Address" 
+         * is the object reference.
+         * 
+         * @return Object reference for a field.
+         */
+        public String getObjectRef() {
+            
+            String objectRef = null;
+            int lastDelim = mFieldName.lastIndexOf('.');
+            if (lastDelim != -1) {
+                int objectDelim = mFieldName.lastIndexOf('.', lastDelim - 1);
+                if (objectDelim != -1) {
+                    objectRef = mFieldName.substring(objectDelim + 1, lastDelim);
+                } else { // top level object
+                    objectRef = mFieldName.substring(0, lastDelim);
+                }
+                // remove any extraneous characters
+                objectDelim = objectRef.indexOf('[');
+                if (objectDelim != -1) {
+                    objectRef = objectRef.substring(0, objectDelim);
+                }
+            }
+            return objectRef;
+        }
         
     }
 
