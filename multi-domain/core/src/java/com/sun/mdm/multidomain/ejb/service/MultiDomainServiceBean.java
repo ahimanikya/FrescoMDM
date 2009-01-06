@@ -170,7 +170,6 @@ public class MultiDomainServiceBean implements MultiDomainServiceRemote, MultiDo
         Connection con = dataSource.getConnection();
         RelationshipService relService = new RelationshipService(con);
         relService.update(relationship);
-
        } catch (Exception ex) {
            throw new ProcessingException(ex);
        }
