@@ -30,11 +30,11 @@ function getByRecordData () {
 	var selectedEUID = "000-000-555";
 	if(byRecord_CurrentWorking_Domain != null) selectedDomain = byRecord_CurrentWorking_Domain;
 	if(byRecord_CurrentWorking_EUID != null) selectedEUID = byRecord_CurrentWorking_EUID;
-
+alert(selectedDomain  + " : " + selectedEUID);
     var domainSearchObj = {name:selectedDomain, attributes:[{EUID: selectedEUID}]};
     
-    //RelationshipHandler.searchDomainRelationshipsByRecord(domainSearchObj, getByRecordDataCB);
-    
+    RelationshipHandler.searchDomainRelationshipsByRecord(domainSearchObj, getByRecordDataCB);
+   return;
     // For testing, simulate data and call callback method <START>
     var data = {};
     data.domain = domainSearchObj.name;
@@ -58,7 +58,6 @@ function getByRecordData () {
           relationshipDefView.sourceDomain = "Hospital";
           relationshipDefView.targetDomain = selectedDomain;
           relationshipDefView.biDirection = false;
-
         }
         tempRelationshipObj.relationshipDefView = relationshipDefView;
         
@@ -95,12 +94,13 @@ function getByRecordDataCB (data) {
     // 1. Populate store for tree
     // 1a. delete existing data items from store.
     mainTree_Store.fetch ({query:{},onComplete: deleteItemsFromStore, queryOptions: {deep:true}});
-    
+
     // 1b. Create root element, i.e., Domain eg., Person, UK Patient.
     var rootDomainItem = {};
     rootDomainItem.id = "rootDomainID";
     rootDomainItem.name = data.domain;
     rootDomainItem.type = item_types.DOMAIN;
+	rootDomainItem.isRoot = true;
     
     // 1c. Create node for the main record. eg., George Karlin.
     var rootRecordItem = {};
@@ -109,11 +109,14 @@ function getByRecordDataCB (data) {
     rootRecordItem.name = data.primaryObject.highLight;
 	rootRecordItem.parentDomain = data.domain;
     rootRecordItem.type = item_types.RECORD;
- 
+	rootRecordItem.isRoot = true;
+	
+ //alert("rootRecordItem : " + rootRecordItem);
     var rootDomain = mainTree_Store.newItem( rootDomainItem , null);
     var rootRecord = mainTree_Store.newItem(rootRecordItem, {parent: rootDomain, attribute:"children"} );
-
+//alert("data.relationshipsObjects.length : " +data.relationshipsObjects.length );
     // 1d. add relationships for the root record.
+
     for(i=0; i<data.relationshipsObjects.length; i++) {
         var tempRelObj = data.relationshipsObjects[i];
 		var useSourceDomain = false;
@@ -121,9 +124,10 @@ function getByRecordDataCB (data) {
 			useSourceDomain = true; 
 		else useSourceDomain = false;
 
- // alert(i + "  useSourceDomain=" + useSourceDomain + " " +  tempRelObj.relationshipDefView.id + " -- " + tempRelObj.relationshipDefView.sourceDomain + " : "+ tempRelObj.relationshipDefView.targetDomain);
+//alert(i + "  useSourceDomain=" + useSourceDomain + " " +  tempRelObj.relationshipDefView.id + " -- " + tempRelObj.relationshipDefView.sourceDomain + " : "+ tempRelObj.relationshipDefView.targetDomain);
         var relationshipNode = {};
-        relationshipNode.id = tempRelObj.relationshipDefView.id;
+        relationshipNode.id = i + "_" + tempRelObj.relationshipDefView.id;
+		relationshipNode.relationshipDefId = tempRelObj.relationshipDefView.id; 
         relationshipNode.name = tempRelObj.relationshipDefView.name;
         relationshipNode.biDirection = tempRelObj.relationshipDefView.biDirection;
 		if(useSourceDomain)
@@ -135,7 +139,7 @@ function getByRecordDataCB (data) {
         var rNodeItem = mainTree_Store.newItem(relationshipNode, {parent: rootRecord, attribute:"children"} );
 
         var relationshipDomain = {};
-        relationshipDomain.id = relationshipNode.id + "_" + tempRelObj.relationshipDefView.sourceDomain;
+        relationshipDomain.id = i + "_" + relationshipNode.id + "_" + tempRelObj.relationshipDefView.sourceDomain;
 		if(useSourceDomain)
 			relationshipDomain.name = tempRelObj.relationshipDefView.sourceDomain;
 		else
@@ -243,10 +247,12 @@ function mainTreeClicked(item, node, allSelectedItems ) {
 		var itemType = mainTree_Store.getValue(tempItem, "type");
 		var itemName = mainTree_Store.getValue(tempItem, "name");	
 		//alert(itemType + " : " + itemName);
-
+		var isRoot = mainTree_Store.getValue(tempItem, "isRoot");
+		
 		switch (itemType) {
 			case item_types.DOMAIN:
-				if(itemName == byRecord_CurrentWorking_Domain) {
+				//if(itemName == byRecord_CurrentWorking_Domain) {
+				if(isRoot !=null && isRoot) {
 					mainTree_isDeletePossible = false;
 					isRootDomainSelected = true;
 					continue;
@@ -265,6 +271,7 @@ function mainTreeClicked(item, node, allSelectedItems ) {
 			case item_types.RECORD:
 				var itemEUID = mainTree_Store.getValue(tempItem, "EUID");
 				var tempDomain = mainTree_Store.getValue(tempItem, "parentDomain");
+				//alert(itemEUID + " : " + byRecord_CurrentWorking_EUID);
 				
 				if(prevRecDomainName == null) prevRecDomainName = tempDomain;
 				if(tempDomain == prevRecDomainName) 
@@ -273,7 +280,7 @@ function mainTreeClicked(item, node, allSelectedItems ) {
 					recFromSameDomainCount --;
 				prevRecDomainName = tempDomain;
 				
-				if(itemEUID == byRecord_CurrentWorking_EUID) {
+				if(isRoot !=null && isRoot) {
 					byRecord_Selected_Record = {};
 					byRecord_Selected_Record["EUID"] = itemEUID;
 					
@@ -282,7 +289,7 @@ function mainTreeClicked(item, node, allSelectedItems ) {
 					byRecord_Selected_Record["sourceRecordHighLight"] = tempName;
 					isRootRecordSelected = true;
 				} else {
-                    alert("not root");                
+                    //alert("not root");                
 					var tempRelationshipId = mainTree_Store.getValue(tempItem, "parentRelationshipId");
 					
 					byRecord_Selected_Relationship = {};
@@ -394,11 +401,12 @@ function showRearrangeTree(rearrangeButtonObj) {
 function getRearrangeTreeData () {
 	var selectedDomain = "Person";
 	var selectedEUID = "000-000-555";
+	var domainSearchObj = {name:selectedDomain};
 	if(byRecord_CurrentWorking_Domain != null) selectedDomain = byRecord_CurrentWorking_Domain;
 	if(byRecord_CurrentWorking_EUID != null) selectedEUID = byRecord_CurrentWorking_EUID;
 	
-	//RelationshipHandler.xyz(domainSearchObj, getRearrangeTreeData_CB);
-    
+	RelationshipHandler.getEnterprises(domainSearchObj, getRearrangeTreeData_CB);
+    return;
     // For testing, simulate data and call callback method 
 	var data = {};
     data.domain = selectedDomain;
@@ -407,7 +415,7 @@ function getRearrangeTreeData () {
     for(i=0; i<4; i++) {
 		var tempRecordObj = {};
 		tempRecordObj.EUID = "000-000-"+i;
-		tempRecordObj.recordHighLight = "Record Name " + i;
+		tempRecordObj.highLight = "Record Name " + i;
 		recordObjs.push (tempRecordObj);
 	}
 	
@@ -421,19 +429,24 @@ function getRearrangeTreeData_CB (data) {
     // 1. Populate store for tree
     // 1a. delete existing data items from store.
     rearrangeTree_Store.fetch ({query:{},onComplete: deleteItemsFromRearrangeTreeStore, queryOptions: {deep:true}});
+
 	
 	// 1b. Create root element, i.e., Domain eg., Person, UK Patient.
     var rootDomainItem = {};
     rootDomainItem.id = "rootDom";
-    rootDomainItem.name = data.domain;
+    rootDomainItem.name = byRecord_CurrentWorking_Domain;
     rootDomainItem.type = item_types.DOMAIN;
 	
 	var rootDomain = rearrangeTree_Store.newItem( rootDomainItem , null);
-	for(i=0; i<data.domainRecords.length; i++) {
-		var tempRec = data.domainRecords[i];
+	
+	var domainRecords = data;
+	
+	for(i=0; i<domainRecords.length; i++) {
+		var tempRec = domainRecords[i];
+		
 		var recordNode = {};
         recordNode.id = tempRec.EUID;
-        recordNode.name = tempRec.recordHighLight;
+        recordNode.name = tempRec.highLight;
 
         recordNode.type = item_types.RECORD;
         var recordNodeItem = rearrangeTree_Store.newItem(recordNode, {parent: rootDomain, attribute:"children"} );
@@ -442,7 +455,6 @@ function getRearrangeTreeData_CB (data) {
 	// 2. Save the items of store
     rearrangeTree_Store.save();
 
-		
     // 3. Create tree now
     createRearrangeTree();
 	displayDiv("rearrangeTreeContainer", true);
