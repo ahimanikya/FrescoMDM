@@ -317,15 +317,17 @@ function byRecord_ShowDetails () {
            targetPane.toggleSummaryIcon(); // revert back the view to summary
 		   
            var relationshipDef = byRecord_CachedRelationshipDefs[relationshipDefName];
-		   var relationshipRecordPane = dijit.byId("relationshipRecordDetailsPane"); 
-		   var strRecordPaneTitleHTML = "<table cellspacing='0' cellpadding='0'><tr><td>"+getMessageForI18N("relationship_Attributes")+getMessageForI18N("colon")+ " "
-
-		   if(relationshipDef!=null) {
-			  strRecordPaneTitleHTML += byRecord_Selected_Relationship.sourceRecordHighLight;
-			  strRecordPaneTitleHTML += " " + relationshipDef.name ;
-			  strRecordPaneTitleHTML += "</td><td>" + getRelationshipDefDirectionIcon(relationshipDef.biDirection) + "</td><td>";
-			  strRecordPaneTitleHTML += " " + byRecord_Selected_Relationship.targetRecordHighLight;
-		   }
+           var relationshipRecordPane = dijit.byId("relationshipRecordDetailsPane"); 
+           var strRecordPaneTitleHTML = "<table cellspacing='0' cellpadding='0'><tr>";
+           strRecordPaneTitleHTML += "<td>"+getMessageForI18N("relationship_Attributes")+getMessageForI18N("colon")+ "&nbsp;</td>"
+           if(relationshipDef!=null) {
+             strRecordPaneTitleHTML += "<td>" +  byRecord_Selected_Relationship.sourceRecordHighLight + "&nbsp;&nbsp; </td>";        
+             strRecordPaneTitleHTML += "<td>" + getRelationshipDefDirectionIcon(relationshipDef.biDirection) + "</td>" ;
+             strRecordPaneTitleHTML +=  "<td>" + relationshipDef.name  + "</td>";
+             strRecordPaneTitleHTML += "<td>&nbsp;&nbsp;" + byRecord_Selected_Relationship.targetRecordHighLight;
+           }
+                                
+                               
            strRecordPaneTitleHTML += "</td></tr></table>"
            relationshipRecordPane.attr("title", strRecordPaneTitleHTML);
         }

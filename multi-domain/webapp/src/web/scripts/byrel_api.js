@@ -502,17 +502,20 @@ function loadSearchResultFields(data, domainName) {
 	return;
 }
 function cacheRelationshipDefAttributes (data, relationshipDefName) {
-    //alert("relationship def: " + data);
+    // alert("relationship def: " + data);
     cachedRelationshipDefs[relationshipDefName] = data;
 
     // Update the view with relationship Name along with direction icon.
-    var strHTML = "<table cellspacing='0' cellpadding='0'><tr><td valign='middle'>" + relationshipDefName;
-    strHTML += "</td><td valign='middle'>";
+    var strHTML = "<table cellspacing='0' cellpadding='0'><tr><td valign='middle'>";
     if(getBoolean (data.biDirection) ) {
         strHTML += "<img src='images/icons/relationship-both.png' hspace='3'>";
     } else {
         strHTML += "<img src='images/icons/relationship-right.png' hspace='3'>";
     }
+    
+    strHTML += "</td><td valign='middle'>";
+    strHTML +=  relationshipDefName;
+    
     strHTML +="</td></tr></table>";
     document.getElementById("selectedRelationshipDef").innerHTML = strHTML;
 }
@@ -624,14 +627,16 @@ function populateRelationshipDetails(relationshipId, indexNum) {
         var relationshipDef = cachedRelationshipDefs[relationshipDefName];
     
         var relationshipRecordPane = dijit.byId("relationshipRecordDetailsPane"); 
-        var strRecordPaneTitleHTML = "<table cellspacing='0' cellpadding='0'><tr><td>"+getMessageForI18N("relationship_Attributes")+getMessageForI18N("colon")+ " "
+        var strRecordPaneTitleHTML = "<table cellspacing='0' cellpadding='0'><tr>";
+        strRecordPaneTitleHTML += "<td>"+getMessageForI18N("relationship_Attributes")+getMessageForI18N("colon")+ "&nbsp;</td>"
 		if(relationshipDef!=null) {
-			strRecordPaneTitleHTML += cachedSearchResults[indexNum].sourceHighLight;
-			strRecordPaneTitleHTML += " " + relationshipDef.name ;
-			strRecordPaneTitleHTML += "</td><td>" + getRelationshipDefDirectionIcon(relationshipDef.biDirection) + "</td><td>";
-			strRecordPaneTitleHTML += " " + cachedSearchResults[indexNum].targetHighLight;
+			strRecordPaneTitleHTML += "<td>" + cachedSearchResults[indexNum].sourceHighLight + "&nbsp;&nbsp; </td>";        
+			strRecordPaneTitleHTML += "<td>" + getRelationshipDefDirectionIcon(relationshipDef.biDirection) + "</td>" ;
+			strRecordPaneTitleHTML +=  "<td>" + relationshipDef.name  + "</td>";
+			strRecordPaneTitleHTML += "<td>&nbsp;&nbsp;" + cachedSearchResults[indexNum].targetHighLight;
 		}
-        strRecordPaneTitleHTML += "</td></tr></table>"
+        strRecordPaneTitleHTML += "</td></tr></table>" 
+alert("strRecordPaneTitleHTML="+strRecordPaneTitleHTML);        
         relationshipRecordPane.attr("title", strRecordPaneTitleHTML);
     }
 
