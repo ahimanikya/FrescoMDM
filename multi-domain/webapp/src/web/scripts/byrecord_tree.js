@@ -30,7 +30,7 @@ function getByRecordData () {
 	var selectedEUID = "000-000-555";
 	if(byRecord_CurrentWorking_Domain != null) selectedDomain = byRecord_CurrentWorking_Domain;
 	if(byRecord_CurrentWorking_EUID != null) selectedEUID = byRecord_CurrentWorking_EUID;
-alert(selectedDomain  + " : " + selectedEUID);
+
     var domainSearchObj = {name:selectedDomain, attributes:[{EUID: selectedEUID}]};
     
     RelationshipHandler.searchDomainRelationshipsByRecord(domainSearchObj, getByRecordDataCB);
