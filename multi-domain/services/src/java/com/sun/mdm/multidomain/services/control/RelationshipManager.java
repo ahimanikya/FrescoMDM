@@ -60,8 +60,9 @@ import com.sun.mdm.multidomain.services.relationship.DomainRelationshipsObject;
 import com.sun.mdm.multidomain.services.relationship.DomainRelationshipDefsObject;
 import com.sun.mdm.multidomain.services.core.ServiceException;
 import com.sun.mdm.multidomain.services.core.ConfigException;
-import com.sun.mdm.multidomain.services.util.Localizer;
-      
+import com.sun.mdm.multidomain.services.util.Localizer;      
+import com.sun.mdm.multidomain.services.configuration.MDConfigManager;
+
 /**
  * RelationshipManager class
  * @author cye
@@ -756,15 +757,16 @@ public class RelationshipManager {
     
     /**
      * Add a new relationship.
-     * @param relationshipRecord RelationshipRecord.
+     * @param relRecord RelationshipRecord.
      * @return int Relationship Identifier. 
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public String addRelationship(RelationshipRecord relationshipRecord)
+    public String addRelationship(RelationshipRecord relRecord)
         throws ServiceException {
         long id = 0;
-        try {
-            Relationship relationship = QueryBuilder.buildRelationship(relationshipRecord);
+        try {            
+            RelationshipDef relDef = getRelationshipDef(relRecord.getName(), relRecord.getSourceDomain(), relRecord.getTargetDomain());
+            Relationship relationship = QueryBuilder.buildRelationship(relRecord, relDef);            
             id = multiDomainService.createRelationship(relationship);
         } catch (ConfigException cex) {
             throw new ServiceException(cex);                  
@@ -798,13 +800,14 @@ public class RelationshipManager {
     
     /**
      * Update an existing relationship. 
-     * @param relationshipRecord RelationshipRecord.
+     * @param relRecord RelationshipRecord.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public void updateRelationship(RelationshipRecord relationshipRecord)
+    public void updateRelationship(RelationshipRecord relRecord)
         throws ServiceException {
         try {
-            Relationship relationship = QueryBuilder.buildRelationship(relationshipRecord);
+            RelationshipDef relDef = getRelationshipDef(relRecord.getName(), relRecord.getSourceDomain(), relRecord.getTargetDomain());
+            Relationship relationship = QueryBuilder.buildRelationship(relRecord, relDef);
             multiDomainService.updateRelationship(relationship);
         } catch (ConfigException cex) {
             throw new ServiceException(cex);                  
@@ -814,4 +817,35 @@ public class RelationshipManager {
             throw new ServiceException(uex);
         }        
     }    
+    
+    /**
+     * Get relationshipDef for the given name, source domain and target domain.
+     * @param name RelationshipDef name.
+     * @param sDomain Source domain name.
+     * @param tDomain Target domain name.
+     * @return RelationshipDef.
+     * @throws ConfigException Thrown if an error occurs during processing.
+     * @throws UserException Thrown if an error occurs during processing.
+     * @throws ProcessingException Thrown if an error occurs during processing.
+     */
+    private RelationshipDef getRelationshipDef(String name, String sDomain, String tDomain) 
+        throws ConfigException, UserException,  ProcessingException{        
+        MDConfigManager configManager = MDConfigManager.getInstance();
+        RelationshipDef relDef = null;
+        if (configManager.relationshipScreenConfigInstanceExists(sDomain, tDomain, name)) {
+            relDef = configManager.getRelationshipScreenConfig(sDomain, tDomain, name).getRelationshipDef();
+            return relDef;
+        }         
+        // multiDomainMetaService.getRelationshipDefByName(name, sourceDomain, targetDomain);
+        RelationshipDef[] relationships = multiDomainMetaService.getRelationshipDefs(sDomain, tDomain); 
+        if (relationships != null) {
+            for (RelationshipDef rDef : relationships) {
+                if (rDef.getName().equals(name)) {
+                    relDef = rDef;
+                    break;
+                }
+            }
+        }
+        return relDef;
+    }
 }
