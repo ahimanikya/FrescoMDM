@@ -174,7 +174,7 @@ function align(thisevent,divID) {
 %>
 
 <div id="mainContent" style="overflow:hidden">   
-<table><tr><td>
+<table width="100%"><tr><td>
         <div id="advancedSearch" class="duplicaterecords" style="visibility:visible;display:block">
             <table border="0" cellpadding="0" cellspacing="0" align="right">
                 <form id="searchTypeForm" >

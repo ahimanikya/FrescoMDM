@@ -149,34 +149,33 @@ function align(thisevent,divID) {
 <title><h:outputText value="#{msgs.application_heading}"/></title>  
 <body class="yui-skin-sam">
     <%@include file="./templates/header.jsp"%>
-  <table>
-   <tr>
-    <td>
     <div id="mainContent">
-        <div id="advancedSearch" class="duplicaterecords" style="visibility:visible;display:block">
-            <table border="0" cellpadding="0" cellspacing="0" align="right">
-                <form id="searchTypeForm" >
-                            <tr>
-                                <td>
-                                    <h:outputText  rendered="#{RecordDetailsHandler.possilbeSearchTypesCount gt 1}"  value="#{msgs.patdet_search_text}"/>&nbsp;
-                                               <select id="searchTypeList" title="<%=bundle.getString("search_Type")%>" onchange="javascript:
- 											   document.getElementById('messages').innerHTML='';
-											   document.getElementById('outputdiv').innerHTML ='';getRecordDetailsFormValues('searchTypeForm');checkedItems = new Array();setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchscreenservices.jsf?random='+rand+'&'+queryStr,'SearchCriteria','')" style="width:220px;">	
-                                              <%ArrayList   searchListItemArray = recordDetailsHandler.getPossilbeSearchTypes();%>
-											    <%for(int p = 0; p <searchListItemArray.size();p++) {
-                                                        SelectItem selectItem = (SelectItem) searchListItemArray.get(p);
-													%>
-                                                    <%if(request.getParameter("selectedSearchType") != null && request.getParameter("selectedSearchType").equalsIgnoreCase(selectItem.getLabel())) {%>
-											     	  <option value="<%=selectItem.getValue()%>" selected="true"><%=selectItem.getLabel()%></option>
-													<%} else {%>
-											     	<option value="<%=selectItem.getValue()%>"><%=selectItem.getLabel()%></option>
-													<%}%>
-												<%}%>
-											</select>
-
-								</td>
-                            </tr>
-                </form>
+	  <table width="100%">
+	   <tr>
+		<td> 
+     <div class="duplicaterecords" style="visibility:visible;display:block">
+     <table border="0" cellpadding="0" cellspacing="0" align="right" >
+		<form id="searchTypeForm" >
+					<tr>
+						<td>
+							 <h:outputText  rendered="#{RecordDetailsHandler.possilbeSearchTypesCount gt 1}"  value="#{msgs.patdet_search_text}"/>&nbsp;
+									   <select id="searchTypeList" title="<%=bundle.getString("search_Type")%>" 
+									   onchange="javascript:document.getElementById('messages').innerHTML='';
+									   document.getElementById('outputdiv').innerHTML ='';getRecordDetailsFormValues('searchTypeForm');checkedItems = new Array();setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchscreenservices.jsf?random='+rand+'&'+queryStr,'SearchCriteria','')" style="width:220px;">	
+									  <%ArrayList   searchListItemArray = recordDetailsHandler.getPossilbeSearchTypes();%>
+										<%for(int p = 0; p <searchListItemArray.size();p++) {
+												SelectItem selectItem = (SelectItem) searchListItemArray.get(p);
+											%>
+											<%if(request.getParameter("selectedSearchType") != null && request.getParameter("selectedSearchType").equalsIgnoreCase(selectItem.getLabel())) {%>
+											  <option value="<%=selectItem.getValue()%>" selected="true"><%=selectItem.getLabel()%></option>
+											<%} else {%>
+											<option value="<%=selectItem.getValue()%>"><%=selectItem.getLabel()%></option>
+											<%}%>
+										<%}%>
+									 </select>
+						</td>
+					</tr>
+		</form>
  </table>
 
    <h:form id="advancedformData" >
@@ -377,9 +376,9 @@ function align(thisevent,divID) {
 
 			</h:panelGrid>
            <div class="reportresults" id="outputdiv"></div>
-    </div>     
-  </div>
+    </div>  
   </td></tr></table>
+  </div>
 			<form id="collectEuidsForm">
 			      <input type="hidden" id="collectEuids" title='collectEuids' />   
             </form>
@@ -541,6 +540,7 @@ function align(thisevent,divID) {
    <%}%>
 
 </f:view>
+
 
 
 
