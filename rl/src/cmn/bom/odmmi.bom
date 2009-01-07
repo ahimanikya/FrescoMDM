@@ -1,5 +1,4 @@
 #
-# BOM to publish repackaged glassfish bundle with latest kenai kit
 #
 #
 
@@ -19,6 +18,9 @@ MDM_Solutions.zip|0444|bin|<SRC_DIR>|MDM_Solutions.zip|<DST_DIR>
 
 set SRC_DIR <SRCROOT>/index-gui/target
 open-dm-mi.nbm|0444|bin|<SRC_DIR>|open-dm-mi.nbm|<DST_DIR>
+
+set SRC_DIR <SRCROOT>/multi-domain/project/target
+com-sun-mdm-multidomain-project.nbm|0444|bin|<SRC_DIR>|com-sun-mdm-multidomain-project.nbm|<DST_DIR>
 
 
 set DST_DIR solutions
