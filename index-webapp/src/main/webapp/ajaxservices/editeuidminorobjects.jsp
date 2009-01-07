@@ -2037,7 +2037,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
      document.getElementById('<%=sbrFullFieldName%>:<%=systemCodeWithLid%>').style.display = 'block';
 	 
 	 window.location = "#top";
-	 document.getElementById("successMessageDiv").innerHTML = '<%=fieldDisplayName%> <%=bundle.getString("link_field_success_text")%>';
+	 document.getElementById("successMessageDiv").innerHTML = '<%=fieldDisplayName%> <%=bundle.getString("link_field_success_text")%>.';
 	 document.getElementById("successDiv").style.visibility="visible";
 	 document.getElementById("successDiv").style.display="block";
   </script>
@@ -2543,7 +2543,7 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 	         document.getElementById('linkSoMinorObjDiv').style.visibility='hidden';
 		     document.getElementById('linkSoMinorObjDiv').style.display='none';		 
 			 window.location = "#top";
- 			 document.getElementById("successMessageDiv").innerHTML = "'<%=keyTypeValues[1]%> <%=keyTypeValues[0]%>'  <%=bundle.getString("link_field_success_text")%> <%=bundle.getString("to_text")%> <%=systemCode%>/<%=lid%>";
+ 			 document.getElementById("successMessageDiv").innerHTML = "'<%=keyTypeValues[1]%> <%=keyTypeValues[0]%>'  <%=bundle.getString("link_field_success_text")%> <%=bundle.getString("to_text")%> <%=systemCode%>/<%=lid%>.";
 			 document.getElementById("successDiv").style.visibility="visible";
 			 document.getElementById("successDiv").style.display="block";
 	     </script>

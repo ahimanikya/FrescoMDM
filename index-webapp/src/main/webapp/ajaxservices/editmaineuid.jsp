@@ -2022,10 +2022,10 @@ if(session!=null){
                     </tr>    
                     <tr>
                         <td align="right">
-                            <a  class="button"  href="javascript:void(0)" onclick="javascript:getFormValues('unlinkMinorForm');ajaxMinorObjects('/<%=URI%>/editsominorobjects.jsf?'+queryStr+'&rand=<%=rand%>&unlinkMinor=true','euidFinalErrorMessages','')">                          
+                            <a  class="button"  href="javascript:void(0)" title="<h:outputText value="#{msgs.ok_text_button}"/>" onclick="javascript:getFormValues('unlinkMinorForm');ajaxMinorObjects('/<%=URI%>/editsominorobjects.jsf?'+queryStr+'&rand=<%=rand%>&unlinkMinor=true','euidFinalErrorMessages','')">                          
                                 <span><h:outputText value="#{msgs.ok_text_button}"/></span>
                             </a>
-                           <h:outputLink  styleClass="button" value="javascript:void(0)" onclick="javascript:showExtraDivs('unLinkSoMinorDiv',event)">
+                           <h:outputLink  styleClass="button" value="javascript:void(0)" title="#{msgs.cancel_but_text}" onclick="javascript:showExtraDivs('unLinkSoMinorDiv',event)">
                                 <span><h:outputText value="#{msgs.cancel_but_text}"/></span>
                             </h:outputLink>
                         </td>
