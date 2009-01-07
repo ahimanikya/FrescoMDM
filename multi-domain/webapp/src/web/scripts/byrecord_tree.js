@@ -747,6 +747,7 @@ function getIsMoveRightPossible() {
 	}
 	
 	var isValidMove = byRecord_isMoveValid(mainTreeObj, rearrangeTreeObj);
+	//alert("right move valid : " + isValidMove);
 	return isValidMove;
 }
 
@@ -764,6 +765,7 @@ function getIsMoveLeftPossible() {
 	}
 	
 	var isValidMove = byRecord_isMoveValid( rearrangeTreeObj, mainTreeObj);
+	//alert("left move valid : " + isValidMove);
 	return isValidMove;
 }
 
@@ -852,7 +854,7 @@ function byRecord_isMoveValid (sourceTreeObj, targetTreeObj) {
 				if(sourceParentDomain == targetParentDomain)
 					return true;
 			}
-			
+			break;
 		case item_types.DOMAIN:
 			// Source item type is DOMAIN, check for the valid types for target...
 			var isRootDomain = tempSourceStore.getValue(sourceKeyItem, "isRoot");
@@ -876,7 +878,14 @@ function byRecord_isMoveValid (sourceTreeObj, targetTreeObj) {
 				// target type is Relationship, check if sourceDomain's parent domain & targetRelationship's parent domain match?
 				var sourceParentDomain = tempSourceStore.getValue(sourceKeyItem, "parentDomain");
 				var targetParentDomain = tempTargetStore.getValue(targetKeyItem, "parentDomain");
-				if(sourceParentDomain == targetParentDomain)
+				
+				var sourceParentRelationshipDef = tempSourceStore.getValue(sourceKeyItem, "parentRelationshipDefId");
+				var targetRelationshipDefId = tempTargetStore.getValue(targetKeyItem, "relationshipDefId");
+				
+				var domainsMatch = (sourceParentDomain == targetParentDomain);
+				var relationshipDefsMatch = (sourceParentRelationshipDef == targetRelationshipDefId);
+				
+				if(domainsMatch && relationshipDefsMatch)
 					return true;
 				
 			} else if(targetItemType == item_types.RECORD) {
@@ -884,7 +893,7 @@ function byRecord_isMoveValid (sourceTreeObj, targetTreeObj) {
 				// Domain type cannot be moved to record type. return false
 				return false;
 			}
-			
+			break;
 		case item_types.RECORD:
 			// Source item type is RECORD, check for the valid types for target...
 			var isRootRecord = tempSourceStore.getValue(sourceKeyItem, "isRoot");
@@ -898,7 +907,14 @@ function byRecord_isMoveValid (sourceTreeObj, targetTreeObj) {
 					
 				var sourceParentDomain = tempSourceStore.getValue(sourceKeyItem, "parentDomain");
 				var targetDomain = tempTargetStore.getValue(targetKeyItem, "name");
-				if(sourceParentDomain = targetDomain)
+				
+				var sourceParentRelationshipDef = tempSourceStore.getValue(sourceKeyItem, "parentRelationshipDefId");
+				var targetDomainParentRelationshipDef = tempTargetStore.getValue(targetKeyItem, "parentRelationshipDefId");
+				
+				var domainsMatch = (sourceParentDomain == targetDomain);
+				var relationshipDefsMatch = (sourceParentRelationshipDef == targetDomainParentRelationshipDef);
+				
+				if(domainsMatch && relationshipDefsMatch)
 					return true;
 				
 			} else if(targetItemType == item_types.RELATIONSHIP) {
@@ -917,7 +933,7 @@ function byRecord_isMoveValid (sourceTreeObj, targetTreeObj) {
 				if(domainsMatch && relationshipDefsMatch)
 					return true;
 			}
-
+			break;
 		default:
 			return false;
 	}
