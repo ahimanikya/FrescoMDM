@@ -107,6 +107,7 @@ dojo.declare("dijit.TreeCustom", dijit.Tree, {
 
 	_expandNode: function (node) {
 		if(node.state == "UNCHECKED") {
+			var _this = this;
 			this.lazyLoadItems(node , function() {
 				node.unmarkProcessing();
 			});

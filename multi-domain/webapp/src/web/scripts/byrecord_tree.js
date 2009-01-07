@@ -445,8 +445,11 @@ function getRearrangeTreeData_CB (data) {
 		var tempRec = domainRecords[i];
 		
 		var recordNode = {};
-        recordNode.id = tempRec.EUID;
+        recordNode.id = i + "_" + tempRec.EUID;
+		recordNode.EUID = tempRec.EUID;
         recordNode.name = tempRec.highLight;
+		recordNode.type = item_types.RECORD;
+		recordNode.isStub = true;
 
         recordNode.type = item_types.RECORD;
         var recordNodeItem = rearrangeTree_Store.newItem(recordNode, {parent: rootDomain, attribute:"children"} );
@@ -497,6 +500,97 @@ function deleteItemsFromRearrangeTreeStore(items, req) {
 // Function called when tree (rearrange Tree) is trying load the childrens for expanded node.
 function lazyLoadRearrangeTreeRelationships(node, callback_function) {
 	//TODO: Get child nodes for the node and create entries in tree
+	var parentItem = node.item;
+	if(parentItem == null ) {
+		callback_function();
+		return;
+	}
+	var parentType = rearrangeTree_Store.getValue (parentItem, "type");
+	if(parentType != item_types.RECORD) {
+		callback_function();
+		return;
+	}
+	var isStillStub = rearrangeTree_Store.getValue (parentItem, "isStub");
+	var parentName = rearrangeTree_Store.getValue (parentItem, "name");
+	var parentEUID = rearrangeTree_Store.getValue (parentItem, "EUID");
+	//alert(parentName + " parentEUID is: " + parentEUID);
+	
+	if(isStillStub ) {
+		var selectedDomain = "Person";
+		var selectedEUID = parentEUID;
+		var domainSearchObj = {name:selectedDomain};
+		if(byRecord_CurrentWorking_Domain != null) selectedDomain = byRecord_CurrentWorking_Domain;
+		
+		RelationshipHandler.searchDomainRelationshipsByRecord(domainSearchObj, { callback:function(dataFromServer) {
+			rearrangeTree_loadRelationshipsForRecord(dataFromServer, parentItem,callback_function); }
+		});
+		// make the stub marking as false.
+		rearrangeTree_Store.setValue(parentItem, "isStub", false);
+	}
+	//callback_function();
+}
+
+// To load relationships for rearrange tree, when record is expanded.
+function rearrangeTree_loadRelationshipsForRecord(data, parentItem, callback_function) {
+	var parentItemID = rearrangeTree_Store.getValue (parentItem, "id");
+	for(i=0; i<data.relationshipsObjects.length; i++) {
+        var tempRelObj = data.relationshipsObjects[i];
+		var useSourceDomain = false;
+		if(tempRelObj.relationshipDefView.sourceDomain != byRecord_CurrentWorking_Domain)
+			useSourceDomain = true; 
+		else useSourceDomain = false;
+
+//alert(i + "  useSourceDomain=" + useSourceDomain + " " +  tempRelObj.relationshipDefView.id + " -- " + tempRelObj.relationshipDefView.sourceDomain + " : "+ tempRelObj.relationshipDefView.targetDomain);
+		
+        var relationshipNode = {};
+        relationshipNode.id = parentItemID + "_" + i + "_" + tempRelObj.relationshipDefView.id;
+		relationshipNode.relationshipDefId = tempRelObj.relationshipDefView.id; 
+        relationshipNode.name = tempRelObj.relationshipDefView.name;
+        relationshipNode.biDirection = tempRelObj.relationshipDefView.biDirection;
+		if(useSourceDomain)
+			relationshipNode.otherDomain = tempRelObj.relationshipDefView.sourceDomain;
+		else
+			relationshipNode.otherDomain = tempRelObj.relationshipDefView.targetDomain;
+
+        relationshipNode.type = item_types.RELATIONSHIP;
+        var rNodeItem = rearrangeTree_Store.newItem(relationshipNode, {parent: parentItem, attribute:"children"} );
+
+        var relationshipDomain = {};
+        relationshipDomain.id = i + "_" + relationshipNode.id + "_" + tempRelObj.relationshipDefView.sourceDomain;
+		if(useSourceDomain)
+			relationshipDomain.name = tempRelObj.relationshipDefView.sourceDomain;
+		else
+			relationshipDomain.name = tempRelObj.relationshipDefView.targetDomain;
+        relationshipDomain.parentRelationshipDefName = relationshipNode.name;
+        relationshipDomain.type = item_types.DOMAIN;
+        var rDomainItem = rearrangeTree_Store.newItem(relationshipDomain, {parent: rNodeItem, attribute:"children"} );
+        
+        var relationships = tempRelObj.relationshipViews;
+        for(j=0; j<relationships.length; j++) {
+            var recordNode = {};
+			if(useSourceDomain) {
+				recordNode.id = j +  relationshipNode.id + "_" + relationships[j].sourceEUID;
+				recordNode.EUID = relationships[j].sourceEUID;
+				recordNode.name = relationships[j].sourceHighLight;
+			} else {
+				recordNode.id = j+  relationshipNode.id + "_" + relationships[j].targetEUID;
+				recordNode.EUID = relationships[j].targetEUID;
+				recordNode.name = relationships[j].targetHighLight;
+			}
+			recordNode.parentDomain = relationshipDomain.name;
+			recordNode.relationshipFromDomain = byRecord_CurrentWorking_Domain;
+			recordNode.relationshipToDomain = relationshipDomain.name;
+
+			recordNode.fromRecordHighLight = relationships[j].sourceHighLight;
+			recordNode.toRecordHighLight = relationships[j].targetHighLight;
+
+			recordNode.parentRelationshipDefName = relationshipNode.name;
+			recordNode.parentRelationshipId = relationships[j].id;
+            recordNode.type = item_types.RECORD;
+            var recordNodeItem = rearrangeTree_Store.newItem(recordNode, {parent: rDomainItem, attribute:"children"} );
+            //alert(j + " " + relationships[j].sourceEUID + " :: " + relationships[j].targetEUID);
+        }
+    }
 	
 	callback_function();
 }
