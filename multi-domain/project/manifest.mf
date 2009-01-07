@@ -3,6 +3,6 @@ OpenIDE-Module: com.sun.mdm.multidomain.project
 OpenIDE-Module-Localizing-Bundle: com/sun/mdm/multidomain/project/Bundle.properties
 OpenIDE-Module-Layer: com/sun/mdm/multidomain/project/layer.xml
 OpenIDE-Module-Specification-Version: 1.0
-Class-Path: ext/mdm/net.java.hulp.i18n.jar ext/mdm/multidomain/multidomain-core.jar
+Class-Path: ext/mdm/multidomain/net.java.hulp.i18n.jar ext/mdm/multidomain/multidomain-core.jar
 
 
