@@ -134,7 +134,9 @@ function getByRecordDataCB (data) {
 			relationshipNode.otherDomain = tempRelObj.relationshipDefView.sourceDomain;
 		else
 			relationshipNode.otherDomain = tempRelObj.relationshipDefView.targetDomain;
-
+		
+		relationshipNode.parentDomain = rootRecordItem.parentDomain;
+		
         relationshipNode.type = item_types.RELATIONSHIP;
         var rNodeItem = mainTree_Store.newItem(relationshipNode, {parent: rootRecord, attribute:"children"} );
 
@@ -145,6 +147,8 @@ function getByRecordDataCB (data) {
 		else
 			relationshipDomain.name = tempRelObj.relationshipDefView.targetDomain;
         relationshipDomain.parentRelationshipDefName = relationshipNode.name;
+		relationshipDomain.parentRelationshipDefId = relationshipNode.relationshipDefId;
+		relationshipDomain.parentDomain = relationshipNode.parentDomain;
         relationshipDomain.type = item_types.DOMAIN;
         var rDomainItem = mainTree_Store.newItem(relationshipDomain, {parent: rNodeItem, attribute:"children"} );
         
@@ -168,6 +172,7 @@ function getByRecordDataCB (data) {
 			recordNode.toRecordHighLight = relationships[j].targetHighLight;
 
 			recordNode.parentRelationshipDefName = relationshipNode.name;
+			recordNode.parentRelationshipDefId = relationshipNode.relationshipDefId;
 			recordNode.parentRelationshipId = relationships[j].id;
             recordNode.type = item_types.RECORD;
             var recordNodeItem = mainTree_Store.newItem(recordNode, {parent: rDomainItem, attribute:"children"} );
@@ -183,7 +188,9 @@ function getByRecordDataCB (data) {
 	displayDiv("mainTreeContainer", true);
 	
 	// 4. Reset button pallete (enable/disable add,delete, etc., buttons)
-
+	byRecord_resetButtonsPalleteFlags ();
+	byRecord_refreshMainTreeButtonsPallete();
+	byRecord_refreshRearrangeTreeButtonsPallete();
     return;
 }
 
@@ -209,6 +216,7 @@ function createMainTree () {
     mainTreeObj.startup();
     dojo.byId("mainTreeContainer").appendChild(mainTreeObj.domNode);
 }
+
 function mainTreeDnDCheckAcceptance(source, nodes)  {
 	//Dont accept if the source is the same tree
 	if(this.tree == source.tree) return false;	
@@ -237,7 +245,7 @@ function mainTreeClicked(item, node, allSelectedItems ) {
 	mainTree_isAddPossible = false; 
 	mainTree_isDeletePossible = true;
 	mainTree_isFindPossible = false;
-	mainTree_isMovePossible = true;
+	mainTree_isMovePossible = false;
 	
 	var recFromSameDomainCount = 0, prevRecDomainName = null;
 	var isRootDomainSelected = false, isRootRecordSelected = false;
@@ -262,10 +270,12 @@ function mainTreeClicked(item, node, allSelectedItems ) {
 				byRecord_CurrentSelected_TargetDomain = itemName; // User for add
 				mainTree_isAddPossible = true;
 				mainTree_isFindPossible = true;
+				mainTree_isMovePossible = true;
 				//alert("its a domain ");
 				break;
 			case item_types.RELATIONSHIP:
 				mainTree_isAddPossible = false;
+				mainTree_isMovePossible = true;
 				//alert("its a relationship");
 				break;
 			case item_types.RECORD:
@@ -314,11 +324,13 @@ function mainTreeClicked(item, node, allSelectedItems ) {
 		
 		mainTree_isAddPossible = false;
 		mainTree_isFindPossible = false;
+		mainTree_isMovePossible = false;
 	}
 	// If all selected items are records & from same domain, then enable add,find buttons
 	if(recFromSameDomainCount == allSelectedItems.length) {
 		mainTree_isAddPossible = true;
 		mainTree_isFindPossible = true;
+		mainTree_isMovePossible = true;
 	}
 	
 	// If root nodes (either root-domain or root-record) are selected, disable add, move, find buttons
@@ -329,6 +341,7 @@ function mainTreeClicked(item, node, allSelectedItems ) {
 	}
 
 	byRecord_refreshMainTreeButtonsPallete();
+	byRecord_refreshRearrangeTreeButtonsPallete();
 	
 	// Show details for selected record/relationship (main tree).
 	byRecord_ShowDetails();
@@ -356,6 +369,7 @@ function mainTreeGetIconClass (item, opened) {
     }
     return "recordIcon";    
 }
+
 // Custom icons for our Rearrange tree (different icons for domain, relationship & record)
 function rearrangeTreeGetIconClass (item, opened) {
     if(item != null) {
@@ -444,6 +458,7 @@ function getRearrangeTreeData_CB (data) {
 		recordNode.EUID = tempRec.EUID;
         recordNode.name = tempRec.highLight;
 		recordNode.type = item_types.RECORD;
+		recordNode.parentDomain = rootDomainItem.name;
 		recordNode.isStub = true;
 		recordNode.isRoot = true;
 
@@ -456,7 +471,12 @@ function getRearrangeTreeData_CB (data) {
 
     // 3. Create tree now
     createRearrangeTree();
+	
 	displayDiv("rearrangeTreeContainer", true);
+	// 4. Reset button pallete (enable/disable add,delete, etc., buttons)
+	byRecord_resetButtonsPalleteFlags ();
+	byRecord_refreshMainTreeButtonsPallete();
+	byRecord_refreshRearrangeTreeButtonsPallete();
 }
 
 // Custom function, for deciding if a node may have children or not. (For Rearrange tree)
@@ -486,6 +506,7 @@ function createRearrangeTree () {
     rearrangeTreeObj.startup();
     dojo.byId("rearrangeTreeContainer").appendChild(rearrangeTreeObj.domNode);
 }
+
 // function to delete items from rearrange tree store.
 function deleteItemsFromRearrangeTreeStore(items, req) {
     for(i=0; i<items.length; i++) {
@@ -493,6 +514,7 @@ function deleteItemsFromRearrangeTreeStore(items, req) {
         rearrangeTree_Store.save();
     }
 }
+
 // Function called when tree (rearrange Tree) is trying load the childrens for expanded node.
 function lazyLoadRearrangeTreeRelationships(node, callback_function) {
 	var parentItem = node.item;
@@ -528,7 +550,9 @@ function lazyLoadRearrangeTreeRelationships(node, callback_function) {
 // To load relationships for rearrange tree, when record is expanded.
 function rearrangeTree_loadRelationshipsForRecord(data, node, callback_function) {
 	var parentItem = node.item;
+	var parentDomain = rearrangeTree_Store.getValue (parentItem, "parentDomain");
 	var parentItemID = rearrangeTree_Store.getValue (parentItem, "id");
+	
 	for(i=0; i<data.relationshipsObjects.length; i++) {
         var tempRelObj = data.relationshipsObjects[i];
 		var useSourceDomain = false;
@@ -547,7 +571,9 @@ function rearrangeTree_loadRelationshipsForRecord(data, node, callback_function)
 			relationshipNode.otherDomain = tempRelObj.relationshipDefView.sourceDomain;
 		else
 			relationshipNode.otherDomain = tempRelObj.relationshipDefView.targetDomain;
-
+		
+		relationshipNode.parentDomain = parentDomain;
+		
         relationshipNode.type = item_types.RELATIONSHIP;
         var rNodeItem = rearrangeTree_Store.newItem(relationshipNode, {parent: parentItem, attribute:"children"} );
 
@@ -558,6 +584,8 @@ function rearrangeTree_loadRelationshipsForRecord(data, node, callback_function)
 		else
 			relationshipDomain.name = tempRelObj.relationshipDefView.targetDomain;
         relationshipDomain.parentRelationshipDefName = relationshipNode.name;
+		relationshipDomain.parentRelationshipDefId = relationshipNode.relationshipDefId;
+		relationshipDomain.parentDomain = relationshipNode.parentDomain;
         relationshipDomain.type = item_types.DOMAIN;
         var rDomainItem = rearrangeTree_Store.newItem(relationshipDomain, {parent: rNodeItem, attribute:"children"} );
         
@@ -581,6 +609,7 @@ function rearrangeTree_loadRelationshipsForRecord(data, node, callback_function)
 			recordNode.toRecordHighLight = relationships[j].targetHighLight;
 
 			recordNode.parentRelationshipDefName = relationshipNode.name;
+			recordNode.parentRelationshipDefId = relationshipNode.relationshipDefId;
 			recordNode.parentRelationshipId = relationships[j].id;
             recordNode.type = item_types.RECORD;
             var recordNodeItem = rearrangeTree_Store.newItem(recordNode, {parent: rDomainItem, attribute:"children"} );
@@ -604,7 +633,7 @@ function rearrangeTreeClicked(item, node, allSelectedItems ) {
 	rearrangeTree_isAddPossible = false; 
 	rearrangeTree_isDeletePossible = true;
 	rearrangeTree_isFindPossible = false;
-	rearrangeTree_isMovePossible = true;
+	rearrangeTree_isMovePossible = false;
 	
 	var recFromSameDomainCount = 0, prevRecDomainName = null;
 	var isRootDomainSelected = false, isRootRecordSelected = false;
@@ -625,11 +654,13 @@ function rearrangeTreeClicked(item, node, allSelectedItems ) {
 				}
 				rearrangeTree_isAddPossible = true;
 				rearrangeTree_isFindPossible = true;
+				rearrangeTree_isMovePossible = true;
 				var parentRelationshipDefName = rearrangeTree_Store.getValue(tempItem, "parentRelationshipDefName");
 				//alert("its a domain ");
 				break;
 			case item_types.RELATIONSHIP:
 				rearrangeTree_isAddPossible = false;
+				rearrangeTree_isMovePossible = true;
 				//alert("its a relationship");
 				break;
 			case item_types.RECORD:
@@ -678,11 +709,13 @@ function rearrangeTreeClicked(item, node, allSelectedItems ) {
 		
 		rearrangeTree_isAddPossible = false;
 		rearrangeTree_isFindPossible = false;
+		rearrangeTree_isMovePossible = false;
 	}
 	// If all selected items are records & from same domain, then enable add,find buttons
 	if(recFromSameDomainCount == allSelectedItems.length) {
 		rearrangeTree_isAddPossible = true;
 		rearrangeTree_isFindPossible = true;
+		rearrangeTree_isMovePossible = true;
 	}
 
 	// If root nodes (either root-domain or root-record) are selected, disable add, move, find buttons
@@ -692,6 +725,7 @@ function rearrangeTreeClicked(item, node, allSelectedItems ) {
 		rearrangeTree_isFindPossible = false;
 	}
 	
+	byRecord_refreshMainTreeButtonsPallete();
 	byRecord_refreshRearrangeTreeButtonsPallete();
 	
 	// Show details section for the selected record/relationship (rearrange tree)
@@ -699,14 +733,196 @@ function rearrangeTreeClicked(item, node, allSelectedItems ) {
 }
 
 
-// function to find out if move Right is possible (From Main tree to rearrange tree)
+// function to find out if move RIGHT is possible (From Main tree to rearrange tree)
 function getIsMoveRightPossible() {
+	// If rearrange tree is not shown, then move is not possible.
 	if(! isRearrangeTreeShown) return false;
 
-	
 	// TODO: return proper value based on node selections in both trees.
+	var mainTreeObj = dijit.byId("mainTree");
+	var rearrangeTreeObj = dijit.byId("rearrangeTree");
 	
-	return true;
+	if(mainTreeObj == null || rearrangeTreeObj == null) {
+		return false;
+	}
+	
+	var isValidMove = byRecord_isMoveValid(mainTreeObj, rearrangeTreeObj);
+	return isValidMove;
+}
+
+// function to find out if move LEFT is possible (From Rearrange tree to main tree)
+function getIsMoveLeftPossible() {
+	// If rearrange tree is not shown, then move is not possible.
+	if(! isRearrangeTreeShown) return false;
+
+	// TODO: return proper value based on node selections in both trees.
+	var mainTreeObj = dijit.byId("mainTree");
+	var rearrangeTreeObj = dijit.byId("rearrangeTree");
+	
+	if(mainTreeObj == null || rearrangeTreeObj == null) {
+		return false;
+	}
+	
+	var isValidMove = byRecord_isMoveValid( rearrangeTreeObj, mainTreeObj);
+	return isValidMove;
+}
+
+// Common function to find if the selected item(s) in sourceTreeObj can be moved to selected item(s) in targetTreeObj.
+function byRecord_isMoveValid (sourceTreeObj, targetTreeObj) {
+	if(sourceTreeObj == null || targetTreeObj == null) return false;
+	
+	var tempSourceStore = sourceTreeObj.model.store;
+	var tempTargetStore = targetTreeObj.model.store;
+	
+	if(tempSourceStore == null || tempSourceStore == null) return false;
+	
+	var sourceSelectedItems = sourceTreeObj.getSelectedItems();
+	var targetSelectedItems = targetTreeObj.getSelectedItems();
+	
+	if(sourceSelectedItems == null || sourceSelectedItems.length <= 0)
+		return false;
+	if(targetSelectedItems == null || targetSelectedItems.length <= 0)
+		return false;
+	
+	if(targetSelectedItems.length > 1 ) {
+		// While moving, only SINGLE item must be selected in target tree.
+		return false;
+	}
+	
+	var sourceKeyItem = null, targetKeyItem = null;
+	
+	targetKeyItem = targetSelectedItems[0];
+	
+	if(sourceSelectedItems.length == 1) {
+		sourceKeyItem = sourceSelectedItems[0];
+	} else {
+		var recFromSameLevel = 0, prevRecDomainName = null, prevRecRelatioshipDefId = null;
+		for(i=0; i<sourceSelectedItems.length; i++) {
+			//if multiple nodes are selected, check if all are RECORDs and belong to same domain. If not, move is not possible.
+			var tempItem = sourceSelectedItems[i];
+			var tempType = tempSourceStore.getValue(tempItem, "type");
+			
+			if(tempType == item_types.RECORD) {
+				var tempParentDomain = tempSourceStore.getValue(tempItem, "parentDomain");
+				var tempParentRelationshipDefId = tempSourceStore.getValue(tempItem, "parentRelationshipDefId");	
+				
+				// logic to figure out if all the selected records belong to same domain or not. (required to enable/disable add/delete/etc., operations)
+				if(prevRecDomainName == null) prevRecDomainName = tempParentDomain;
+				if(prevRecRelatioshipDefId == null) prevRecRelatioshipDefId = tempParentRelationshipDefId;
+				if(tempParentDomain == prevRecDomainName && prevRecRelatioshipDefId == tempParentRelationshipDefId) recFromSameLevel ++;
+				else recFromSameLevel --;
+
+				prevRecDomainName = tempParentDomain;
+				prevRecRelatioshipDefId = tempParentRelationshipDefId;
+			}
+		}
+
+		if(recFromSameLevel != sourceSelectedItems.length) {
+			// Multiple selected items doesn't belong to same level/domain.
+			return false;
+		} else {
+			sourceKeyItem = sourceSelectedItems[0];
+		}
+	}
+
+	// Check if the move is valid between sourceKeyItem & targetKeyItem.
+	var sourceItemType = tempSourceStore.getValue(sourceKeyItem, "type");
+	var targetItemType = tempTargetStore.getValue(targetKeyItem, "type");
+	
+//alert(sourceItemType + " : " + targetItemType);
+	
+	switch (sourceItemType) {
+		case item_types.RELATIONSHIP: 
+			// Source item type is RELATIONSHIP, check for the valid types for target...
+			if(targetItemType == item_types.DOMAIN) {
+				// Relationship type cannot be moved to Domain type, so not a valid Move. return false.
+				return false;
+			} else if(targetItemType == item_types.RELATIONSHIP) {
+				// Both source & target item types are Relationships,. 
+				// Check if both relationship Def Id's match? If yes, move is valid.
+				var sourceRelationshipDefId = tempSourceStore.getValue(sourceKeyItem, "relationshipDefId");
+				var targetRelationshipDefId = tempTargetStore.getValue(targetKeyItem, "relationshipDefId");
+				if(sourceRelationshipDefId == targetRelationshipDefId)
+					return true;
+			} else if(targetItemType == item_types.RECORD) {
+				// target type is RECORD, check if record's parentDomain is same as parentDomain of source relationshipdef
+				var sourceParentDomain = tempSourceStore.getValue(sourceKeyItem, "parentDomain");
+				var targetParentDomain = tempTargetStore.getValue(targetKeyItem, "parentDomain");
+				// If parent domain's match, move is valid. return true.
+				if(sourceParentDomain == targetParentDomain)
+					return true;
+			}
+			
+		case item_types.DOMAIN:
+			// Source item type is DOMAIN, check for the valid types for target...
+			var isRootDomain = tempSourceStore.getValue(sourceKeyItem, "isRoot");
+			
+			if(isRootDomain) { 
+				// Root domain cannot be moved.
+				return false;
+			}
+			if(targetItemType == item_types.DOMAIN) {
+				// If both source & target are Domains.
+				var isTargetRootDomain = tempTargetStore.getValue(targetKeyItem, "isRoot");
+				if(isTargetRootDomain) return false;
+				// Check if both has same relationshipDef as parent.
+				
+				var sourceParentRelationshipDef = tempSourceStore.getValue(sourceKeyItem, "parentRelationshipDefId");
+				var targetParentRelationshipDef = tempTargetStore.getValue(targetKeyItem, "parentRelationshipDefId");	
+				if(sourceParentRelationshipDef == targetParentRelationshipDef)
+					return true;
+				
+			} else if(targetItemType == item_types.RELATIONSHIP) {
+				// target type is Relationship, check if sourceDomain's parent domain & targetRelationship's parent domain match?
+				var sourceParentDomain = tempSourceStore.getValue(sourceKeyItem, "parentDomain");
+				var targetParentDomain = tempTargetStore.getValue(targetKeyItem, "parentDomain");
+				if(sourceParentDomain == targetParentDomain)
+					return true;
+				
+			} else if(targetItemType == item_types.RECORD) {
+				// Target type is RECORD.
+				// Domain type cannot be moved to record type. return false
+				return false;
+			}
+			
+		case item_types.RECORD:
+			// Source item type is RECORD, check for the valid types for target...
+			var isRootRecord = tempSourceStore.getValue(sourceKeyItem, "isRoot");
+			if(isRootRecord) return false; // cannot move Primary record.
+				
+			if(targetItemType == item_types.DOMAIN) {
+				// target type is domain, check if target domain & source record's parent domain is same.
+				
+				var isTargetRootDomain = tempTargetStore.getValue(targetKeyItem, "isRoot");
+				if(isTargetRootDomain) return false; // Cannot be moved to primary domain.
+					
+				var sourceParentDomain = tempSourceStore.getValue(sourceKeyItem, "parentDomain");
+				var targetDomain = tempTargetStore.getValue(targetKeyItem, "name");
+				if(sourceParentDomain = targetDomain)
+					return true;
+				
+			} else if(targetItemType == item_types.RELATIONSHIP) {
+				// Cannot move Record type to Relationship type.
+				return false;
+			} else if(targetItemType == item_types.RECORD) {
+				// Both are of type Record. check if parent domain's of both match & parent relationshipDef id's match.
+				var sourceParentDomain = tempSourceStore.getValue(sourceKeyItem, "parentDomain");
+				var targetParentDomain = tempTargetStore.getValue(targetKeyItem, "parentDomain");
+				
+				var sourceParentRelationshipDef = tempSourceStore.getValue(sourceKeyItem, "parentRelationshipDefId");
+				var targetParentRelationshipDef = tempTargetStore.getValue(targetKeyItem, "parentRelationshipDefId");	
+				
+				var domainsMatch = (sourceParentDomain == targetParentDomain);
+				var relationshipDefsMatch = (sourceParentRelationshipDef == targetParentRelationshipDef);
+				if(domainsMatch && relationshipDefsMatch)
+					return true;
+			}
+
+		default:
+			return false;
+	}
+
+	return false;
 }
 
 //function to refresh buttons pallete for main tree
@@ -749,6 +965,7 @@ function byRecord_refreshMainTreeButtonsPallete () {
 
 //function to refresh buttons pallete for Rearrange tree
 function byRecord_refreshRearrangeTreeButtonsPallete () {
+	
 	//alert("add : " + mainTree_isAddPossible +"\n delete:"+ mainTree_isDeletePossible);
 
 	var imgDeleteButtonObj = dojo.byId("imgRearrangeTreeDeleteButton");
@@ -777,10 +994,23 @@ function byRecord_refreshRearrangeTreeButtonsPallete () {
 	
 	var imgMoveButtonObj = dojo.byId("imgRearrangeTreeMoveButton");
     if(imgMoveButtonObj != null) {
-        if(rearrangeTree_isMovePossible && getIsMoveRightPossible())
+        if(rearrangeTree_isMovePossible && getIsMoveLeftPossible())
             imgMoveButtonObj.src =   moveLeftButtonEnabled.src;
         else
             imgMoveButtonObj.src =   moveLeftButtonDisabled.src;
     }
 	
+}
+
+// Reset the flags used for enabling/disabling buttons pallete, for both Main Tree & rearrange Tree
+function byRecord_resetButtonsPalleteFlags () {
+	mainTree_isAddPossible = false;
+	mainTree_isDeletePossible = false;
+	mainTree_isFindPossible = false;
+	mainTree_isMovePossible = false;
+	
+	rearrangeTree_isAddPossible = false;
+	rearrangeTree_isDeletePossible = false;
+	rearrangeTree_isFindPossible = false;
+	rearrangeTree_isMovePossible = false;
 }
