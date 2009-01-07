@@ -43,7 +43,6 @@ import com.sun.mdm.index.master.search.enterprise.EOSearchCriteria;
 import com.sun.mdm.index.master.search.enterprise.EOSearchOptions;
 import com.sun.mdm.index.configurator.ConfigurationException;
 
-import com.sun.mdm.multidomain.services.configuration.RelationshipScreenConfig;
 import com.sun.mdm.multidomain.services.configuration.SearchResultsConfig;
 import com.sun.mdm.multidomain.services.configuration.SearchScreenConfig;
 import com.sun.mdm.multidomain.services.configuration.DomainScreenConfig;
@@ -379,40 +378,45 @@ public class QueryBuilder {
     
     /**
      * Build relationship for the given relastionshipRecord.
-     * @param relastionshipRecord.
+     * @param relRecord RelationshipRecord.
+     * @param relDef RelationshipDef.
      * @return relastionship.
      */
-    public static Relationship buildRelationship(RelationshipRecord relastionshipRecord)
+    public static Relationship buildRelationship(RelationshipRecord relRecord, RelationshipDef relDef)
         throws ConfigException {
-        
-        SimpleDateFormat dateFormat = new SimpleDateFormat(MDConfigManager.getInstance().getDateFormatForMultiDomain());
+        MDConfigManager configManager = MDConfigManager.getInstance(); 
+        SimpleDateFormat dateFormat = new SimpleDateFormat(configManager.getDateFormatForMultiDomain());
         Relationship relationship = new Relationship();     
         
         try {
-            if (relastionshipRecord.getId() !=null ) {
-                relationship.setRelationshipId(Integer.parseInt(relastionshipRecord.getId()));
+            if (relRecord.getId() == null ) {
+                throw new ConfigException(localizer.t("QRY505: RelationshipDef Id cannot be null"));
             }
-            relationship.setSourceEUID(relastionshipRecord.getSourceEUID());
-            relationship.setTargetEUID(relastionshipRecord.getTargetEUID());
-            if (relastionshipRecord.getStartDate() != null) {
-                relationship.setEffectiveFromDate(dateFormat.parse(relastionshipRecord.getStartDate()));
+            relationship.setRelationshipId(0);
+            relationship.setSourceEUID(relRecord.getSourceEUID());
+            relationship.setTargetEUID(relRecord.getTargetEUID());
+            if (relRecord.getStartDate() != null) {
+                relationship.setEffectiveFromDate(dateFormat.parse(relRecord.getStartDate()));
             }
-            if (relastionshipRecord.getEndDate() != null) {
-                relationship.setEffectiveToDate(dateFormat.parse(relastionshipRecord.getEndDate()));
+            if (relRecord.getEndDate() != null) {
+                relationship.setEffectiveToDate(dateFormat.parse(relRecord.getEndDate()));
             }
-            if (relastionshipRecord.getPurgeDate() != null) {
-                relationship.setPurgeDate(dateFormat.parse(relastionshipRecord.getPurgeDate()));
+            if (relRecord.getPurgeDate() != null) {
+                relationship.setPurgeDate(dateFormat.parse(relRecord.getPurgeDate()));
             }
-            relationship.getRelationshipDef().setName(relastionshipRecord.getName());
-            relationship.getRelationshipDef().setSourceDomain(relastionshipRecord.getSourceDomain());
-            relationship.getRelationshipDef().setTargetDomain(relastionshipRecord.getTargetDomain());
-        
+                          
+            relationship.getRelationshipDef().setId(Integer.parseInt(relRecord.getId()));
+            relationship.getRelationshipDef().setName(relDef.getName());
+            relationship.getRelationshipDef().setSourceDomain(relDef.getSourceDomain());
+            relationship.getRelationshipDef().setTargetDomain(relDef.getTargetDomain());
+                            
             com.sun.mdm.multidomain.services.model.Attribute attribute1 = null;
-            while(relastionshipRecord.hasNext()) {
-                attribute1 = relastionshipRecord.next();
+            while(relRecord.hasNext()) {
+                attribute1 = relRecord.next();
                 com.sun.mdm.multidomain.attributes.Attribute attribute2 = new com.sun.mdm.multidomain.attributes.Attribute();
                 attribute2.setName(attribute1.getName());
                 attribute2.setColumnName(attribute1.getName());
+                attribute2.setType(relDef.getAttribute(attribute1.getName()).getType());
                 relationship.setAttributeValue(attribute2, attribute1.getValue());
             }
         } catch(ParseException pex) {            
