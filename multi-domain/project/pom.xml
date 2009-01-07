@@ -80,12 +80,7 @@
                                     <fileset dir="${basedir}/../../lib">
                                         <include name="net.java.hulp.i18n.jar"></include>
                                     </fileset>
-                                </copy>      
-                                <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm">
-                                    <fileset dir="${basedir}/../../index-core/target">
-                                        <include name="index-core.jar"></include>
-                                    </fileset>
-                                </copy>                                      
+                                </copy>                                     
                                 <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/multidomain">
                                     <fileset dir="${basedir}/../webapp/target">
                                         <include name="multidomain-webapp.war"></include>
@@ -100,11 +95,11 @@
                                         <include name="multidomain-core.jar"></include>                  
                                     </fileset>
                                 </copy>      
-                <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/multidomain/repository/templates/security">
-                	<fileset dir="${basedir}/../services/src/resources">
-                  	<include name="mdwm-security.xml"></include>
-                  </fileset>
-                </copy>                
+                                <copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/multidomain/repository/templates/security">
+                                	<fileset dir="${basedir}/../services/src/resources">
+                                  	<include name="mdwm-security.xml"></include>
+                                  </fileset>
+                                </copy>                
 								<copy todir="${project.build.directory}/nbm/netbeans/${netbeans.cluster}/modules/ext/mdm/multidomain/repository/schema">
 									<fileset dir="${basedir}/../core/src/resources/schema">
 										<include name="**/*.xsd"></include>
@@ -167,12 +162,6 @@
             <groupId>ant</groupId>
             <artifactId>ant</artifactId>
             <version>1.6.5</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.java.hulp.i18n</groupId>
-            <artifactId>net.java.hulp.i18n</artifactId>
-            <version>2.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
