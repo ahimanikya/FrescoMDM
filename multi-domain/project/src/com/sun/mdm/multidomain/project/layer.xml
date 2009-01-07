@@ -26,22 +26,18 @@
 <!DOCTYPE filesystem PUBLIC "-//NetBeans//DTD Filesystem 1.1//EN" "http://www.netbeans.org/dtds/filesystem-1_1.dtd">
 <filesystem>
     <folder name="Templates">
-        <folder name="Project">        
-            <folder name="CAPS">
-                <!-- Add template for the Multi-Domain enterprize project -->
-                <folder name="MDM">
-                    <attr name="position" intvalue="3000"/>
-                    <attr name="SystemFileSystem.localizingBundle" stringvalue="com.sun.mdm.multidomain.project.wizard.Bundle"/>
-                    <attr name="instantiatingWizardURL" urlvalue="nbresloc:/com/sun/mdm/multidomain/project/resources/project.html"/>
+        <folder name="Project">
+            <folder name="MDM">
+                <attr name="SystemFileSystem.localizingBundle" stringvalue="com.sun.mdm.multidomain.project.wizard.Bundle"/>
+                <attr name="instantiatingWizardURL" urlvalue="nbresloc:/com/sun/mdm/multidomain/project/resources/project.html"/>
 
-                    <file name="Multi-Domain Project">
-                        <attr name="template" boolvalue="true"/>
-                        <attr name="templateWizardIterator" newvalue="com.sun.mdm.multidomain.project.wizard.NewProjectIterator"/>
-                        <attr name="SystemFileSystem.localizingBundle" stringvalue="com.sun.mdm.multidomain.project.wizard.Bundle"/>
-                        <attr name="SystemFileSystem.icon" urlvalue="nbresloc:/com/sun/mdm/multidomain/project/resources/MultiDomainProject.png"/>
-                        <attr name="templateWizardURL" urlvalue="nbresloc:/com/sun/mdm/multidomain/project/resources/emptyProject.html"/>
-                    </file>
-                </folder>
+                <file name="Multi-Domain Project">
+                    <attr name="template" boolvalue="true"/>
+                    <attr name="templateWizardIterator" newvalue="com.sun.mdm.multidomain.project.wizard.NewProjectIterator"/>
+                    <attr name="SystemFileSystem.localizingBundle" stringvalue="com.sun.mdm.multidomain.project.wizard.Bundle"/>
+                    <attr name="SystemFileSystem.icon" urlvalue="nbresloc:/com/sun/mdm/multidomain/project/resources/MultiDomainProject.png"/>
+                    <attr name="templateWizardURL" urlvalue="nbresloc:/com/sun/mdm/multidomain/project/resources/emptyProject.html"/>
+                </file>
             </folder>
         </folder>
     </folder>
