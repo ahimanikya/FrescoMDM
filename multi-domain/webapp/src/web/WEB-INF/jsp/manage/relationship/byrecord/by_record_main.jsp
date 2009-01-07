@@ -30,7 +30,7 @@
             style="border:0px;background-color:#F9F9F0;">
 			<div dojoType="dijit.layout.ContentPane" class="MainBox"> 
 
-               <div dojoType="dijit.layout.ContentPane" href="m_byrecord_details_section.htm" parseOnLoad="true" onLoad="byRecord_clearDetailsSection();" >
+               <div dojoType="dijit.layout.ContentPane" href="m_byrecord_details_section.htm" parseOnLoad="true" onLoad="byRecord_clearDetailsSection();byRecord_Rearrange_clearDetailsSection();" >
                  details section
                </div>
                

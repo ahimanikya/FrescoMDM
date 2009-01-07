@@ -24,6 +24,10 @@ var byRecord_Selected_Record = null; // Record Object - Populated when anything 
 var byRecord_rearrangeTree_Selected_Relationship = null; //Relationship Object - Populated when anything clicked in Main tree
 var byRecord_rearrangeTree_Selected_Record = null; // Record Object - Populated when anything clicked in Main tree
 
+var sourceRecordDetailsPrefix = null; // To display record details for Main Treee and Rearrange Tree based on source prefix
+var targetRecordDetailsPrefix = null; // To display record details for Main Treee and Rearrange Tree based on target prefix
+var relationshipAttributePrefix = null ; // To display record details reltionship attributes for Main Treee and Rearrange Tree
+
 var byRecord_CachedRelationshipDefs = {};
 
 
@@ -299,6 +303,9 @@ function byRecord_ShowDetails () {
 	    var sourceDomain = byRecord_Selected_Relationship.sourceDomain;
 		var targetDomain = byRecord_Selected_Relationship.targetDomain;
 		
+		sourceRecordDetailsPrefix = "source"
+		targetRecordDetailsPrefix = "target"
+		relationshipAttributePrefix = "mainTree"
 		if(byRecord_CachedRelationshipDefs[relationshipDefName] == null) {
 			// Call API & cache the relationship def & callback this method again.
 			RelationshipDefHandler.getRelationshipDefByName(relationshipDefName, sourceDomain, 
@@ -310,8 +317,8 @@ function byRecord_ShowDetails () {
 		}
 
 
-		var sourcePane = dijit.byId("sourceRecordDetailsTitlePane"); 
-        var targetPane = dijit.byId("targetRecordDetailsTitlePane");
+		var sourcePane = dijit.byId(sourceRecordDetailsPrefix+"RecordDetailsTitlePane"); 
+        var targetPane = dijit.byId(targetRecordDetailsPrefix+"RecordDetailsTitlePane");
         if(cachedByRecordSelectSearchResults != null) {
 
            sourcePane.attr("title",byRecord_Selected_Relationship.sourceRecordHighLight);
@@ -320,7 +327,7 @@ function byRecord_ShowDetails () {
            targetPane.toggleSummaryIcon(); // revert back the view to summary
 		   
            var relationshipDef = byRecord_CachedRelationshipDefs[relationshipDefName];
-           var relationshipRecordPane = dijit.byId("relationshipRecordDetailsPane"); 
+           var relationshipRecordPane = dijit.byId(relationshipAttributePrefix+"_relationshipRecordDetailsPane"); 
            var strRecordPaneTitleHTML = "<table cellspacing='0' cellpadding='0'><tr>";
            strRecordPaneTitleHTML += "<td>"+getMessageForI18N("relationship_Attributes")+getMessageForI18N("colon")+ "&nbsp;</td>"
            if(relationshipDef!=null) {
@@ -354,14 +361,17 @@ function byRecord_ShowDetails () {
 		displayDiv("byRecord_editAttributes", true);
     
 		var relationshipView = {name:relationshipDefName, id:relationshipId, sourceDomain:sourceDomain, targetDomain:targetDomain}; 
-        RelationshipHandler.getRelationship (relationshipView, populateByRecordRelationshipDetails_Callback);
+        //RelationshipHandler.getRelationship (relationshipView, populateByRecordRelationshipDetails_Callback);
+		RelationshipHandler.getRelationship(relationshipView, { callback:function(dataFromServer) {
+        populateByRecordRelationshipDetails_Callback (dataFromServer, sourceRecordDetailsPrefix,targetRecordDetailsPrefix,relationshipAttributePrefix); }
+        });
 		
 	} else if(byRecord_Selected_Record != null) {
-		alert("showing details for  record  : " + byRecord_Selected_Record);
-		alert(byRecord_Selected_Record.EUID + "  " + byRecord_Selected_Record.domain );
-
+		//alert("showing details for  record  : " + byRecord_Selected_Record);
+		//alert(byRecord_Selected_Record.EUID + "  " + byRecord_Selected_Record.domain );
+        sourceRecordDetailsPrefix = "source";
 		var sourceDomain = byRecord_Selected_Record.domain;
-		var sourcePane = dijit.byId("sourceRecordDetailsTitlePane"); 
+		var sourcePane = dijit.byId(sourceRecordDetailsPrefix+"RecordDetailsTitlePane"); 
 
 		if(cachedByRecordSelectSearchResults != null) {
            sourcePane.attr("title",byRecord_Selected_Record.sourceRecordHighLight);
@@ -383,17 +393,20 @@ function byRecord_ShowDetails () {
         
 		// To get record derails for the source domain
 		var recordSummary = {name:sourceDomain,EUID:byRecord_Selected_Record.EUID}; 
-		RelationshipHandler.getEnterprise(recordSummary, polulateByRecordSourceDetails_Callback);
+		//RelationshipHandler.getEnterprise(recordSummary, polulateByRecordSourceDetails_Callback);
+		RelationshipHandler.getEnterprise(recordSummary, { callback:function(dataFromServer) {
+        polulateByRecordSourceDetails_Callback (dataFromServer, sourceRecordDetailsPrefix); }
+        });
 		
 	} else {
-		alert("details section show nothing. clear the currently shown details. ");
+		//alert("details section show nothing. clear the currently shown details. ");
 		displayDiv("byRecord_SourceRecordDetails", false);
 		displayDiv("byRecord_TargetRecordDetails", false);
 		displayDiv("byRecord_editAttributes", false);
 		byRecord_clearDetailsSection();
 	}
 }
-function populateByRecordRelationshipDetails_Callback(data){
+function populateByRecordRelationshipDetails_Callback(data,souceDetailPrefix,targetDetailsPrefix,relationshipPrefix){
 	//alert("populating by record relationship deatials..." +data);
      
     var summaryFieldCount = 0;
@@ -401,8 +414,8 @@ function populateByRecordRelationshipDetails_Callback(data){
     var recordFieldRow,isSummaryField;
 	// Populate source record details
 	var sourceRecordDetails =  data.sourceRecord.attributes;
-    dwr.util.removeAllRows("sourceRecordInSummary");    
-    dwr.util.removeAllRows("sourceRecordInDetail");
+    dwr.util.removeAllRows(souceDetailPrefix+"RecordInSummary");    
+    dwr.util.removeAllRows(souceDetailPrefix+"RecordInDetail");
     summaryFieldCount = 0;
 
 	for(i=0; i<sourceRecordDetails.length; i++) {
@@ -411,8 +424,8 @@ function populateByRecordRelationshipDetails_Callback(data){
 
 		var displayName = getDisplayNameForField (data.sourceRecord.name, fieldName );
 		//alert("fieldName  "+fieldName +"   fieldValue  "+fieldValue);
-		var sourceSummaryTable = document.getElementById('sourceRecordInSummary');
-        var sourceDetailTable = document.getElementById('sourceRecordInDetail');
+		var sourceSummaryTable = document.getElementById(souceDetailPrefix+'RecordInSummary');
+        var sourceDetailTable = document.getElementById(souceDetailPrefix+'RecordInDetail');
 
 		recordFieldRow = sourceDetailTable.insertRow(i);
         recordFieldRow.insertCell(0);recordFieldRow.cells[0].className = "label";
@@ -434,8 +447,8 @@ function populateByRecordRelationshipDetails_Callback(data){
 
 	// Populate target record Details
     var targetRecordDetails =  data.targetRecord.attributes;
-    dwr.util.removeAllRows("targetRecordInSummary");    
-    dwr.util.removeAllRows("targetRecordInDetail");
+    dwr.util.removeAllRows(targetDetailsPrefix+"RecordInSummary");    
+    dwr.util.removeAllRows(targetDetailsPrefix+"RecordInDetail");
     
     summaryFieldCount = 0;
     for(i=0; i<targetRecordDetails.length; i++) {
@@ -444,8 +457,8 @@ function populateByRecordRelationshipDetails_Callback(data){
 		var displayName = getDisplayNameForField (data.targetRecord.name, fieldName );
         
         //alert(i + " : " +  fieldName + " : " + fieldValue );
-        var targetSummaryTable = document.getElementById('targetRecordInSummary');
-        var targetDetailTable = document.getElementById('targetRecordInDetail');
+        var targetSummaryTable = document.getElementById(targetDetailsPrefix+'RecordInSummary');
+        var targetDetailTable = document.getElementById(targetDetailsPrefix+'RecordInDetail');
         
         recordFieldRow = targetDetailTable.insertRow(i);
         recordFieldRow.insertCell(0);recordFieldRow.cells[0].className = "label";
@@ -476,40 +489,38 @@ function populateByRecordRelationshipDetails_Callback(data){
 		var recordCustomAttributes = data.relationshipRecord.attributes;
 		var blnShowEditAttributesSection = false;
 		if(recordCustomAttributes != null && recordCustomAttributes.length > 0) {
-			createCustomAttributesSection ("byRecordEditCustomAttributesTable", customAttributes, "edit_custom", true,false);
-			populateCustomAttributesValues (customAttributes, recordCustomAttributes, "edit_custom");
-			displayDiv("byRecordEditCustomAttributesDiv", true);
+			createCustomAttributesSection (relationshipPrefix+"_byRecordEditCustomAttributesTable", customAttributes, relationshipPrefix+"_edit_custom", true,false);
+			populateCustomAttributesValues (customAttributes, recordCustomAttributes, relationshipPrefix+"_edit_custom");
+			displayDiv(relationshipPrefix+"_byRecordEditCustomAttributesDiv", true);
 			blnShowEditAttributesSection = true;
 		} else {
-			displayDiv("byRecordEditCustomAttributesDiv", false);
+			displayDiv(relationshipPrefix+"_byRecordEditCustomAttributesDiv", false);
 		}
 		if(startDate==true || endDate==true || purgeDate == true ){ 
-			createPredefinedAttributesSection ("byRecordEditPredefinedAttributesTable", relationshipDef,"edit_predefined", true);
-			populatePredefinedAttributesValues (relationshipDef, data.relationshipRecord, "edit_predefined");
-			displayDiv("byRecordEditPredefinedAttributesDiv", true);
+			createPredefinedAttributesSection (relationshipPrefix+"_byRecordEditPredefinedAttributesTable", relationshipDef, relationshipPrefix+"_edit_predefined", true);
+			populatePredefinedAttributesValues (relationshipDef, data.relationshipRecord, relationshipPrefix+"_edit_predefined");
+			displayDiv(relationshipPrefix+"_byRecordEditPredefinedAttributesDiv", true);
 			blnShowEditAttributesSection = true;
 		} else{
-			displayDiv("byRecordEditPredefinedAttributesDiv", false);
+			displayDiv(relationshipPrefix+"_byRecordEditPredefinedAttributesDiv", false);
 		}
 		
 		if(blnShowEditAttributesSection) {
-			displayDiv("byRecordEditAttributesDiv", true);
+			displayDiv(relationshipPrefix+"_byRecordEditAttributesDiv", true);
 		}
-		else displayDiv("byRecordEditAttributesDiv", false);
+		else displayDiv(relationshipPrefix+"_byRecordEditAttributesDiv", false);
 	}
     return;
 }
 
-function polulateByRecordSourceDetails_Callback(data){
-
-	//alert("getEnterprisse data  "+data);
+function polulateByRecordSourceDetails_Callback(data ,sourceDetailsPrefix){
 	var summaryFieldCount = 0;
 	var fieldName, fieldValue;
     var recordFieldRow,isSummaryField;
 	// Populate source record details
 	var sourceRecordDetails =  data.attributes;
-    dwr.util.removeAllRows("sourceRecordInSummary");    
-    dwr.util.removeAllRows("sourceRecordInDetail");
+    dwr.util.removeAllRows(sourceDetailsPrefix+"RecordInSummary");    
+    dwr.util.removeAllRows(sourceDetailsPrefix+"RecordInDetail");
     summaryFieldCount = 0;
 
 	for(i=0; i<sourceRecordDetails.length; i++) {
@@ -518,8 +529,8 @@ function polulateByRecordSourceDetails_Callback(data){
 
 		var displayName = getDisplayNameForField (data.name, fieldName );
 		//alert("fieldName  "+fieldName +"   fieldValue  "+fieldValue +"	displayName  "+displayName);
-		var sourceSummaryTable = document.getElementById('sourceRecordInSummary');
-        var sourceDetailTable = document.getElementById('sourceRecordInDetail');
+		var sourceSummaryTable = document.getElementById(sourceDetailsPrefix+'RecordInSummary');
+        var sourceDetailTable = document.getElementById(sourceDetailsPrefix+'RecordInDetail');
 
 		recordFieldRow = sourceDetailTable.insertRow(i);
         recordFieldRow.insertCell(0);recordFieldRow.cells[0].className = "label";
@@ -542,8 +553,125 @@ function polulateByRecordSourceDetails_Callback(data){
 
 // function to show details when something is clicked on Rearrange tree
 function byRecord_rearrangeTree_ShowDetails () {
-	alert(byRecord_rearrangeTree_Selected_Relationship);
-	alert(byRecord_rearrangeTree_Selected_Record);
+	//alert(byRecord_rearrangeTree_Selected_Relationship);
+	//alert(byRecord_rearrangeTree_Selected_Record);
+
+	if(byRecord_rearrangeTree_Selected_Relationship != null) {
+
+        // for testing, hardcoding some value, once stub code is ready remove it
+		byRecord_rearrangeTree_Selected_Relationship.relationshipId = "0000001";
+		byRecord_rearrangeTree_Selected_Relationship.sourceDomain = "Person";
+		byRecord_rearrangeTree_Selected_Relationship.targetDomain = "Company";
+		byRecord_rearrangeTree_Selected_Relationship.relationshipDefName = "EmployedBy";
+
+		var relationshipId = byRecord_rearrangeTree_Selected_Relationship.relationshipId;
+        var relationshipDefName = byRecord_rearrangeTree_Selected_Relationship.relationshipDefName;
+	    var sourceDomain = byRecord_rearrangeTree_Selected_Relationship.sourceDomain;
+		var targetDomain = byRecord_rearrangeTree_Selected_Relationship.targetDomain;
+
+		sourceRecordDetailsPrefix = "rearrangeSource"
+		targetRecordDetailsPrefix = "rearrangeTarget"
+		relationshipAttributePrefix = "rearrangeTree"
+
+		if(byRecord_CachedRelationshipDefs[relationshipDefName] == null) {
+			// Call API & cache the relationship def & callback this method again.
+			RelationshipDefHandler.getRelationshipDefByName(relationshipDefName, sourceDomain, 
+				targetDomain, { callback:function(dataFromServer) {
+					cacheRelationshipDef(dataFromServer, byRecord_rearrangeTree_ShowDetails);
+				}
+			});
+			return; // Dont proceed anything, until the data is cached and this method is called back.
+		}
+
+		var rearrangeSourcePane = dijit.byId(sourceRecordDetailsPrefix+"RecordDetailsTitlePane"); 
+        var rearrangeTargetPane = dijit.byId(targetRecordDetailsPrefix+"RecordDetailsTitlePane");
+        if(cachedByRecordSelectSearchResults != null) {
+           rearrangeSourcePane.attr("title",byRecord_rearrangeTree_Selected_Relationship.sourceRecordHighLight);
+           rearrangeTargetPane.attr("title",byRecord_rearrangeTree_Selected_Relationship.targetRecordHighLight);
+           rearrangeSourcePane.toggleSummaryIcon(); // revert back the view to summary
+           rearrangeTargetPane.toggleSummaryIcon(); // revert back the view to summary
+		   
+           var rearrangeRelationshipDef = byRecord_CachedRelationshipDefs[relationshipDefName];
+           var rearrangeRelationshipRecordPane = dijit.byId(relationshipAttributePrefix+"_relationshipRecordDetailsPane"); 
+           var strRecordPaneTitleHTML = "<table cellspacing='0' cellpadding='0'><tr>";
+           strRecordPaneTitleHTML += "<td>"+getMessageForI18N("relationship_Attributes")+getMessageForI18N("colon")+ "&nbsp;</td>"
+           if(rearrangeRelationshipDef!=null) {
+             strRecordPaneTitleHTML += "<td>" +  byRecord_rearrangeTree_Selected_Relationship.sourceRecordHighLight + "&nbsp;&nbsp; </td>";        
+             strRecordPaneTitleHTML += "<td>" + getRelationshipDefDirectionIcon(rearrangeRelationshipDef.biDirection) + "</td>" ;
+             strRecordPaneTitleHTML +=  "<td>" + rearrangeRelationshipDef.name  + "</td>";
+             strRecordPaneTitleHTML += "<td>&nbsp;&nbsp;" + byRecord_rearrangeTree_Selected_Relationship.targetRecordHighLight;
+           }
+                                
+                               
+           strRecordPaneTitleHTML += "</td></tr></table>"
+           rearrangeRelationshipRecordPane.attr("title", strRecordPaneTitleHTML);
+        }
+
+		DomainScreenHandler.getSummaryFields(sourceDomain, { callback:function(dataFromServer) {
+        loadSummaryFields(dataFromServer, sourceDomain); }
+        });
+        DomainScreenHandler.getSummaryFields(targetDomain, { callback:function(dataFromServer) {
+        loadSummaryFields(dataFromServer, targetDomain); }
+        });
+     
+        // Load fields to display record details for source & target domains
+	    DomainScreenHandler.getDetailFields(sourceDomain, { callback:function(dataFromServer) {
+        cacheFieldsForDomain (dataFromServer, sourceDomain); }
+        });
+        DomainScreenHandler.getDetailFields(targetDomain, { callback:function(dataFromServer) {
+        cacheFieldsForDomain (dataFromServer, targetDomain); }
+        });
+
+		displayDiv("byRecord_Rearrange_SourceRecordDetails", true);
+		displayDiv("byRecord_Rearrange_TargetRecordDetails", true);
+		displayDiv("byRecord_Rearrange_editAttributes", true);
+
+		var relationshipView = {name:relationshipDefName, id:relationshipId, sourceDomain:sourceDomain, targetDomain:targetDomain}; 
+
+		RelationshipHandler.getRelationship(relationshipView, { callback:function(dataFromServer) {
+        populateByRecordRelationshipDetails_Callback (dataFromServer, sourceRecordDetailsPrefix,targetRecordDetailsPrefix,relationshipAttributePrefix); }
+        });
+
+	}else if(byRecord_rearrangeTree_Selected_Record != null){
+        sourceRecordDetailsPrefix = "rearrangeSource";
+		var rearrangeSourceDomain = byRecord_rearrangeTree_Selected_Record.domain;
+		var rearrangeSourceEUID = byRecord_rearrangeTree_Selected_Record.EUID;
+		var rearrangeSourcePane = dijit.byId(sourceRecordDetailsPrefix+"RecordDetailsTitlePane"); 
+
+		if(cachedByRecordSelectSearchResults != null) {
+           rearrangeSourcePane.attr("title",byRecord_rearrangeTree_Selected_Record.sourceRecordHighLight);
+           rearrangeSourcePane.toggleSummaryIcon(); // revert back the view to summary
+        }
+
+		// Load fields to display record details for rearrange tree source 
+		DomainScreenHandler.getSummaryFields(rearrangeSourceDomain, { callback:function(dataFromServer) {
+        loadSummaryFields(dataFromServer, rearrangeSourceDomain); }
+        });
+        
+	    DomainScreenHandler.getDetailFields(rearrangeSourceDomain, { callback:function(dataFromServer) {
+        cacheFieldsForDomain (dataFromServer, rearrangeSourceDomain); }
+        });
+
+		displayDiv("byRecord_Rearrange_SourceRecordDetails", true);
+		displayDiv("byRecord_Rearrange_TargetRecordDetails", false);
+		displayDiv("byRecord_Rearrange_editAttributes", false);
+
+		// To get record derails for rearrange tree source
+		var rearrangeRecordSummary = {name:rearrangeSourceDomain,EUID:rearrangeSourceEUID}; 
+		//RelationshipHandler.getEnterprise(rearrangeRecordSummary, polulateByRecordSourceDetails_Callback);
+		RelationshipHandler.getEnterprise(rearrangeRecordSummary, { callback:function(dataFromServer) {
+        polulateByRecordSourceDetails_Callback (dataFromServer, sourceRecordDetailsPrefix); }
+        });
+        
+
+	}else{
+
+		displayDiv("byRecord_Rearrange_SourceRecordDetails", false);
+		displayDiv("byRecord_Rearrange_TargetRecordDetails", false);
+		displayDiv("byRecord_Rearrange_editAttributes", false);
+		byRecord_Rearrange_clearDetailsSection();
+	}
+		
 }
 
 function byRecord_clearDetailsSection() {
@@ -551,6 +679,11 @@ function byRecord_clearDetailsSection() {
 	displayDiv("byRecord_TargetRecordDetails", false);
 	displayDiv("byRecord_editAttributes", false);
 	
+}
+function byRecord_Rearrange_clearDetailsSection(){
+	displayDiv("byRecord_Rearrange_SourceRecordDetails", false);
+    displayDiv("byRecord_Rearrange_TargetRecordDetails", false);
+	displayDiv("byRecord_Rearrange_editAttributes", false);
 }
 
 /*
