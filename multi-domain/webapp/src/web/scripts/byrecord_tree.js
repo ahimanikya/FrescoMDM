@@ -273,6 +273,7 @@ function mainTreeClicked(item, node, allSelectedItems ) {
 				var tempDomain = mainTree_Store.getValue(tempItem, "parentDomain");
 				//alert(itemEUID + " : " + byRecord_CurrentWorking_EUID);
 				
+				// logic to figure out if all the selected records belong to same domain or not. (required to enable/disable add/delete/etc., operations)
 				if(prevRecDomainName == null) prevRecDomainName = tempDomain;
 				if(tempDomain == prevRecDomainName) 
 					recFromSameDomainCount ++;
@@ -312,9 +313,9 @@ function mainTreeClicked(item, node, allSelectedItems ) {
 		byRecord_Selected_Record = null;
 		
 		mainTree_isAddPossible = false;
-		mainTree_isFindPossible = true;
+		mainTree_isFindPossible = false;
 	}
-	// If all selected items are records & from same domain, then enable add,find button.s
+	// If all selected items are records & from same domain, then enable add,find buttons
 	if(recFromSameDomainCount == allSelectedItems.length) {
 		mainTree_isAddPossible = true;
 		mainTree_isFindPossible = true;
@@ -371,16 +372,6 @@ function rearrangeTreeGetIconClass (item, opened) {
     }
     return "recordIcon";    
 }
-
-function chkstatus() {
-	var res = "";
-	//res +=	"Add allowed: " + isAddButtonEnabled;
-	//res += "\nDelete allowed: " + isDeleteButtonEnabled;
-	//res += "\n target domain: " + targetDomain ;
-	//res += "\n add to relationship def : " + addToRelationship;
-	alert(res);
-}
-
 
 
 function showRearrangeTree(rearrangeButtonObj) {
@@ -439,6 +430,7 @@ function getRearrangeTreeData_CB (data) {
     rootDomainItem.id = "rootDom";
     rootDomainItem.name = byRecord_CurrentWorking_Domain;
     rootDomainItem.type = item_types.DOMAIN;
+	rootDomainItem.isRoot = true;
 	
 	var rootDomain = rearrangeTree_Store.newItem( rootDomainItem , null);
 	
@@ -503,7 +495,6 @@ function deleteItemsFromRearrangeTreeStore(items, req) {
 }
 // Function called when tree (rearrange Tree) is trying load the childrens for expanded node.
 function lazyLoadRearrangeTreeRelationships(node, callback_function) {
-	//TODO: Get child nodes for the node and create entries in tree
 	var parentItem = node.item;
 	if(parentItem == null ) {
 		callback_function();
@@ -526,7 +517,7 @@ function lazyLoadRearrangeTreeRelationships(node, callback_function) {
 		if(byRecord_CurrentWorking_Domain != null) selectedDomain = byRecord_CurrentWorking_Domain;
 		
 		RelationshipHandler.searchDomainRelationshipsByRecord(domainSearchObj, { callback:function(dataFromServer) {
-			rearrangeTree_loadRelationshipsForRecord(dataFromServer, parentItem,callback_function); }
+			rearrangeTree_loadRelationshipsForRecord(dataFromServer, node, callback_function); }
 		});
 		// make the stub marking as false.
 		rearrangeTree_Store.setValue(parentItem, "isStub", false);
@@ -535,7 +526,8 @@ function lazyLoadRearrangeTreeRelationships(node, callback_function) {
 }
 
 // To load relationships for rearrange tree, when record is expanded.
-function rearrangeTree_loadRelationshipsForRecord(data, parentItem, callback_function) {
+function rearrangeTree_loadRelationshipsForRecord(data, node, callback_function) {
+	var parentItem = node.item;
 	var parentItemID = rearrangeTree_Store.getValue (parentItem, "id");
 	for(i=0; i<data.relationshipsObjects.length; i++) {
         var tempRelObj = data.relationshipsObjects[i];
@@ -599,11 +591,24 @@ function rearrangeTree_loadRelationshipsForRecord(data, parentItem, callback_fun
 	callback_function();
 }
 
+var rearrangeTree_isAddPossible = false;
+var rearrangeTree_isDeletePossible = false;
+var rearrangeTree_isFindPossible = false;
+var rearrangeTree_isMovePossible = false;
+
 function rearrangeTreeClicked(item, node, allSelectedItems ) {
 	//alert("rearrange tree clicked");
 	byRecord_rearrangeTree_Selected_Relationship = null; 
 	byRecord_rearrangeTree_Selected_Record = null; 
 
+	rearrangeTree_isAddPossible = false; 
+	rearrangeTree_isDeletePossible = true;
+	rearrangeTree_isFindPossible = false;
+	rearrangeTree_isMovePossible = true;
+	
+	var recFromSameDomainCount = 0, prevRecDomainName = null;
+	var isRootDomainSelected = false, isRootRecordSelected = false;
+	
 	for(i=0; i<allSelectedItems.length; i++) {
 		var tempItem = allSelectedItems[i];
 		var itemType = rearrangeTree_Store.getValue(tempItem, "type");
@@ -614,18 +619,31 @@ function rearrangeTreeClicked(item, node, allSelectedItems ) {
 		switch (itemType) {
 			case item_types.DOMAIN:
 				if(itemName == byRecord_CurrentWorking_Domain) {
+					rearrangeTree_isDeletePossible = false;
+					isRootDomainSelected = true;
 					continue;
 				}
+				rearrangeTree_isAddPossible = true;
+				rearrangeTree_isFindPossible = true;
 				var parentRelationshipDefName = rearrangeTree_Store.getValue(tempItem, "parentRelationshipDefName");
 				//alert("its a domain ");
 				break;
 			case item_types.RELATIONSHIP:
+				rearrangeTree_isAddPossible = false;
 				//alert("its a relationship");
 				break;
 			case item_types.RECORD:
 				var itemEUID = rearrangeTree_Store.getValue(tempItem, "EUID");
 				var tempDomain = rearrangeTree_Store.getValue(tempItem, "parentDomain");
 				//alert(itemEUID + " : " + byRecord_CurrentWorking_EUID);
+				
+				// logic to figure out if all the selected records belong to same domain or not. (required to enable/disable add/delete/etc., operations)
+				if(prevRecDomainName == null) prevRecDomainName = tempDomain;
+				if(tempDomain == prevRecDomainName) 
+					recFromSameDomainCount ++;
+				else
+					recFromSameDomainCount --;
+				prevRecDomainName = tempDomain;
 				
 				if(isRoot !=null && isRoot) {
 					byRecord_rearrangeTree_Selected_Record = {};
@@ -634,6 +652,7 @@ function rearrangeTreeClicked(item, node, allSelectedItems ) {
 					var tempName = rearrangeTree_Store.getValue(item, "name");
 				    byRecord_rearrangeTree_Selected_Record["domain"] = tempDomain;
 					byRecord_rearrangeTree_Selected_Record["sourceRecordHighLight"] = tempName;
+					isRootRecordSelected = true;
 				} else {
                     //alert("not root");                
 					var tempRelationshipId = rearrangeTree_Store.getValue(tempItem, "parentRelationshipId");
@@ -652,7 +671,30 @@ function rearrangeTreeClicked(item, node, allSelectedItems ) {
 				break;
 		}
 	}
+		// If multi-selected, then no details can be shown.
+	if(allSelectedItems.length > 1) {
+		byRecord_rearrangeTree_Selected_Relationship = null;
+		byRecord_rearrangeTree_Selected_Record = null;
+		
+		rearrangeTree_isAddPossible = false;
+		rearrangeTree_isFindPossible = false;
+	}
+	// If all selected items are records & from same domain, then enable add,find buttons
+	if(recFromSameDomainCount == allSelectedItems.length) {
+		rearrangeTree_isAddPossible = true;
+		rearrangeTree_isFindPossible = true;
+	}
+
+	// If root nodes (either root-domain or root-record) are selected, disable add, move, find buttons
+	if(isRootRecordSelected || isRootDomainSelected) {
+		rearrangeTree_isAddPossible = false;
+		rearrangeTree_isMovePossible = false;
+		rearrangeTree_isFindPossible = false;
+	}
 	
+	byRecord_refreshRearrangeTreeButtonsPallete();
+	
+	// Show details section for the selected record/relationship (rearrange tree)
 	byRecord_rearrangeTree_ShowDetails();
 }
 
@@ -701,6 +743,44 @@ function byRecord_refreshMainTreeButtonsPallete () {
             imgMoveButtonObj.src =   moveRightButtonEnabled.src;
         else
             imgMoveButtonObj.src =   moveRightButtonDisabled.src;
+    }
+	
+}
+
+//function to refresh buttons pallete for Rearrange tree
+function byRecord_refreshRearrangeTreeButtonsPallete () {
+	//alert("add : " + mainTree_isAddPossible +"\n delete:"+ mainTree_isDeletePossible);
+
+	var imgDeleteButtonObj = dojo.byId("imgRearrangeTreeDeleteButton");
+    if(imgDeleteButtonObj != null) {
+        if(rearrangeTree_isDeletePossible)
+            imgDeleteButtonObj.src =   deleteButtonEnabled.src;
+        else
+            imgDeleteButtonObj.src =   deleteButtonDisabled.src;
+    }
+	
+	var imgAddButtonObj = dojo.byId("imgRearrangeTreeAddButton");
+    if(imgAddButtonObj != null) {
+        if(rearrangeTree_isAddPossible)
+            imgAddButtonObj.src =   addButtonEnabled.src;
+        else
+            imgAddButtonObj.src =   addButtonDisabled.src;
+    }
+	var imgFindButtonObj = dojo.byId("imgRearrangeTreeFindButton");
+    if(imgFindButtonObj != null) {
+        if(rearrangeTree_isFindPossible)
+            imgFindButtonObj.src =   findButtonEnabled.src;
+        else
+            imgFindButtonObj.src =   findButtonDisabled.src;
+    }
+
+	
+	var imgMoveButtonObj = dojo.byId("imgRearrangeTreeMoveButton");
+    if(imgMoveButtonObj != null) {
+        if(rearrangeTree_isMovePossible && getIsMoveRightPossible())
+            imgMoveButtonObj.src =   moveLeftButtonEnabled.src;
+        else
+            imgMoveButtonObj.src =   moveLeftButtonDisabled.src;
     }
 	
 }
