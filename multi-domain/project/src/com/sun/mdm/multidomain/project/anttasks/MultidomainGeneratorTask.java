@@ -424,14 +424,32 @@ public class MultidomainGeneratorTask extends Task {
         FileSet srcFileSet = new FileSet();
         File srcDir = mMdmModulesDir;
         srcFileSet.setDir(srcDir);
-        srcFileSet.setIncludes("multidomain/multidomain-core.jar, " +
-                "index-core.jar," + "net.java.hulp.i18n.jar" );
+        srcFileSet.setIncludes("multidomain/multidomain-core.jar");
+        
+        //copy master index jar files
+        FileSet srcFileSet2 = new FileSet();
+        File srcDir2 = null;
+        
+        String netbeansPath = getProject().getProperty("nbplatform.default.netbeans.dest.dir");
+        String userPath = getProject().getProperty("netbeans.user");
+        File userPathIndexCoreJar = new File(userPath + "/modules/ext/mdm/index-core.jar");
+        File netbeansPathIndexCoreJar = new File(netbeansPath + "/soa2/modules/ext/mdm/index-core.jar");
+        if (userPathIndexCoreJar.exists()){
+            srcDir2 = new File(userPath + "/modules/ext/mdm");
+        }else if (netbeansPathIndexCoreJar.exists()){
+            srcDir2 = new File(netbeansPath + "/soa2/modules/ext/mdm");
+        }else{
+            throw new BuildException(   "Could not locate the Master Index Module. ");
+        }
+        srcFileSet2.setDir(srcDir2);
+        srcFileSet2.setIncludes("index-core.jar," + "net.java.hulp.i18n.jar" );
+        
         
         //copy user plugin.jar 
-        FileSet srcFileSet2 = new FileSet();
-        File srcDir2 = new File(projPath + "/src/Plug-ins");
-        srcFileSet2.setDir(srcDir2);
-        srcFileSet2.setIncludes("*.jar" );
+        FileSet srcFileSet3 = new FileSet();
+        File srcDir3 = new File(projPath + "/src/Plug-ins");
+        srcFileSet3.setDir(srcDir3);
+        srcFileSet3.setIncludes("*.jar" );
         
         Copy copy = (Copy) getProject().createTask("copy");
         copy.init();
@@ -439,6 +457,7 @@ public class MultidomainGeneratorTask extends Task {
         copy.setFlatten(true);
         copy.addFileset(srcFileSet);
         copy.addFileset(srcFileSet2);
+        copy.addFileset(srcFileSet3);
         copy.setLocation(getLocation());
         copy.execute();
                
