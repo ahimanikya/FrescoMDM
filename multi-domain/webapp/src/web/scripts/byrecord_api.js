@@ -18,8 +18,11 @@ var byRecord_CurrentWorking_EUID = null; // Current working record EUID.
 var byRecord_CurrentSelected_RelationshipDefName = null; // Populated when any operation happens in Tree
 var byRecord_CurrentSelected_TargetDomain = null; // Populated when any operation happens in Tree
 
-var byRecord_Selected_Relationship = null; //Relationship Object - Populated when anything clicked in tree
-var byRecord_Selected_Record = null; // Record Object - Populated when anything clicked in tree
+var byRecord_Selected_Relationship = null; //Relationship Object - Populated when anything clicked in Main tree
+var byRecord_Selected_Record = null; // Record Object - Populated when anything clicked in Main tree
+
+var byRecord_rearrangeTree_Selected_Relationship = null; //Relationship Object - Populated when anything clicked in Main tree
+var byRecord_rearrangeTree_Selected_Record = null; // Record Object - Populated when anything clicked in Main tree
 
 var byRecord_CachedRelationshipDefs = {};
 
@@ -535,6 +538,12 @@ function polulateByRecordSourceDetails_Callback(data){
           summaryFieldCount ++;
         }
     }
+}
+
+// function to show details when something is clicked on Rearrange tree
+function byRecord_rearrangeTree_ShowDetails () {
+	alert(byRecord_rearrangeTree_Selected_Relationship);
+	alert(byRecord_rearrangeTree_Selected_Record);
 }
 
 function byRecord_clearDetailsSection() {

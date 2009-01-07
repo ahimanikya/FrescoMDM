@@ -328,6 +328,9 @@ function mainTreeClicked(item, node, allSelectedItems ) {
 	}
 
 	byRecord_refreshMainTreeButtonsPallete();
+	
+	// Show details for selected record/relationship (main tree).
+	byRecord_ShowDetails();
 	return;
 }
 
@@ -450,6 +453,7 @@ function getRearrangeTreeData_CB (data) {
         recordNode.name = tempRec.highLight;
 		recordNode.type = item_types.RECORD;
 		recordNode.isStub = true;
+		recordNode.isRoot = true;
 
         recordNode.type = item_types.RECORD;
         var recordNodeItem = rearrangeTree_Store.newItem(recordNode, {parent: rootDomain, attribute:"children"} );
@@ -597,6 +601,59 @@ function rearrangeTree_loadRelationshipsForRecord(data, parentItem, callback_fun
 
 function rearrangeTreeClicked(item, node, allSelectedItems ) {
 	//alert("rearrange tree clicked");
+	byRecord_rearrangeTree_Selected_Relationship = null; 
+	byRecord_rearrangeTree_Selected_Record = null; 
+
+	for(i=0; i<allSelectedItems.length; i++) {
+		var tempItem = allSelectedItems[i];
+		var itemType = rearrangeTree_Store.getValue(tempItem, "type");
+		var itemName = rearrangeTree_Store.getValue(tempItem, "name");	
+		//alert(itemType + " : " + itemName);
+		var isRoot = rearrangeTree_Store.getValue(tempItem, "isRoot");
+		
+		switch (itemType) {
+			case item_types.DOMAIN:
+				if(itemName == byRecord_CurrentWorking_Domain) {
+					continue;
+				}
+				var parentRelationshipDefName = rearrangeTree_Store.getValue(tempItem, "parentRelationshipDefName");
+				//alert("its a domain ");
+				break;
+			case item_types.RELATIONSHIP:
+				//alert("its a relationship");
+				break;
+			case item_types.RECORD:
+				var itemEUID = rearrangeTree_Store.getValue(tempItem, "EUID");
+				var tempDomain = rearrangeTree_Store.getValue(tempItem, "parentDomain");
+				//alert(itemEUID + " : " + byRecord_CurrentWorking_EUID);
+				
+				if(isRoot !=null && isRoot) {
+					byRecord_rearrangeTree_Selected_Record = {};
+					byRecord_rearrangeTree_Selected_Record["EUID"] = itemEUID;
+					
+					var tempName = rearrangeTree_Store.getValue(item, "name");
+				    byRecord_rearrangeTree_Selected_Record["domain"] = tempDomain;
+					byRecord_rearrangeTree_Selected_Record["sourceRecordHighLight"] = tempName;
+				} else {
+                    //alert("not root");                
+					var tempRelationshipId = rearrangeTree_Store.getValue(tempItem, "parentRelationshipId");
+					
+					byRecord_rearrangeTree_Selected_Relationship = {};
+					byRecord_rearrangeTree_Selected_Relationship["relationshipId"] = rearrangeTree_Store.getValue(tempItem, "parentRelationshipId");
+					byRecord_rearrangeTree_Selected_Relationship["sourceDomain"] = rearrangeTree_Store.getValue(tempItem, "relationshipFromDomain");
+					byRecord_rearrangeTree_Selected_Relationship["targetDomain"] = rearrangeTree_Store.getValue(tempItem, "relationshipToDomain");
+					byRecord_rearrangeTree_Selected_Relationship["relationshipDefName"] = rearrangeTree_Store.getValue(tempItem, "parentRelationshipDefName");
+					
+					byRecord_rearrangeTree_Selected_Relationship["sourceRecordHighLight"] = rearrangeTree_Store.getValue(tempItem, "fromRecordHighLight");
+					byRecord_rearrangeTree_Selected_Relationship["targetRecordHighLight"] = rearrangeTree_Store.getValue(tempItem, "toRecordHighLight");
+					
+				}
+				//alert("its a record");
+				break;
+		}
+	}
+	
+	byRecord_rearrangeTree_ShowDetails();
 }
 
 
