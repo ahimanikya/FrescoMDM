@@ -23,7 +23,7 @@
 					<tr><td width="100%" align="left"  valign="top">
 						<table cellspacing="0" cellpadding="0" border="0" width="100%" style="height:25px;">
                            <tr>
-                            <td><a href="javascript:void(0);" onclick="" title="<f:message key="add_text" />..."><img id="imgMainTreeAddButton" src="images/icons/add_button_faded.png" border="0"></a></td>
+                            <td><a href="javascript:void(0);" onclick="byRecord_mainTree_addOperation();" title="<f:message key="add_text" />..."><img id="imgMainTreeAddButton" src="images/icons/add_button_faded.png" border="0"></a></td>
                             <td><img src="images/spacer.gif" height="1" width="6"></td>
                             <td><a href="javascript:void(0);" onclick="" title="Move"><img id="imgMainTreeMoveButton" src="images/icons/move-right_button_faded.png" border="0"></a></td>
 							<td><img src="images/spacer.gif" height="1" width="6"></td>

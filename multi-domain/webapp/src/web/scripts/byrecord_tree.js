@@ -942,6 +942,19 @@ function byRecord_isMoveValid (sourceTreeObj, targetTreeObj) {
 	return false;
 }
 
+
+// function to Add operation, for main tree
+function byRecord_mainTree_addOperation () {
+	if(!mainTree_isAddPossible) return;
+	
+	byRecord_CurrentSelected_TargetDomain = "Company";
+    byRecord_CurrentSelected_RelationshipDefName = "EmployedBy";
+	byRecord_CurrentSelected_SourceDomain = "Person";
+	//TBD: assign proper values for targetDomain & relationshipName based on selection in tree.
+	
+	showByRecordAddDialog();
+}
+
 //function to refresh buttons pallete for main tree
 function byRecord_refreshMainTreeButtonsPallete () {
 	//alert("add : " + mainTree_isAddPossible +"\n delete:"+ mainTree_isDeletePossible);
