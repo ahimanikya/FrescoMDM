@@ -91,7 +91,8 @@ public class RelationshipEavDaoImpl extends AbstractDAO implements RelationshipE
                         stmt.setLong(index++, longVal);
                         break;
                     case DATE:
-                        stmt.setTimestamp(index++, java.sql.Timestamp.valueOf(strValue));
+                        long timeVal = Long.parseLong(strValue);
+                        stmt.setTimestamp(index++, new java.sql.Timestamp(timeVal));
                         break;
                     default:
                 }
@@ -167,7 +168,8 @@ public class RelationshipEavDaoImpl extends AbstractDAO implements RelationshipE
                         stmt.setLong(index++, longVal);
                         break;
                     case DATE:
-                        stmt.setTimestamp(index++, java.sql.Timestamp.valueOf(strValue));
+                        long timeVal = Long.parseLong(strValue);
+                        stmt.setTimestamp(index++, new java.sql.Timestamp(timeVal));                        
                         break;
                     default:
                 }
