@@ -264,7 +264,7 @@ boolean isSessionActive = true;
 					<td> 
 						<script>
 								document.getElementById('messages').innerHTML  = ""; 
-			 document.getElementById("transDetailsDiv").innerHTML  = "<%=bundle.getString("datatable_transactionid_text")%>: <b>" + pages[thisIdx] + "</b> <%=bundle.getString("transaction_function")%> : <b>"+ functionDesc[thisIdx] + "</b>"; 
+			 document.getElementById("transDetailsDiv").innerHTML  = "<%=bundle.getString("datatable_transactionid_text")%>: <b>" + pages[thisIdx] + "</b> <%=bundle.getString("transaction_function")%> : <b>"+ functionDesc[thisIdx] + "</b>" + "  <%=bundle.getString("Transaction_data_table_systemuser_column")%>  :  <b>" + systemUsers[thisIdx] + "</b>  <%=bundle.getString("Transaction_data_table_timestamp_column")%>  : <b>" + timeStamp[thisIdx] + "</b>"; 
 						</script>
 				   </td>
 				</tr>

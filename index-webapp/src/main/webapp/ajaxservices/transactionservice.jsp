@@ -238,7 +238,7 @@ if (results != null)   {
                                    <td style="text-align:right">
 								   <nobr>
 						          <%  if ((screenObject.getRootObj().getName()+"."+"TransactionNumber").equalsIgnoreCase((String)fullFieldNamesList.toArray()[kc])) { 
-								  transDetailsMap.put(valueMap.get((screenObject.getRootObj().getName()+"."+"TransactionNumber")),valueMap.get((screenObject.getRootObj().getName()+"."+"FunctionCode")));
+								  transDetailsMap.put(valueMap.get((screenObject.getRootObj().getName()+"."+"TransactionNumber")),valueMap.get((screenObject.getRootObj().getName()+"."+"FunctionCode")).toString() + ">>" + valueMap.get((screenObject.getRootObj().getName()+"."+"SystemUser")).toString() + ">>" + valueMap.get((screenObject.getRootObj().getName()+"."+"TimeStamp")).toString());
 								  %>
 
                                         <a href="transeuiddetails.jsf?transactionId=<%=valueMap.get((screenObject.getRootObj().getName()+"."+"TransactionNumber"))%>&function=<%=valueMap.get((screenObject.getRootObj().getName()+"."+"FunctionCode"))%>&previousQuery=<%=previousQuery%>&fromUrl=transactions.jsf" >										

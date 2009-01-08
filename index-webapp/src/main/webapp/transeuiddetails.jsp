@@ -79,6 +79,8 @@
   TreeMap detailsArray = (session.getAttribute("transdetails") != null)?(TreeMap)session.getAttribute("transdetails"):new TreeMap();
   String [] transactionIds = (detailsArray.keySet().toString()).split(",");
   String [] functions = new String[transactionIds.length];
+  String [] systemUsers = new String[transactionIds.length];
+  String [] timeStamp = new String[transactionIds.length];
 
   for (int i =0;i<transactionIds.length;i++)   {	    
 	    transactionIds[i] = transactionIds[i].trim();
@@ -86,8 +88,11 @@
 			transactionIds[i] = transactionIds[i].substring(1,transactionIds[i].length());
 		if (i == transactionIds.length -1 )
 			transactionIds[i] = transactionIds[i].substring(0,transactionIds[i].length()-1);
-		
-		functions[i] = (String)detailsArray.get(transactionIds[i]);
+		String[] keyValue  = detailsArray.get(transactionIds[i]).toString().split(">>");
+        
+		functions[i] = keyValue[0];
+		systemUsers[i] = keyValue[1];
+		timeStamp[i] = keyValue[2];
   }
  %>
 
@@ -103,6 +108,8 @@
  <script>
 var pages =[];
 var functions =[];
+var systemUsers =[];
+var timeStamp =[];
 var functionDesc =[];
 var thisIdx=0;
 
@@ -112,6 +119,8 @@ var EO2SrcCount = "";
   <%for (int i=0; i<transactionIds.length;i++)    { %>
          pages.push("<%=transactionIds[i]%>");
          functions.push("<%=functions[i]%>");
+         systemUsers.push("<%=systemUsers[i]%>");
+         timeStamp.push("<%=timeStamp[i]%>");
          functionDesc.push("<%=ValidationService.getInstance().getDescription(ValidationService.CONFIG_MODULE_FUNCTION, functions[i])%>");
  		 <% if(transactionIds[i].equalsIgnoreCase(transactionId)){%>
          thisIdx = <%=i%>;

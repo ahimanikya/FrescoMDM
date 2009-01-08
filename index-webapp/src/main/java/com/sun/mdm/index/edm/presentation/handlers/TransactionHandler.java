@@ -74,6 +74,7 @@ import com.sun.mdm.index.edm.presentation.util.Localizer;
 import com.sun.mdm.index.edm.presentation.util.Logger;
 import com.sun.mdm.index.edm.services.configuration.ConfigManager;
 import com.sun.mdm.index.edm.services.configuration.ValidationService;
+import java.text.SimpleDateFormat;
 
 public class TransactionHandler extends ScreenConfiguration {
     private transient static final Logger mLogger = Logger.getLogger("com.sun.mdm.index.edm.presentation.handlers.TransactionHandler");
@@ -279,9 +280,12 @@ public class TransactionHandler extends ScreenConfiguration {
             }
             TransactionSearchObject tso = getTransactionSearchObject();
             if (tso == null) return null;
+                
+            SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat(ConfigManager.getDateFormat() + " HH:mm:ss");
             
             MasterControllerService objMasterControllerService = new MasterControllerService();
             TransactionIterator iteratorTransaction = objMasterControllerService.lookupTransactionHistory(tso);
+            
             setSearchSize(0);
             if (iteratorTransaction != null) {
                 TransactionSummary[] tsArray = iteratorTransaction.first(iteratorTransaction.count());
@@ -289,15 +293,6 @@ public class TransactionHandler extends ScreenConfiguration {
                 for (int i = 0; i < tsArray.length; i++) {
                     TransactionSummary ts = tsArray[i];
                     getTransactionsVO()[i] = new Transaction(); //to be safe with malloc
-                    /*String outputValues = "{TransactionNumber:" + "\"" + ts.getTransactionObject().getTransactionNumber() + "\"" +
-                            ", EUID1: " + "\"" + ((ts.getTransactionObject().getEUID() != null) ? ts.getTransactionObject().getEUID() : "") + "\"" +
-                            ", EUID2: " + "\"" + ((ts.getTransactionObject().getEUID2() != null) ? ts.getTransactionObject().getEUID2() : "") + "\"" +
-                            ", LID: " + "\"" + ((ts.getTransactionObject().getLID() != null) ? ts.getTransactionObject().getLID() : "") + "\"" +
-                            ", Function: " + "\"" + ((ts.getTransactionObject().getFunction() != null) ? ts.getTransactionObject().getFunction() : "") + "\"" +
-                            ", SystemCode: " + "\"" + ((ts.getTransactionObject().getSystemCode() != null) ? masterControllerService.getSystemDescription(ts.getTransactionObject().getSystemCode()): "") + "\"" +
-                            ", SystemUser: " + "\"" + ((ts.getTransactionObject().getSystemUser() != null) ? ts.getTransactionObject().getSystemUser() : "") + "\"" +
-                            ", TimeStamp: " + "\"" + ((ts.getTransactionObject().getTimeStamp() != null) ? ts.getTransactionObject().getTimeStamp() : "") + "\"" + "}";
-                     */
                     //Insert audit log here for Transaction search
                     masterControllerService.insertAuditLog((String) session.getAttribute("user"), 
                                                     ts.getTransactionObject().getEUID(), 
@@ -315,7 +310,8 @@ public class TransactionHandler extends ScreenConfiguration {
                     resultsMap.put(screenObject.getRootObj().getName()+"."+"FunctionCode",ts.getTransactionObject().getFunction());
                     resultsMap.put(screenObject.getRootObj().getName()+"."+"SystemCode", ValidationService.getInstance().getSystemDescription(ts.getTransactionObject().getSystemCode()));
                     resultsMap.put(screenObject.getRootObj().getName()+"."+"SystemUser", ts.getTransactionObject().getSystemUser());
-                    resultsMap.put(screenObject.getRootObj().getName()+"."+"TimeStamp", ts.getTransactionObject().getTimeStamp());
+
+                    resultsMap.put(screenObject.getRootObj().getName()+"."+"TimeStamp", simpleDateFormatFields.format(ts.getTransactionObject().getTimeStamp()));
 
                     resultsArrayList.add(resultsMap);
                 }
