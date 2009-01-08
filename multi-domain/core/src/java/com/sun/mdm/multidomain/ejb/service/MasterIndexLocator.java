@@ -83,17 +83,6 @@ public class MasterIndexLocator {
           env.put(Context.SECURITY_PRINCIPAL, principal);
           env.put(Context.SECURITY_CREDENTIALS, credential);
         }
-        env.put("java.naming.factory.url.pkgs","com.sun.enterprise.naming");
-        env.put("java.naming.factory.state","com.sun.corba.ee.impl.presentation.rmi.JNDIStateFactoryImpl");
-
-        /* InitialContext properties for glassfish.
-        env.put("java.naming.factory.initial","com.sun.enterprise.naming.SerialInitContextFactory");        
-        env.put("java.naming.factory.url.pkgs","com.sun.enterprise.naming");
-        env.put("java.naming.factory.state","com.sun.corba.ee.impl.presentation.rmi.JNDIStateFactoryImpl");
-        env.put("java.naming.provider.url", "iiop://localhost:3100");
-        env.put("java.naming.security.principal", "username");
-        env.put("java.naming.security.credentials", "password");                
-        */
         
         Context ctx = new InitialContext(env);
         MasterControllerRemote mc = (MasterControllerRemote) ctx.lookup("ejb/" + domainName + "MasterController");
