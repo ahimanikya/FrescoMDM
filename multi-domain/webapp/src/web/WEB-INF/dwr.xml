@@ -43,6 +43,7 @@
       <include method="deleteRelationship" />
       <include method="searchRelationshipsByRecord" />
       <include method="searchDomainRelationshipsByRecord" />
+      <include method="moveRelationships" />      
     </create>
 
     <create creator="spring" javascript="HierarchyDefHandler" scope="session">
@@ -144,6 +145,9 @@
     <convert converter="bean" match="com.sun.mdm.multidomain.services.relationship.RelationshipComposite">
         <param name="include" value="sourceRecord,targetRecord,relationshipRecord" />
     </convert> 
+    <convert converter="bean" match="com.sun.mdm.multidomain.services.relationship.RelationshipMoveComposite">
+        <param name="include" value="domain,fromEUID,fromRelationshipDef,toEUID, toRelationshipDef,relationships" />
+    </convert> 
    
     <convert converter="bean" match="com.sun.mdm.multidomain.services.model.ObjectView">
         <param name="include" value="name,EUID,highLight" />
@@ -238,6 +242,13 @@
             RelationshipRecord.setAttributes(List<Attribute> attributes);            
             List<Attribute> RelationshipRecord.getAttributes(); 
         ]]>           
+        <![CDATA[
+            import java.util.List;
+            import com.sun.mdm.multidomain.services.relationship.RelationshipView;            
+            import com.sun.mdm.multidomain.services.relationship.RelationshipMoveComposite;
+            List<RelationshipView> RelationshipMoveComposite.getRelationships();
+            RelationshipMoveComposite.setRelationships(List<RelationshipView> relationships);            
+        ]]>                   
     </signatures>
   </allow>
 </dwr>
