@@ -181,6 +181,14 @@ if(session!=null){
 			        showExtraDivs("unsavedDiv",thisEvent);
 				}
 			   }
+				function changecolor(v)   {
+							 if (v.style.backgroundColor == "#696969")   {
+								 v.style.backgroundColor="#e7e7d6";
+							 } else {
+								 v.style.backgroundColor="#696969";
+							 }
+				}
+
 			 var userDefinedInputMask="";
              var URI_VAL = '<%=URI%>';
 			 var RAND_VAL = '<%=rand%>';
@@ -193,6 +201,23 @@ if(session!=null){
 		   var euidValueArraySrc=[];
 		   var euidValueArrayHis=[];
 		   var popUrl="";
+		   var pages =[];
+		   var functions =[];
+		   var prevNextIndex="-1";
+
+  <%String euidList[] = (request.getParameter("euidList")!=null)?request.getParameter("euidList").split(","):null;%>
+   <%if(euidList!=null && euidList.length>0){
+	  for (int i=0; i<euidList.length;i++)    { %>
+			 pages.push("<%=euidList[i]%>");
+			<%if(request.getParameter("euid") != null && request.getParameter("euid").equalsIgnoreCase(euidList[i])){%>
+				prevNextIndex = '<%=i%>';
+ 			<%}%>
+ 	  <%}%>
+	<%if(request.getParameter("prevNextIndex")!=null){%>
+				prevNextIndex = '<%=request.getParameter("prevNextIndex")%>';
+ 	<%}%>
+  <%}%>
+
 		</script>
         </head>
         <title><h:outputText value="#{msgs.application_heading}"/></title> 
@@ -287,11 +312,11 @@ if(session!=null){
 			   <%if(request.getParameter("euid") != null) {%>
 				   <%if(request.getParameter("showMergeTree") != null) {%>
 					   <script>
-						  ajaxURL('/<%=URI%>/ajaxservices/euiddetailsservice.jsf?'+'&rand=<%=rand%>&euid=<%=request.getParameter("euid")%>&showMergeTree=true','targetDiv','');
+						  ajaxURL('/<%=URI%>/ajaxservices/euiddetailsservice.jsf?'+'&rand=<%=rand%>&euid=<%=request.getParameter("euid")%>&showMergeTree=true&euidList=<%=request.getParameter("euidList")%>','targetDiv','');
 					   </script>
 				   <%} else {%>
 					   <script>
-						  ajaxURL('/<%=URI%>/ajaxservices/euiddetailsservice.jsf?'+'&rand=<%=rand%>&euid=<%=request.getParameter("euid")%>','targetDiv','');
+						  ajaxURL('/<%=URI%>/ajaxservices/euiddetailsservice.jsf?'+'&rand=<%=rand%>&euid=<%=request.getParameter("euid")%>&euidList=<%=request.getParameter("euidList")%>','targetDiv','');
 					   </script>
 				   <%}%>
               <%}%>

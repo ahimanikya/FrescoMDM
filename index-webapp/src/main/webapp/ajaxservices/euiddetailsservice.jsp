@@ -161,7 +161,26 @@ boolean isSessionActive = true;
 			String objectslength = "";
 			String sourcesize = "";
 			String revEuid = "";
-			%>
+// Fix for 6700851 on 07-01-09 			
+			String euidList[] = (request.getParameter("euidList")!=null)?request.getParameter("euidList").split(","):null;
+			String tempEuids = "";
+		    if(euidList!=null && euidList.length>0){
+ 			   for(int i=0;i<euidList.length;i++){
+ 				   tempEuids = tempEuids+euidList[i]+" ";
+			   }
+			}
+			tempEuids = tempEuids.trim();
+			tempEuids = tempEuids.replace(" ",",");
+ 			%>
+	<%if(request.getParameter("prevNextIndex")!=null){%>
+		<table><tr><td>
+			<script>
+				prevNextIndex = '<%=request.getParameter("prevNextIndex")%>';
+				document.getElementById('potentialDupBasicForm:euidField').value = pages[prevNextIndex];
+			</script>
+		</td></tr></table>
+  	<%}%>
+
 			<%if(!isCheckLatest){ //Fix for 671089%>
 
 			<%
@@ -294,8 +313,34 @@ boolean isSessionActive = true;
                                                 String rootNodeName = objScreenObject.getRootObj().getName();
                                                 FieldConfig[] rootFieldConfigArray = (FieldConfig[]) sourceHandler.getAllNodeFieldConfigs().get(rootNodeName);
                                                 ObjectNodeConfig[] arrObjectNodeConfig = objScreenObject.getRootObj().getChildConfigs();
+
                    %>
-                                          <%if (countEnt == 0) {%>
+	  <%if(euidList!=null && euidList.length>0){%>
+		<!--First Navigation -->
+		<td valign="top" align="left" height="100%">
+			<div id="first" onmouseout="changecolor(this)" style="height:100%;cursor:hand;verticle-align:top;position:relative;width:20px;border-bottom:1px outset;border-top:1px outset;border-right:1px outset;border-left:1px outset;border-left:1px inset;background-color:#e7e7d6">
+				<table border="0" height="100%" title="<%=bundle.getString("first")%>" 
+					onclick="
+					prevNextIndex = 0;
+					ajaxURL('/<%=URI%>/ajaxservices/euiddetailsservice.jsf?'+'&rand=<%=rand%>&euid='+pages[prevNextIndex]+'&prevNextIndex='+prevNextIndex+'&euidList=<%=request.getParameter("euidList")%>','targetDiv','');">
+				<tr><td><img src='/<%=URI%>/images/chevrons-left.png'></td></tr> 
+				<tr><td><img src='/<%=URI%>/images/chevrons-left.png'></td></tr> 
+				 </table>
+			</div>
+		</td>
+
+	   <!--Prev Navigation -->
+ 		 <td valign="top" align="right" height="100%">
+		    	<div id="prev" onmouseout="changecolor(this)"  onmousemovein="changecolor(this)" style="height:100%;cursor:hand;verticle-align:top;position:relative;width:20px;border-bottom:1px outset;border-top:1px outset;border-right:1px outset;border-left:1px outset;border-left:1px inset;background-color:#e7e7d6">
+			 	  <table border="0" height="100%" title="<%=bundle.getString("prev")%>" 
+					onclick="ajaxURL('/<%=URI%>/ajaxservices/euiddetailsservice.jsf?'+'&rand=<%=rand%>&euid='+pages[--prevNextIndex]+'&prevNextIndex='+prevNextIndex+'&euidList=<%=request.getParameter("euidList")%>','targetDiv','');">
+				   <tr><td><img src='/<%=URI%>/images/turner_arrow_left.gif'></td></tr> 
+				   <tr><td><img src='/<%=URI%>/images/turner_arrow_left.gif'></td></tr> 
+				 </table>
+			  </div>
+		</td>
+		<%}%>
+                                      <%if (countEnt == 0) {%>
                                              <td  valign="top">
                                                 <div id="outerMainContentDivid<%=countEnt%>" style="visibility:visible;display:block">
                                                     <div style="width:170px;overflow:auto">
@@ -372,7 +417,7 @@ boolean isSessionActive = true;
                                                     </div>
                                                 </div>
                                             </td>
-                                            <%}%>     
+                                            <%}%>    
                                             <!-- Display the field Values-->
                                             <td  valign="top">
                                                 <div id="outerMainContentDivid<%=countEnt%>" >
@@ -521,6 +566,30 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                     </div>
                                                 </div>
                                             </td>
+       <!--Next Navigation -->
+ 	  <%if(euidList!=null && euidList.length>0){%>
+  		 <td valign="top" align="right" height="100%">
+		    	<div id="next" onmouseout="changecolor(this)"  onmousemovein="changecolor(this)" style="height:100%;cursor:hand;verticle-align:top;position:relative;width:20px;border-bottom:1px outset;border-top:1px outset;border-right:1px outset;border-left:1px outset;border-left:1px inset;background-color:#e7e7d6">
+			 	  <table border="0" height="100%" title="<%=bundle.getString("next")%>" onclick="ajaxURL('/<%=URI%>/ajaxservices/euiddetailsservice.jsf?'+'&rand=<%=rand%>&euid='+pages[++prevNextIndex]+'&prevNextIndex='+prevNextIndex+'&euidList=<%=request.getParameter("euidList")%>','targetDiv','');">
+					<tr><td><img src='/<%=URI%>/images/turner_arrow_right.gif'></td></tr> 
+					<tr><td><img src='/<%=URI%>/images/turner_arrow_right.gif'></td></tr> 
+				 </table>
+			  </div>
+		</td>
+		<!--Last Navigation -->
+		<td valign="top" align="left" height="100%">
+			<div id="last" onmouseout="changecolor(this)"  onmousemovein="changecolor(this)" style="height:100%;cursor:hand;verticle-align:top;position:relative;width:20px;border-bottom:1px outset;border-top:1px outset;border-right:1px outset;border-left:1px outset;border-left:1px inset;background-color:#e7e7d6">
+				<table border="0" height="100%" title="<%=bundle.getString("last")%>"
+					onclick="
+					prevNextIndex = pages.length-1;
+					ajaxURL('/<%=URI%>/ajaxservices/euiddetailsservice.jsf?'+'&rand=<%=rand%>&euid='+pages[prevNextIndex]+'&prevNextIndex='+prevNextIndex+'&euidList=<%=request.getParameter("euidList")%>','targetDiv','');">
+				   <tr><td><img src='/<%=URI%>/images/chevrons-right.png' border="0"></td></tr> 
+				   <tr><td><img src='/<%=URI%>/images/chevrons-right.png' border="0"></td></tr> 
+				 </table>
+			</div>
+		 </td>
+ 		<%}%>
+
                                             <!--Start displaying the sources-->
                                             <% 
                                                eoSources = (ArrayList) eoHashMapValues.get("ENTERPRISE_OBJECT_SOURCES");
@@ -1476,7 +1545,53 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
  <%}%> <!-- if session is active -->
 
 
-</html>
+ <script>
+  if (pages.length == 1)  {
+       document.getElementById('next').style.visibility = 'hidden';	  
+       document.getElementById('next').style.display = 'none';
+	   
+       document.getElementById('prev').style.visibility = 'hidden';
+	   document.getElementById('prev').style.display = 'none';
+
+	   document.getElementById('first').style.visibility = 'hidden';
+       document.getElementById('first').style.display = 'none';
+
+       document.getElementById('last').style.visibility = 'hidden';
+       document.getElementById('last').style.display = 'hidden';
+
+ } else if (prevNextIndex >= pages.length -1)  {
+	   document.getElementById('next').style.visibility = 'hidden';
+       document.getElementById('next').style.display = 'none';
+
+       document.getElementById('prev').style.visibility = 'visible';
+       document.getElementById('prev').style.display = 'block';
+
+	   document.getElementById('last').style.visibility = 'hidden';
+       document.getElementById('last').style.display = 'none';
+
+       document.getElementById('first').style.visibility = 'visible';
+       document.getElementById('first').style.display = 'block';
+} else if (prevNextIndex <= 0)   {
+	   document.getElementById('prev').style.visibility = 'hidden';
+       document.getElementById('prev').style.display = 'none';
+
+	   document.getElementById('next').style.visibility = 'visible';
+       document.getElementById('next').style.display = 'block';
+
+	   document.getElementById('first').style.visibility = 'hidden';
+       document.getElementById('first').style.display = 'none';
+
+       document.getElementById('last').style.visibility = 'visible';
+       document.getElementById('last').style.display = 'block';
+ }else if (prevNextIndex == 1){
+       document.getElementById('first').style.visibility = 'hidden';
+       document.getElementById('first').style.display = 'none';
+ }else  if (prevNextIndex == pages.length-2){
+       document.getElementById('last').style.visibility = 'hidden';
+       document.getElementById('last').style.display = 'none';
+ }
+
+ </script>
 
 <script type="text/javascript">
     dd=new YAHOO.util.DD("activeDiv");

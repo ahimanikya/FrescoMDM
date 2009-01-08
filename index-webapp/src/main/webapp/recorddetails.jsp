@@ -104,7 +104,8 @@ var editIndexid = "";
 var thisForm;
 var rand = "";
 var popUrl;
-
+// Fix for 6700851 on 07-01-09 
+var euidList = ""; 
 function setRand(thisrand)  {
 	rand = thisrand;
 }

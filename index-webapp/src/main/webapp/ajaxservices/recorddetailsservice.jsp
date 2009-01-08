@@ -135,6 +135,9 @@ ArrayList keys = new ArrayList();
 
 //List to hold the results
 ArrayList results = new ArrayList();
+//Fix for 6700851 on 07-01-09 
+ArrayList euidList = new ArrayList();
+String euids = "";
 
 ResourceBundle bundle = ResourceBundle.getBundle(NavigationHandler.MIDM_PROP, FacesContext.getCurrentInstance().getViewRoot().getLocale());
 
@@ -615,8 +618,13 @@ if (results != null)   {
 											  <%}%>
 										  <%}%>
 								   <%} else if(keyValue.equalsIgnoreCase("EUID")) {%>
+								   <!-- Fix for 6700851 on 07-01-09  -->
+									   <%
+											euidList.add(valueMap.get(fullFieldNamesList.toArray()[kc]));
+									   %>
                                                                           
-		                          <a href="euiddetails.jsf?euid=<%=valueMap.get(fullFieldNamesList.toArray()[kc])%>&<%=previousQueryStr%>&fromUrl=recorddetails.jsf">
+		                          <a href="javascript:void(0);"
+								  onclick="javascript:window.location = 'euiddetails.jsf?euid=<%=valueMap.get(fullFieldNamesList.toArray()[kc])%>&<%=previousQueryStr%>&fromUrl=recorddetails.jsf&euidList='+euidList;" >
                                            <%= (valueMap.get(fullFieldNamesList.toArray()[kc]) == null?"":valueMap.get(fullFieldNamesList.toArray()[kc]))%>
 										</a>                                                                                
 									<%}else if(!keyValue.equalsIgnoreCase("Weight") && fullfieldValue.indexOf(screenObject.getRootObj().getName()) != 0) {
@@ -634,8 +642,15 @@ if (results != null)   {
                              <%}%>
                        </tr>
                      <%}%>
-	                 </tbody>
+					 <%
+						euids=euidList.toString();
+						euids = euids.replace("[","");
+					    euids = euids.replace("]","");
+					    euids = euids.replace(" ","");
+					 %>
+ 	                 </tbody>
                     </table>
+					<table><tr><td><script>euidList='<%=euids%>'</script></td></tr></table>
                 </div>
 		   <% } %>
            </td>
