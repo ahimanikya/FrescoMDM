@@ -26,10 +26,6 @@ var byRecord_Selected_Record = null; // Record Object - Populated when anything 
 var byRecord_rearrangeTree_Selected_Relationship = null; //Relationship Object - Populated when anything clicked in Main tree
 var byRecord_rearrangeTree_Selected_Record = null; // Record Object - Populated when anything clicked in Main tree
 
-var sourceRecordDetailsPrefix = null; // To display record details for Main Treee and Rearrange Tree based on source prefix
-var targetRecordDetailsPrefix = null; // To display record details for Main Treee and Rearrange Tree based on target prefix
-var relationshipAttributePrefix = null ; // To display record details reltionship attributes for Main Treee and Rearrange Tree
-
 var byRecord_CachedRelationshipDefs = {};
 
 
@@ -298,6 +294,9 @@ function byRecord_initializeTree() {
 // function to show right section details...
 function byRecord_ShowDetails () {
 
+	var mainTree_sourceRecordDetailsPrefix = "source";
+	var mainTree_targetRecordDetailsPrefix = "target";
+	var mainTree_relationshipAttributePrefix = "mainTree";
 	if(byRecord_Selected_Relationship != null) {
 		//alert("Showing details for relationship: " + byRecord_Selected_Relationship);
 		//alert(byRecord_Selected_Relationship.relationshipId + " : " + byRecord_Selected_Relationship.sourceDomain + " : " 
@@ -315,9 +314,7 @@ function byRecord_ShowDetails () {
 	    var sourceDomain = byRecord_Selected_Relationship.sourceDomain;
 		var targetDomain = byRecord_Selected_Relationship.targetDomain;
 		
-		sourceRecordDetailsPrefix = "source"
-		targetRecordDetailsPrefix = "target"
-		relationshipAttributePrefix = "mainTree"
+		
 		if(byRecord_CachedRelationshipDefs[relationshipDefName] == null) {
 			// Call API & cache the relationship def & callback this method again.
 			RelationshipDefHandler.getRelationshipDefByName(relationshipDefName, sourceDomain, 
@@ -329,8 +326,8 @@ function byRecord_ShowDetails () {
 		}
 
 
-		var sourcePane = dijit.byId(sourceRecordDetailsPrefix+"RecordDetailsTitlePane"); 
-        var targetPane = dijit.byId(targetRecordDetailsPrefix+"RecordDetailsTitlePane");
+		var sourcePane = dijit.byId(mainTree_sourceRecordDetailsPrefix+"RecordDetailsTitlePane"); 
+        var targetPane = dijit.byId(mainTree_targetRecordDetailsPrefix+"RecordDetailsTitlePane");
         if(cachedByRecordSelectSearchResults != null) {
 
            sourcePane.attr("title",byRecord_Selected_Relationship.sourceRecordHighLight);
@@ -339,7 +336,7 @@ function byRecord_ShowDetails () {
            targetPane.toggleSummaryIcon(); // revert back the view to summary
 		   
            var relationshipDef = byRecord_CachedRelationshipDefs[relationshipDefName];
-           var relationshipRecordPane = dijit.byId(relationshipAttributePrefix+"_relationshipRecordDetailsPane"); 
+           var relationshipRecordPane = dijit.byId(mainTree_relationshipAttributePrefix+"_relationshipRecordDetailsPane"); 
            var strRecordPaneTitleHTML = "<table cellspacing='0' cellpadding='0'><tr>";
            strRecordPaneTitleHTML += "<td>"+getMessageForI18N("relationship_Attributes")+getMessageForI18N("colon")+ "&nbsp;</td>"
            if(relationshipDef!=null) {
@@ -375,15 +372,14 @@ function byRecord_ShowDetails () {
 		var relationshipView = {name:relationshipDefName, id:relationshipId, sourceDomain:sourceDomain, targetDomain:targetDomain}; 
         //RelationshipHandler.getRelationship (relationshipView, populateByRecordRelationshipDetails_Callback);
 		RelationshipHandler.getRelationship(relationshipView, { callback:function(dataFromServer) {
-        populateByRecordRelationshipDetails_Callback (dataFromServer, sourceRecordDetailsPrefix,targetRecordDetailsPrefix,relationshipAttributePrefix); }
+        populateByRecordRelationshipDetails_Callback (dataFromServer, mainTree_sourceRecordDetailsPrefix,mainTree_targetRecordDetailsPrefix,mainTree_relationshipAttributePrefix); }
         });
 		
 	} else if(byRecord_Selected_Record != null) {
 		//alert("showing details for  record  : " + byRecord_Selected_Record);
 		//alert(byRecord_Selected_Record.EUID + "  " + byRecord_Selected_Record.domain );
-        sourceRecordDetailsPrefix = "source";
 		var sourceDomain = byRecord_Selected_Record.domain;
-		var sourcePane = dijit.byId(sourceRecordDetailsPrefix+"RecordDetailsTitlePane"); 
+		var sourcePane = dijit.byId(mainTree_sourceRecordDetailsPrefix+"RecordDetailsTitlePane"); 
 
 		if(cachedByRecordSelectSearchResults != null) {
            sourcePane.attr("title",byRecord_Selected_Record.sourceRecordHighLight);
@@ -407,7 +403,7 @@ function byRecord_ShowDetails () {
 		var recordSummary = {name:sourceDomain,EUID:byRecord_Selected_Record.EUID}; 
 		//RelationshipHandler.getEnterprise(recordSummary, polulateByRecordSourceDetails_Callback);
 		RelationshipHandler.getEnterprise(recordSummary, { callback:function(dataFromServer) {
-        polulateByRecordSourceDetails_Callback (dataFromServer, sourceRecordDetailsPrefix); }
+        polulateByRecordSourceDetails_Callback (dataFromServer, mainTree_sourceRecordDetailsPrefix); }
         });
 		
 	} else {
@@ -568,6 +564,10 @@ function byRecord_rearrangeTree_ShowDetails () {
 	//alert(byRecord_rearrangeTree_Selected_Relationship);
 	//alert(byRecord_rearrangeTree_Selected_Record);
 
+	var rearrange_sourceRecordDetailsPrefix = "rearrangeSource";
+	var rearrange_targetRecordDetailsPrefix = "rearrangeTarget";
+	var rearrange_relationshipAttributePrefix = "rearrangeTree";
+
 	if(byRecord_rearrangeTree_Selected_Relationship != null) {
 
         // for testing, hardcoding some value, once stub code is ready remove it
@@ -581,9 +581,7 @@ function byRecord_rearrangeTree_ShowDetails () {
 	    var sourceDomain = byRecord_rearrangeTree_Selected_Relationship.sourceDomain;
 		var targetDomain = byRecord_rearrangeTree_Selected_Relationship.targetDomain;
 
-		sourceRecordDetailsPrefix = "rearrangeSource"
-		targetRecordDetailsPrefix = "rearrangeTarget"
-		relationshipAttributePrefix = "rearrangeTree"
+		
 
 		if(byRecord_CachedRelationshipDefs[relationshipDefName] == null) {
 			// Call API & cache the relationship def & callback this method again.
@@ -595,8 +593,8 @@ function byRecord_rearrangeTree_ShowDetails () {
 			return; // Dont proceed anything, until the data is cached and this method is called back.
 		}
 
-		var rearrangeSourcePane = dijit.byId(sourceRecordDetailsPrefix+"RecordDetailsTitlePane"); 
-        var rearrangeTargetPane = dijit.byId(targetRecordDetailsPrefix+"RecordDetailsTitlePane");
+		var rearrangeSourcePane = dijit.byId(rearrange_sourceRecordDetailsPrefix+"RecordDetailsTitlePane"); 
+        var rearrangeTargetPane = dijit.byId(rearrange_targetRecordDetailsPrefix+"RecordDetailsTitlePane");
         if(cachedByRecordSelectSearchResults != null) {
            rearrangeSourcePane.attr("title",byRecord_rearrangeTree_Selected_Relationship.sourceRecordHighLight);
            rearrangeTargetPane.attr("title",byRecord_rearrangeTree_Selected_Relationship.targetRecordHighLight);
@@ -604,7 +602,7 @@ function byRecord_rearrangeTree_ShowDetails () {
            rearrangeTargetPane.toggleSummaryIcon(); // revert back the view to summary
 		   
            var rearrangeRelationshipDef = byRecord_CachedRelationshipDefs[relationshipDefName];
-           var rearrangeRelationshipRecordPane = dijit.byId(relationshipAttributePrefix+"_relationshipRecordDetailsPane"); 
+           var rearrangeRelationshipRecordPane = dijit.byId(rearrange_relationshipAttributePrefix+"_relationshipRecordDetailsPane"); 
            var strRecordPaneTitleHTML = "<table cellspacing='0' cellpadding='0'><tr>";
            strRecordPaneTitleHTML += "<td>"+getMessageForI18N("relationship_Attributes")+getMessageForI18N("colon")+ "&nbsp;</td>"
            if(rearrangeRelationshipDef!=null) {
@@ -641,14 +639,14 @@ function byRecord_rearrangeTree_ShowDetails () {
 		var relationshipView = {name:relationshipDefName, id:relationshipId, sourceDomain:sourceDomain, targetDomain:targetDomain}; 
 
 		RelationshipHandler.getRelationship(relationshipView, { callback:function(dataFromServer) {
-        populateByRecordRelationshipDetails_Callback (dataFromServer, sourceRecordDetailsPrefix,targetRecordDetailsPrefix,relationshipAttributePrefix); }
+        populateByRecordRelationshipDetails_Callback (dataFromServer, rearrange_sourceRecordDetailsPrefix,rearrange_targetRecordDetailsPrefix,rearrange_relationshipAttributePrefix); }
         });
 
 	}else if(byRecord_rearrangeTree_Selected_Record != null){
-        sourceRecordDetailsPrefix = "rearrangeSource";
+
 		var rearrangeSourceDomain = byRecord_rearrangeTree_Selected_Record.domain;
 		var rearrangeSourceEUID = byRecord_rearrangeTree_Selected_Record.EUID;
-		var rearrangeSourcePane = dijit.byId(sourceRecordDetailsPrefix+"RecordDetailsTitlePane"); 
+		var rearrangeSourcePane = dijit.byId(rearrange_sourceRecordDetailsPrefix+"RecordDetailsTitlePane"); 
 
 		if(cachedByRecordSelectSearchResults != null) {
            rearrangeSourcePane.attr("title",byRecord_rearrangeTree_Selected_Record.sourceRecordHighLight);
@@ -672,7 +670,7 @@ function byRecord_rearrangeTree_ShowDetails () {
 		var rearrangeRecordSummary = {name:rearrangeSourceDomain,EUID:rearrangeSourceEUID}; 
 		//RelationshipHandler.getEnterprise(rearrangeRecordSummary, polulateByRecordSourceDetails_Callback);
 		RelationshipHandler.getEnterprise(rearrangeRecordSummary, { callback:function(dataFromServer) {
-        polulateByRecordSourceDetails_Callback (dataFromServer, sourceRecordDetailsPrefix); }
+        polulateByRecordSourceDetails_Callback (dataFromServer, rearrange_sourceRecordDetailsPrefix); }
         });
         
 
@@ -712,15 +710,26 @@ function byRecord_Rearrange_clearDetailsSection(){
 
 function byRecord_prepareAdd () {
     var relationshipDefObj = byRecord_CachedRelationshipDefs[byRecord_CurrentSelected_RelationshipDefName] ;
-    alert(relationshipDefObj);
    // alert("Soruce domain " + byRecord_CurrentWorking_Domain );
    // alert("target domain " + byRecord_CurrentSelected_TargetDomain);
    // alert("Source EUID " + byRecord_CurrentWorking_EUID);
    // alert("relationship def " + relationshipDefObj.name);
     // create search criteria section for target domain
+
+	
+    document.getElementById("byRecord_addTargetDomain").innerHTML= byRecord_CurrentSelected_TargetDomain;
+    document.getElementById("relationship_add_RelationshipDefName").innerHTML= byRecord_CurrentSelected_RelationshipDefName;
+
+	var byRecordAddDialogObj = dijit.byId("byrecord_add"); 
+    strTitleHTML = "<span style='vertical-align:middle;'>"+getMessageForI18N("add_Relationship")+getMessageForI18N("colon")+ " " + byRecord_CurrentSelected_SourceDomain ;
+    strTitleHTML += " " + getRelationshipDefDirectionIcon(relationshipDefObj.biDirection) + byRecord_CurrentSelected_RelationshipDefName;
+    strTitleHTML += " " + byRecord_CurrentSelected_TargetDomain + "</span>";      
+    byRecordAddDialogObj.attr("title", strTitleHTML); 
+
     RelationshipDefHandler.getDomainSearchCriteria(byRecord_CurrentSelected_TargetDomain, showByRecordAddSearchTypes);
     // create attributes section for relationship def 
-    
+
+	    
     populateAddRelationshipDefAttributes( relationshipDefObj );
     //RelationshipDefHandler.getRelationshipDefByName(relationshipDefName, byRecord_CurrentWorking_Domain, byRecord_CurrentSelected_TargetDomain, populateAddRelationshipDefAttributes);
 
@@ -906,7 +915,7 @@ function byRecordAddRecord(){
     var endDateField = document.getElementById('add_predefined_endDate');
     var purgeDateField = document.getElementById('add_predefined_purgeDate');
     var startDate,endDate,purgeDate;
-    var SourceDomain = byRecord_CurrentWorking_Domain;
+    var SourceDomain = byRecord_CurrentSelected_SourceDomain;
     var TargetDomain = byRecord_CurrentSelected_TargetDomain;
     var relationshipDefObj = byRecord_CachedRelationshipDefs[byRecord_CurrentSelected_RelationshipDefName] ;
     var RelationshipDefName = relationshipDefObj.name;
@@ -982,7 +991,7 @@ function byRecordAddRecord(){
           newRelationshipRecord.name = RelationshipDefName;
           newRelationshipRecord.sourceDomain = SourceDomain;
           newRelationshipRecord.targetDomain = TargetDomain;
-          newRelationshipRecord.sourceEUID = byRecord_CurrentWorking_EUID;
+          newRelationshipRecord.sourceEUID = byRecord_CurrentSelected_SourceEUID;
           newRelationshipRecord.targetEUID = targetRecordEUID;
 
           newRelationshipRecord.startDate = startDate;

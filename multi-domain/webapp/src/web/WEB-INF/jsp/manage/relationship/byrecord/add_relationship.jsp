@@ -23,7 +23,14 @@
       <tr>
         <td width="100%">
         <div class="MainBox">
-          <div class="TitleBar"><f:message key="target_records_from_domain" /><f:message key="colon_symbol" /></div>  
+        <div class="TitleBar">
+		  <table>
+            <tr>
+			  <td><f:message key="target_records_from_domain" /><f:message key="colon_symbol" /></td>
+			  <td id="byRecord_addTargetDomain"></td>
+            </tr>
+          </table> 
+		</div>  
            <div class="Content">
              <table border="0"  width="100%">
                 <tr>
