@@ -54,7 +54,7 @@
 					<tr><td width="100%" align="left"  valign="top">
 						<table cellspacing="0" cellpadding="0" border="0" style="height:25px;">
                            <tr>
-                            <td><a href="javascript:void(0);" onclick="" title="<f:message key="add_text" />..."><img id="imgRearrangeTreeAddButton" src="images/icons/add_button_faded.png" border="0"></a></td>
+                            <td><a href="javascript:void(0);" onclick="byRecord_rearrangeTree_addOperation();" title="<f:message key="add_text" />..."><img id="imgRearrangeTreeAddButton" src="images/icons/add_button_faded.png" border="0"></a></td>
                             <td><img src="images/spacer.gif" height="1" width="6"></td>
                             <td><a href="javascript:void(0);" onclick="" title="Move"><img id="imgRearrangeTreeMoveButton" src="images/icons/move-left_button_faded.png" border="0"></a></td>
 							<td><img src="images/spacer.gif" height="1" width="6"></td>

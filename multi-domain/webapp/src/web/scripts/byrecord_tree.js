@@ -191,7 +191,7 @@ function byRecord_initMainTree_CB (data) {
 	displayDiv("mainTreeContainer", true);
 	
 	// 4. Reset button pallete (enable/disable add,delete, etc., buttons)
-	byRecord_resetButtonsPalleteFlags ();
+	byRecord_resetView ();
 	byRecord_refreshMainTreeButtonsPallete();
 	byRecord_refreshRearrangeTreeButtonsPallete();
     return;
@@ -203,7 +203,8 @@ function createMainTree () {
     var newModel  = new dijit.tree.TreeStoreModel({
         store: mainTree_Store,
         query: {id:'rootDomainID'},
-        childrenAttrs: ["children"]    
+        childrenAttrs: ["children"],
+		mayHaveChildren: customMainTreeMayHaveChildren
     });
     var mainTreeObj = dijit.byId("mainTree");
     if (dijit.byId("mainTree")) {dijit.byId("mainTree").destroy()}
@@ -218,6 +219,10 @@ function createMainTree () {
     }, document.createElement("div"));
     mainTreeObj.startup();
     dojo.byId("mainTreeContainer").appendChild(mainTreeObj.domNode);
+}
+
+function customMainTreeMayHaveChildren(item) {
+	return true;
 }
 
 function mainTreeDnDCheckAcceptance(source, nodes)  {
@@ -477,7 +482,7 @@ function byRecord_initRearrangeTree_CB (data) {
 	
 	displayDiv("rearrangeTreeContainer", true);
 	// 4. Reset button pallete (enable/disable add,delete, etc., buttons)
-	byRecord_resetButtonsPalleteFlags ();
+	byRecord_resetView ();
 	byRecord_refreshMainTreeButtonsPallete();
 	byRecord_refreshRearrangeTreeButtonsPallete();
 }
@@ -555,6 +560,7 @@ function rearrangeTree_loadRelationshipsForRecord(data, node, callback_function)
 	var parentItem = node.item;
 	var parentDomain = rearrangeTree_Store.getValue (parentItem, "parentDomain");
 	var parentItemID = rearrangeTree_Store.getValue (parentItem, "id");
+	var parentItemEUID = rearrangeTree_Store.getValue (parentItem, "EUID");
 	
 	for(i=0; i<data.relationshipsObjects.length; i++) {
         var tempRelObj = data.relationshipsObjects[i];
@@ -576,6 +582,7 @@ function rearrangeTree_loadRelationshipsForRecord(data, node, callback_function)
 			relationshipNode.otherDomain = tempRelObj.relationshipDefView.targetDomain;
 		
 		relationshipNode.parentDomain = parentDomain;
+		relationshipNode.parentRecordEUID = parentItemEUID;
 		
         relationshipNode.type = item_types.RELATIONSHIP;
         var rNodeItem = rearrangeTree_Store.newItem(relationshipNode, {parent: parentItem, attribute:"children"} );
@@ -589,6 +596,8 @@ function rearrangeTree_loadRelationshipsForRecord(data, node, callback_function)
         relationshipDomain.parentRelationshipDefName = relationshipNode.name;
 		relationshipDomain.parentRelationshipDefId = relationshipNode.relationshipDefId;
 		relationshipDomain.parentDomain = relationshipNode.parentDomain;
+		relationshipDomain.parentRecordEUID = parentItemEUID;
+		
         relationshipDomain.type = item_types.DOMAIN;
         var rDomainItem = rearrangeTree_Store.newItem(relationshipDomain, {parent: rNodeItem, attribute:"children"} );
         
@@ -992,6 +1001,47 @@ function byRecord_mainTree_addOperation () {
 	showByRecordAddDialog();
 }
 
+// function to Add operation, for Rearrange tree
+function byRecord_rearrangeTree_addOperation () {
+	if(!rearrangeTree_isAddPossible) return;
+	
+	var rearrangeTreeObj = dijit.byId("rearrangeTree");
+	if(rearrangeTreeObj == null) return;
+	
+	var tempStore = rearrangeTreeObj.model.store;
+	
+	var rearrangeTreeSelectedNodes = rearrangeTreeObj.getSelectedNodes();
+	var rearrangeTreeSelectedItems = rearrangeTreeObj.getSelectedItems();
+	
+	if(rearrangeTreeSelectedItems == null || rearrangeTreeSelectedItems.length <= 0)
+		return false;
+	
+	var keyItem = null; // The key item to be used as base for Add operation. 
+		
+	keyItem = rearrangeTreeSelectedItems [0];
+	keyNode = rearrangeTreeSelectedNodes [0];
+	
+	var keyItemType = tempStore.getValue(keyItem, "type");
+	
+	if(keyItemType == item_types.RELATIONSHIP) return; // if key item is of relationship type, add operation is not possible.
+
+	if(keyItemType == item_types.RECORD) {
+		// If item type is of Record, get it's parent domain, and make it the key item.
+		var tempNode = keyNode.getParent();
+		if(tempNode != null)
+			keyItem = tempNode.item;
+	}
+	
+	byRecord_CurrentSelected_TargetDomain = tempStore.getValue(keyItem, "name");
+	byRecord_CurrentSelected_RelationshipDefName = tempStore.getValue(keyItem, "parentRelationshipDefName");
+	byRecord_CurrentSelected_SourceDomain = tempStore.getValue(keyItem, "parentDomain");
+	byRecord_CurrentSelected_SourceEUID = tempStore.getValue(keyItem, "parentRecordEUID");
+	
+	//alert(byRecord_CurrentSelected_TargetDomain + " : " + byRecord_CurrentSelected_RelationshipDefName +  " : " + byRecord_CurrentSelected_SourceDomain + " : " + byRecord_CurrentSelected_SourceEUID);
+
+	showByRecordAddDialog();
+}
+
 // function to Delete operation, for main tree
 function byRecord_mainTree_deleteOperation () {
 	if(!mainTree_isDeletePossible) return;
@@ -1086,8 +1136,9 @@ function byRecord_refreshRearrangeTreeButtonsPallete () {
 	
 }
 
-// Reset the flags used for enabling/disabling buttons pallete, for both Main Tree & rearrange Tree
-function byRecord_resetButtonsPalleteFlags () {
+// Reset the view. reset flags used for enabling/disabling buttons pallete, for both Main Tree & rearrange Tree
+// clear details section (both main & rearrange details)
+function byRecord_resetView () {
 	mainTree_isAddPossible = false;
 	mainTree_isDeletePossible = false;
 	mainTree_isFindPossible = false;
