@@ -205,4 +205,20 @@ public class Attribute implements Serializable {
         copy.setType(this.type);        
         return copy;
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        boolean equal = false;        
+        if(obj != null && 
+           obj instanceof Attribute) {
+           Attribute attr = (Attribute)obj;
+           equal = (attr.getName() == null ? name == null : attr.getName().equals(this.name));
+        }   
+        return equal;   
+    }
+    
+    @Override
+    public int hashCode(){
+        return (name == null ? 0 : name.hashCode());
+    }
 }
