@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Date;
 import java.util.HashMap;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
@@ -58,6 +59,7 @@ import com.sun.mdm.multidomain.relationship.RelationshipDef;
 import com.sun.mdm.multidomain.hierarchy.HierarchyNode;
 import com.sun.mdm.multidomain.hierarchy.HierarchyDef;
 import com.sun.mdm.multidomain.query.HierarchySearchCriteria;
+import com.sun.mdm.multidomain.attributes.AttributeType;
         
 import com.sun.mdm.multidomain.services.model.Attribute;
 import com.sun.mdm.multidomain.services.model.DomainSearch;
@@ -417,7 +419,12 @@ public class QueryBuilder {
                 attribute2.setName(attribute1.getName());
                 attribute2.setColumnName(attribute1.getName());
                 attribute2.setType(relDef.getAttribute(attribute1.getName()).getType());
-                relationship.setAttributeValue(attribute2, attribute1.getValue());
+                if (AttributeType.DATE == attribute2.getType()) {
+                    long timeVal = dateFormat.parse(attribute1.getValue()).getTime();
+                    relationship.setAttributeValue(attribute2, Long.toString(timeVal));
+                } else {
+                    relationship.setAttributeValue(attribute2, attribute1.getValue());
+                }
             }
         } catch(ParseException pex) {            
             throw new ConfigException(pex);
