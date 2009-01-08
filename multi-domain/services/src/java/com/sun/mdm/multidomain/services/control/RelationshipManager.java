@@ -596,23 +596,23 @@ public class RelationshipManager {
             ObjectView record1 = new ObjectView();
             record1.setName("Person");
             record1.setEUID("0000000001");
-            record1.setHighLight("George Denise");
+            record1.setHighLight("John Denise");
             objects.add(record1);            
             ObjectView record2 = new ObjectView();
             record2.setName("Person");
             record2.setEUID("0000000002");
-            record2.setHighLight("Mary Denise");
+            record2.setHighLight("Andrea Denise");
             objects.add(record2);                       
         } else if ("Company".equals(domainSearch.getName())) {          
             ObjectView record1 = new ObjectView(); 
             record1.setName("Company");
             record1.setEUID("0000000001");
-            record1.setHighLight("SunSet Sun");
+            record1.setHighLight("IBM Websphere");
             objects.add(record1);  
             ObjectView record2 = new ObjectView(); 
             record2.setName("Company");
             record2.setEUID("0000000002");
-            record2.setHighLight("SunShine Sun");
+            record2.setHighLight("Microsoft MSN");
             objects.add(record2);
         }        
         return objects;
