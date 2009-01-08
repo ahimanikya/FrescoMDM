@@ -31,6 +31,7 @@ import com.sun.mdm.multidomain.services.relationship.RelationshipSearch;
 import com.sun.mdm.multidomain.services.relationship.RelationshipView;
 import com.sun.mdm.multidomain.services.relationship.RelationshipRecord;
 import com.sun.mdm.multidomain.services.relationship.RelationshipComposite;
+import com.sun.mdm.multidomain.services.relationship.RelationshipMoveComposite;
 import com.sun.mdm.multidomain.services.relationship.DomainRelationshipsObject;
 
 import com.sun.mdm.multidomain.services.core.ServiceManagerFactory;
@@ -152,6 +153,17 @@ public class RelationshipHandler {
         return  relationshipManager.addRelationship(relationship);
     }
     
+    /**
+     * Move relationships.
+     * @param movedRelationhips RelationshipMoveComposite.
+     * @throws ServiceException Thrown if an error occurs during processing.
+     */
+    public void moveRelationships(RelationshipMoveComposite movedRelationhips)
+        throws ServiceException {  
+        initialize();
+        relationshipManager.moveRelationships(movedRelationhips);
+    }
+
     /**
      * Delete an existing relationship the given relationship information.
      * @param relationship The relationship information.
