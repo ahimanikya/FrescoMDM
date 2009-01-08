@@ -1184,7 +1184,8 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
 													 <%}%>
 													 <!-- End  fix for  CR 6709864-->
                                                    <!-- Deactive/Activate button -->
-												   <%if(!isMergedRecord){%> <!--fix for 158 on 27-11-08 (!isMergedRecord) -->
+												    <% if(operations.isEO_Deactivate() && !isMergedRecord){%> 
+												     <!--fix for 158 on 27-11-08 (!isMergedRecord) -->
 													   <a  title="<h:outputText value="#{msgs.source_rec_deactivate_but}" />" class="button" href="javascript:void(0)"
 																			onclick="javascript:ajaxURL('/<%=URI%>/ajaxservices/euiddetailsservice.jsf?'+'&rand=<%=rand%>&euid=<%=euid%>&deactiveEO=true','targetDiv','')">
 																<span><h:outputText value="#{msgs.source_rec_deactivate_but}" /></span>
@@ -1196,7 +1197,8 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                     <%if (countInactive != eoSources.size() && "inactive".equalsIgnoreCase(eoStatus)) {%>
                                                     <tr>
                                                         <td valign="top" width="125px">
-														 <%if(!isMergedRecord){%> <!--fix for 158 on 27-11-08 (!isMergedRecord) -->
+														 <% if(operations.isEO_Activate() && !isMergedRecord){%> 
+														  <!--fix for 158 on 27-11-08 (!isMergedRecord) -->
 														 <a  title="<h:outputText value="#{msgs.source_rec_activate_but}" />" class="button" href="javascript:void(0)"
                                                                         onclick="javascript:ajaxURL('/<%=URI%>/ajaxservices/euiddetailsservice.jsf?'+'&rand=<%=rand%>&euid=<%=euid%>&activeEO=true','targetDiv','')">
                                                             <span><h:outputText value="#{msgs.source_rec_activate_but}" /></span>
