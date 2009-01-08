@@ -178,6 +178,7 @@ function byRecord_initMainTree_CB (data) {
 			recordNode.parentRelationshipDefId = relationshipNode.relationshipDefId;
 			recordNode.parentRelationshipId = relationships[j].id;
             recordNode.type = item_types.RECORD;
+			recordNode.isStub = true;
             var recordNodeItem = mainTree_Store.newItem(recordNode, {parent: rDomainItem, attribute:"children"} );
             //alert(j + " " + relationships[j].sourceEUID + " :: " + relationships[j].targetEUID);
         }
@@ -187,7 +188,7 @@ function byRecord_initMainTree_CB (data) {
     mainTree_Store.save();
     
     // 3. Create tree now
-    createMainTree();
+    byRecord_createMainTree();
 	displayDiv("mainTreeContainer", true);
 	
 	// 4. Reset button pallete (enable/disable add,delete, etc., buttons)
@@ -199,7 +200,7 @@ function byRecord_initMainTree_CB (data) {
 
 
 // Function to create the main tree. Store should be populated before calling this.
-function createMainTree () {
+function byRecord_createMainTree () {
     var newModel  = new dijit.tree.TreeStoreModel({
         store: mainTree_Store,
         query: {id:'rootDomainID'},
@@ -214,6 +215,7 @@ function createMainTree () {
         customOnClick: mainTreeClicked,
 		//onClose: mainTreeNodeClosed,
         getIconClass: mainTreeGetIconClass,
+		lazyLoadItems: lazyLoad_MainTreeRelationships,			
 		dndController:"dijit._tree.dndSource",
 		checkAcceptance: mainTreeDnDCheckAcceptance
     }, document.createElement("div"));
@@ -230,6 +232,118 @@ function mainTreeDnDCheckAcceptance(source, nodes)  {
 	if(this.tree == source.tree) return false;	
 	else return true;
 }
+
+// Function called when tree (MAIN Tree) is trying load the childrens for expanded Record.
+function lazyLoad_MainTreeRelationships(node, callback_function) {
+	var parentItem = node.item;
+	if(parentItem == null ) {
+		callback_function();
+		return;
+	}
+	var parentType = mainTree_Store.getValue (parentItem, "type");
+	if(parentType != item_types.RECORD) {
+		callback_function();
+		return;
+	}
+	var isStillStub = mainTree_Store.getValue (parentItem, "isStub");
+	var parentName = mainTree_Store.getValue (parentItem, "name");
+	var parentEUID = mainTree_Store.getValue (parentItem, "EUID");
+	var parentDomain = mainTree_Store.getValue (parentItem, "parentDomain");
+	//alert("isStillStub : " + isStillStub + " : " + parentName + ", parentEUID is: " + parentEUID + "parentDomain : " + parentDomain);
+
+	if(isStillStub ) {
+		var domainSearchObj = {name:parentDomain, attributes:[{EUID: parentEUID}]};
+		 
+		RelationshipHandler.searchDomainRelationshipsByRecord(domainSearchObj, { callback:function(dataFromServer) {
+			mainTree_loadRelationshipsForRecord(dataFromServer, node, callback_function); }
+		});
+		// make the stub marking as false.
+		mainTree_Store.setValue(parentItem, "isStub", false);
+	}
+	//callback_function();
+}
+
+// To load next level of relationships. Loaded only when user expands the record. 
+function mainTree_loadRelationshipsForRecord(data, node, callback_function) {
+	if(data == null) {
+		callback_function();
+		return;
+	}
+	var parentItem = node.item;
+	var parentDomain = mainTree_Store.getValue (parentItem, "parentDomain");
+	var parentItemID = mainTree_Store.getValue (parentItem, "id");
+	var parentItemEUID = mainTree_Store.getValue (parentItem, "EUID");
+	var parentDomain = mainTree_Store.getValue (parentItem, "parentDomain");
+
+	for(i=0; i<data.relationshipsObjects.length; i++) {
+        var tempRelObj = data.relationshipsObjects[i];
+		var useSourceDomain = false;
+		if(tempRelObj.relationshipDefView.sourceDomain != parentDomain) // TBD: need to relook @ this logic
+			useSourceDomain = true; 
+		else useSourceDomain = false;
+
+//alert(i + "  useSourceDomain=" + useSourceDomain + " " +  tempRelObj.relationshipDefView.id + " -- " + tempRelObj.relationshipDefView.sourceDomain + " : "+ tempRelObj.relationshipDefView.targetDomain);
+		
+        var relationshipNode = {};
+        relationshipNode.id = parentItemID + "_" + i + "_" + tempRelObj.relationshipDefView.id;
+		relationshipNode.relationshipDefId = tempRelObj.relationshipDefView.id; 
+        relationshipNode.name = tempRelObj.relationshipDefView.name;
+        relationshipNode.biDirection = tempRelObj.relationshipDefView.biDirection;
+		if(useSourceDomain)
+			relationshipNode.otherDomain = tempRelObj.relationshipDefView.sourceDomain;
+		else
+			relationshipNode.otherDomain = tempRelObj.relationshipDefView.targetDomain;
+		
+		relationshipNode.parentDomain = parentDomain;
+		relationshipNode.parentRecordEUID = parentItemEUID;
+		
+        relationshipNode.type = item_types.RELATIONSHIP;
+        var rNodeItem = mainTree_Store.newItem(relationshipNode, {parent: parentItem, attribute:"children"} );
+
+        var relationshipDomain = {};
+        relationshipDomain.id = i + "_" + relationshipNode.id + "_" + tempRelObj.relationshipDefView.sourceDomain;
+		if(useSourceDomain)
+			relationshipDomain.name = tempRelObj.relationshipDefView.sourceDomain;
+		else
+			relationshipDomain.name = tempRelObj.relationshipDefView.targetDomain;
+        relationshipDomain.parentRelationshipDefName = relationshipNode.name;
+		relationshipDomain.parentRelationshipDefId = relationshipNode.relationshipDefId;
+		relationshipDomain.parentDomain = relationshipNode.parentDomain;
+		relationshipDomain.parentRecordEUID = parentItemEUID;
+		
+        relationshipDomain.type = item_types.DOMAIN;
+        var rDomainItem = mainTree_Store.newItem(relationshipDomain, {parent: rNodeItem, attribute:"children"} );
+        
+        var relationships = tempRelObj.relationshipViews;
+        for(j=0; j<relationships.length; j++) {
+            var recordNode = {};
+			if(useSourceDomain) {
+				recordNode.id = j +  relationshipNode.id + "_" + relationships[j].sourceEUID;
+				recordNode.EUID = relationships[j].sourceEUID;
+				recordNode.name = relationships[j].sourceHighLight;
+			} else {
+				recordNode.id = j+  relationshipNode.id + "_" + relationships[j].targetEUID;
+				recordNode.EUID = relationships[j].targetEUID;
+				recordNode.name = relationships[j].targetHighLight;
+			}
+			recordNode.parentDomain = relationshipDomain.name;
+			recordNode.relationshipFromDomain = byRecord_CurrentWorking_Domain;
+			recordNode.relationshipToDomain = relationshipDomain.name;
+
+			recordNode.fromRecordHighLight = relationships[j].sourceHighLight;
+			recordNode.toRecordHighLight = relationships[j].targetHighLight;
+
+			recordNode.parentRelationshipDefName = relationshipNode.name;
+			recordNode.parentRelationshipDefId = relationshipNode.relationshipDefId;
+			recordNode.parentRelationshipId = relationships[j].id;
+            recordNode.type = item_types.RECORD;
+            var recordNodeItem = mainTree_Store.newItem(recordNode, {parent: rDomainItem, attribute:"children"} );
+            //alert(j + " " + relationships[j].sourceEUID + " :: " + relationships[j].targetEUID);
+        }
+    }
+	callback_function();
+}
+
 
 // function to delete items from main tree store.
 function deleteItemsFromStore(items, req) {
@@ -478,7 +592,7 @@ function byRecord_initRearrangeTree_CB (data) {
     rearrangeTree_Store.save();
 
     // 3. Create tree now
-    createRearrangeTree();
+    byRecord_createRearrangeTree();
 	
 	displayDiv("rearrangeTreeContainer", true);
 	// 4. Reset button pallete (enable/disable add,delete, etc., buttons)
@@ -494,7 +608,7 @@ function customRearrangeTreeMayHaveChildren(item) {
 }
 
 // Function to create the Rearrange tree. Store should be populated before calling this.
-function createRearrangeTree () {
+function byRecord_createRearrangeTree () {
     var rearrangeTreeModel  = new dijit.tree.TreeStoreModel({
         store: rearrangeTree_Store,
         query: {id:'rootDom'},
