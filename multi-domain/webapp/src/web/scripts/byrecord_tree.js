@@ -24,7 +24,7 @@ var item_types = {DOMAIN:"domain", RELATIONSHIP:"relationship", RECORD:"record"}
 var isRearrangeTreeShown = false;
 
 
-function getByRecordData () {
+function byRecord_initMainTree () {
 
 	var selectedDomain = "Person";
 	var selectedEUID = "000-000-555";
@@ -33,8 +33,9 @@ function getByRecordData () {
 
     var domainSearchObj = {name:selectedDomain, attributes:[{EUID: selectedEUID}]};
     
-    RelationshipHandler.searchDomainRelationshipsByRecord(domainSearchObj, getByRecordDataCB);
+    RelationshipHandler.searchDomainRelationshipsByRecord(domainSearchObj, byRecord_initMainTree_CB);
     return;
+	
     // For testing, simulate data and call callback method <START>
     var data = {};
     data.domain = domainSearchObj.name;
@@ -85,11 +86,11 @@ function getByRecordData () {
         relationshipObjs.push (tempRelationshipObj);
     }
     data.relationshipsObjects = relationshipObjs;
-    getByRecordDataCB (data);
+    byRecord_initMainTree_CB (data);
     // For testing, simulate data and call callback method <END>
 }
 
-function getByRecordDataCB (data) {
+function byRecord_initMainTree_CB (data) {
     
     // 1. Populate store for tree
     // 1a. delete existing data items from store.
@@ -406,14 +407,14 @@ function showRearrangeTree(rearrangeButtonObj) {
 }
 
 // Function to get the data for rearrange tree.
-function getRearrangeTreeData () {
+function byRecord_initRearrangeTree () {
 	var selectedDomain = "Person";
 	var selectedEUID = "000-000-555";
 	var domainSearchObj = {name:selectedDomain};
 	if(byRecord_CurrentWorking_Domain != null) selectedDomain = byRecord_CurrentWorking_Domain;
 	if(byRecord_CurrentWorking_EUID != null) selectedEUID = byRecord_CurrentWorking_EUID;
 	
-	RelationshipHandler.getEnterprises(domainSearchObj, getRearrangeTreeData_CB);
+	RelationshipHandler.getEnterprises(domainSearchObj, byRecord_initRearrangeTree_CB);
     return;
     // For testing, simulate data and call callback method 
 	var data = {};
@@ -429,11 +430,11 @@ function getRearrangeTreeData () {
 	
 	data.domainRecords = recordObjs;
 	
-	getRearrangeTreeData_CB(data);
+	byRecord_initRearrangeTree_CB(data);
 }
 
 // Callback function: for getting data for re-arrange tree
-function getRearrangeTreeData_CB (data) {
+function byRecord_initRearrangeTree_CB (data) {
     // 1. Populate store for tree
     // 1a. delete existing data items from store.
     rearrangeTree_Store.fetch ({query:{},onComplete: deleteItemsFromRearrangeTreeStore, queryOptions: {deep:true}});
@@ -769,7 +770,7 @@ function getIsMoveLeftPossible() {
 	return isValidMove;
 }
 
-// Common function to find if the selected item(s) in sourceTreeObj can be moved to selected item(s) in targetTreeObj.
+// Common function to find if the selected item(s) in sourceTreeObj can be moved to selected item in targetTreeObj.
 function byRecord_isMoveValid (sourceTreeObj, targetTreeObj) {
 	if(sourceTreeObj == null || targetTreeObj == null) return false;
 	
@@ -808,7 +809,7 @@ function byRecord_isMoveValid (sourceTreeObj, targetTreeObj) {
 				var tempParentDomain = tempSourceStore.getValue(tempItem, "parentDomain");
 				var tempParentRelationshipDefId = tempSourceStore.getValue(tempItem, "parentRelationshipDefId");	
 				
-				// logic to figure out if all the selected records belong to same domain or not. (required to enable/disable add/delete/etc., operations)
+				// logic to figure out if all the selected records belong to same domain or not. 
 				if(prevRecDomainName == null) prevRecDomainName = tempParentDomain;
 				if(prevRecRelatioshipDefId == null) prevRecRelatioshipDefId = tempParentRelationshipDefId;
 				if(tempParentDomain == prevRecDomainName && prevRecRelatioshipDefId == tempParentRelationshipDefId) recFromSameLevel ++;

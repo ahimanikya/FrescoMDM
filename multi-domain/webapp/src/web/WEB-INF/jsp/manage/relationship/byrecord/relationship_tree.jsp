@@ -81,13 +81,11 @@
 		</table>
 		
 	</div>
+	
+	<br><br>
 </div>
 
 
-<br><br>	
-	<input type="button" value="Add" onclick="showByRecordAddDialog();">
-	<input type="button" value="test create tree" onclick="getByRecordData(); getRearrangeTreeData();">
-	
-	<input type="button" value="show details" onclick="byRecord_ShowDetails();">
+<br>
 
 </body>

@@ -271,8 +271,11 @@ function byRecordSelectRecord() {
     byRecord_CurrentSelected_RelationshipDefName = "EmployedBy";
     
     RelationshipDefHandler.getRelationshipDefByName(byRecord_CurrentSelected_RelationshipDefName, byRecord_CurrentWorking_Domain, 
-        byRecord_CurrentSelected_TargetDomain, cacheRelationshipDef);
-        
+        byRecord_CurrentSelected_TargetDomain, { callback:function(dataFromServer) {
+			cacheRelationshipDef(dataFromServer, byRecord_initializeTree);
+		}
+	});
+			
     hideByRecordSelectDialog();
 
 }
@@ -281,6 +284,13 @@ function cacheRelationshipDef(data, onCompleteCallback) {
     byRecord_CachedRelationshipDefs [data.name] = data;
 	if(onCompleteCallback)
 		onCompleteCallback(); 
+}
+
+function byRecord_initializeTree() {
+	// Destroy the tree if already created.
+	// And populate required data & initialize tree structure.
+	byRecord_initMainTree();
+	byRecord_initRearrangeTree();
 }
 
 // function to show right section details...
