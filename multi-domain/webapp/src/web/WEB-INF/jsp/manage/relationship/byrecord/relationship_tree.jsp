@@ -79,13 +79,11 @@
 			</td>
 			</tr>
 		</table>
-		
+		<br><br>
 	</div>
 	
-	<br><br>
+	
 </div>
 
-
-<br>
 
 </body>
