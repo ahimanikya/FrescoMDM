@@ -85,6 +85,9 @@ public class FieldConfig implements java.io.Serializable, Comparable {
     // this is the same as the metaType in ObjectField
     private int valueType;
 
+    // MetaType by name in ObjectField    
+    private String valueTypeByName;
+    
     // this is the input mask used to validate the user input for this field
     private String inputMask;
 
@@ -583,6 +586,14 @@ public class FieldConfig implements java.io.Serializable, Comparable {
         return this.valueType;
     }
 
+    public String getValueTypeByName() {
+        return this.valueTypeByName;
+    }
+
+    public void setValueTypeByName(String valueTypeByName) {
+        this.valueTypeByName = valueTypeByName;
+    }
+    
     /**
      * Gets the keyType attribute of the FieldConfig object
      *
@@ -918,6 +929,7 @@ public class FieldConfig implements java.io.Serializable, Comparable {
         fc.keyType = keyType;
         fc.sensitive = sensitive;
         fc.valueType = valueType;
+        fc.valueTypeByName = valueTypeByName;        
         fc.inputMask = inputMask;
         fc.valueMask = valueMask;
         

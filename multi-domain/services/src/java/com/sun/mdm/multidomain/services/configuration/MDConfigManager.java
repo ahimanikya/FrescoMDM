@@ -46,6 +46,8 @@ import com.sun.mdm.multidomain.services.security.util.NodeUtil;
 import com.sun.mdm.multidomain.parser.JNDIResources;
 import com.sun.mdm.multidomain.parser.RelationshipJDNIResources;
 
+import com.sun.mdm.multidomain.attributes.Attribute;
+import com.sun.mdm.multidomain.attributes.AttributeType;
 import com.sun.mdm.multidomain.relationship.Relationship;
 import com.sun.mdm.multidomain.relationship.RelationshipDef;
 import com.sun.mdm.multidomain.services.model.Domain;
@@ -514,7 +516,8 @@ public class MDConfigManager {
                     fieldConfig.setSensitive(isSensitive);
                     fieldConfig.setValueList(valueList);
                     fieldConfig.setInputMask(inputMask);
-
+										fieldConfig.setValueTypeByName(valueTypeStr);
+										
                     if (valueMask != null) {
                       if (inputMask == null || valueMask.length() != inputMask.length()) {
                         throw new ConfigException(mLocalizer.t("CFG560: Invalid value mask [{0}] for input mask [{1}]", valueMask, inputMask));
@@ -741,6 +744,7 @@ public class MDConfigManager {
                                                       valueList, inputMask, valueMask,
                                                       valueType, keyType, isSensitive,
                                                       displayOrder);
+						fieldConfig.setValueTypeByName("int");
             fieldConfigs.add(fieldConfig);                                                      
         }
         return fieldConfigs;
@@ -786,6 +790,7 @@ public class MDConfigManager {
                                                   guiType, maxLength, valueList,
                                                   inputMask, valueMask, valueType, 
                                                   keyType, isSensitive, displayOrder);
+	  		fieldConfig.setValueTypeByName(valueTypeStr);                                                  
         return fieldConfig;                                                  
     }
     
@@ -1059,6 +1064,14 @@ public class MDConfigManager {
                                                          targetDomainName,
                                                          direction,
                                                          id);
+            
+            // need more elegant fix to include all properties of a attribute.
+            for (FieldConfig fConfig : extendedAttributes) {
+                Attribute attr = new Attribute();
+                attr.setName(fConfig.getName());
+                attr.setType(AttributeType.valueOf(fConfig.getValueTypeByName().toUpperCase()));
+                relDef.setAttribute(attr);
+            }
             
             RelationshipScreenConfigInstance rSCI 
                     = new RelationshipScreenConfigInstance(relDef,
