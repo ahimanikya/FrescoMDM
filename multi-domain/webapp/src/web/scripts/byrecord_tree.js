@@ -652,6 +652,7 @@ function rearrangeTreeClicked(item, node, allSelectedItems ) {
 			case item_types.DOMAIN:
 				if(itemName == byRecord_CurrentWorking_Domain) {
 					rearrangeTree_isDeletePossible = false;
+					rearrangeTree_isFindPossible = true;
 					isRootDomainSelected = true;
 					continue;
 				}
@@ -725,7 +726,7 @@ function rearrangeTreeClicked(item, node, allSelectedItems ) {
 	if(isRootRecordSelected || isRootDomainSelected) {
 		rearrangeTree_isAddPossible = false;
 		rearrangeTree_isMovePossible = false;
-		rearrangeTree_isFindPossible = false;
+		//rearrangeTree_isFindPossible = false;
 	}
 	
 	byRecord_refreshMainTreeButtonsPallete();
@@ -989,6 +990,23 @@ function byRecord_mainTree_addOperation () {
 	//byRecord_CurrentSelected_SourceEUID = "000001";
 
 	showByRecordAddDialog();
+}
+
+// function to Delete operation, for main tree
+function byRecord_mainTree_deleteOperation () {
+	if(!mainTree_isDeletePossible) return;
+	alert("Not yet implemented");
+}
+
+// function to Move (Right) operation, for main tree
+function byRecord_mainTree_moveOperation() {
+	if(!mainTree_isMovePossible || !getIsMoveRightPossible()) return;
+	alert("Not yet implemented");
+}
+
+function byRecord_mainTree_findOperation() {
+	if(!mainTree_isFindPossible) return;
+	alert("Not yet Implemented");
 }
 
 //function to refresh buttons pallete for main tree
