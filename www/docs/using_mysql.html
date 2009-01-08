@@ -14,7 +14,7 @@
 <a name="top"></a>
 <h1>Using MySQL With Master Index Studio</h1>
 <div class="articledate" style="margin-left: 0px;">Last
-Updated: October 2008</div>
+Updated: January 2009</div>
 <div class="maincontent"><a name="mysql_c"></a><br>
 <p>Master Index Studio now supports MySQL 5.1 in the Mural stable
 and
@@ -115,7 +115,7 @@ scripts correctly.</b>
 <pre>select count(*) from sbyn_common_header;<br>select count(*) from sbyn_common_detail;<br>select count(*) from sbyn_systems;</pre>
 </li>
 </ol>
-<h2>Defining a Database Connection Pool</h2>
+<h2>Defining the Database Connection Pools</h2>
 <p>To set up the connection pool, you need to do the
 following:</p>
 <ul>
@@ -125,12 +125,12 @@ Driver
 to the Application Server</a></p>
 </li>
 <li>
-<p><a href="#mysql-pool_t">Create a JDBC
-Connection Pool</a></p>
+<p><a href="#mysql-pool_t">Create two JDBC
+Connection Pools</a></p>
 </li>
 <li>
-<p><a href="#mysql-res_t">Create a JDBC
-Resource</a></p>
+<p><a href="#mysql-res_t">Create two JDBC
+Resources</a></p>
 </li>
 </ul>
 <div class="indent"><a name="mysql-driv_t"></a>
@@ -148,12 +148,12 @@ page</a>. </b></li>
 </ol>
 </div>
 <div class="indent"><a name="mysql-pool_t"></a>
-<h3>Create a JDBC Connection Pool</h3>
+<h3>Create two JDBC Connection Pools</h3>
 <ol>
 <li><b>Log in to the GlassFish Admin Console.</b></li>
 <li><b>In the left portion of the Admin Console,
 expand
-Resources &gt; JDBC, and select Connection Pools.</b></li>
+Resources, expand JDBC, and select Connection Pools.</b></li>
 <li><b>On the Create Connection Pool page, click
 New.</b></li>
 <li><b>In the Name field, enter a name for the
@@ -198,14 +198,19 @@ for the master index database.</p>
 </li>
 </ul>
 </li>
+<li><b>Follow the previous steps to create another
+connection pool
+for the sequence manager.</b>
+<p></p>
+</li>
 </ol>
 </div>
 <div class="indent"><a name="mysql-res_t"></a>
-<h3>Create a JDBC Resource</h3>
+<h3>Create two JDBC Resources</h3>
 <ol>
 <li><b>In the left portion of the Admin Console,
 expand
-Resources &gt; JDBC, and select JDBC Resources.</b></li>
+Resources, expand JDBC, and select JDBC Resources.</b></li>
 <li><b>On the Create JDBC Resource page, click New.</b></li>
 <li><b>In the JNDI Name field, enter a unique name
 for
@@ -215,11 +220,24 @@ index application. </b>
 <p>For example, <tt>jdbc/PersonDataSource</tt>.</p>
 </li>
 <li><b>In the Pool Name field, enter the name of the
-JDBC
+first JDBC
 connection pool you created earlier. </b></li>
 <li><b>In the Status field, select the Enabled check
 box.</b></li>
 <li><b>Click OK.</b></li>
+<li><b>Repeat the previous steps to create a JDBC
+resource for the
+sequence manager with these guidelines:</b>
+<ul>
+<li>In the Pool Name field, enter the name of the second
+JDBC connection pool your created.</li>
+<li>The name of the JDBC resrouce must be in the format <tt>jdbc/<i>application_name</i>SequenceDataSource</tt>,
+where <i>application_name</i> is the name of the master
+index application.
+<p>For example, <tt>jdbc/PersonSequenceDataSource</tt>.</p>
+</li>
+</ul>
+</li>
 </ol>
 </div>
 </div>

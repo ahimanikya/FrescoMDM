@@ -1,109 +1,147 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
+<html><head><title>Developing in Open Master Index</title>
 
-
- <head>
-
-<title>Developing in Open Master Index</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
-<meta http-equiv="Content-Style-Type" content="text/css" >
-<meta name="version" content="4.5.2.148.4" />
- <meta name="description" content="This document describes how to set up the development environment, checkout Open Master Index files, and build your own projects.">
- <meta name="author" content="Carol Thom"> <!--Optional tag-->
- <meta name="keywords" content="">
-
-   <link rel="stylesheet" type="text/css" href="https://mural.dev.java.net/css/muraldoc.css">
-
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<meta name="version" content="4.5.2.148.4">
+<meta name="description" content="This document describes how to set up the development environment, checkout Open Master Index files, and build your own projects.">
+<meta name="author" content="Carol Thom">
+<!--Optional tag-->
+<meta name="keywords" content="">
+<link rel="stylesheet" type="text/css" href="https://mural.dev.java.net/css/muraldoc.css">
+<!-- begin TopTabs --><!-- end TopTabs --><!-- Servlet-Specific template -->
 </head>
-
-
- <!-- begin TopTabs  -->
-
-<!-- end TopTabs -->
-
-<!-- Servlet-Specific template -->
 <body>
 <p><img src="../../images/MiBanner.gif"> </p>
-<hr width="98%"></hr>
-
-
-		<!-- main content column -->
-						<!-- this is hack over the wrong IE box model - fix for problems when using 100% width -->
-                        <div style="_width:95%;">
-                        <!-- IE hack-->
-
-<!-- Begin Content Area -->
-<!--      Copyright (c) 2006 Sun Microsystems, Inc. All rights reserved. -->
-<!--     Use is subject to license terms.-->
-
-<a name="top"></a>
+<hr width="98%"><!-- main content column --><!-- this is hack over the wrong IE box model - fix for problems when using 100% width -->
+<div style=""><!-- IE hack--><!-- Begin Content Area --><!-- Copyright (c) 2006 Sun Microsystems, Inc. All rights reserved. --><!-- Use is subject to license terms.--><a name="top"></a>
 <h1>Developing in Open Master Index</h1>
-<div class="articledate" style="margin-left: 0px;font-style:italic;">
-  <p> <em>Maintained by <a href="mailto:carol.thom@sun.com"><i>Carol Thom</i></a>
-    <br>
-    February 2008</em> <br>
+<div class="articledate" style="margin-left: 0px; font-style: italic;">
+<p> <em>Maintained by <a href="mailto:carol.thom@sun.com"><i>Carol Thom</i></a>
+<br>
+January 2009</em> <br>
+</p>
 </div>
-
-<a name="BuildInstructions"></a><h2>Developing in Open Master Index</h2><p>The Open Master Index source files are available for download so you can create, customize, and build your own versions of the master index. You can also contribute changes to the Open Master Index project once they are approved by the administrator. Open Master Index uses <a href="http://subversion.tigris.org/" target="_blank">Subversion</a> for versioning and <a href="http://maven.apache.org/" target="_blank">Maven</a> for the build process. </p>
+<a name="BuildInstructions"></a>
+<h2>Developing in Open Master Index</h2>
+<p>The Open Master Index source files are available for download
+so you can create, customize, and build your own versions of the master
+index. You can also contribute changes to the Open Master Index project
+once they are approved by the administrator. Open Master Index uses <a href="http://subversion.tigris.org/" target="_blank">Subversion</a>
+for versioning and <a href="http://maven.apache.org/" target="_blank">Maven</a> for the build process. </p>
 <h3><b>Software Requirements</b></h3>
-<p>Before you begin working with Open Master Index, make sure you install all the necessary software for accessing the source repository and building the files. Additional software is required for working with the master index once you build it.</p>
+<p>Before you begin working with Open Master Index, make sure you
+install all the necessary software for accessing the source repository
+and building the files. Additional software is required for working
+with the master index once you build it.</p>
 <ul>
-<li>Install the Java SE Development Kit 5 (previously JDK 1.5). You can download Java SDK from <a href="http://java.sun.com/javase/downloads/index_jdk5.jsp" target="blank">http://java.sun.com/javase/downloads/index_jdk5.jsp</a></li>
-<li>Install Maven to build your master index projects. You can download Maven from <a href="http://maven.apache.org/download.html" target="_blank">http://maven.apache.org/download.html</a>.</li>
-<li>Install Subversion to access Open Master Index source files. You can download Subversion from <a href="http://subversion.tigris.org/getting.html" target="_blank">http://subversion.tigris.org/getting.html</a>. For Windows, download the packages built against Apache 2.0.</li>
+<li>Install the Java SE Development Kit 5 (previously JDK 1.5).
+You can download Java SDK from <a href="http://java.sun.com/javase/downloads/index_jdk5.jsp" target="blank">http://java.sun.com/javase/downloads/index_jdk5.jsp</a></li>
+<li>Install Maven to build your master index projects. You can
+download Maven from <a href="http://maven.apache.org/download.html" target="_blank">http://maven.apache.org/download.html</a>.</li>
+<li>Install Subversion to access Open Master Index source
+files. You can download Subversion from <a href="http://subversion.tigris.org/getting.html" target="_blank">http://subversion.tigris.org/getting.html</a>.
+For Windows, download the packages built against Apache 2.0.</li>
 <li>Install one of the following combinations:
 <ul>
-<li><a href="https://glassfish.dev.java.net/public/downloadsindex.html" target="_blank">GlassFish</a> (the Sun Java System Application Server 9.1) and <a href="http://www.netbeans.org/" target="_blank">Netbeans 6.1</a></li>
+<li><a href="https://glassfish.dev.java.net/public/downloadsindex.html" target="_blank">GlassFish</a> (the Sun Java System
+Application Server 9.1) and <a href="http://www.netbeans.org/" target="_blank">Netbeans 6.1</a></li>
 <li><a href="https://open-esb.dev.java.net/Downloads_OpenESB_Addons_NB6.html" target="_blank">Open ESB</a></li>
-<li>Java CAPS 6 (note that this is in development and not generally available at this time)</li>
+<li>Java CAPS 6 Update 1</li>
 </ul>
 </li>
 <li>Download the database drivers.
 <ul>
 <li>Download the Oracle JDBC driver (ojdbc14.jar) from <a href="http://www.oracle.com/technology/software/tech/java/sqlj_jdbc/index.html" target="_blank">http://www.oracle.com/technology/software/tech/java/sqlj_jdbc/index.html</a>.</li>
-<li>Download the Microsoft SQL Server JDBC driver (sqljdbc.jar) from <a href="http://www.microsoft.com/downloads/details.aspx?FamilyId=6D483869-816A-44CB-9787-A866235EFC7C&displaylang=en" target="_blank">http://www.microsoft.com/downloads/details.aspx?FamilyId=6D483869-816A-44CB-9787-A866235EFC7C&displaylang=en</a>.</li>
+<li>Download the Microsoft SQL Server JDBC driver
+(sqljdbc.jar) from <a href="http://www.microsoft.com/downloads/details.aspx?FamilyId=6D483869-816A-44CB-9787-A866235EFC7C&amp;displaylang=en" target="_blank">http://www.microsoft.com/downloads/details.aspx?FamilyId=6D483869-816A-44CB-9787-A866235EFC7C&amp;displaylang=en</a>.</li>
+<li>Download the MySQL driver named <tt>MySQL
+Connector/J - for connection to MySQL from Java</tt> from <a href="http://dev.mysql.com/downloads" target="_blank">http://dev.mysql.com/downloads</a>.</li>
 </ul>
 </li>
 </ul>
-<h3><b>Check Out Open Master Index and Open Data Quality Source Files</b></h3>
-<p>The Open Master Index project contains the source files for the master index and the Open Data Quality project contains the source files for the Mural Match Engine and Data Analysis tools. Both sets of source files are needed in order to build a complete master index solution.</p>
+<h3><b>Check Out Open Master Index and Open Data Quality
+Source Files</b></h3>
+<p>The Open Master Index project contains the source files for
+the master index and bulk matcher, and the Open Data Quality project
+contains the source
+files for the data analysis tools and the match and standardization
+engines. Both sets of
+source files are needed in order to build a complete master index
+solution.</p>
 <ol>
-<li>Create a working directory on your computer to hold the source files.</li>
-<li><p>Navigate to the working directory and check out the master index source files using the following command:</p>
-<p><code>svn checkout https://open-dm-mi.dev.java.net/svn/open-dm-mi/trunk open-dm-mi --username <i>user_name</i></code><br />
-where <i>user_name</i> is your username in the Open Master Index project.</p></li>
-<li>From the working directory, check out the data quality source files using the following command:</p>
-<p><code>svn checkout https://open-dm-dq.dev.java.net/svn/open-dm-dq/trunk open-dm-dq --username <i>user_name</i></code><br />
-where <i>user_name</i> is your username in the Open Data Quality project.</p></li>
+<li>Create a working directory on your computer to hold the
+source files.</li>
+<li>
+<p>Navigate to the working directory and check out the master
+index source files using the following command:</p>
+<p><code>svn checkout
+https://open-dm-mi.dev.java.net/svn/open-dm-mi/trunk open-dm-mi
+--username <i>user_name</i></code><br>
+where <i>user_name</i> is your username in the Open Master
+Index project.</p>
+</li>
+<li>From the working directory, check out the data quality
+source files using the following command:
+<p></p>
+<p><code>svn checkout
+https://open-dm-dq.dev.java.net/svn/open-dm-dq/trunk open-dm-dq
+--username <i>user_name</i></code><br>
+where <i>user_name</i> is your username in the Open Data
+Quality project.</p>
+</li>
 </ol>
 <p>Your directory structure should look similar to this:</p>
-<p>&#160;&#160;&#160;<i>working_directory</i>\open-dm-mi <br />
-&#160;&#160;&#160;<i>working_directory</i>\open-dm-dq </p>
+<p>&nbsp;&nbsp;&nbsp;<i>working_directory</i>\open-dm-mi
+<br>
+&nbsp;&nbsp;&nbsp;<i>working_directory</i>\open-dm-dq
+</p>
 <p></p>
-<p>For more information about the Open Master Index repository and Subversion, see <a href="https://open-dm-mi.dev.java.net/source/browse/open-dm-mi/" target="_blank">https://open-dm-mi.dev.java.net/source/browse/open-dm-mi/</a>. For more information about the Open data Quality repository and Subversion, see <a href="https://open-dm-dq.dev.java.net/source/browse/open-dm-dq/" target="_blank">https://open-dm-dq.dev.java.net/source/browse/open-dm-dq/</a>.</p>
+<p>For more information about the Open Master Index repository
+and Subversion, see <a href="https://open-dm-mi.dev.java.net/source/browse/open-dm-mi/" target="_blank">https://open-dm-mi.dev.java.net/source/browse/open-dm-mi/</a>.
+For more information about the Open data Quality repository and
+Subversion, see <a href="https://open-dm-dq.dev.java.net/source/browse/open-dm-dq/" target="_blank">https://open-dm-dq.dev.java.net/source/browse/open-dm-dq/</a>.</p>
 <h3><b>Set up the Build Environment</b></h3>
-<p>Before you can build the master index, you need to set certain variables in your environment. The variables are set in the environment batch file (<i>working_directory</i>\open-dm-mi\env.bat). Use the absolute path names for these variables.</p>
+<p>Before you can build the master index, you need to set certain
+variables in your environment. The variables are set in the environment
+batch file (<i>working_directory</i>\open-dm-mi\env.bat).
+Use the absolute path names for these variables.</p>
 <ul>
 <li>Set NB_HOME to the NetBeans directory.</li>
-<li>Set GF_HOME to the GlassFish (or Sun Java System Application Server) directory.</li>
-<li>Set FULL_PATH_TO_SQLSERVER_JDBC_JAR to the directory to which you downloaded the SQL Server JDBC driver. Include the name of the file in the path.</li>
-<li>Set FULL_PATH_TO_ORACLE_JDBC_JAR to the directory to which you downloaded the Oracle JDBC driver. Include the name of the file in the path.</li>
-<li>If you are running JUnit tests for the core master index module, set the RUN_JUNIT property to one of the following values.
+<li>Set GF_HOME to the GlassFish (or Sun Java System
+Application Server) directory.</li>
+<li>If you are using SQL Server, set FULL_PATH_TO_SQLSERVER_JDBC_JAR to the directory to
+which you downloaded the SQL Server JDBC driver. Include the name of
+the file in the path.</li>
+<li>If you are using Oracle, set FULL_PATH_TO_ORACLE_JDBC_JAR to the directory to which
+you downloaded the Oracle JDBC driver. Include the name of the file in
+the path.</li>
+<li>If you are running JUnit tests for the core master index
+module, set the RUN_JUNIT property to one of the following values.
 <ul>
 <li>all - runs both Oracle and SQL Server JUnit tests</li>
 <li>oracle - runs only Oracle JUnit tests</li>
 <li>sqlserver - runs only SQL Server JUnit tests</li>
 </ul>
 </li>
+<p><b>Note:</b> JUnit Tests are not provied for MySQL databases at this time.</p>
 </ul>
 <h3><b>Create the Database for JUnit Tests</b></h3>
-<p>To create the database for the JUnit tests, run the scripts provided for the database platform or platforms you are using. You do not need to perform this step if you do not need to run the JUnit tests.
+<p>To create the database for the JUnit tests, run the scripts
+provided for the database platform or platforms you are using. You do
+not need to perform this step if you do not need to run the JUnit
+tests. Note that scripts are provided for Oracle and SQL Server only.
+</p>
 <ul>
-<li>For Oracle, run the scripts at \open-dm-mi\index-core\src\test\eindex-templates\database-scripts\oracle</li>
-<li>For SQL Server, run the scripts at \open-dm-miindex-core\src\test\eindex-templates\database-scripts\sqlserver</li>
-</ul></p>
-<p>To create the database, run these scripts in the following order:
+<li>For Oracle, run the scripts at
+\open-dm-mi\index-core\src\test\eindex-templates\database-scripts\oracle</li>
+<li>For SQL Server, run the scripts at
+\open-dm-mi\index-core\src\test\eindex-templates\database-scripts\sqlserver</li>
+</ul>
+<p></p>
+<p>To create the database, run these scripts in the following
+order:
+</p>
 <ul>
 <li>create.sql</li>
 <li>createUserIndex.sql</li>
@@ -118,27 +156,27 @@ where <i>user_name</i> is your username in the Open Data Quality project.</p></l
 <p>You do not need to run createUserCodeData.sql.</p>
 <p>After you create the database, set the connection properties.</p>
 <ul>
-<li>For Oracle, set the properties in the file \open-dm-mi\index-core\src\test\java\com\sun\mdm\index\util\ejbproxy\ProxyJNDI.properties.Oracle </li>
-<li>For SQL Server, set the properties in the file \open-dm-mi\index-core\src\test\java\com\sun\mdm\index\util\ejbproxy\ProxyJNDI.properties.SQLServer</li>
-</ul></p>
-<p>To run the JUnit test after creating the database and configuring the connection properties, run the following command:</p>
-<p><code>&#160;&#160;&#160;mvn test</code></p>
+<li>For Oracle, set the properties in the file
+\open-dm-mi\index-core\src\test\java\com\sun\mdm\index\util\ejbproxy\ProxyJNDI.properties.Oracle
+</li>
+<li>For SQL Server, set the properties in the file
+\open-dm-mi\index-core\src\test\java\com\sun\mdm\index\util\ejbproxy\ProxyJNDI.properties.SQLServer</li>
+</ul>
+<p></p>
+<p>To run the JUnit test after creating the database and
+configuring the connection properties, run the following command:</p>
+<p><code>&nbsp;&nbsp;&nbsp;mvn test</code></p>
 <h3><b>Build Open Master Index</b></h3>
-<p>You can build Open Master Index either with or without running JUnit tests. To run the build, navigate to <i>working_folder</i>\open-dm-mi and run the following two commands in the order given:</p>
-<p><code>&#160;&#160;&#160;env</code><br />
-<code>&#160;&#160;&#160;mvn install</code></p>
-<p><b>Note: </b><code>mvn install</code> runs JUnit test when it builds. To run the build without JUnit tests, run the following command instead: <br />
-<code>&#160;&#160;&#160;mvn install -Dmaven.test.skip=true</code></p>
-
-<!-- End Content Area -->
-
-	<!-- /Servlet-Specific template -->
-
-<!-- end of right navigation -->
-
-
-
+<p>You can build Open Master Index either with or without running
+JUnit tests. To run the build, navigate to <i>working_folder</i>\open-dm-mi
+and run the following two commands in the order given:</p>
+<p><code>&nbsp;&nbsp;&nbsp;env</code><br>
+<code>&nbsp;&nbsp;&nbsp;mvn install</code></p>
+<p><b>Note: </b><code>mvn install</code>
+runs JUnit test when it builds. To run the build without JUnit tests,
+run the following command instead: <br>
+<code>&nbsp;&nbsp;&nbsp;mvn install
+-Dmaven.test.skip=true</code></p>
+<!-- End Content Area --><!-- /Servlet-Specific template --><!-- end of right navigation -->
 </div>
-</div>
-</body>
-</html>
+</body></html>
