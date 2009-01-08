@@ -98,6 +98,10 @@ var currentView = "by_rel";
 function changeViewToByRelationship(contentPaneId) {
     var contentPaneObj = dijit.byId(contentPaneId);
     _deleteChildWidgets(contentPaneId);
+	var selectDialog = dijit.byId("byrecord_select");
+	var addDialog = dijit.byId("byrecord_add");
+	if(selectDialog != null) _deleteChildWidgets(selectDialog);
+	if(addDialog != null) _deleteChildWidgets(addDialog);
     contentPaneObj.setHref (byRelationshipMainPage);
     currentView = "by_rel";    
     initializeByRelationshipScreen ();
@@ -105,6 +109,10 @@ function changeViewToByRelationship(contentPaneId) {
 function changeViewToByRecord(contentPaneId) {
     var contentPaneObj = dijit.byId(contentPaneId);
     _deleteChildWidgets(contentPaneId);
+	var selectDialog = dijit.byId("byrel_select");
+	var addDialog = dijit.byId("byrel_add");
+	if(selectDialog != null) _deleteChildWidgets(selectDialog);
+	if(addDialog != null) _deleteChildWidgets(addDialog);
     contentPaneObj.setHref (byRecordMainPage);
     currentView = "by_rec";
     initializeByRecordScreen ();
