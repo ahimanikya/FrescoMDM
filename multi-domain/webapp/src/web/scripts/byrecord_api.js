@@ -265,22 +265,20 @@ function byRecordSelectRecord() {
     byRecord_CurrentWorking_Domain = selectedDomain;
     byRecord_CurrentWorking_EUID = selectedRecordEUID;
 
-    // Hard code assigning values, to be used for Add dialog
-    byRecord_CurrentSelected_TargetDomain = "Company";
-    byRecord_CurrentSelected_RelationshipDefName = "EmployedBy";
 	if(s == 0) {
 		alert(getMessageForI18N("select_one_record_from_the_results"));
 	}else{
 		hideByRecordSelectDialog();
-		RelationshipDefHandler.getRelationshipDefByName(byRecord_CurrentSelected_RelationshipDefName, byRecord_CurrentWorking_Domain, 
-        byRecord_CurrentSelected_TargetDomain, { callback:function(dataFromServer) {
-			cacheRelationshipDef(dataFromServer, byRecord_initializeTree);
-		}
-	   });
+		byRecord_initializeTree();
 	}
 }
 // function to cache the realtionship def details.
-function cacheRelationshipDef(data, onCompleteCallback) {
+function cacheRelationshipDef(data, onCompleteCallback, onErrorCallback) {
+	if(data == null) {
+		// if data was not found, call onerror callback method.
+		onErrorCallback();
+		return;
+	}
     byRecord_CachedRelationshipDefs [data.name] = data;
 	if(onCompleteCallback)
 		onCompleteCallback(); 
@@ -322,7 +320,9 @@ function byRecord_ShowDetails () {
 			// Call API & cache the relationship def & callback this method again.
 			RelationshipDefHandler.getRelationshipDefByName(relationshipDefName, sourceDomain, 
 				targetDomain, { callback:function(dataFromServer) {
-					cacheRelationshipDef(dataFromServer, byRecord_ShowDetails);
+					cacheRelationshipDef(dataFromServer, byRecord_ShowDetails, function(errMsg) {
+						return;
+					} );
 				}
 			});
 			return; // Dont proceed anything, until the data is cached and this method is called back.
@@ -590,7 +590,9 @@ function byRecord_rearrangeTree_ShowDetails () {
 			// Call API & cache the relationship def & callback this method again.
 			RelationshipDefHandler.getRelationshipDefByName(relationshipDefName, sourceDomain, 
 				targetDomain, { callback:function(dataFromServer) {
-					cacheRelationshipDef(dataFromServer, byRecord_rearrangeTree_ShowDetails);
+					cacheRelationshipDef(dataFromServer, byRecord_rearrangeTree_ShowDetails, function(errMsg) {
+						return;
+					} );
 				}
 			});
 			return; // Dont proceed anything, until the data is cached and this method is called back.
@@ -713,13 +715,21 @@ function byRecord_Rearrange_clearDetailsSection(){
 
 function byRecord_prepareAdd () {
     var relationshipDefObj = byRecord_CachedRelationshipDefs[byRecord_CurrentSelected_RelationshipDefName] ;
-   // alert("Soruce domain " + byRecord_CurrentWorking_Domain );
-   // alert("target domain " + byRecord_CurrentSelected_TargetDomain);
-   // alert("Source EUID " + byRecord_CurrentWorking_EUID);
-   // alert("relationship def " + relationshipDefObj.name);
-    // create search criteria section for target domain
 
+	if(relationshipDefObj == null) {
+		// Call API & cache the relationship def & callback this method again.
+		RelationshipDefHandler.getRelationshipDefByName(byRecord_CurrentSelected_RelationshipDefName, byRecord_CurrentSelected_SourceDomain, 
+			byRecord_CurrentSelected_TargetDomain, { callback:function(dataFromServer) {
+				cacheRelationshipDef(dataFromServer, byRecord_prepareAdd, function(errMsg) {
+					hideByRecordAddDialog();
+					return;
+				} );
+			}
+		});
+		return; // Dont proceed anything, until the data is cached and this method is called back.
+	}
 	
+	// create search criteria section for target domain
     document.getElementById("byRecord_addTargetDomain").innerHTML= byRecord_CurrentSelected_TargetDomain;
     document.getElementById("relationship_add_RelationshipDefName").innerHTML= byRecord_CurrentSelected_RelationshipDefName;
 
