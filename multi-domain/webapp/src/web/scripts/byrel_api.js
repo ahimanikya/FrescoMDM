@@ -525,16 +525,6 @@ function searchResultsCallback(data) {
     // Cache the search results.
     for(i=0; i<data.length; i++) {
         cachedSearchResults.push(data[i]);
-        // for testing pagination, adding more records ....
-        cachedSearchResults.push(data[i]);cachedSearchResults.push(data[i]);
-        cachedSearchResults.push(data[i]);cachedSearchResults.push(data[i]);
-        cachedSearchResults.push(data[i]);cachedSearchResults.push(data[i]);
-        cachedSearchResults.push(data[i]);cachedSearchResults.push(data[i]);
-        cachedSearchResults.push(data[i]);cachedSearchResults.push(data[i]);
-        cachedSearchResults.push(data[i]);cachedSearchResults.push(data[i]);
-        cachedSearchResults.push(data[i]);cachedSearchResults.push(data[i]);
-        cachedSearchResults.push(data[i]);cachedSearchResults.push(data[i]);
-        cachedSearchResults.push(data[i]);cachedSearchResults.push(data[i]);
     }
     //alert("cached search results length " + cachedSearchResults.length);
     displaySearchResults(1, intRelationshipItemsPerPage); 
@@ -948,10 +938,6 @@ function addSourceSearchResults(data) {
     cachedSourceDomainSearchResults = []; // clear the cache array.
     for(i=0; i<data.length; i++) {
         cachedSourceDomainSearchResults.push(data[i]);
-        // For testing pagination, adding more records 
-        cachedSourceDomainSearchResults.push(data[i]);cachedSourceDomainSearchResults.push(data[i]);
-        cachedSourceDomainSearchResults.push(data[i]);cachedSourceDomainSearchResults.push(data[i]);
-        cachedSourceDomainSearchResults.push(data[i]);cachedSourceDomainSearchResults.push(data[i]);
     }
 
     if(data == null){ 
@@ -1059,8 +1045,6 @@ function addTargeSearchResults(data) {
     cachedTaretDomainSearchResults = [];
     for(i=0; i<data.length; i++) {
         cachedTaretDomainSearchResults.push(data[i]);
-        // For testing pagination, adding more records 
-        cachedTaretDomainSearchResults.push(data[i]);cachedTaretDomainSearchResults.push(data[i]);
     }
     if(data == null){
        displayDiv("targetResultsFailure", true);
