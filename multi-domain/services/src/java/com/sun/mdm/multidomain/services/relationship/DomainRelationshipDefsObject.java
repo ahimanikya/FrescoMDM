@@ -69,7 +69,7 @@ public class DomainRelationshipDefsObject implements Iterator<RelationshipDefExt
         return relationshipDefs;
     }
     
-    public void setRelationshipDefinitions(List<RelationshipDefExt> relationshipDefs){
+    public void setRelationshipDefs(List<RelationshipDefExt> relationshipDefs){
         this.relationshipDefs = relationshipDefs;
     }
     

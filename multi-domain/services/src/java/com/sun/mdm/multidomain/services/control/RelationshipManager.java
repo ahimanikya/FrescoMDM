@@ -56,6 +56,7 @@ import com.sun.mdm.multidomain.services.model.ObjectRecord;
 import com.sun.mdm.multidomain.services.relationship.RelationshipView;
 import com.sun.mdm.multidomain.services.relationship.RelationshipRecord;
 import com.sun.mdm.multidomain.services.relationship.RelationshipComposite;
+import com.sun.mdm.multidomain.services.relationship.RelationshipMoveComposite;
 import com.sun.mdm.multidomain.services.relationship.DomainRelationshipsObject;
 import com.sun.mdm.multidomain.services.relationship.DomainRelationshipDefsObject;
 import com.sun.mdm.multidomain.services.core.ServiceException;
@@ -778,6 +779,15 @@ public class RelationshipManager {
         return Long.toString(id); 
     }
     
+    /**
+     * Move relationships.
+     * @param movedRelationhips Move relationships
+     * @throws ServiceException Thrown if an error occurs during processing.
+     */
+    public void moveRelationships(RelationshipMoveComposite movedRelationhips)
+        throws ServiceException {                
+    }
+                    
     /**
      * Delete an existing relationship.
      * @param relationshipView RelationshipView.
