@@ -955,7 +955,7 @@ function byRecord_isMoveValid (sourceTreeObj, targetTreeObj) {
 }
 
 
-// function to Add operation, for main tree
+// function to Add operation, for MAIN tree
 function byRecord_mainTree_addOperation () {
 	if(!mainTree_isAddPossible) return;
 	
@@ -1001,7 +1001,7 @@ function byRecord_mainTree_addOperation () {
 	showByRecordAddDialog();
 }
 
-// function to Add operation, for Rearrange tree
+// function to Add operation, for REARRANGE tree
 function byRecord_rearrangeTree_addOperation () {
 	if(!rearrangeTree_isAddPossible) return;
 	
@@ -1042,20 +1042,39 @@ function byRecord_rearrangeTree_addOperation () {
 	showByRecordAddDialog();
 }
 
-// function to Delete operation, for main tree
+// function to Delete operation, for MAIN tree
 function byRecord_mainTree_deleteOperation () {
 	if(!mainTree_isDeletePossible) return;
 	alert("Not yet implemented");
 }
 
-// function to Move (Right) operation, for main tree
+// function to Delete operation, for REARRANGE tree
+function byRecord_rearrangeTree_deleteOperation () {
+	if(!rearrangeTree_isDeletePossible) return;
+	alert("Not yet implemented");
+}
+
+// function to Move (Right) operation, for MAIN tree
 function byRecord_mainTree_moveOperation() {
 	if(!mainTree_isMovePossible || !getIsMoveRightPossible()) return;
 	alert("Not yet implemented");
 }
 
+// function to Move (Left) operation, for REARRANGE tree
+function byRecord_rearrangeTree_moveOperation() {
+	if(!rearrangeTree_isMovePossible || !getIsMoveLeftPossible()) return;
+	alert("Not yet implemented");
+}
+
+// function to Find operation, for MAIN tree
 function byRecord_mainTree_findOperation() {
 	if(!mainTree_isFindPossible) return;
+	alert("Not yet Implemented");
+}
+
+// function to Find operation, for REARRANGE tree
+function byRecord_rearrangeTree_findOperation() {
+	if(!rearrangeTree_isFindPossible) return;
 	alert("Not yet Implemented");
 }
 
