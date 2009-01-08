@@ -96,6 +96,9 @@ dojo.declare("dijit.TreeCustom", dijit.Tree, {
 		}
 		return selectedItems ;
 	},
+	getSelectedNodes: function() {
+		return this.allFocusedNodes;
+	},
 
 
 	onClickDummy: function(item, node) {

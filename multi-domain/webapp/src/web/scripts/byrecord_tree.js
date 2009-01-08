@@ -137,6 +137,7 @@ function byRecord_initMainTree_CB (data) {
 			relationshipNode.otherDomain = tempRelObj.relationshipDefView.targetDomain;
 		
 		relationshipNode.parentDomain = rootRecordItem.parentDomain;
+		relationshipNode.parentRecordEUID = rootRecordItem.EUID;
 		
         relationshipNode.type = item_types.RELATIONSHIP;
         var rNodeItem = mainTree_Store.newItem(relationshipNode, {parent: rootRecord, attribute:"children"} );
@@ -150,6 +151,7 @@ function byRecord_initMainTree_CB (data) {
         relationshipDomain.parentRelationshipDefName = relationshipNode.name;
 		relationshipDomain.parentRelationshipDefId = relationshipNode.relationshipDefId;
 		relationshipDomain.parentDomain = relationshipNode.parentDomain;
+		relationshipDomain.parentRecordEUID = rootRecordItem.EUID;
         relationshipDomain.type = item_types.DOMAIN;
         var rDomainItem = mainTree_Store.newItem(relationshipDomain, {parent: rNodeItem, attribute:"children"} );
         
@@ -947,11 +949,45 @@ function byRecord_isMoveValid (sourceTreeObj, targetTreeObj) {
 function byRecord_mainTree_addOperation () {
 	if(!mainTree_isAddPossible) return;
 	
-	byRecord_CurrentSelected_TargetDomain = "Company";
-    byRecord_CurrentSelected_RelationshipDefName = "EmployedBy";
-	byRecord_CurrentSelected_SourceDomain = "Person";
-	//TBD: assign proper values for targetDomain & relationshipName based on selection in tree.
+	var mainTreeObj = dijit.byId("mainTree");
+	if(mainTreeObj == null) return;
 	
+	var tempStore = mainTreeObj.model.store;
+	
+	var mainTreeSelectedNodes = mainTreeObj.getSelectedNodes();
+	var mainTreeSelectedItems = mainTreeObj.getSelectedItems();
+	
+	if(mainTreeSelectedItems == null || mainTreeSelectedItems.length <= 0)
+		return false;
+	
+	var keyItem = null; // The key item to be used as base for Add operation. 
+		
+	keyItem = mainTreeSelectedItems [0];
+	keyNode = mainTreeSelectedNodes [0];
+	
+	var keyItemType = tempStore.getValue(keyItem, "type");
+	
+	if(keyItemType == item_types.RELATIONSHIP) return; // if key item is of relationship type, add operation is not possible.
+
+	if(keyItemType == item_types.RECORD) {
+		// If item type is of Record, get it's parent domain, and make it the key item.
+		var tempNode = keyNode.getParent();
+		if(tempNode != null)
+			keyItem = tempNode.item;
+	}
+	
+	byRecord_CurrentSelected_TargetDomain = tempStore.getValue(keyItem, "name");
+	byRecord_CurrentSelected_RelationshipDefName = tempStore.getValue(keyItem, "parentRelationshipDefName");
+	byRecord_CurrentSelected_SourceDomain = tempStore.getValue(keyItem, "parentDomain");
+	byRecord_CurrentSelected_SourceEUID = tempStore.getValue(keyItem, "parentRecordEUID");
+	
+	//alert(byRecord_CurrentSelected_TargetDomain + " : " + byRecord_CurrentSelected_RelationshipDefName +  " : " + byRecord_CurrentSelected_SourceDomain + " : " + byRecord_CurrentSelected_SourceEUID);
+	
+	//byRecord_CurrentSelected_TargetDomain = "Company";
+    //byRecord_CurrentSelected_RelationshipDefName = "EmployedBy";
+	//byRecord_CurrentSelected_SourceDomain = "Person";
+	//byRecord_CurrentSelected_SourceEUID = "000001";
+
 	showByRecordAddDialog();
 }
 

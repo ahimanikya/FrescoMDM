@@ -17,7 +17,8 @@ var byRecord_CurrentWorking_EUID = null; // Current working record EUID.
 
 var byRecord_CurrentSelected_RelationshipDefName = null; // Populated when any operation happens in Tree (used for Add)
 var byRecord_CurrentSelected_TargetDomain = null; // Populated when any operation happens in Tree (used for Add)
-var byRecord_CurrentSelected_SourceDomain = null; // Source domain, populated when any operation happens in tree. (used for Add)
+var byRecord_CurrentSelected_SourceDomain = null; // Source domain, will be populated before add. (used for Add)
+var byRecord_CurrentSelected_SourceEUID = null; // Source Record EUID, will be populated before add. (used for Add)
 
 var byRecord_Selected_Relationship = null; //Relationship Object - Populated when anything clicked in Main tree
 var byRecord_Selected_Record = null; // Record Object - Populated when anything clicked in Main tree
