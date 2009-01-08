@@ -253,11 +253,12 @@ function enableByRecordSelectRecordButton(){
 function byRecordSelectRecord() {
     var selectedDomain = document.getElementById("byRecord_SelectDomain").value;
     var selectedRecordEUID = null;
-    
+    var s = 0;
     var chkBoxes = document.getElementsByName("byRecordSelectResultsRadio");
     for(i=0; i<chkBoxes.length; i++) {
         if(chkBoxes[i].checked) {
             selectedRecordEUID = chkBoxes[i].value;
+			s++;
         }
     }
     
@@ -267,15 +268,16 @@ function byRecordSelectRecord() {
     // Hard code assigning values, to be used for Add dialog
     byRecord_CurrentSelected_TargetDomain = "Company";
     byRecord_CurrentSelected_RelationshipDefName = "EmployedBy";
-    
-    RelationshipDefHandler.getRelationshipDefByName(byRecord_CurrentSelected_RelationshipDefName, byRecord_CurrentWorking_Domain, 
+	if(s == 0) {
+		alert(getMessageForI18N("select_one_record_from_the_results"));
+	}else{
+		hideByRecordSelectDialog();
+		RelationshipDefHandler.getRelationshipDefByName(byRecord_CurrentSelected_RelationshipDefName, byRecord_CurrentWorking_Domain, 
         byRecord_CurrentSelected_TargetDomain, { callback:function(dataFromServer) {
 			cacheRelationshipDef(dataFromServer, byRecord_initializeTree);
 		}
-	});
-			
-    hideByRecordSelectDialog();
-
+	   });
+	}
 }
 // function to cache the realtionship def details.
 function cacheRelationshipDef(data, onCompleteCallback) {
@@ -285,6 +287,7 @@ function cacheRelationshipDef(data, onCompleteCallback) {
 }
 
 function byRecord_initializeTree() {
+	
 	// Destroy the tree if already created.
 	// And populate required data & initialize tree structure.
 	byRecord_initMainTree();

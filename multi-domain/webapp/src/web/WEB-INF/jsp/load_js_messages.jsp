@@ -53,6 +53,7 @@ JSP files loads all the messages from message.properties, which will be used in 
     messages ["select_relationshipDef"] = '<f:message key="select_relationshipDef" />';
     messages ["select_atleast_one_source_record"] = '<f:message key="select_atleast_one_source_record" />';
     messages ["select_atleast_one_destination_record"] = '<f:message key="select_atleast_one_destination_record" />';
+	messages ["select_one_record_from_the_results"] = '<f:message key="select_one_record_from_the_results" />';
     
     
    // Validation prompts for Administer Screens
