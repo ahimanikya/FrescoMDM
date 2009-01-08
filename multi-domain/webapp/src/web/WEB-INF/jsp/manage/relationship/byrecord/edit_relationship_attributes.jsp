@@ -75,7 +75,7 @@ if(prefix == null) prefix = "pre" + d.getTime();
             <td align="right" width="20%">
                 <table cellpadding="0" cellspacing="0" border="0">
                     <tr>
-                        <td><input type="button" title="<f:message key='save_text' />" value="<f:message key='save_text' />"></td>
+                        <td><input type="button" title="<f:message key='save_text' />" onclick="byRecordUpdateRelationshipAtttributes('<%=prefix%>');" value="<f:message key='save_text' />"></td>
                         <td class="button_spacing"></td>
                         <td><input type="button" onclick="document.<%=prefix%>byRecordEditRelationshiAttributesForm.reset();" title="<f:message key='revert_text' />" value="<f:message key='revert_text' />" /></td>
                     </tr>

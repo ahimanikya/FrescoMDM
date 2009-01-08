@@ -417,9 +417,14 @@ function byRecord_ShowDetails () {
 		byRecord_clearDetailsSection();
 	}
 }
+
+var byRecord_cachedRelationshipRecordDetails = {}; // Cache Map to store details for relationship record details. Key used is relationshipPrefix
+
+
 function populateByRecordRelationshipDetails_Callback(data,souceDetailPrefix,targetDetailsPrefix,relationshipPrefix){
 	//alert("populating by record relationship deatials..." +data);
      
+	byRecord_cachedRelationshipRecordDetails [relationshipPrefix] = data; // TBD: Need to relook @ caching mechanism
     var summaryFieldCount = 0;
 	var fieldName, fieldValue;
     var recordFieldRow,isSummaryField;
@@ -931,6 +936,7 @@ function byRecordAddRecord(){
     var SourceDomain = byRecord_CurrentSelected_SourceDomain;
     var TargetDomain = byRecord_CurrentSelected_TargetDomain;
     var relationshipDefObj = byRecord_CachedRelationshipDefs[byRecord_CurrentSelected_RelationshipDefName] ;
+	var relationhsipDefId = relationshipDefObj.id;
     var RelationshipDefName = relationshipDefObj.name;
     var relationshipCustomAttributes = [];
     
@@ -1002,6 +1008,7 @@ function byRecordAddRecord(){
           var targetRecordEUID = targetCheckedArray[i].value;
           var newRelationshipRecord = {};
           newRelationshipRecord.name = RelationshipDefName;
+		  newRelationshipRecord.id = relationhsipDefId;                 
           newRelationshipRecord.sourceDomain = SourceDomain;
           newRelationshipRecord.targetDomain = TargetDomain;
           newRelationshipRecord.sourceEUID = byRecord_CurrentSelected_SourceEUID;
@@ -1019,6 +1026,107 @@ function byRecordAddRecord(){
 function byRecordAddRecordCB(data){
     alert("Add Records relationship is added " +data);
     hideByRecordAddDialog();
+}
+function byRecordUpdateRelationshipAtttributes(byRecordEditAttributesPrefix){
+
+	var byRecord_UpdateRelaltionshipRecord = {};
+    var byRecord_UpdateRelationshipCustomAttributes = [];
+
+	var byRecord_RelationshipRecordDetails = byRecord_cachedRelationshipRecordDetails [byRecordEditAttributesPrefix] ;
+	//alert("------byRecord_RelationshipRecordDetails-----"+byRecord_RelationshipRecordDetails);
+
+	var sourceDomain = byRecord_RelationshipRecordDetails.sourceRecord.name;
+    var sourceEUID = byRecord_RelationshipRecordDetails.sourceRecord.EUID;
+    var targetDomain = byRecord_RelationshipRecordDetails.targetRecord.name;
+    var targetEUID = byRecord_RelationshipRecordDetails.targetRecord.EUID;
+    var relationshipDefName = byRecord_RelationshipRecordDetails.relationshipRecord.name;
+	var relationshipRecordId = byRecord_RelationshipRecordDetails.relationshipRecord.id;
+    var relationshipObj = byRecord_CachedRelationshipDefs[relationshipDefName];
+    var relationshipDefAttributes = byRecord_CachedRelationshipDefs[relationshipDefName].extendedAttributes;
+
+	// Get attributes. Predefined & Custom from edit screen
+    var startDateField = document.getElementById(byRecordEditAttributesPrefix+'_edit_predefined_startDate');
+    var endDateField = document.getElementById(byRecordEditAttributesPrefix+'_edit_predefined_endDate');
+    var purgeDateField = document.getElementById(byRecordEditAttributesPrefix+'_edit_predefined_purgeDate');
+    var startDate,endDate,purgeDate;
+    
+    // Get Predefined Required Fileds
+    var startDateRequire = (getBoolean(relationshipObj.startDateRequired));
+    var endDateRequire = (getBoolean(relationshipObj.endDateRequired));
+    var purgeDateRequire = (getBoolean(relationshipObj.purgeDateRequired));
+
+	for(i =0; i < relationshipDefAttributes.length; i++) {
+
+      var attributeName = relationshipDefAttributes[i].name;
+      var attributeId = document.getElementById(byRecordEditAttributesPrefix+"_edit_custom_" + relationshipDefAttributes[i].name);
+      var attributeValue =  document.getElementById(byRecordEditAttributesPrefix+"_edit_custom_" + relationshipDefAttributes[i].name).value;
+      var attributeType = relationshipDefAttributes[i].dataType;
+      if(getBoolean(relationshipDefAttributes[i].isRequired)) {
+          if( isEmpty (attributeValue) ) {
+              alert(getMessageForI18N("enter_ValueFor") + " " + attributeName +getMessageForI18N("period"));
+              attributeId.focus();
+              return ;
+          }
+      }
+      if( ! isValidCustomAttribute( attributeType, attributeValue) ) {
+          alert(attributeValue + " " +getMessageForI18N("isnotavalidvaluefor")+ " " +attributeName + " " +getMessageForI18N("attribute")+ " " +getMessageForI18N("attributeTypeFor")+ " " +attributeName + " " +getMessageForI18N("is")+ " " +"'"+attributeType+"'");
+          attributeId.focus();
+          return;
+      }
+      
+      byRecord_UpdateRelationshipCustomAttributes.push( {"name":attributeName, "value":attributeValue} );
+     }
+	
+
+	if(startDateField != null)
+     {   
+           startDate =  document.getElementById(byRecordEditAttributesPrefix+'_edit_predefined_startDate').value;
+           if(startDateRequire == true){
+               if( isEmpty (startDate) ) {
+              alert(getMessageForI18N("enterValueFor_effectiveFrom"));
+              startDateField.focus();
+              return ;
+           }
+         }    
+     }
+     if(endDateField != null)
+     {   
+           endDate =  document.getElementById(byRecordEditAttributesPrefix+'_edit_predefined_endDate').value;
+           if(endDateRequire == true){
+               if( isEmpty (endDate) ) {
+              alert(getMessageForI18N("enterValueFor_effectiveTo"));
+              endDateField.focus();
+              return ;
+            }
+         }      
+     }
+     if(purgeDateField != null)
+     {
+           purgeDate =  document.getElementById(byRecordEditAttributesPrefix+'_edit_predefined_purgeDate').value;
+           if(purgeDateRequire == true){
+               if( isEmpty (purgeDate) ) {
+              alert(getMessageForI18N("enterValueFor_purgeDate"));
+              purgeDateField.focus();
+              return ;
+            }
+          }      
+     }
+	 byRecord_UpdateRelaltionshipRecord.name = relationshipDefName;
+     byRecord_UpdateRelaltionshipRecord.id = relationshipRecordId;
+     byRecord_UpdateRelaltionshipRecord.sourceDomain = sourceDomain;
+     byRecord_UpdateRelaltionshipRecord.sourceEUID = sourceEUID;
+     byRecord_UpdateRelaltionshipRecord.targetDomain = targetDomain;
+     byRecord_UpdateRelaltionshipRecord.targetEUID = targetEUID;
+
+     byRecord_UpdateRelaltionshipRecord.startDate = startDate;
+     byRecord_UpdateRelaltionshipRecord.endDate = endDate;
+     byRecord_UpdateRelaltionshipRecord.purgeDate = purgeDate;
+     byRecord_UpdateRelaltionshipRecord.attributes = byRecord_UpdateRelationshipCustomAttributes;
+     RelationshipHandler.updateRelationship(byRecord_UpdateRelaltionshipRecord,byRecord_UpdateRelationshipCB);
+
+}
+function byRecord_UpdateRelationshipCB(data){
+    alert("By Record Relationship Attributes Updated......   "+data)
 }
 /*
  * Scripts for Add Relationship screen <END>
