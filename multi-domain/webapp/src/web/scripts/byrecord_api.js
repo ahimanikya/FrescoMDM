@@ -149,10 +149,6 @@ function byRecordSelectSearchResults(data){
     cachedByRecordSelectSearchResults = []; // clear the cache array.
     for(i=0; i<data.length; i++) {
         cachedByRecordSelectSearchResults.push(data[i]);
-        // For testing pagination, adding more records 
-        cachedByRecordSelectSearchResults.push(data[i]);cachedByRecordSelectSearchResults.push(data[i]);
-        cachedByRecordSelectSearchResults.push(data[i]);cachedByRecordSelectSearchResults.push(data[i]);
-        cachedByRecordSelectSearchResults.push(data[i]);cachedByRecordSelectSearchResults.push(data[i]);
     }
     if(data == null){ 
        displayDiv("byRecordSelectSearchResultsFailure", true);
@@ -589,8 +585,6 @@ function byRecord_rearrangeTree_ShowDetails () {
 	    var sourceDomain = byRecord_rearrangeTree_Selected_Relationship.sourceDomain;
 		var targetDomain = byRecord_rearrangeTree_Selected_Relationship.targetDomain;
 
-		
-
 		if(byRecord_CachedRelationshipDefs[relationshipDefName] == null) {
 			// Call API & cache the relationship def & callback this method again.
 			RelationshipDefHandler.getRelationshipDefByName(relationshipDefName, sourceDomain, 
@@ -841,10 +835,6 @@ function showByRecordAddRecordSearchResults(data){
     cachedByRecordAddSearchResults = []; // clear the cache array.
     for(i=0; i<data.length; i++) {
         cachedByRecordAddSearchResults.push(data[i]);
-        // For testing pagination, adding more records 
-        cachedByRecordAddSearchResults.push(data[i]);cachedByRecordAddSearchResults.push(data[i]);
-        cachedByRecordAddSearchResults.push(data[i]);cachedByRecordAddSearchResults.push(data[i]);
-        cachedByRecordAddSearchResults.push(data[i]);cachedByRecordAddSearchResults.push(data[i]);
     }
     if(data == null){ 
        displayDiv("byRecordAddSearchResultsFailure", true);
