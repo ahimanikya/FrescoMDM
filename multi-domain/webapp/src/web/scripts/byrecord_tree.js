@@ -176,7 +176,7 @@ function byRecord_initMainTree_CB (data) {
 
 			recordNode.parentRelationshipDefName = relationshipNode.name;
 			recordNode.parentRelationshipDefId = relationshipNode.relationshipDefId;
-			recordNode.parentRelationshipId = relationships[j].id;
+			recordNode.relationshipId = relationships[j].id;
             recordNode.type = item_types.RECORD;
 			recordNode.isStub = true;
             var recordNodeItem = mainTree_Store.newItem(recordNode, {parent: rDomainItem, attribute:"children"} );
@@ -339,7 +339,7 @@ function mainTree_loadRelationshipsForRecord(data, node, callback_function) {
 
 			recordNode.parentRelationshipDefName = relationshipNode.name;
 			recordNode.parentRelationshipDefId = relationshipNode.relationshipDefId;
-			recordNode.parentRelationshipId = relationships[j].id;
+			recordNode.relationshipId = relationships[j].id;
             recordNode.type = item_types.RECORD;
             var recordNodeItem = mainTree_Store.newItem(recordNode, {parent: rDomainItem, attribute:"children"} );
             //alert(j + " " + relationships[j].sourceEUID + " :: " + relationships[j].targetEUID);
@@ -427,10 +427,10 @@ function mainTreeClicked(item, node, allSelectedItems ) {
 					isRootRecordSelected = true;
 				} else {
                     //alert("not root");                
-					var tempRelationshipId = mainTree_Store.getValue(tempItem, "parentRelationshipId");
+					var tempRelationshipId = mainTree_Store.getValue(tempItem, "relationshipId");
 					
 					byRecord_Selected_Relationship = {};
-					byRecord_Selected_Relationship["relationshipId"] = mainTree_Store.getValue(tempItem, "parentRelationshipId");
+					byRecord_Selected_Relationship["relationshipId"] = mainTree_Store.getValue(tempItem, "relationshipId");
 					byRecord_Selected_Relationship["sourceDomain"] = mainTree_Store.getValue(tempItem, "relationshipFromDomain");
 					byRecord_Selected_Relationship["targetDomain"] = mainTree_Store.getValue(tempItem, "relationshipToDomain");
 					byRecord_Selected_Relationship["relationshipDefName"] = mainTree_Store.getValue(tempItem, "parentRelationshipDefName");
@@ -740,7 +740,7 @@ function rearrangeTree_loadRelationshipsForRecord(data, node, callback_function)
 
 			recordNode.parentRelationshipDefName = relationshipNode.name;
 			recordNode.parentRelationshipDefId = relationshipNode.relationshipDefId;
-			recordNode.parentRelationshipId = relationships[j].id;
+			recordNode.relationshipId = relationships[j].id;
             recordNode.type = item_types.RECORD;
             var recordNodeItem = rearrangeTree_Store.newItem(recordNode, {parent: rDomainItem, attribute:"children"} );
             //alert(j + " " + relationships[j].sourceEUID + " :: " + relationships[j].targetEUID);
@@ -817,10 +817,10 @@ function rearrangeTreeClicked(item, node, allSelectedItems ) {
 					isRootRecordSelected = true;
 				} else {
                     //alert("not root");                
-					var tempRelationshipId = rearrangeTree_Store.getValue(tempItem, "parentRelationshipId");
+					var tempRelationshipId = rearrangeTree_Store.getValue(tempItem, "relationshipId");
 					
 					byRecord_rearrangeTree_Selected_Relationship = {};
-					byRecord_rearrangeTree_Selected_Relationship["relationshipId"] = rearrangeTree_Store.getValue(tempItem, "parentRelationshipId");
+					byRecord_rearrangeTree_Selected_Relationship["relationshipId"] = rearrangeTree_Store.getValue(tempItem, "relationshipId");
 					byRecord_rearrangeTree_Selected_Relationship["sourceDomain"] = rearrangeTree_Store.getValue(tempItem, "relationshipFromDomain");
 					byRecord_rearrangeTree_Selected_Relationship["targetDomain"] = rearrangeTree_Store.getValue(tempItem, "relationshipToDomain");
 					byRecord_rearrangeTree_Selected_Relationship["relationshipDefName"] = rearrangeTree_Store.getValue(tempItem, "parentRelationshipDefName");
@@ -1163,13 +1163,111 @@ function byRecord_rearrangeTree_addOperation () {
 // function to Delete operation, for MAIN tree
 function byRecord_mainTree_deleteOperation () {
 	if(!mainTree_isDeletePossible) return;
-	alert("Not yet implemented");
+	
+	var mainTreeObj = dijit.byId("mainTree");
+	if(mainTreeObj == null) return;
+	
+	var numOfRelationshipsDeleted = byRecord_deleteRelationshipsForTree (mainTreeObj);
 }
 
 // function to Delete operation, for REARRANGE tree
 function byRecord_rearrangeTree_deleteOperation () {
 	if(!rearrangeTree_isDeletePossible) return;
-	alert("Not yet implemented");
+	
+	var rearrangeTreeObj = dijit.byId("rearrangeTree");
+	if(rearrangeTreeObj == null) return;
+	
+	var numOfRelationshipsDeleted = byRecord_deleteRelationshipsForTree (rearrangeTreeObj);
+}
+
+// Function to delete all the selected relationships in specified tree Object.
+// Returns the number of relationships deleted.
+function byRecord_deleteRelationshipsForTree ( treeObj ) {
+	if(treeObj == null) return -1;
+	
+	var treeStore = treeObj.model.store;
+	var treeModel = treeObj.model;
+	
+	var treeSelectedNodes = treeObj.getSelectedNodes();
+	var treeSelectedItems = treeObj.getSelectedItems();
+	
+	if(treeSelectedItems == null || treeSelectedItems.length <= 0)
+		return 0;
+	
+	// Make a list of relationship Id's to be deleted.
+	var relationshipIdsToDelete = [];
+	
+	for(i=0; i<treeSelectedItems.length; i++) {
+		var tempItem = treeSelectedItems [i];
+		var tempItemType = treeStore.getValue(tempItem, "type");
+		
+		switch (tempItemType) {
+			case item_types.DOMAIN:
+				var childRelationshipItems = tree_getChildItems (tempItem, treeModel);
+				for( cr = 0; cr < childRelationshipItems.length; cr++) {
+					var tempRelationItem = childRelationshipItems[cr];
+					var relationshipId = treeStore.getValue(tempRelationItem, "relationshipId");
+					relationshipIdsToDelete.push (relationshipId);
+				}
+				break;
+			case item_types.RELATIONSHIP:
+				var childDomains = tree_getChildItems (tempItem, treeModel);
+				for(d=0; d<childDomains.length; d++) {
+					// Get relationships for each domain.
+					var tempDomain = childDomains [i];
+					var childRelationshipItems = tree_getChildItems (tempDomain, treeModel);
+					for( cr = 0; cr < childRelationshipItems.length; cr++) {
+						var tempRelationItem = childRelationshipItems[cr];
+						var relationshipId = treeStore.getValue(tempRelationItem, "relationshipId");
+						relationshipIdsToDelete.push (relationshipId);
+					}
+				}
+				break;
+			case item_types.RECORD:
+				var isRootRecord = treeStore.getValue(tempItem, "isRoot");				
+				if( !isRootRecord) {
+					// IF selected record is NOT root, then add to the list of relationships to be deleted
+					var relationshipId = treeStore.getValue(tempItem, "relationshipId");
+					relationshipIdsToDelete.push (relationshipId);
+				} else {
+					// IF Root (primary) record is selected. Delete all relationships under the relationshipDefs
+					// Get list of child relationshipsdef for this record.
+					var childRelDefs = tree_getChildItems (tempItem, treeModel);
+					for(rd = 0; rd<childRelDefs.length; rd++) {
+						// For each relationship def, get child domains
+						var tempRelDefItem = childRelDefs [rd];
+						var childDomains = tree_getChildItems (tempRelDefItem, treeModel);
+						for(d=0; d<childDomains.length; d++) {
+							// Get relationships for each domain.
+							var tempDomain = childDomains [i];
+							var childRelationshipItems = tree_getChildItems (tempDomain, treeModel);
+							for( cr = 0; cr < childRelationshipItems.length; cr++) {
+								var tempRelationItem = childRelationshipItems[cr];
+								var relationshipId = treeStore.getValue(tempRelationItem, "relationshipId");
+								relationshipIdsToDelete.push (relationshipId);
+							}
+						}
+					}
+				}
+				break;
+		}
+	} // End of for loop.
+	alert("TEMPORARY ALERT\nFor testing only\nNo. of relationships to delete, including duplicate relationship id's is: " + relationshipIdsToDelete.length);
+	// Remove duplicate relationship Id's from the list 'relationshipIdsToDelete'
+	var tempList = relationshipIdsToDelete; 
+	relationshipIdsToDelete = [];
+	for(i=0; i<tempList.length; i++) {
+		if(! relationshipIdsToDelete.contains (tempList [i]) ) {
+			relationshipIdsToDelete.push (tempList [i] );
+		}
+	}
+	var confirmation = confirm ("Are you sure to delete " + relationshipIdsToDelete.length + " relationship(s)?");
+	if(confirmation) {
+		//alert("Deleting............ " + relationshipIdsToDelete.length);
+		byRecord_deleteRelationships (relationshipIdsToDelete);
+		return relationshipIdsToDelete.length;
+	}	
+	return 0;
 }
 
 // function to Move (Right) operation, for MAIN tree
@@ -1276,6 +1374,7 @@ function byRecord_refreshRearrangeTreeButtonsPallete () {
 // Reset the view. reset flags used for enabling/disabling buttons pallete, for both Main Tree & rearrange Tree
 // clear details section (both main & rearrange details)
 function byRecord_resetView () {
+	
 	mainTree_isAddPossible = false;
 	mainTree_isDeletePossible = false;
 	mainTree_isFindPossible = false;
@@ -1285,4 +1384,26 @@ function byRecord_resetView () {
 	rearrangeTree_isDeletePossible = false;
 	rearrangeTree_isFindPossible = false;
 	rearrangeTree_isMovePossible = false;
+}
+
+//Generic function to get child items for specified parent Item, using the treemodel sent as paramter.
+function tree_getChildItems (parentItem, treeModelToUse ) {
+	var storeToUse = treeModelToUse.store;
+	var childItems = [];
+	var parentItemName = storeToUse.getValue(parentItem, "name");
+	var childrens = treeModelToUse.getChildren (parentItem, function (items) {
+		childItems = items;
+	}, function() {} );
+	//alert(parentItemName +" - child items :" + childItems.length);
+	return childItems ;
+}
+	
+// Deletes all the relationships in the list sent as parameter.
+function byRecord_deleteRelationships ( relationshipIdsList ) {
+	for(i=0; i<relationshipIdsList.length; i++) {
+		var tempRelationshipId = relationshipIdsList [i];
+		// Call DWR API to delete this relationship
+		var relationshipView = {"id": tempRelationshipId};
+		RelationshipHandler.deleteRelationship (relationshipView, function (cb_data) {} ) ;
+	}
 }
