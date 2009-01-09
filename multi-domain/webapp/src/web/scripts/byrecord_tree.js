@@ -321,17 +321,21 @@ function mainTree_loadRelationshipsForRecord(data, node, callback_function) {
 				recordNode.id = j +  relationshipNode.id + "_" + relationships[j].sourceEUID;
 				recordNode.EUID = relationships[j].sourceEUID;
 				recordNode.name = relationships[j].sourceHighLight;
+				recordNode.fromRecordHighLight = relationships[j].targetHighLight;
+				recordNode.toRecordHighLight = recordNode.name;
 			} else {
 				recordNode.id = j+  relationshipNode.id + "_" + relationships[j].targetEUID;
 				recordNode.EUID = relationships[j].targetEUID;
 				recordNode.name = relationships[j].targetHighLight;
+				recordNode.fromRecordHighLight = relationships[j].sourceHighLight;
+				recordNode.toRecordHighLight = recordNode.name;
 			}
 			recordNode.parentDomain = relationshipDomain.name;
 			recordNode.relationshipFromDomain = byRecord_CurrentWorking_Domain;
 			recordNode.relationshipToDomain = relationshipDomain.name;
 
-			recordNode.fromRecordHighLight = relationships[j].sourceHighLight;
-			recordNode.toRecordHighLight = relationships[j].targetHighLight;
+			//recordNode.fromRecordHighLight = relationships[j].sourceHighLight;
+			//recordNode.toRecordHighLight = relationships[j].targetHighLight;
 
 			recordNode.parentRelationshipDefName = relationshipNode.name;
 			recordNode.parentRelationshipDefId = relationshipNode.relationshipDefId;
