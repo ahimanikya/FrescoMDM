@@ -28,7 +28,9 @@ dojo.declare("dijit.TreeCustom", dijit.Tree, {
 		} else {
 			//alert("blurring " +this.allFocusedNodes.length);
 			for(i=0;i<this.allFocusedNodes.length; i++) {
-				this._customBlurNode(this.allFocusedNodes[i]);
+				var temp = this.allFocusedNodes[i];
+				if(temp.item.id != node.item.id)
+					this._customBlurNode(this.allFocusedNodes[i]);
 			}
 			this.allFocusedNodes = [];
 		}

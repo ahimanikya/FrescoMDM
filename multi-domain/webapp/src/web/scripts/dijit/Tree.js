@@ -129,9 +129,9 @@ this._setExpando(false);
 var _1b=dijit.getEnclosingWidget(evt.target);
 this.tree._onTreeFocus(_1b);
 },_onMouseEnter:function(evt){
-dojo.addClass(this.contentNode,"dijitTreeNodeHover");
+dojo.addClass(this.labelNode,"dijitTreeNodeHover");
 },_onMouseLeave:function(evt){
-dojo.removeClass(this.contentNode,"dijitTreeNodeHover");
+dojo.removeClass(this.labelNode,"dijitTreeNodeHover");
 }});
 dojo.declare("dijit.Tree",[dijit._Widget,dijit._Templated],{store:null,model:null,query:null,label:"",showRoot:true,childrenAttr:["children"],openOnClick:false,templateString:"<div class=\"dijitTreeContainer\" waiRole=\"tree\"\n\tdojoAttachEvent=\"onmousedown:_onClick,onkeypress:_onKeyPress\">\n</div>\n",isExpandable:true,isTree:true,persist:true,dndController:null,dndParams:["onDndDrop","itemCreator","onDndCancel","checkAcceptance","checkItemAcceptance","dragThreshold"],onDndDrop:null,itemCreator:null,onDndCancel:null,checkAcceptance:null,checkItemAcceptance:null,dragThreshold:0,_publish:function(_1e,_1f){
 dojo.publish(this.id,[dojo.mixin({tree:this,event:_1e},_1f||{})]);

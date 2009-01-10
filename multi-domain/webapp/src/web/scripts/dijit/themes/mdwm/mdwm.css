@@ -820,9 +820,7 @@
 	border:1px solid #A2B5E3;
 }
 .mdwm .dijitTreeNodeHover {
-	background-color: #EBF5FF !important;
-	padding-top:2px;
-	padding-bottom:2px;
+	text-decoration:underline;
 }
 .mdwm .dijitTreeExpandoOpened {
 	background-image: url(images/treeExpand_minus.gif);
