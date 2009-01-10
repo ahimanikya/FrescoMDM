@@ -1213,7 +1213,7 @@ function byRecord_deleteRelationshipsForTree ( treeObj ) {
 				var childDomains = tree_getChildItems (tempItem, treeModel);
 				for(d=0; d<childDomains.length; d++) {
 					// Get relationships for each domain.
-					var tempDomain = childDomains [i];
+					var tempDomain = childDomains [d];
 					var childRelationshipItems = tree_getChildItems (tempDomain, treeModel);
 					for( cr = 0; cr < childRelationshipItems.length; cr++) {
 						var tempRelationItem = childRelationshipItems[cr];
