@@ -1196,11 +1196,10 @@ function byRecord_deleteRelationshipsForTree ( treeObj ) {
 	
 	// Make a list of relationship Id's to be deleted.
 	var relationshipIdsToDelete = [];
-	
 	for(i=0; i<treeSelectedItems.length; i++) {
 		var tempItem = treeSelectedItems [i];
 		var tempItemType = treeStore.getValue(tempItem, "type");
-		
+		var tempItemName = treeStore.getValue(tempItem, "name");
 		switch (tempItemType) {
 			case item_types.DOMAIN:
 				var childRelationshipItems = tree_getChildItems (tempItem, treeModel);
@@ -1224,7 +1223,9 @@ function byRecord_deleteRelationshipsForTree ( treeObj ) {
 				}
 				break;
 			case item_types.RECORD:
-				var isRootRecord = treeStore.getValue(tempItem, "isRoot");				
+				var isRootRecord = treeStore.getValue(tempItem, "isRoot");	
+				var isStillStub = treeStore.getValue(tempItem, "isStub");
+
 				if( !isRootRecord) {
 					// IF selected record is NOT root, then add to the list of relationships to be deleted
 					var relationshipId = treeStore.getValue(tempItem, "relationshipId");
@@ -1239,7 +1240,7 @@ function byRecord_deleteRelationshipsForTree ( treeObj ) {
 						var childDomains = tree_getChildItems (tempRelDefItem, treeModel);
 						for(d=0; d<childDomains.length; d++) {
 							// Get relationships for each domain.
-							var tempDomain = childDomains [i];
+							var tempDomain = childDomains [d];
 							var childRelationshipItems = tree_getChildItems (tempDomain, treeModel);
 							for( cr = 0; cr < childRelationshipItems.length; cr++) {
 								var tempRelationItem = childRelationshipItems[cr];
