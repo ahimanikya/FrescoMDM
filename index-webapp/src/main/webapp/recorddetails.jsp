@@ -150,236 +150,245 @@ function align(thisevent,divID) {
 <title><h:outputText value="#{msgs.application_heading}"/></title>  
 <body class="yui-skin-sam">
     <%@include file="./templates/header.jsp"%>
-    <div id="mainContent">
-	  <table width="100%">
+  <div id="mainContent">
+	  <table border="0">
 	   <tr>
 		<td> 
-     <div class="duplicaterecords" style="visibility:visible;display:block">
-     <table border="0" cellpadding="0" cellspacing="0" align="right" >
-		<form id="searchTypeForm" >
-					<tr>
-						<td>
-							 <h:outputText  rendered="#{RecordDetailsHandler.possilbeSearchTypesCount gt 1}"  value="#{msgs.patdet_search_text}"/>&nbsp;
-									   <select id="searchTypeList" title="<%=bundle.getString("search_Type")%>" 
-									   onchange="javascript:document.getElementById('messages').innerHTML='';
-									   document.getElementById('outputdiv').innerHTML ='';getRecordDetailsFormValues('searchTypeForm');checkedItems = new Array();setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchscreenservices.jsf?random='+rand+'&'+queryStr,'SearchCriteria','')" style="width:220px;">	
-									  <%ArrayList   searchListItemArray = recordDetailsHandler.getPossilbeSearchTypes();%>
-										<%for(int p = 0; p <searchListItemArray.size();p++) {
-												SelectItem selectItem = (SelectItem) searchListItemArray.get(p);
-											%>
-											<%if(request.getParameter("selectedSearchType") != null && request.getParameter("selectedSearchType").equalsIgnoreCase(selectItem.getLabel())) {%>
-											  <option value="<%=selectItem.getValue()%>" selected="true"><%=selectItem.getLabel()%></option>
-											<%} else {%>
-											<option value="<%=selectItem.getValue()%>"><%=selectItem.getLabel()%></option>
-											<%}%>
-										<%}%>
-									 </select>
-						</td>
-					</tr>
-		</form>
- </table>
+			<div class="duplicaterecords" style="visibility:visible;display:block">
+				<table border="0">
+				<tr>
+				    <td>&nbsp;</td>
+				     <td>
+ 							 <table border="0" cellpadding="0" cellspacing="0" align="right"  width="100px">
+								<form id="searchTypeForm" >
+									<tr>
+										<td>
+											 <h:outputText  rendered="#{RecordDetailsHandler.possilbeSearchTypesCount gt 1}"  value="#{msgs.patdet_search_text}"/>&nbsp;
+													   <select id="searchTypeList" title="<%=bundle.getString("search_Type")%>" 
+													   onchange="javascript:document.getElementById('messages').innerHTML='';
+													   document.getElementById('outputdiv').innerHTML ='';getRecordDetailsFormValues('searchTypeForm');checkedItems = new Array();setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchscreenservices.jsf?random='+rand+'&'+queryStr,'SearchCriteria','')" style="width:220px;">	
+													  <%ArrayList   searchListItemArray = recordDetailsHandler.getPossilbeSearchTypes();%>
+														<%for(int p = 0; p <searchListItemArray.size();p++) {
+																SelectItem selectItem = (SelectItem) searchListItemArray.get(p);
+															%>
+															<%if(request.getParameter("selectedSearchType") != null && request.getParameter("selectedSearchType").equalsIgnoreCase(selectItem.getLabel())) {%>
+															  <option value="<%=selectItem.getValue()%>" selected="true"><%=selectItem.getLabel()%></option>
+															<%} else {%>
+															<option value="<%=selectItem.getValue()%>"><%=selectItem.getLabel()%></option>
+															<%}%>
+														<%}%>
+													 </select>
+										</td>
+									</tr>
+								</form>
+						  </table>
 
-   <h:form id="advancedformData" >
-                            <input id='lidmask' type='hidden' title='lidmask' name='lidmask' value='' />
-                <input type="hidden" id="selectedSearchType" title='selectedSearchType' 
-				value='<%=recordDetailsHandler.getSelectedSearchType()%>' />
-
-             <table border="0" cellpadding="0" cellspacing="0">
-                    <tr>
-                        <td colspan="2">
-                           <div id="SearchCriteria">
-							<table width="100%" cellpadding="0" cellspacing="0">
-							<%if(recordDetailsHandler.getInstructionLine() != null ) {%>
-						   <tr>
-							 <td colspan="2" align="left"><p><nobr><%=recordDetailsHandler.getInstructionLine()%></nobr></p>
-							 </td>
-						   </tr>
-						   <%}%>
-							<%
-							  for(int i = 0 ; i < recordDetailsHandler.getSearchScreenFieldGroupArray().size(); i++) {
-                                 FieldConfigGroup basicSearchFieldGroup = (FieldConfigGroup) recordDetailsHandler.getSearchScreenFieldGroupArray().get(i);
-
-							%>
-							   <tr><td>&nbsp;</td></tr>
-							   <%if( basicSearchFieldGroup.getDescription() != null ) { %>
-							   <tr>
-							     <td colspan="2">
-							      <font style="color:blue"><%=basicSearchFieldGroup.getDescription()%></font>
-							     </td>
-							   </tr>
-							   <%}%>
-                               <%
-								 ArrayList fieldGroupArrayList  = (ArrayList)recordDetailsHandler.getSearchScreenHashMap().get(basicSearchFieldGroup.getDescription());
-								%>
-							   <%for(int j = 0 ; j < fieldGroupArrayList.size() ; j++) {
-								  ArrayList fieldConfigArrayList = (ArrayList) fieldGroupArrayList.get(j);
-								  ValueExpression fieldConfigArrayListVar = ExpressionFactory.newInstance().createValueExpression( fieldConfigArrayList,  fieldConfigArrayList.getClass()); 	
-
-								%>
+					 </td>
+ 				<tr>
+				   <td colspan="2">
+ 							<table border="0" cellpadding="0" cellspacing="0">
+					 <h:form id="advancedformData" >
+							<input id='lidmask' type='hidden' title='lidmask' name='lidmask' value='' />
+							<input type="hidden" id="selectedSearchType" title='selectedSearchType' 
+							value='<%=recordDetailsHandler.getSelectedSearchType()%>' />
 								<tr>
-								<%for(int k = 0 ; k < fieldConfigArrayList.size() ; k++) {
-								  FieldConfig fieldConfig = (FieldConfig) fieldConfigArrayList.get(k);
-									   String title = (fieldConfig.isRange()) ? fieldConfig.getDisplayName(): fieldConfig.getName();
-									   int maxlength = (fieldConfig.getName().equalsIgnoreCase("EUID")) ? sourceHandler.getEuidLength(): fieldConfig.getMaxSize();
-								%>
-							     <td>
-									<nobr>											
-										<%if(fieldConfig.isOneOfTheseRequired()) {%>
-											 <span style="font-size:9px;color:blue;verticle-align:top">&dagger;&nbsp;</span>
-										<%}%>
-										<%if(fieldConfig.isRequired()) {%>
-											 <span style="font-size:9px;color:red;verticle-align:top">*&nbsp;</span>
-										<%}%>
-										<%=fieldConfig.getDisplayName()%>
-									</nobr>
-								 
-								 </td>
-							      <td>
-								  <%if(fieldConfig.getGuiType().equalsIgnoreCase("MenuList")) {%>
-								             <% if( "SystemCode".equalsIgnoreCase(fieldConfig.getName()))  {%>
-                                                <select title="<%=fieldConfig.getName()%>"
-												        name="<%=fieldConfig.getName()%>" 
-                                                        onchange="javascript:setLidMaskValue(this,'advancedformData')"
-												        id="SystemCode">	
-											 <%} else {%>
-                                               <select title="<%=fieldConfig.getName()%>"
-												     name="<%=fieldConfig.getName()%>" >	
+									<td colspan="2">
+									   <div id="SearchCriteria">
+ 										<table width="100%" cellpadding="0" cellspacing="0">
+										<%if(recordDetailsHandler.getInstructionLine() != null ) {%>
+ 										   <tr><td colspan="2"><%=recordDetailsHandler.getInstructionLine()%></td></tr>
+ 									   <%}%>
+										<%
+										  for(int i = 0 ; i < recordDetailsHandler.getSearchScreenFieldGroupArray().size(); i++) {
+											 FieldConfigGroup basicSearchFieldGroup = (FieldConfigGroup) recordDetailsHandler.getSearchScreenFieldGroupArray().get(i);
+
+										%>
+										   <%if( basicSearchFieldGroup.getDescription() != null ) { %>
+										   <tr>
+											 <td colspan="2">
+											  <font style="color:blue"><%=basicSearchFieldGroup.getDescription()%></font>
+											 </td>
+										   </tr>
+										   <%}%>
+										   <%
+											 ArrayList fieldGroupArrayList  = (ArrayList)recordDetailsHandler.getSearchScreenHashMap().get(basicSearchFieldGroup.getDescription());
+											%>
+										   <%for(int j = 0 ; j < fieldGroupArrayList.size() ; j++) {
+											  ArrayList fieldConfigArrayList = (ArrayList) fieldGroupArrayList.get(j);
+											  ValueExpression fieldConfigArrayListVar = ExpressionFactory.newInstance().createValueExpression( fieldConfigArrayList,  fieldConfigArrayList.getClass()); 	
+
+											%>
+											<tr>
+											<%for(int k = 0 ; k < fieldConfigArrayList.size() ; k++) {
+											  FieldConfig fieldConfig = (FieldConfig) fieldConfigArrayList.get(k);
+												   String title = (fieldConfig.isRange()) ? fieldConfig.getDisplayName(): fieldConfig.getName();
+												   int maxlength = (fieldConfig.getName().equalsIgnoreCase("EUID")) ? sourceHandler.getEuidLength(): fieldConfig.getMaxSize();
+											%>
+											 <td>
+												<nobr>											
+													<%if(fieldConfig.isOneOfTheseRequired()) {%>
+														 <span style="font-size:9px;color:blue;verticle-align:top">&dagger;&nbsp;</span>
+													<%}%>
+													<%if(fieldConfig.isRequired()) {%>
+														 <span style="font-size:9px;color:red;verticle-align:top">*&nbsp;</span>
+													<%}%>
+													<%=fieldConfig.getDisplayName()%>
+												</nobr>
+											 
+											 </td>
+											  <td>
+											  <%if(fieldConfig.getGuiType().equalsIgnoreCase("MenuList")) {%>
+														 <% if( "SystemCode".equalsIgnoreCase(fieldConfig.getName()))  {%>
+															<select title="<%=fieldConfig.getName()%>"
+																	name="<%=fieldConfig.getName()%>" 
+																	onchange="javascript:setLidMaskValue(this,'advancedformData')"
+																	id="SystemCode">	
+														 <%} else {%>
+														   <select title="<%=fieldConfig.getName()%>"
+																 name="<%=fieldConfig.getName()%>" >	
+														<%}%>
+														  <%PullDownListItem[]   pullDownListItemArray = fieldConfig.getPossibleValues();%>
+															<option value=""></option>
+															<%for(int p = 0; p <pullDownListItemArray.length;p++) {%>
+																<option value="<%=pullDownListItemArray[p].getName()%>"><%=pullDownListItemArray[p].getDescription()%></option>
+															<%}%>
+														</select>
+
+											  <%}%>
+											  <%if(fieldConfig.getGuiType().equalsIgnoreCase("TextArea")) {%>
+												  <textarea 
+															id="<%=fieldConfig.getName()%>" 
+															title="<%=title%>"
+															name="<%=fieldConfig.getName()%>" ></textarea>
 											<%}%>
-                                              <%PullDownListItem[]   pullDownListItemArray = fieldConfig.getPossibleValues();%>
-											    <option value=""></option>
-											    <%for(int p = 0; p <pullDownListItemArray.length;p++) {%>
-											     	<option value="<%=pullDownListItemArray[p].getName()%>"><%=pullDownListItemArray[p].getDescription()%></option>
-												<%}%>
-											</select>
 
-								  <%}%>
-								  <%if(fieldConfig.getGuiType().equalsIgnoreCase("TextArea")) {%>
-                                      <textarea 
-									            id="<%=fieldConfig.getName()%>" 
-												title="<%=title%>"
-												name="<%=fieldConfig.getName()%>" ></textarea>
-                                <%}%>
+											  <%if(fieldConfig.getGuiType().equalsIgnoreCase("TextBox")) {
+												  %>
+												  <%if(fieldConfig.getName().equalsIgnoreCase("LID")) {%>
+															 <input type="text" 
+																   id="LID"
+																   title="<%=title%>"
+																   name="<%=fieldConfig.getName()%>" 
+																   maxlength="<%=maxlength%>" 
+																   readonly="true"
+																   onkeydown="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value)"
+																   onkeyup="javascript:qws_field_on_key_up(this)"
+																   onblur="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value)"/>
+			 
+												  <%} else {%>
+												   <%if(fieldConfig.getValueType() == 6 ) {%>
+													  <nobr>
+														<input type="text" 
+															   id="<%=title%>"
+															   title="<%=title%>"
+															   name="<%=fieldConfig.getName()%>" 
+															   maxlength="<%=maxlength%>" 
+															   size="<%=fieldConfig.getMaxLength()%>"
+																onkeydown="javascript:qws_field_on_key_down(this, '<%=(fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0)?fieldConfig.getInputMask():""%>')"
+																onkeyup="javascript:qws_field_on_key_up(this)"                                          onblur="javascript:validate_date(this,'<%=dateFormat%>')">
+															  <a href="javascript:void(0);" 
+																 title="<%=title%>"
+																 onclick="g_Calendar.show(event,
+																	  '<%=title%>',
+																	  '<%=dateFormat%>',
+																	  '<%=global_daysOfWeek%>',
+																	  '<%=global_months%>',
+																	  '<%=cal_prev_text%>',
+																	  '<%=cal_next_text%>',
+																	  '<%=cal_today_text%>',
+																	  '<%=cal_month_text%>',
+																	  '<%=cal_year_text%>')" 
+																	  ><img  border="0"  title="<%=title%> (<%=dateFormat%>)"  src="./images/cal.gif"/></a>
+															  <font class="dateFormat">(<%=dateFormat%>)</font>
+													  </nobr>
+												   <%} else {%>
 
-								  <%if(fieldConfig.getGuiType().equalsIgnoreCase("TextBox")) {
-									  %>
-									  <%if(fieldConfig.getName().equalsIgnoreCase("LID")) {%>
-                                                 <input type="text" 
-												       id="LID"
-												       title="<%=title%>"
-												       name="<%=fieldConfig.getName()%>" 
-													   maxlength="<%=maxlength%>" 
-                                                       readonly="true"
-													   onkeydown="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value)"
-                                                       onkeyup="javascript:qws_field_on_key_up(this)"
-                                                       onblur="javascript:qws_field_on_key_down(this, document.advancedformData.lidmask.value)"/>
- 
-									  <%} else {%>
-									   <%if(fieldConfig.getValueType() == 6 ) {%>
-                                          <nobr>
-                                            <input type="text" 
-												   id="<%=title%>"
-												   title="<%=title%>"
-												   name="<%=fieldConfig.getName()%>" 
-												   maxlength="<%=maxlength%>" 
- 												   size="<%=fieldConfig.getMaxLength()%>"
-													onkeydown="javascript:qws_field_on_key_down(this, '<%=(fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0)?fieldConfig.getInputMask():""%>')"
-													onkeyup="javascript:qws_field_on_key_up(this)"                                          onblur="javascript:validate_date(this,'<%=dateFormat%>')">
-                                                  <a href="javascript:void(0);" 
-												     title="<%=title%>"
-                                                     onclick="g_Calendar.show(event,
-												          '<%=title%>',
-														  '<%=dateFormat%>',
-														  '<%=global_daysOfWeek%>',
-														  '<%=global_months%>',
-														  '<%=cal_prev_text%>',
-														  '<%=cal_next_text%>',
-														  '<%=cal_today_text%>',
-														  '<%=cal_month_text%>',
-														  '<%=cal_year_text%>')" 
-														  ><img  border="0"  title="<%=title%> (<%=dateFormat%>)"  src="./images/cal.gif"/></a>
-												  <font class="dateFormat">(<%=dateFormat%>)</font>
-                                          </nobr>
-                                       <%} else {%>
+															<input type="text" 
+																   title="<%=title%>"
+																   name="<%=fieldConfig.getName()%>" 
+																   maxlength="<%=maxlength%>" 
+																   size="<%=fieldConfig.getMaxLength()%>"
+																   onkeydown="javascript:qws_field_on_key_down(this, '<%=(fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0)?fieldConfig.getInputMask():""%>')"
+																   onkeyup="javascript:qws_field_on_key_up(this)" />
 
-                                                <input type="text" 
-												       title="<%=title%>"
-												       name="<%=fieldConfig.getName()%>" 
-													   maxlength="<%=maxlength%>" 
- 													   size="<%=fieldConfig.getMaxLength()%>"
-													   onkeydown="javascript:qws_field_on_key_down(this, '<%=(fieldConfig.getInputMask() != null && fieldConfig.getInputMask().length() > 0)?fieldConfig.getInputMask():""%>')"
-													   onkeyup="javascript:qws_field_on_key_up(this)" />
+												   <%}%>
 
-                                       <%}%>
+												  <%}%>
+											  <%}%>
+											  </td>
+										   <%}%>
+										   </tr>
+										   <%}%>
 
-									  <%}%>
- 								  <%}%>
-								  </td>
-  							   <%}%>
+										<%}%>
+										 <tr><td colspan="2">&nbsp;</td></tr>
+										</table>
+									   </div> <!-- Search div ends here -->
+										<table  cellpadding="0" cellspacing="0" style="	border:0px red solid;padding-left:20px">
+											<tr>
+												<td align="left">
+													<nobr>
+													<% if(operations.isEO_SearchViewSBR()){%>	
+													   <a  title="<h:outputText value="#{msgs.search_button_label}"/>" class="button" href="javascript:void(0)" onclick="javascript:
+													   document.getElementById('messages').innerHTML='';
+													   getRecordDetailsFormValues('advancedformData');checkedItems = new Array();setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/recorddetailsservice.jsf?random='+rand+'&'+queryStr,'outputdiv','')">  
+														   <span>
+															 <h:outputText value="#{msgs.search_button_label}"/>
+														   </span>
+													   </a>
+													 <%}%>
+													</nobr>
+													<nobr>
+														<h:outputLink  title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:
+														document.getElementById('messages').innerHTML='';
+														ClearContents('advancedformData')">
+															<span><h:outputText value="#{msgs.clear_button_label}"/></span>
+														</h:outputLink>
+													</nobr>                                        
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr><tr><td>&nbsp</td></tr>
+							   <tr>
+								 <td><div id="messages" class="ajaxalert" valign="bottom"></div></td>
 							   </tr>
-							   <%}%>
+						</h:form>
+						<h:panelGrid>
+						   <h:panelGroup rendered="#{RecordDetailsHandler.oneOfGroupExists}">
+								<tr> <!-- inline style required to override the class defined in CSS -->
+									<td style="font-size:10px;">
+									   <hr/>
+										<nobr>
+											 <span style="font-size:9px;color:blue;verticle-align:top;">&dagger;&nbsp;</span><h:outputText value="#{msgs.GROUP_FIELDS}"/>
+										</nobr>
+									</td>
+								</tr>
+						   </h:panelGroup>
 
-							<%}%>
-							 <tr><td colspan="2">&nbsp;</td></tr>
+						   <h:panelGroup rendered="#{RecordDetailsHandler.requiredExists}">
+								<tr>
+									<td style="font-size:10px;">
+										<nobr>
+											 <span style="font-size:9px;color:red;verticle-align:top; FONT-WEIGHT: normal; FONT-FAMILY: Arial, Helvetica,sans-serif">*&nbsp;</span><h:outputText value="#{msgs.REQUIRED_FIELDS}"/>
+										</nobr>
+									</td>
+								</tr>
+						   </h:panelGroup>
+
+						</h:panelGrid>
+					   <div class="reportresults" id="outputdiv"></div>
+
 							</table>
-                           </div> <!-- Search div ends here -->
-                            <table  cellpadding="0" cellspacing="0" style="	border:0px red solid;padding-left:20px">
-                                <tr>
-                                    <td align="left">
-                                        <nobr>
-										<% if(operations.isEO_SearchViewSBR()){%>	
-                                           <a  title="<h:outputText value="#{msgs.search_button_label}"/>" class="button" href="javascript:void(0)" onclick="javascript:
-										   document.getElementById('messages').innerHTML='';
-										   getRecordDetailsFormValues('advancedformData');checkedItems = new Array();setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/recorddetailsservice.jsf?random='+rand+'&'+queryStr,'outputdiv','')">  
-                                               <span>
-                                                 <h:outputText value="#{msgs.search_button_label}"/>
-                                               </span>
-                                           </a>
-										 <%}%>
-                                        </nobr>
-									    <nobr>
-										    <h:outputLink  title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:
-											document.getElementById('messages').innerHTML='';
- 											ClearContents('advancedformData')">
-                                                <span><h:outputText value="#{msgs.clear_button_label}"/></span>
-                                            </h:outputLink>
-                                        </nobr>                                        
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr><tr><td>&nbsp</td></tr>
-				   <tr>
-					 <td><div id="messages" class="ajaxalert" valign="bottom"></div></td>
-				   </tr>
-                </table>
-            </h:form>
-			<h:panelGrid>
-               <h:panelGroup rendered="#{RecordDetailsHandler.oneOfGroupExists}">
-					<tr> <!-- inline style required to override the class defined in CSS -->
-						<td style="font-size:10px;">
-						   <hr/>
-							<nobr>
-								 <span style="font-size:9px;color:blue;verticle-align:top;">&dagger;&nbsp;</span><h:outputText value="#{msgs.GROUP_FIELDS}"/>
-							</nobr>
-						</td>
-				    </tr>
- 			   </h:panelGroup>
 
-			   <h:panelGroup rendered="#{RecordDetailsHandler.requiredExists}">
-					<tr>
-						<td style="font-size:10px;">
-							<nobr>
-								 <span style="font-size:9px;color:red;verticle-align:top; FONT-WEIGHT: normal; FONT-FAMILY: Arial, Helvetica,sans-serif">*&nbsp;</span><h:outputText value="#{msgs.REQUIRED_FIELDS}"/>
-							</nobr>
-						</td>
-				    </tr>
- 			   </h:panelGroup>
-
-			</h:panelGrid>
-           <div class="reportresults" id="outputdiv"></div>
-    </div>  
-  </td></tr></table>
-  </div>
+					</td>
+				 </tr>
+				</table>
+			</div>
+       </td>
+	  </tr>
+	 </table>
+  </div><!--  id="mainContent" -->
 			<form id="collectEuidsForm">
 			      <input type="hidden" id="collectEuids" title='collectEuids' />   
             </form>
