@@ -166,7 +166,7 @@ function align(thisevent,divID) {
 											 <h:outputText  rendered="#{RecordDetailsHandler.possilbeSearchTypesCount gt 1}"  value="#{msgs.patdet_search_text}"/>&nbsp;
 													   <select id="searchTypeList" title="<%=bundle.getString("search_Type")%>" 
 													   onchange="javascript:document.getElementById('messages').innerHTML='';
-													   document.getElementById('outputdiv').innerHTML ='';getRecordDetailsFormValues('searchTypeForm');checkedItems = new Array();setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchscreenservices.jsf?random='+rand+'&'+queryStr,'SearchCriteria','')" style="width:220px;">	
+													   document.getElementById('outputdiv').innerHTML ='';document.getElementById('SearchCriteria').innerHTML ='';getRecordDetailsFormValues('searchTypeForm');checkedItems = new Array();setRand(Math.random());ajaxURL('/<%=URI%>/ajaxservices/searchscreenservices.jsf?random='+rand+'&'+queryStr,'SearchCriteria','')" style="width:220px;">	
 													  <%ArrayList   searchListItemArray = recordDetailsHandler.getPossilbeSearchTypes();%>
 														<%for(int p = 0; p <searchListItemArray.size();p++) {
 																SelectItem selectItem = (SelectItem) searchListItemArray.get(p);
@@ -186,8 +186,8 @@ function align(thisevent,divID) {
 					 </td>
  				<tr>
 				   <td colspan="2">
+						<h:form id="advancedformData">
  							<table border="0" cellpadding="0" cellspacing="0">
-					 <h:form id="advancedformData" >
 							<input id='lidmask' type='hidden' title='lidmask' name='lidmask' value='' />
 							<input type="hidden" id="selectedSearchType" title='selectedSearchType' 
 							value='<%=recordDetailsHandler.getSelectedSearchType()%>' />
@@ -353,7 +353,13 @@ function align(thisevent,divID) {
 							   <tr>
 								 <td><div id="messages" class="ajaxalert" valign="bottom"></div></td>
 							   </tr>
+
+							</table>
 						</h:form>
+
+					</td>
+				 </tr>
+				</table>
 						<h:panelGrid>
 						   <h:panelGroup rendered="#{RecordDetailsHandler.oneOfGroupExists}">
 								<tr> <!-- inline style required to override the class defined in CSS -->
@@ -378,12 +384,6 @@ function align(thisevent,divID) {
 
 						</h:panelGrid>
 					   <div class="reportresults" id="outputdiv"></div>
-
-							</table>
-
-					</td>
-				 </tr>
-				</table>
 			</div>
        </td>
 	  </tr>
