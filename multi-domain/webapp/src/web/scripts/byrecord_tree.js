@@ -217,7 +217,9 @@ function byRecord_createMainTree () {
         getIconClass: mainTreeGetIconClass,
 		lazyLoadItems: lazyLoad_MainTreeRelationships,			
 		dndController:"dijit._tree.dndSource",
-		checkAcceptance: mainTreeDnDCheckAcceptance
+		checkAcceptance: mainTreeDnDCheckAcceptance,
+		checkItemAcceptance: mainTreeDnDCheckItemAcceptance,
+		dragThreshold: 8
     }, document.createElement("div"));
     mainTreeObj.startup();
     dojo.byId("mainTreeContainer").appendChild(mainTreeObj.domNode);
@@ -229,8 +231,13 @@ function customMainTreeMayHaveChildren(item) {
 
 function mainTreeDnDCheckAcceptance(source, nodes)  {
 	//Dont accept if the source is the same tree
-	if(this.tree == source.tree) return false;	
+	if(this == source) return false;	
 	else return true;
+}
+
+function mainTreeDnDCheckItemAcceptance(node, source) {
+	return false;
+	//TBD: Check if the items can be dropped on this node. based on Move Rules.
 }
 
 // Function called when tree (MAIN Tree) is trying load the childrens for expanded Record.
@@ -627,10 +634,24 @@ function byRecord_createRearrangeTree () {
         model: rearrangeTreeModel,
         customOnClick: rearrangeTreeClicked,
         getIconClass: rearrangeTreeGetIconClass,
-		lazyLoadItems: lazyLoadRearrangeTreeRelationships
+		lazyLoadItems: lazyLoadRearrangeTreeRelationships,
+		dndController:"dijit._tree.dndSource",
+		checkAcceptance: rearrangeTreeDnDCheckAcceptance,
+		checkItemAcceptance: rearrangeTreeDnDCheckItemAcceptance,
+		dragThreshold: 8		
     }, document.createElement("div"));
     rearrangeTreeObj.startup();
     dojo.byId("rearrangeTreeContainer").appendChild(rearrangeTreeObj.domNode);
+}
+
+function rearrangeTreeDnDCheckAcceptance(source,nodes) {
+	if(this == source) return false;
+	else return true;
+}
+
+function rearrangeTreeDnDCheckItemAcceptance(node, source ){
+	return false;
+	//TBD: Check if the items can be dropped on this node. based on Move Rules.
 }
 
 // function to delete items from rearrange tree store.

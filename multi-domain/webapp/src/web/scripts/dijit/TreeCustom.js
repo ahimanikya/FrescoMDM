@@ -121,6 +121,17 @@ dojo.declare("dijit.TreeCustom", dijit.Tree, {
 		
 	lazyLoadItems: function(node, callback_function) {
 		callback_function();
+	},
+		
+	onDndDrop: function (source, nodes, copy) {
+		if( this.containerState == "Over"){
+			console.log("custom tree on DndDrop :" + this.tree + " : " + source.tree);
+			if(source.tree != this.tree) {
+				this.inherited(arguments); 
+			}
+		}
+		this.onDndCancel();
+		//this.inherited(arguments); 
 	}
 
 });
