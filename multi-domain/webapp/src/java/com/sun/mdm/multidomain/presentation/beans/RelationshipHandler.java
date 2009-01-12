@@ -29,9 +29,9 @@ import com.sun.mdm.multidomain.services.model.ObjectView;
 import com.sun.mdm.multidomain.services.model.DomainSearch;
 import com.sun.mdm.multidomain.services.relationship.RelationshipSearch;
 import com.sun.mdm.multidomain.services.relationship.RelationshipView;
+import com.sun.mdm.multidomain.services.relationship.RelationshipDefView;
 import com.sun.mdm.multidomain.services.relationship.RelationshipRecord;
 import com.sun.mdm.multidomain.services.relationship.RelationshipComposite;
-import com.sun.mdm.multidomain.services.relationship.RelationshipMoveComposite;
 import com.sun.mdm.multidomain.services.relationship.DomainRelationshipsObject;
 
 import com.sun.mdm.multidomain.services.core.ServiceManagerFactory;
@@ -152,16 +152,20 @@ public class RelationshipHandler {
         initialize();
         return  relationshipManager.addRelationship(relationship);
     }
-    
+
     /**
-     * Move relationships.
-     * @param movedRelationhips RelationshipMoveComposite.
+     * Move relationhips.
+     * @param relDef RelationshipDef.
+     * @param deletedRelationhips List of relationships being deleted.
+     * @param addedRelationhips List of relationships being added.
      * @throws ServiceException Thrown if an error occurs during processing.
      */
-    public void moveRelationships(RelationshipMoveComposite movedRelationhips)
+    public void moveRelationships(RelationshipDefView relationhipDef, 
+                                  List<RelationshipView> deletedRelationhips, 
+                                  List<RelationshipView> addedRelationhips)
         throws ServiceException {  
         initialize();
-        relationshipManager.moveRelationships(movedRelationhips);
+        relationshipManager.moveRelationships(relationhipDef, deletedRelationhips, addedRelationhips);
     }
 
     /**
