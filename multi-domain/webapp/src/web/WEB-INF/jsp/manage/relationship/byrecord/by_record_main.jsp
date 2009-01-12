@@ -20,7 +20,7 @@
                </table>
            </div>
            <hr>
-           <div dojoType="dijit.layout.ContentPane"  href="m_byrecord_tree_section.htm"  parseOnLoad="true">
+           <div dojoType="dijit.layout.ContentPane"  href="m_byrecord_tree_section.htm"  parseOnLoad="true" onLoad="byRecord_resetView();">
                tree section
 				
            </div>
