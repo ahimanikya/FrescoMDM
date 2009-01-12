@@ -1,5 +1,11 @@
 
 @import url("../dijit.css");
+
+.mdwm { 
+	font-size:12px;
+	font-family: arial, verdana;
+}
+
 .mdwm .dijitSliderDisabled *,
 .mdwm .dijitDisabledClickableRegion,	
 .mdwm .dijitSpinnerDisabled *,
