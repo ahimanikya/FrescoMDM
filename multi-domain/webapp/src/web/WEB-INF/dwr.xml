@@ -241,14 +241,7 @@
             List<Attribute> ObjectRecord.getAttributes();
             RelationshipRecord.setAttributes(List<Attribute> attributes);            
             List<Attribute> RelationshipRecord.getAttributes(); 
-        ]]>           
-        <![CDATA[
-            import java.util.List;
-            import com.sun.mdm.multidomain.services.relationship.RelationshipView;            
-            import com.sun.mdm.multidomain.services.relationship.RelationshipMoveComposite;
-            List<RelationshipView> RelationshipMoveComposite.getRelationships();
-            RelationshipMoveComposite.setRelationships(List<RelationshipView> relationships);            
-        ]]>                   
+        ]]>
     </signatures>
   </allow>
 </dwr>
