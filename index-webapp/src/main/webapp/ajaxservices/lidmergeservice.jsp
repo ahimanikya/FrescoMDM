@@ -242,7 +242,7 @@ if(isShowEuid) {
  boolean validationFailed = false;
  String validtionMessage  = bundle.getString("enter_lid_and_systemcode_text") + " " + localIdDesignation ;
 
-if(  (request.getParameter(bundle.getString("transaction_source")) != null &&  request.getParameter(bundle.getString("transaction_source")).trim().length() == 0 ) && 
+if(  (request.getParameter("merge_system_code") != null &&  request.getParameter("merge_system_code").trim().length() == 0 ) && 
     (request.getParameter(localIdDesignation+" 1") != null &&  request.getParameter(localIdDesignation+" 1").trim().length()  == 0 ) &&    
     (request.getParameter(localIdDesignation+" 2") != null &&  request.getParameter(localIdDesignation+" 2").trim().length()  == 0 ) &&    
     (request.getParameter(localIdDesignation+" 3") != null &&  request.getParameter(localIdDesignation+" 3").trim().length()  == 0 ) &&    
@@ -250,7 +250,7 @@ if(  (request.getParameter(bundle.getString("transaction_source")) != null &&  r
     validationFailed = true;
  
 } else if(
-	(request.getParameter(bundle.getString("transaction_source")) != null &&  request.getParameter(bundle.getString("transaction_source")).trim().length() >  0 ) && 
+	(request.getParameter("merge_system_code") != null &&  request.getParameter("merge_system_code").trim().length() >  0 ) && 
     (request.getParameter(localIdDesignation+" 1") != null &&  request.getParameter(localIdDesignation+" 1").trim().length()  == 0 ) &&    
     (request.getParameter(localIdDesignation+" 2") != null &&  request.getParameter(localIdDesignation+" 2").trim().length()  == 0 ) &&    
     (request.getParameter(localIdDesignation+" 3") != null &&  request.getParameter(localIdDesignation+" 3").trim().length()  == 0 ) &&    
@@ -520,7 +520,7 @@ sourceMergeHandler.setLid1(request.getParameter(localIdDesignation+" 1"));
  sourceMergeHandler.setLid2(request.getParameter(localIdDesignation+" 2"));
  sourceMergeHandler.setLid3(request.getParameter(localIdDesignation+" 3"));
  sourceMergeHandler.setLid4(request.getParameter(localIdDesignation+" 4"));
- sourceMergeHandler.setSource(request.getParameter(bundle.getString("transaction_source")));
+ sourceMergeHandler.setSource(request.getParameter("merge_system_code"));
 
 //Variables for lid merge preview 
 String mergeFinalStr = request.getParameter("mergeFinal");

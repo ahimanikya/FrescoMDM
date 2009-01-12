@@ -543,6 +543,7 @@ function showExtraTabDivs(divId,thisEvent)  {
                                                                 
                                                             <f:facet name="footer">
                                                                 <h:column>
+																<nobr>
 																<!--  modified  on 24-09-08 to incorparate with ajax call-->
 														<a title="<h:outputText value="#{msgs.patdetails_search_button2}"/>&nbsp; <h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" 
 														onclick="javascript:if(editMinorObjectType.length<1){
@@ -575,6 +576,7 @@ function showExtraTabDivs(divId,thisEvent)  {
 																	ClearContents('basicViewformData');">
                                                                         <span><h:outputText value="#{msgs.patdetails_search_button1}"/></span>
                                                                     </a>
+																	</nobr>
                                                                 </h:column>
                                                                     
                                                             </f:facet>
@@ -938,10 +940,10 @@ function showExtraTabDivs(divId,thisEvent)  {
                            <span id="<h:outputText value='#{childNodesName}'/>buttonspan"><h:outputText value="#{msgs.source_rec_save_but}"/>&nbsp; <h:outputText value='#{childNodesName}'/> </span>
                            </a>
 						</td>
-						<td>
+						<td><nobr>
  						   <a title="<h:outputText value="#{msgs.clear_button_label}"/>" class="button"  href="javascript:void(0)" onclick="javascript:ClearContents('<h:outputText value="#{childNodesName}"/>AddNewSOInnerForm');setEditIndex('-1');">
 						   <span><h:outputText value="#{msgs.clear_button_label}"/></span>
-						   </a>
+						   </a></nobr>
 						</td>
 						<td>
 						   <div style="visibility:hidden;display:none;" id="<h:outputText value='#{childNodesName}'/>cancelSOEdit">
@@ -1151,7 +1153,7 @@ function showExtraTabDivs(divId,thisEvent)  {
                                                                    for="#{msgs.transaction_source}" value="#{msgs.transaction_source}"/>
 															  </td>
                                                                <td>
-                                                                   <h:selectOneMenu title="#{msgs.transaction_source}" onchange="javascript:setLidMaskMergeValue(this,'basicMergeformData')"
+                                                                   <h:selectOneMenu title="#{msgs.transaction_source}" onchange="javascript:document.getElementById('merge_system_code').value=this.value;setLidMaskMergeValue(this,'basicMergeformData')"
 																   style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"id="sourceOption" 
                                                                    value="#{SourceMergeHandler.source}" >
 																	   <f:selectItem itemLabel="" itemValue="" />
@@ -1225,7 +1227,6 @@ function showExtraTabDivs(divId,thisEvent)  {
                                                                           class="button" >
                                                                            <span><h:outputText value="#{msgs.source_merge_button}"/></span>
                                                                        </a>                                     
-                                                                </nobr> 
                                                              <h:outputLink title="#{msgs.clear_button_label}" styleClass="button"  value="javascript:void(0)" onclick="javascript:
 																	if(document.getElementById('lidmsg1')!=null){
 																		document.getElementById('lidmsg1').innerHTML='';
@@ -1248,12 +1249,15 @@ function showExtraTabDivs(divId,thisEvent)  {
 															        ClearContents('basicMergeformData')" >
                                                                <span><h:outputText value="#{msgs.clear_button_label}"/></span>
                                                               </h:outputLink>
+
+                                                                </nobr> 
                                                                </td>
                                                                <td colspan="4">&nbsp;</td>
                                                            </tr>
                                                 
                                                     </table>
 							                       <input type="hidden" id="duplicateLid" title="duplicateLid" />
+                                                   <input type="hidden"  id="merge_system_code" title="merge_system_code"/>       
                                                     </h:form>
                                              <hr/>
 											 <table>
