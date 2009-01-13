@@ -1,16 +1,18 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html><head><title>Future Ideas - Manage-&gt;Relationship-&gt;Maintain-&gt;ByRecord</title><link rel="stylesheet" href="https://mural.dev.java.net/css/muraldoc.css" type="text/css"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script type="text/javascript">
+<html><head><title>Future Ideas -
+Manage-&gt;Relationship-&gt;Maintain-&gt;ByRecord</title>
+
+<link rel="stylesheet" href="https://mural.dev.java.net/css/muraldoc.css" type="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript">
 var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
 document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-</script><script type="text/javascript">
+</script>
+<script type="text/javascript">
 var pageTracker = _gat._getTracker("UA-1277259-2");
 pageTracker._initData();
 pageTracker._trackPageview();
 </script>
-
-
-
-
 </head>
 <body class="view">
 <h1>Manage-&gt;Relationship-&gt;Maintain-&gt;By
@@ -36,15 +38,22 @@ Andrea Smith.&nbsp;</li>
 </ul>
 <li> View details of selected relationship (source record,
 destination record and relationship attributes)</li>
-</ul><h2>Terms<br>
+</ul>
+<h2>Terms<br>
 </h2>
-<dl><dt>Primary Record</dt><dd>The record that was selected from the initial "Select
+<dl>
+<dt>Primary Record</dt>
+<dd>The record that was selected from the initial "Select
 Record" screen. &nbsp;This record is shown as the first child of
-it's Domain on the Relationship Tree. </dd></dl>
+it's Domain on the Relationship Tree. </dd>
+</dl>
 <h2>Implementation Details</h2>
 <h3><a href="ManRelbyRecSB.html">Story Boards.
 &nbsp;View this story board to see how the following screens
-interact.</a></h3><br><span class="note-highlight"><span style="font-weight: bold; font-style: italic;">Note</span>: The story board shows the flow not the actual look of the screen.</span>
+interact.</a></h3>
+<br>
+<span class="note-highlight"><span style="font-weight: bold; font-style: italic;">Note</span>:
+The story board shows the flow not the actual look of the screen.</span>
 <br>
 <br>
 <h2>Screens</h2>
@@ -64,11 +73,16 @@ shown.<br>
 shown once a domain was selected.</li>
 <li>Do not show the table for the search results this would
 first be shown after the search button in the search area is selected.</li>
-</ol><br><h3>Maintain by Record Main screen</h3>
+</ol>
+<br>
+<h3>Maintain by Record Main screen</h3>
 <br>
 <span class="note-highlight" style="font-weight: bold; font-style: italic;">Screen
 after the Domain "UKPatient" and the record "George Karlin" is
-selected. </span><br><br>The tree automaticly expands the first level of Relationships, Domains and records under each domain. <br>
+selected. </span><br>
+<br>
+The tree automaticly expands the first level of Relationships, Domains
+and records under each domain. <br>
 <br>
 <img src="../attach/RelByRecordS2.png" style="width: 928px; height: 760px;" alt=""><br>
 <br>
@@ -98,22 +112,35 @@ record&nbsp;Centerpoint, Owns Offices was expanded and the record
 <br>
 <img src="../attach/RelByRecordS3.png" style="width: 926px; height: 736px;" alt=""><br>
 <br>
-<h4 style="color: rgb(51, 51, 255);"><br></h4><h4><br>
+<h4 style="color: rgb(51, 51, 255);"><br>
+</h4>
+<h4><br>
 <span class="note-highlight" style="font-weight: bold; font-style: italic;">Screen
-after the Dr. George Karlin was reselected followed and the second tree was shown by selecting Rearrange.</span></h4><br>The second tree shows <span style="font-weight: bold;">all</span>
+after the Dr. George Karlin was reselected followed and the second tree
+was shown by selecting Rearrange.</span></h4>
+<br>
+The second tree shows <span style="font-weight: bold;">all</span>
 the records in the originally selected domain iregardless of if they
 have relationships to them or not. &nbsp;The records can be further
-expanded to see their relationships. <br><br><img src="../attach/RelByRecordS4.png" style="width: 967px; height: 565px;" alt="">&nbsp;<span class="note-highlight" style="font-weight: bold; font-style: italic;"></span><h4 style="color: rgb(51, 51, 255);"></h4><h4 style="color: rgb(51, 51, 255);">Updates Needed<br>
+expanded to see their relationships. <br>
+<br>
+<img src="../attach/RelByRecordS4.png" style="width: 967px; height: 565px;" alt="">&nbsp;<span class="note-highlight" style="font-weight: bold; font-style: italic;"></span>
+<h4 style="color: rgb(51, 51, 255);"></h4>
+<h4 style="color: rgb(51, 51, 255);">Updates Needed<br>
 </h4>
 <ul>
-<li>A Replace action that is only available when the Reassign tree is
+<li>A Replace action that is only available when the Reassign
+tree is
 shown and&nbsp;the Primary Node (in this case Dr. George Karlin) is
 selected. &nbsp; The Replace action assigns all relationships
-associated with the Primary Node with the newly selected node.</li></ul><h4><span style="color: rgb(0, 102, 0);">Notes on
+associated with the Primary Node with the newly selected node.</li>
+</ul>
+<h4><span style="color: rgb(0, 102, 0);">Notes on
 Relationship Model overview</span></h4>
 <br>
 <ul>
-<li>The windows should be minized by default</li><li>The windows is a nice to have feature. &nbsp;</li>
+<li>The windows should be minized by default</li>
+<li>The windows is a nice to have feature. &nbsp;</li>
 </ul>
 <br>
 <h4><span style="color: rgb(0, 102, 0);">Notes on
@@ -128,7 +155,8 @@ for multi-selected. &nbsp;If more than one record is selected then
 the
 right hand side should be blank.</li>
 <li>Move could be implemented by finding a record
-and moving all selected records under the record if the second tree is not implemented.&nbsp; </li>
+and moving all selected records under the record if the second tree is
+not implemented.&nbsp; </li>
 <li>Do not &nbsp;allow any record that is already in its
 parent path to be expanded (stop cyclic references) <br>
 Example: &nbsp;Below "Dr. George Karlin" is not expandable because
@@ -157,10 +185,22 @@ Nice to have would be the abliity to filter the table as follows: <br>
 </ul>
 &nbsp;<br>
 Here is an example of what a simple implementation of &nbsp;too
-many nodes to show might look like<br><br>Notes: &nbsp;Show already selected nodes first. &nbsp; May also want to add filtering and search to this dialog. <br><br><img src="../attach/TreeTooManyRecords.png" style="width: 499px; height: 350px;" alt=""><br><br><br>This
+many nodes to show might look like<br>
+<br>
+Notes: &nbsp;Show already selected nodes first. &nbsp; May also
+want to add filtering and search to this dialog. <br>
+<br>
+<img src="../attach/TreeTooManyRecords.png" style="width: 499px; height: 350px;" alt=""><br>
+<br>
+<br>
+This
 still leaves the problem of what to do if the user selects too many
 nodes from this pop up window or too many nodes have been shown on the
-tree. &nbsp;In this case we would revert back to a single more with the selected nodes shown on top...&nbsp;<br><br><br></li>
+tree. &nbsp;In this case we would revert back to a single more with
+the selected nodes shown on top...&nbsp;<br>
+<br>
+<br>
+</li>
 </ul>
 <br>
 <h4><span style="color: rgb(0, 102, 0);">Organization
@@ -195,7 +235,8 @@ Notice that Dr. George Karlin is not expandable under Centerpoint
 &lt;- Employed By. <br>
 <br>
 <img src="../attach/RelByRecordTreeByRel.png" style="width: 301px; height: 710px;" alt=""><br>
-<br><br>
+<br>
+<br>
 <h4><span style="color: rgb(0, 102, 0);">Example
 Tree using domains: Customers, Accounts, Locations</span>
 </h4>
@@ -276,19 +317,131 @@ Tree using domains: Customers, Accounts, Locations</span>
 </ul>
 </ul>
 </ul>
-<br><h4><br><span style="color: rgb(0, 102, 0);"></span></h4><h4><span style="color: rgb(0, 102, 0);">Complete list of Tree Actions and Icons</span></h4><br><span class="note-highlight"><span style="font-weight: bold;">Note</span>:</span><span class="note-highlight"> Some
-icons differ depending on the tree they are shown over. &nbsp;In this
-case the Relationship Icon is shown and then the Re-arrange icon. </span><br><br><table style="text-align: left; width: 697px; height: 483px;" border="1" cellpadding="2" cellspacing="2"><tbody><tr class="tblheader"><td>Action</td><td colspan="4" rowspan="1">&nbsp;Icons</td><td style="width: 200px;">Show when Read Only</td><td style="width: 500px;">Description</td></tr><tr><td></td><td style="text-align: center;"><span style="font-weight: bold;">Normal</span><br><br>(Relationship Tree / Rearange Tree if different)</td><td style="text-align: center;"><span style="font-weight: bold;">Disabled</span><br><br>(Relationship Tree / Rearange Tree if different)</td><td style="vertical-align: top;"><span style="font-weight: bold;">Selected</span></td><td style="vertical-align: top;"><span style="font-weight: bold;">Not-selected</span></td><td></td><td></td></tr><tr><td>Add</td><td><img src="../attach/Icons/add_button.png" style="width: 20px; height: 20px;" alt=""></td><td><img src="../attach/Icons/add_button_faded.png" style="width: 20px; height: 20px;" alt=""></td><td></td><td></td><td style="font-weight: bold; color: rgb(153, 0, 0);">NO</td><td>Add records to the selected relationship</td></tr><tr><td>Move</td><td><img src="../attach/Icons/move-right_button.png" style="width: 20px; height: 20px;" alt=""> &nbsp; &nbsp; &nbsp;  <img src="../attach/Icons/move-left_button.png" style="width: 20px; height: 20px;" alt=""></td><td><img src="../attach/Icons/move-right_button_faded.png" style="width: 20px; height: 20px;" alt=""> &nbsp; &nbsp; &nbsp; &nbsp;<img src="../attach/Icons/move-left_button_faded.png" style="width: 20px; height: 20px;" alt=""></td><td></td><td></td><td style="font-weight: bold; color: rgb(153, 0, 0);">NO</td><td>Move records from one relationship to another</td></tr><tr><td>Replace</td><td><img src="../attach/Icons/replace_button.png" style="width: 20px; height: 20px;" alt=""> &nbsp; &nbsp; &nbsp;&nbsp;<img src="../attach/Icons/replace_button-b_to_a.png" style="width: 20px; height: 20px;" alt=""></td><td><img src="../attach/Icons/replace_button_faded.png" style="width: 20px; height: 20px;" alt=""> &nbsp; &nbsp; &nbsp;&nbsp; <img src="../attach/Icons/replace-button-b-to-a_faded.png" style="width: 20px; height: 20px;" alt=""></td><td></td><td></td><td style="font-weight: bold; color: rgb(153, 0, 0);">NO</td><td>Move all records associated with one record to another record</td></tr><tr><td>Delete</td><td><img src="../attach/Icons/delete_button.png" style="width: 20px; height: 20px;" alt=""></td><td><img src="../attach/Icons/delete_button_faded.png" style="width: 20px; height: 20px;" alt=""></td><td></td><td></td><td style="font-weight: bold; color: rgb(153, 0, 0);">NO</td><td>Remove records from a selected relationship</td></tr><tr><td>Find</td><td><img src="../attach/Icons/find_button.png" style="width: 20px; height: 20px;" alt="">&nbsp; &nbsp; &nbsp;&nbsp;</td><td><img src="../attach/Icons/find_button_faded.png" style="width: 20px; height: 20px;" alt=""></td><td></td><td></td><td style="font-weight: bold; color: rgb(0, 102, 0);">YES</td><td>Find a record in the selected domain / relationship</td></tr><tr><td>Filter</td><td><img src="../attach/Icons/filter_button.png" style="width: 20px; height: 20px;" alt=""></td><td><img src="../attach/Icons/filter_button_faded.png" style="width: 20px; height: 20px;" alt=""></td><td></td><td></td><td style="font-weight: bold; color: rgb(0, 102, 0);">YES</td><td>Filter records in the selected domain / relationship<br><br>Note: This is a very nice to have feature. &nbsp;</td></tr><tr><td>Hide / Show Empty Relationship Toggle</td><td></td><td></td><td style="vertical-align: top;"><img src="../attach/Icons/toggle_summary_button_sel.png" style="width: 20px; height: 20px;" alt="" title="Hide Empty Relationships"></td><td style="vertical-align: top;"><img src="../attach/Icons/toggle_summary_button_unsel.png" style="width: 20px; height: 20px;" alt="" title="Hide Empty Relationships (not selected)"> (default)</td><td style="font-weight: bold; color: rgb(0, 102, 0);">YES</td><td style="vertical-align: top;">Toggle hiding and showing empty relationships.<br><br>Note: This is a nice to have feature. </td></tr></tbody></table><h4><span style="color: rgb(0, 102, 0);">Alternate
+<br>
+<h4><br>
+<span style="color: rgb(0, 102, 0);"></span></h4>
+<h4><span style="color: rgb(0, 102, 0);">Complete
+list of Tree Actions and Icons</span></h4>
+<br>
+<span class="note-highlight"><span style="font-weight: bold;">Note</span>:</span><span class="note-highlight"> Some
+icons differ depending on the tree they are shown over. &nbsp;In
+this
+case the Relationship Icon is shown and then the Re-arrange icon. </span><br>
+<br>
+<table style="text-align: left; width: 697px; height: 483px;" border="1" cellpadding="2" cellspacing="2">
+<tbody>
+<tr class="tblheader">
+<td>Action</td>
+<td colspan="4" rowspan="1">&nbsp;Icons</td>
+<td style="width: 200px;">Show when Read Only</td>
+<td style="width: 500px;">Description</td>
+</tr>
+<tr>
+<td></td>
+<td style="text-align: center;"><span style="font-weight: bold;">Normal</span><br>
+<br>
+(Relationship Tree / Rearange Tree if different)</td>
+<td style="text-align: center;"><span style="font-weight: bold;">Disabled</span><br>
+<br>
+(Relationship Tree / Rearange Tree if different)</td>
+<td style="vertical-align: top;"><span style="font-weight: bold;">Selected</span></td>
+<td style="vertical-align: top;"><span style="font-weight: bold;">Not-selected</span></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Add</td>
+<td><img src="../attach/Icons/add_button.png" style="width: 20px; height: 20px;" alt=""></td>
+<td><img src="../attach/Icons/add_button_faded.png" style="width: 20px; height: 20px;" alt=""></td>
+<td></td>
+<td></td>
+<td style="font-weight: bold; color: rgb(153, 0, 0);">NO</td>
+<td>Add records to the selected relationship</td>
+</tr>
+<tr>
+<td>Move</td>
+<td><img src="../attach/Icons/move-right_button.png" style="width: 20px; height: 20px;" alt=""> &nbsp;
+&nbsp; &nbsp; <img src="../attach/Icons/move-left_button.png" style="width: 20px; height: 20px;" alt=""></td>
+<td><img src="../attach/Icons/move-right_button_faded.png" style="width: 20px; height: 20px;" alt=""> &nbsp;
+&nbsp; &nbsp; &nbsp;<img src="../attach/Icons/move-left_button_faded.png" style="width: 20px; height: 20px;" alt=""></td>
+<td></td>
+<td></td>
+<td style="font-weight: bold; color: rgb(153, 0, 0);">NO</td>
+<td>Move records from one relationship to another</td>
+</tr>
+<tr>
+<td>Replace</td>
+<td><img src="../attach/Icons/replace_button.png" style="width: 20px; height: 20px;" alt=""> &nbsp;
+&nbsp; &nbsp;&nbsp;<img src="../attach/Icons/replace_button-b_to_a.png" style="width: 20px; height: 20px;" alt=""></td>
+<td><img src="../attach/Icons/replace_button_faded.png" style="width: 20px; height: 20px;" alt=""> &nbsp;
+&nbsp; &nbsp;&nbsp; <img src="../attach/Icons/replace-button-b-to-a_faded.png" style="width: 20px; height: 20px;" alt=""></td>
+<td></td>
+<td></td>
+<td style="font-weight: bold; color: rgb(153, 0, 0);">NO</td>
+<td>Move all records associated with one record to another
+record</td>
+</tr>
+<tr>
+<td>Delete</td>
+<td><img src="../attach/Icons/delete_button.png" style="width: 20px; height: 20px;" alt=""></td>
+<td><img src="../attach/Icons/delete_button_faded.png" style="width: 20px; height: 20px;" alt=""></td>
+<td></td>
+<td></td>
+<td style="font-weight: bold; color: rgb(153, 0, 0);">NO</td>
+<td>Remove records from a selected relationship</td>
+</tr>
+<tr>
+<td>Find</td>
+<td><img src="../attach/Icons/find_button.png" style="width: 20px; height: 20px;" alt="">&nbsp;
+&nbsp; &nbsp;&nbsp;</td>
+<td><img src="../attach/Icons/find_button_faded.png" style="width: 20px; height: 20px;" alt=""></td>
+<td></td>
+<td></td>
+<td style="font-weight: bold; color: rgb(0, 102, 0);">YES</td>
+<td>Find a record in the selected domain / relationship</td>
+</tr>
+<tr>
+<td>Filter</td>
+<td><img src="../attach/Icons/filter_button.png" style="width: 20px; height: 20px;" alt=""></td>
+<td><img src="../attach/Icons/filter_button_faded.png" style="width: 20px; height: 20px;" alt=""></td>
+<td></td>
+<td></td>
+<td style="font-weight: bold; color: rgb(0, 102, 0);">YES</td>
+<td>Filter records in the selected domain / relationship<br>
+<br>
+Note: This is a very nice to have feature. &nbsp;</td>
+</tr>
+<tr>
+<td>Hide / Show Empty Relationship Toggle</td>
+<td></td>
+<td></td>
+<td style="vertical-align: top;"><img src="../attach/Icons/toggle_summary_button_sel.png" style="width: 20px; height: 20px;" alt="" title="Hide Empty Relationships"></td>
+<td style="vertical-align: top;"><img src="../attach/Icons/toggle_summary_button_unsel.png" style="width: 20px; height: 20px;" alt="" title="Hide Empty Relationships (not selected)"> (default)</td>
+<td style="font-weight: bold; color: rgb(0, 102, 0);">YES</td>
+<td style="vertical-align: top;">Toggle hiding and
+showing empty relationships.<br>
+<br>
+Note: This is a nice to have feature. </td>
+</tr>
+</tbody>
+</table>
+<h4><span style="color: rgb(0, 102, 0);">Alternate
 to Tree Look and Feel</span></h4>
-<br>This shows the original look and feel where only relationships to the original record are shown. <br>
-<br>Drill down for other records could be supported by providing an
+<br>
+This shows the original look and feel where only relationships to the
+original record are shown. <br>
+<br>
+Drill down for other records could be supported by providing an
 additional 'make current' selection. The user could navigate back to
 the original record as it would be
 shown in one of the relationships in the boxes. <br>
 <br>
 To see the&nbsp;<a href="ManRelByRecTable.html">Table
 Look and Feel</a> for maintain by relationships click <a href="ManRelByRecTable.html"><big><span style="text-decoration: underline;">here</span></big></a>.
-<br><br><br><br>
+<br>
+<br>
+<br>
+<br>
 <h3>Add Records to Relationship<br>
 </h3>
 <span class="note-highlight" style="font-weight: bold; font-style: italic;">Note: This is
@@ -298,24 +451,237 @@ a wireframe model of the screen</span><br>
 <img src="../attach/MaintainByRecordAddRecord.png" style="width: 999px; height: 544px;" alt=""><br>
 <span style="font-weight: bold;"></span><br>
 <h3>Find Overlay</h3>
-<br>The find dialog&nbsp;allows for searching for a single record based on domain search critera
-and relationship attributes. &nbsp; &nbsp; The find only finds records
-in the same level as the currently selected domain. <br><br>The search depends on the node of the selected domain or record and the tree from which the find is selected.. &nbsp;<br><br><dl><dt>For the Rearrange screen, Find is available for the main domain.<br></dt><dd>It shows search criteria for the domain.</dd><dt><br>Relationship</dt><dd>Not supported</dd><dt><br>Domain or records under the same domain are selected</dt><dd>Search critera for domain and search criteria for relationship &nbsp;that the domain / records are associated with.<br><br>This is available for both the main tree and the rearrange tree.</dd><dd></dd></dl><br>Results of the search are always shown on the tree even if the filter would not normally show the record. <br><br>The find overlay has up to three parts<br><ul><li>Search criteria based on domain</li><li>Search criteria based on a relationship</li><li>Records returned from the search shown in a summary table</li></ul>The
+<br>
+The find dialog&nbsp;allows for searching for a single record based
+on domain search critera
+and relationship attributes. &nbsp; &nbsp; The find only finds
+records
+in the same level as the currently selected domain. <br>
+<br>
+The search depends on the node of the selected domain or record and the
+tree from which the find is selected.. &nbsp;<br>
+<br>
+<dl>
+<dt>For the Rearrange screen, Find is available for the main
+domain.<br>
+</dt>
+<dd>It shows search criteria for the domain.</dd>
+<dt><br>
+Relationship</dt>
+<dd>Not supported</dd>
+<dt><br>
+Domain or records under the same domain are selected</dt>
+<dd>Search critera for domain and search criteria for
+relationship &nbsp;that the domain / records are associated with.<br>
+<br>
+This is available for both the main tree and the rearrange tree.</dd>
+<dd></dd>
+</dl>
+<br>
+Results of the search are always shown on the tree even if the filter
+would not normally show the record. <br>
+<br>
+The find overlay has up to three parts<br>
+<ul>
+<li>Search criteria based on domain</li>
+<li>Search criteria based on a relationship</li>
+<li>Records returned from the search shown in a summary table</li>
+</ul>
+The
 main difference between the find and the filter is that the find shows
 all resulting records in the overlay and the fitler shows them on the
-tree. &nbsp;Also the find expands the tree to show the node selected in
-the find dialog. &nbsp;The node on the tree is also highlighted. <br><br><h4>Maintain by Record Tree</h4><br>The find overlay shown depends on the node that is selected as follows: <br><br><dl><dt>Main domain&nbsp;</dt><dd>Disabled.&nbsp;</dd><dt><br>Primary Record</dt><dd>Disabled. &nbsp;</dd><dt><br>Relationship&nbsp;</dt><dd>Disabled.</dd><dt><br>Single Domain under a relationship or all selected records are under the same domain <br>(example, &nbsp;John McCain-&gt;EmployedBy-&gt;Company or records under&nbsp;John McCain-&gt;EmployedBy-&gt;Company)<br></dt><dd><br><span class="note-highlight">Note: Ex below is Example. </span></dd><dd><br><img src="../attach/FindRecordByRel.png" style="width: 557px; height: 692px;" alt=""></dd></dl><br><h4>Rearrange Tree<br></h4><br><br>The find overaly shown depends on the node that is selected as follows: <br><br><dl><dt>Main domain or any Record under the Main domain</dt><dd><br><img src="../attach/FindRecordByDomain.png" style="width: 470px; height: 301px;" alt=""><br><br><span class="note-highlight">Notes:</span><br><ul><li>Domain is the domain represented by the root node of the tree</li><li>The search criteria is the search criteria associated with the selected domain</li><li>Find should be disabled until the user selects a record <br><br></li></ul></dd><dt><br>Relationship&nbsp;</dt><dd>Disabled.</dd><dt><br></dt></dl><dl><dt>Single
+tree. &nbsp;Also the find expands the tree to show the node
+selected in the find dialog. &nbsp;The node on the tree is also
+highlighted. <br>
+<br>
+<h4>Maintain by Record Tree</h4>
+<br>
+The find overlay shown depends on the node that is selected as follows:
+<br>
+<br>
+<dl>
+<dt>Main domain&nbsp;</dt>
+<dd>Disabled.&nbsp;</dd>
+<dt><br>
+Primary Record</dt>
+<dd>Disabled. &nbsp;</dd>
+<dt><br>
+Relationship&nbsp;</dt>
+<dd>Disabled.</dd>
+<dt><br>
+Single Domain under a relationship or all selected records are under
+the same domain <br>
+(example, &nbsp;John McCain-&gt;EmployedBy-&gt;Company or
+records under&nbsp;John McCain-&gt;EmployedBy-&gt;Company)<br>
+</dt>
+<dd><br>
+<span class="note-highlight">Note: Ex below is
+Example. </span></dd>
+<dd><br>
+<img src="../attach/FindRecordByRel.png" style="width: 557px; height: 692px;" alt=""></dd>
+</dl>
+<br>
+<h4>Rearrange Tree<br>
+</h4>
+<br>
+<br>
+The find overaly shown depends on the node that is selected as follows:
+<br>
+<br>
+<dl>
+<dt>Main domain or any Record under the Main domain</dt>
+<dd><br>
+<img src="../attach/FindRecordByDomain.png" style="width: 470px; height: 301px;" alt=""><br>
+<br>
+<span class="note-highlight">Notes:</span><br>
+<ul>
+<li>Domain is the domain represented by the root node of
+the tree</li>
+<li>The search criteria is the search criteria associated
+with the selected domain</li>
+<li>Find should be disabled until the user selects a record
+<br>
+<br>
+</li>
+</ul>
+</dd>
+<dt><br>
+Relationship&nbsp;</dt>
+<dd>Disabled.</dd>
+<dt><br>
+</dt>
+</dl>
+<dl>
+<dt>Single
 Domain under a relationship or all selected records are under the same
-domain and the domain is located under a relationship<br> (example,&nbsp;Mary Denise-&gt;EmployedBy-&gt;Company or records under&nbsp;Mary Denise-&gt;EmployedBy-&gt;Company)</dt><dd><br><span class="note-highlight">Note: Ex below is Example.&nbsp;<br><br></span><span class="note-highlight">This is the same overlay as is shown for the main Maintain by Record Tree. <br></span><br><span class="note-highlight"><br><img src="../attach/FindRecordByRel.png" style="width: 557px; height: 692px;" alt=""></span></dd></dl><h3>Filter Overlay</h3><br>The Filter overlay&nbsp;allows user to enter record search and relationship
-attributes. &nbsp;A filter will update the tree so that only records
-with the specified attributes are shown on the tree. <br><br>The filter depends on the node of the selected domain or record. <br><br><dl><dt>For the Rearrange screen, Filter is available for the main domain.<br></dt><dd>It shows search criteria for the domain.</dd><dt><br>Relationship</dt><dd>Not supported</dd><dt><br>Domain or records under the same domain are selected</dt><dd>Search critera for domain and&nbsp; search criteria for relationship &nbsp;that the domain / records are associated with.<br><br></dd><dd>This is available for both the main tree and the rearrange tree.</dd></dl>The filter overlay has up to two parts<br><ul><li>Search criteria based on domain</li><li>Search criteria based on a relationship</li></ul>The
+domain and the domain is located under a relationship<br>
+(example,&nbsp;Mary Denise-&gt;EmployedBy-&gt;Company or
+records under&nbsp;Mary Denise-&gt;EmployedBy-&gt;Company)</dt>
+<dd><br>
+<span class="note-highlight">Note: Ex below is
+Example.&nbsp;<br>
+<br>
+</span><span class="note-highlight">This is the
+same overlay as is shown for the main Maintain by Record Tree. <br>
+</span><br>
+<span class="note-highlight"><br>
+<img src="../attach/FindRecordByRel.png" style="width: 557px; height: 692px;" alt=""></span></dd>
+</dl>
+<h3>Filter Overlay</h3>
+<br>
+The Filter overlay&nbsp;allows user to enter record search and
+relationship
+attributes. &nbsp;A filter will update the tree so that only
+records
+with the specified attributes are shown on the tree. <br>
+<br>
+The filter depends on the node of the selected domain or record. <br>
+<br>
+<dl>
+<dt>For the Rearrange screen, Filter is available for the main
+domain.<br>
+</dt>
+<dd>It shows search criteria for the domain.</dd>
+<dt><br>
+Relationship</dt>
+<dd>Not supported</dd>
+<dt><br>
+Domain or records under the same domain are selected</dt>
+<dd>Search critera for domain and&nbsp; search criteria for
+relationship &nbsp;that the domain / records are associated with.<br>
+<br>
+</dd>
+<dd>This is available for both the main tree and the rearrange
+tree.</dd>
+</dl>
+The filter overlay has up to two parts<br>
+<ul>
+<li>Search criteria based on domain</li>
+<li>Search criteria based on a relationship</li>
+</ul>
+The
 results of the fiter are for the nodes below (or at the same level) as
 the selected domain / filter. &nbsp; A filter icon is show by the
-domain that was filtered.&nbsp; <br><br><h4>Maintain by Record Tree</h4><br>The Filter overlay shown depends on the node that is selected as follows: <br><br><dl><dt>Main domain&nbsp;</dt><dd>Disabled.&nbsp;</dd><dt><br>Primary Record</dt><dd>Disabled. &nbsp;</dd><dt><br>Relationship&nbsp;</dt><dd>Disabled.</dd><dt><br>Single Domain under a relationship or all selected records are under the same domain <br>(example, &nbsp;John McCain-&gt;EmployedBy-&gt;Company or records under&nbsp;John McCain-&gt;EmployedBy-&gt;Company)<br></dt><dd><br><span class="note-highlight">Note: Ex below is Example.<br><br><img src="../attach/FilterRecordByRel.png" style="width: 557px; height: 537px;" alt=""></span></dd></dl><br><h4>Rearrange Tree<br></h4><br>The filter overlay shown depends on the node that is selected as follows: <br><br><dl><li>Main domain or any Record under the Main domain<br><br><img src="../attach/FilterRecordByDomain.png" style="width: 470px; height: 177px;" alt=""></li><li><span class="note-highlight"></span></li><li><span class="note-highlight">Notes:</span><br><ul><li>Domain is the domain represented by the root node of the tree</li><li>The search criteria is the search criteria associated with the selected domain</li><li>Find should be disabled until the user selects a record&nbsp;</li></ul></li></dl><dl><dt><br>Relationship&nbsp;</dt><dd>Disabled.</dd><dt><br></dt><dt>Single
-Domain under a relationship or all selected records are under the same
-domain and the domain is located under a relationship<br> (example,&nbsp;Mary Denise-&gt;EmployedBy-&gt;Company or records under&nbsp;Mary Denise-&gt;EmployedBy-&gt;Company)</dt><dd><br><span class="note-highlight">Note: Ex below is Example.</span></dd><dd><span class="note-highlight"></span></dd><dd><span class="note-highlight">This is the same overlay as is shown for the main Maintain by Record Tree. <br><br><img src="../attach/FilterRecordByRel.png" style="width: 557px; height: 537px;" alt=""></span></dd></dl><br>
+domain that was filtered.&nbsp; <br>
 <br>
-<h3>Move Dialog - Not needed because we will support re-assign&nbsp;</h3>
+<h4>Maintain by Record Tree</h4>
+<br>
+The Filter overlay shown depends on the node that is selected as
+follows: <br>
+<br>
+<dl>
+<dt>Main domain&nbsp;</dt>
+<dd>Disabled.&nbsp;</dd>
+<dt><br>
+Primary Record</dt>
+<dd>Disabled. &nbsp;</dd>
+<dt><br>
+Relationship&nbsp;</dt>
+<dd>Disabled.</dd>
+<dt><br>
+Single Domain under a relationship or all selected records are under
+the same domain <br>
+(example, &nbsp;John McCain-&gt;EmployedBy-&gt;Company or
+records under&nbsp;John McCain-&gt;EmployedBy-&gt;Company)<br>
+</dt>
+<dd><br>
+<span class="note-highlight">Note: Ex below is Example.<br>
+<br>
+<img src="../attach/FilterRecordByRel.png" style="width: 557px; height: 537px;" alt=""></span></dd>
+</dl>
+<br>
+<h4>Rearrange Tree<br>
+</h4>
+<br>
+The filter overlay shown depends on the node that is selected as
+follows: <br>
+<br>
+<dl>
+<li>Main domain or any Record under the Main domain<br>
+<br>
+<img src="../attach/FilterRecordByDomain.png" style="width: 470px; height: 177px;" alt=""></li>
+<li><span class="note-highlight"></span></li>
+<li><span class="note-highlight">Notes:</span><br>
+<ul>
+<li>Domain is the domain represented by the root node of
+the tree</li>
+<li>The search criteria is the search criteria associated
+with the selected domain</li>
+<li>Find should be disabled until the user selects a
+record&nbsp;</li>
+</ul>
+</li>
+</dl>
+<dl>
+<dt><br>
+Relationship&nbsp;</dt>
+<dd>Disabled.</dd>
+<dt><br>
+</dt>
+<dt>Single
+Domain under a relationship or all selected records are under the same
+domain and the domain is located under a relationship<br>
+(example,&nbsp;Mary Denise-&gt;EmployedBy-&gt;Company or
+records under&nbsp;Mary Denise-&gt;EmployedBy-&gt;Company)</dt>
+<dd><br>
+<span class="note-highlight">Note: Ex below is Example.</span></dd>
+<dd><span class="note-highlight"></span></dd>
+<dd><span class="note-highlight">This is the same
+overlay as is shown for the main Maintain by Record Tree. <br>
+<br>
+<img src="../attach/FilterRecordByRel.png" style="width: 557px; height: 537px;" alt=""></span></dd>
+</dl>
+<br>
+<br>
+<h3>Move Dialog - Not needed because we will support
+re-assign&nbsp;</h3>
+<br>
+Details on how Move will be implemented in the first release can be
+found in <big><a href="RecordsMoveRules.html"><span style="font-weight: bold;">Rules for allowable actions on
+Relationship Tree.</span></a><br>
+</big><br>
+<div style="display: none;">
+&nbsp;<br>
 <br>
 Only available if nodes under the same parent have been selected or a
 single node has been selected. &nbsp;<br>
@@ -325,19 +691,30 @@ of node selected as follows.<br>
 <br>
 <dl>
 <dt>Relationships&nbsp;</dt>
-<dd>Moves all records that share this relationship to the parent record. &nbsp;</dd><dd><br>A&nbsp;search screen for the same domain
-as the parent record of the relationship is shown. &nbsp;The user can then
-select the new record to re-assign all records under this relationship to the new record. &nbsp;&nbsp; <br>
+<dd>Moves all records that share this relationship to the
+parent record. &nbsp;</dd>
+<dd><br>
+A&nbsp;search screen for the same domain
+as the parent record of the relationship is shown. &nbsp;The user
+can then
+select the new record to re-assign all records under this relationship
+to the new record. &nbsp;&nbsp; <br>
 <br>
 Example, the user selects&nbsp;
 -&gt; Owns Offices and &lt;- Employed By relationships under
 Centerpoint. &nbsp;The move dialog shows a search screen for
 Company domain. &nbsp;The user can search for the record to that
-will replace Centerpoint for these two relationships. &nbsp;</dd><dd><br><br>
+will replace Centerpoint for these two relationships. &nbsp;</dd>
+<dd><br>
+<br>
 </dd>
-<dt>Domains</dt><dd>The dialog shows a message indicating what will be moved. &nbsp;Example,
+<dt>Domains</dt>
+<dd>The dialog shows a message indicating what will be moved.
+&nbsp;Example,
 Move relationships associated with the selected domain to a
-new Company. </dd></dl><dl>
+new Company. </dd>
+</dl>
+<dl>
 <dd>User is presented with a search screen for the same domain
 as the parent record of the relationship. &nbsp;The user can then
 select the new
@@ -346,30 +723,42 @@ original record.&nbsp;</dd>
 <dd></dd>
 <dd>Example, the user selects Locations under Company &gt;
 Centerpoint &gt; Owns . &nbsp;The move dialog shows a search
-screen for the Company domain. from which the user selects teh record to re-assign all the Locations under Company &gt;
-Centerpoint &gt; Owns to. <br> <br>
+screen for the Company domain. from which the user selects teh record
+to re-assign all the Locations under Company &gt;
+Centerpoint &gt; Owns to. <br>
+<br>
 </dd>
 <dt>Records</dt>
 <dd>The dialog shows a message indicating what will be moved.
-Example,&nbsp; Move selected Centerpoint -&gt; Owns Locations to
-another Company.</dd><dt></dt><dd>User is presented with a search screen for the same domain
+Example,&nbsp; Move selected Centerpoint -&gt; Owns Locations
+to
+another Company.</dd>
+<dt></dt>
+<dd>User is presented with a search screen for the same domain
 as the parent record of the relationship. &nbsp;The user can then
 select the new
 record to re-assign all records that share the relationship to the
-original record.&nbsp;</dd><dd></dd><dd>Example, the user selects records unde&nbsp;&nbsp; Company &gt;
-Centerpoint &gt; Owns &gt; Locations . &nbsp;The move dialog shows a search
-screen for the Company domain from which the user selects the record to re-assign the  Company &gt;
-Centerpoint &gt; Owns &gt; &nbsp;relationships to.<br> </dd><dd><br> &nbsp;<br></dd>
+original record.&nbsp;</dd>
+<dd></dd>
+<dd>Example, the user selects records unde&nbsp;&nbsp;
+Company &gt;
+Centerpoint &gt; Owns &gt; Locations . &nbsp;The move
+dialog shows a search
+screen for the Company domain from which the user selects the record to
+re-assign the Company &gt;
+Centerpoint &gt; Owns &gt; &nbsp;relationships to.<br>
+</dd>
+<dd><br>
+&nbsp;<br>
+</dd>
 </dl>
 In other words the dialogs work similar to the <a href="RecordsMoveRules.html"><span style="font-weight: bold;">Rules for allowable actions on
 Relationship Tree. </span></a>
 The
 difference being that instead of using drag / drop the user is guided
 by the Move dialog to choices that make sense given the context of the
-currently selected nodes
-<dl>
-<dt>&nbsp; &nbsp;</dt>
-</dl>
+currently selected nodes<br>
+</div>
 <h2>Look of tree with "Re-assign&gt;&gt;"
 option</h2>
 <br>
@@ -380,10 +769,60 @@ similiar however there are some important differences. <br>
 <br>
 These differences have to do with the way drag / drop and the actions
 for the tree work and can be read about at <a href="RecordsMoveRules.html"><span style="font-weight: bold;">Rules for allowable actions on
-Relationship Tree.</span></a><br><br><h2>Security Operations</h2><br><table style="text-align: left; width: 943px; height: 67px;" border="1" cellpadding="2" cellspacing="2"><tbody><tr><td class="t-packs tblheader" style="font-weight: bold;">Operation</td><td class="t-packs tblheader" style="font-weight: bold;">Effect</td><td class="t-packs tblheader"><span style="font-weight: bold;">Must Implement</span></td></tr><tr><td>ManageRelationships_ReadWrite</td><td><ul><li>User has access to all buttons as shown in the mock up. &nbsp;</li><li>Implement multi-select on the tree and drag /drop.</li></ul></td><td>Yes</td></tr><tr><td>ManageRelationships_ViewOnly</td><td><ul><li>The only buttons a user can choose are "Select", "Find", "Filter", "View Summary" and "View Details".&nbsp;</li><li>The Add, Move, Delete, Replace and Rearrange buttons are not shown. &nbsp;</li><li>The tree only supports a single select to view relationship and record details. &nbsp;Drag / Drop on the tree is disabled.</li><li>The relationship attributes are read only so neither the Save nor the Revert button is displayed. <br><br>A
+Relationship Tree.</span></a><br>
+<br>
+<h2>Security Operations</h2>
+<br>
+<table style="text-align: left; width: 943px; height: 67px;" border="1" cellpadding="2" cellspacing="2">
+<tbody>
+<tr>
+<td class="t-packs tblheader" style="font-weight: bold;">Operation</td>
+<td class="t-packs tblheader" style="font-weight: bold;">Effect</td>
+<td class="t-packs tblheader"><span style="font-weight: bold;">Must Implement</span></td>
+</tr>
+<tr>
+<td>ManageRelationships_ReadWrite</td>
+<td>
+<ul>
+<li>User has access to all buttons as shown in the mock
+up. &nbsp;</li>
+<li>Implement multi-select on the tree and drag /drop.</li>
+</ul>
+</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>ManageRelationships_ViewOnly</td>
+<td>
+<ul>
+<li>The only buttons a user can choose are "Select",
+"Find", "Filter", "View Summary" and "View Details".&nbsp;</li>
+<li>The Add, Move, Delete, Replace and Rearrange buttons
+are not shown. &nbsp;</li>
+<li>The tree only supports a single select to view
+relationship and record details. &nbsp;Drag / Drop on the tree is
+disabled.</li>
+<li>The relationship attributes are read only so neither
+the Save nor the Revert button is displayed. <br>
+<br>
+A
 nice to have feature would be that when in View Only mode either the
 Calender button would not be shown or it would not allow the user to
-change the date.&nbsp;</li></ul></td><td style="vertical-align: top;">Yes<br></td></tr></tbody></table><br><h3>Notes</h3><br><ul><li>If neither operation is assigned to a user than the Manage-&gt;Relationships tab is not shown </li></ul>
+change the date.&nbsp;</li>
+</ul>
+</td>
+<td style="vertical-align: top;">Yes<br>
+</td>
+</tr>
+</tbody>
+</table>
+<br>
+<h3>Notes</h3>
+<br>
+<ul>
+<li>If neither operation is assigned to a user than the
+Manage-&gt;Relationships tab is not shown </li>
+</ul>
 <br>
 <a href="RecordsMoveRules.html"><span style="font-weight: bold;"></span></a>
 <div class="pageactions"><i>This page lastchanged on
