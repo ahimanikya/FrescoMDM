@@ -231,9 +231,12 @@ public class MDConfigManager {
      * @return the initialized instance of the MDConfigManager
      * @throws ConfigException if an error is encountered
      */
-	public static MDConfigManager getInstance() throws ConfigException {
-	    return mInstance;
-	}
+    public static MDConfigManager getInstance() throws ConfigException {
+        if (mInstance == null) {
+            init();
+        }
+        return mInstance;
+    }
         
     /** Parses MultiDomainModel.xml.
      *
