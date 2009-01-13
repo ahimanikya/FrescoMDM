@@ -102,7 +102,7 @@ public class MDConfigManagerTest extends TestCase {
                                        " field groups.");
                     assertTrue(false);
                 }
-                int expectedFieldConfigCount = 13;
+                int expectedFieldConfigCount = 10;
                 if (fieldConfigCount != expectedFieldConfigCount) {
                     System.out.println("Error: expected "  + expectedFieldConfigCount  +
                                        " FieldConfig objects but retrieved " + fieldConfigCount + 
