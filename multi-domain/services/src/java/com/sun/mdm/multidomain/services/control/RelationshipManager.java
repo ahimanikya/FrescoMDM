@@ -918,7 +918,7 @@ public class RelationshipManager {
      * @throws UserException Thrown if an error occurs during processing.
      * @throws ProcessingException Thrown if an error occurs during processing.
      */
-    private RelationshipDef getRelationshipDef(String name, String sDomain, String tDomain) 
+    public RelationshipDef getRelationshipDef(String name, String sDomain, String tDomain) 
         throws ConfigException, UserException,  ProcessingException{        
         MDConfigManager configManager = MDConfigManager.getInstance();
         RelationshipDef relDef = null;
