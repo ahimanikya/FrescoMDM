@@ -58,14 +58,13 @@ public class RelationshipManagerTest extends TestCase {
     }
     
     public void test001() {
-    	//rt1: Person -> Company
-	//rt2: Company -> Product
-	//rt3: Person -> Product    
+    	//EmployedBy: Person -> Company
+        /* TBD: need to setup database.
     	try {
-    		List<RelationshipDefExt> types = relationshipManager.getRelationshipDefs("Person", "Product");
-    		assertTrue(types.size() == 2);
+    		List<RelationshipDefExt> types = relationshipManager.getRelationshipDefs("Person", "Company");
+    		assertTrue(types.size() == 1);
     		assertTrue("Person".equals(types.get(0).getSourceDomain()));
-    		assertTrue("Product".equals(types.get(0).getTargetDomain()));
+    		assertTrue("Company".equals(types.get(0).getTargetDomain()));
 
     		types = relationshipManager.getRelationshipDefs("Foo", "Foo");
     		assertTrue(types.size() == 0);
@@ -73,6 +72,20 @@ public class RelationshipManagerTest extends TestCase {
     	} catch(ServiceException sx) {
     		fail(sx.getMessage());
     	}
+        */
     }
-   
+
+    public void test002() {
+    	//EmployedBy: Person -> Company
+    	try {
+    		RelationshipDef type = relationshipManager.getRelationshipDef("EmployedBy", "Person", "Company");
+    		assertTrue(type != null);
+    		assertTrue("Person".equals(type.getSourceDomain()));
+    		assertTrue("Company".equals(type.getTargetDomain()));
+    		
+    	} catch(Exception sx) {
+    		fail(sx.getMessage());
+    	}
+    }
+    
 }
