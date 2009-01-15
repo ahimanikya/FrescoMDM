@@ -486,19 +486,61 @@ if(  (request.getParameter("merge_system_code") != null &&  request.getParameter
  int countLid1 = 0;
  
  String  duplicateFound = request.getParameter("duplicateLid");
+
+     //Fix for #29 Starts
+     HashMap duplicateLidsSet = new HashMap();
+     
+	 boolean duplicateLidFound = false;
+	 ArrayList dupLids = new ArrayList();
+
+     duplicateLidsSet.put(localIdDesignation+" 1",request.getParameter(localIdDesignation+" 1"));
+
+	 if(request.getParameter(localIdDesignation+" 2").trim().length() > 0 &&    duplicateLidsSet.containsValue(request.getParameter(localIdDesignation+" 2"))) {
+	    dupLids.add(localIdDesignation+" 2");
+	 } else {
+	    duplicateLidsSet.put(localIdDesignation+" 2",request.getParameter(localIdDesignation+" 2"));
+	 }
+  
  
+	 if(request.getParameter(localIdDesignation+" 3").trim().length() > 0 && duplicateLidsSet.containsValue(request.getParameter(localIdDesignation+" 3"))) {
+	    dupLids.add(localIdDesignation+" 3");
+	 } else {
+	    duplicateLidsSet.put(localIdDesignation+" 3",request.getParameter(localIdDesignation+" 3"));
+	 }
  
-if (duplicateFound != null && duplicateFound.length() > 0 ) {
+ 	 if(request.getParameter(localIdDesignation+" 4").trim().length() > 0 && duplicateLidsSet.containsValue(request.getParameter(localIdDesignation+" 4"))) {
+	    dupLids.add(localIdDesignation+" 4");
+	 } else {
+        duplicateLidsSet.put(localIdDesignation+" 4",request.getParameter(localIdDesignation+" 4"));
+	 }
+ 
+     //Fix for #29 Ends
+
+ 
+if (dupLids != null && dupLids.size() > 0 ) {      //Fix for #29 Starts
  	%>
 		<div class="ajaxalert" id="lidmsg2">
    	   	  <table>
  			<tr>
 				<td>  
-				  <script>
-				   document.getElementById("duplicateIdsDiv").innerHTML = "<ul><li><%=duplicateFound%></li><ul>";
- 			       document.getElementById("duplicateLid").value = "";
-                   </script>
- 				</td>  
+				 <%if(dupLids.size() > 0 ) {
+					String[] dupMesssages  = new String[dupLids.size()];
+					StringBuffer msgs = new StringBuffer("<ul>");	
+				  %>
+				  <%for(int i = 0; i< dupLids.size() ; i ++ ) {
+					  dupMesssages[i]  = bundle.getString("duplicate_lid_text") +" "+localIdDesignation+" '<b>" + request.getParameter(dupLids.get(i).toString()) + "</b>' "+ bundle.getString("has_been_entered_text");
+				  %>
+					<%msgs.append("<li>");
+					  msgs.append(dupMesssages[i] + " (" + dupLids.get(i).toString() +")");
+					  msgs.append("</li>");
+					 %>
+				 <%}
+				  msgs.append("</ul>");
+				  %>
+				   <script>document.getElementById('duplicateIdsDiv').innerHTML="<%=msgs%>";</script>
+				  <%}      //Fix for #29 Ends %>
+
+  				</td>  
 			</tr>
 		</table>
    </div>

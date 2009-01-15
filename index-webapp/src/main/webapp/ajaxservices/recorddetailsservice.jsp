@@ -199,7 +199,36 @@ String euidValue  = (String) recordDetailsHandler.getParametersMap().get("EUID")
         validationFailed = true;
      }
 
-      
+	 //Fix for #29 Starts
+
+     HashMap duplicateEuidsSet = new HashMap();
+     
+	 boolean duplicateEuidFound = false;
+	 ArrayList dupEuids = new ArrayList();
+
+     duplicateEuidsSet.put("EUID 1",request.getParameter("EUID 1"));
+
+	 if(request.getParameter("EUID 2").trim().length() > 0 && duplicateEuidsSet.containsValue(request.getParameter("EUID 2"))) {
+	    dupEuids.add("EUID 2");
+	 } else {
+	    duplicateEuidsSet.put("EUID 2",request.getParameter("EUID 2"));
+	 }
+  
+ 
+	 if(request.getParameter("EUID 3").trim().length() > 0 && duplicateEuidsSet.containsValue(request.getParameter("EUID 3"))) {
+	    dupEuids.add("EUID 3");
+	 } else {
+	    duplicateEuidsSet.put("EUID 3",request.getParameter("EUID 3"));
+	 }
+ 
+ 	 if(request.getParameter("EUID 4").trim().length() > 0 && duplicateEuidsSet.containsValue(request.getParameter("EUID 4"))) {
+	    dupEuids.add("EUID 4");
+	 } else {
+        duplicateEuidsSet.put("EUID 4",request.getParameter("EUID 4"));
+	 }
+ 
+ 	 //Fix for #29 Ends
+ 
 	  
 	  //Set EUID1, EUID2, EUID3 and EUID 4 here
       dashboardHandler.setEuid1(request.getParameter("EUID 1"));
@@ -213,14 +242,27 @@ String euidValue  = (String) recordDetailsHandler.getParametersMap().get("EUID")
 
 	  %>
    <% 
-     if(validationFailed || duplicateFound) { //If validation fails display the error message here
+     if(dupEuids.size() > 0 || validationFailed) { //If validation fails display the error message here  ***Fix for #29 Starts****
+
     %>
  	  <table>
 		<tr>
 		 <td>
- 		  <%if(duplicateFound) {%>
-            <script>document.getElementById('messages').innerHTML='<ul><li><%=request.getParameter("duplicateLid")%></li></ul>';</script>
-		  <%}else {%>
+ 		  <%if(dupEuids.size() > 0 ) {
+       	    String[] dupMesssages  = new String[dupEuids.size()];
+	        StringBuffer msgs = new StringBuffer("<ul>");	
+     	  %>
+  		  <%for(int i = 0; i< dupEuids.size() ; i ++ ) {
+		      dupMesssages[i]  = bundle.getString("duplicate_euid_text")+" '<b>" + request.getParameter(dupEuids.get(i).toString()) + "</b>' " +  bundle.getString("has_been_entered_text");
+		  %>
+			<%
+			  msgs.append("<li>");
+			  msgs.append(dupMesssages[i] + " (" + dupEuids.get(i).toString() +")");
+			  msgs.append("</li>");
+			 %>
+	     <%} msgs.append("</ul>"); %>
+           <script>document.getElementById('messages').innerHTML="<%=msgs%>";</script>
+		  <%}else {      //Fix for #29 Ends%> 
 			<script>document.getElementById('messages').innerHTML='<ul><li><%=bundle.getString("ERROR_one_of_many")%></li></ul>';</script> 
 		  <%}%>
  		<td>

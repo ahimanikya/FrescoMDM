@@ -1172,9 +1172,7 @@ function showExtraTabDivs(divId,thisEvent)  {
 															        title="<%=mergeLIDVaueExpression%>" 
  																    style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
                                                                     onkeydown="javascript:qws_field_on_key_down(this,document.basicMergeformData.lidmask.value)"
-                                                                    onkeyup="javascript:qws_field_on_key_up(this)"
-															        onblur="javascript:checkDuplicateFileds('basicMergeformData',this,'#{msgs.already_found_error_text}')"
-																	/>  
+                                                                    onkeyup="javascript:qws_field_on_key_up(this)" />  
 
 																	<%
 																	mergeLIDVaueExpression = ExpressionFactory.newInstance().createValueExpression( localIdDesignation+ " 2" ,  localIdDesignation.getClass());   	
@@ -1186,8 +1184,7 @@ function showExtraTabDivs(divId,thisEvent)  {
                                                                    <h:inputText value="#{SourceMergeHandler.lid2}" id="LID2" title="<%=mergeLIDVaueExpression%>"
 																   style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
                                                                    onkeydown="javascript:qws_field_on_key_down(this,document.basicMergeformData.lidmask.value)"
-                                                                   onkeyup="javascript:qws_field_on_key_up(this)"
-																   onblur="javascript:checkDuplicateFileds('basicMergeformData',this,'#{msgs.already_found_error_text}')"/>  
+                                                                   onkeyup="javascript:qws_field_on_key_up(this)" />  
                                                                </td>																   <%
 																	 mergeLIDVaueExpression = ExpressionFactory.newInstance().createValueExpression( localIdDesignation+ " 3" ,  localIdDesignation.getClass());   
 																   %>
@@ -1198,8 +1195,7 @@ function showExtraTabDivs(divId,thisEvent)  {
                                                                    <h:inputText value="#{SourceMergeHandler.lid3}" id="LID3" title="<%=mergeLIDVaueExpression%>"
 																   style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
                                                                                 onkeydown="javascript:qws_field_on_key_down(this,document.basicMergeformData.lidmask.value)"
-                                                                                onkeyup="javascript:qws_field_on_key_up(this)"
-																				onblur="javascript:checkDuplicateFileds('basicMergeformData',this,'#{msgs.already_found_error_text}')"/>  
+                                                                                onkeyup="javascript:qws_field_on_key_up(this)"/>  
                                                                </td>
                                                                    <%
 																	 mergeLIDVaueExpression = ExpressionFactory.newInstance().createValueExpression( localIdDesignation+ " 4" ,  localIdDesignation.getClass());   
@@ -1209,9 +1205,8 @@ function showExtraTabDivs(divId,thisEvent)  {
                                                                    > <%=localIdDesignation%> 4  </font>
                                                                    <h:inputText value="#{SourceMergeHandler.lid4}" id="LID4" title="<%=mergeLIDVaueExpression%>"
 																   style="font-family: Arial, Helvetica, sans-serif;font-size:10px;color:#837F74;text-align:left;vertical-align:middle;"
-                                                                                onkeydown="javascript:qws_field_on_key_down(this,document.basicMergeformData.lidmask.value)"
-                                                                                onkeyup="javascript:qws_field_on_key_up(this)"
-																				onblur="javascript:checkDuplicateFileds('basicMergeformData',this,'#{msgs.already_found_error_text}')"/>  
+                                                                   onkeydown="javascript:qws_field_on_key_down(this,document.basicMergeformData.lidmask.value)"
+                                                                   onkeyup="javascript:qws_field_on_key_up(this)"/>  
                                                                </td>
                                                             </tr>
                                                             <tr>
