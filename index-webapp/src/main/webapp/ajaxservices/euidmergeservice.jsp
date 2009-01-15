@@ -175,6 +175,7 @@ boolean isSessionActive = true;
 			String objectslength = "";
 			String sourcesize = "";
 			String revEuid = "";
+			String rootNodeValue = "";
 			%>
 			<%if(!isCheckLatest){ //Fix for 671089%>
 
@@ -949,7 +950,14 @@ boolean isSessionActive = true;
                                                                                         <font class="highlight">
                                                                                             <%if (eoHashMapValues.get("hasSensitiveData") != null && !operations.isField_VIP() &&  fieldConfigMap.isSensitive()) {%>                     <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                             <%} else {%> 
-                                                                                            <%=personfieldValuesMapEO.get(epathValue)%>
+																								<%rootNodeValue =  personfieldValuesMapEO.get(epathValue).toString();
+																								if(rootNodeValue!=null && rootNodeValue.length()>20){
+																								rootNodeValue = rootNodeValue.substring(0,20);
+																								%>
+																								<%=rootNodeValue%><a href="javascript:void(0)"  style="color:blue;font-weight:bold;text-decoration:none;" title="<%=fieldConfigMap.getDisplayName()%>:  <%=personfieldValuesMapEO.get(epathValue)%>">... </a>
+																								<%}else{%>
+																								<%=personfieldValuesMapEO.get(epathValue)%> 
+																								<%}%>
                                                                                             <%}%>
                                                                                         </font>
                                                                                     </a>  
@@ -967,14 +975,28 @@ boolean isSessionActive = true;
                                                                                    <%} else {%> 
                                                                                        <%if (eoHashMapValues.get("hasSensitiveData") != null && !operations.isField_VIP() &&  fieldConfigMap.isSensitive()) {%>                              <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                       <%} else {%> 
-                                                                                       <%=personfieldValuesMapEO.get(epathValue)%>
+																						<%rootNodeValue =  personfieldValuesMapEO.get(epathValue).toString();
+																						if(rootNodeValue!=null && rootNodeValue.length()>20){
+																						rootNodeValue = rootNodeValue.substring(0,20);
+																						%>
+																						<%=rootNodeValue%><a href="javascript:void(0)"  style="color:blue;font-weight:bold;text-decoration:none;" title="<%=fieldConfigMap.getDisplayName()%>:  <%=personfieldValuesMapEO.get(epathValue)%>">... </a>
+																						<%}else{%>
+																						<%=personfieldValuesMapEO.get(epathValue)%> 
+																						<%}%>
                                                                                       <%}%>
                                                                                     <%}%>
 																				 <%}%>
                                                                        <%} else {%> <!-- When preview is found only highlight the differences from the resulted preview and compare with the ones which are involved in preview  -->
                                                                                        <%if (eoHashMapValues.get("hasSensitiveData") != null && !operations.isField_VIP() &&  fieldConfigMap.isSensitive()) {%>                              <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                       <%} else {%> 
-                                                                                        <%=personfieldValuesMapEO.get(epathValue)%>
+																							<%rootNodeValue =  personfieldValuesMapEO.get(epathValue).toString();
+																							if(rootNodeValue!=null && rootNodeValue.length()>20){
+																							rootNodeValue = rootNodeValue.substring(0,20);
+																							%>
+																							<%=rootNodeValue%><a href="javascript:void(0)"  style="color:blue;font-weight:bold;text-decoration:none;" title="<%=fieldConfigMap.getDisplayName()%>:  <%=personfieldValuesMapEO.get(epathValue)%>">... </a>
+																							<%}else{%>
+																							<%=personfieldValuesMapEO.get(epathValue)%> 
+																							<%}%>
                                                                                       <%}%>
 
                                                                        <%}%>
@@ -982,8 +1004,16 @@ boolean isSessionActive = true;
                                                                                     <%if ((countEnt > 0 && resultArrayMapCompare.get(epathValue) != null && resultArrayMapMain.get(epathValue) != null) && !resultArrayMapCompare.get(epathValue).toString().equalsIgnoreCase(resultArrayMapMain.get(epathValue).toString())) {%>
                                                                                      <font class="highlight">
                                                                                         <%if (eoHashMapValues.get("hasSensitiveData") != null && !operations.isField_VIP() &&  fieldConfigMap.isSensitive()) {%>                          <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
-                                                                                        <%} else {%> 
-                                                                                          <%=personfieldValuesMapEO.get(epathValue)%>
+                                                                                        <%} else {%>
+																							<%rootNodeValue =  personfieldValuesMapEO.get(epathValue).toString();
+																							if(rootNodeValue!=null && rootNodeValue.length()>20){
+																							rootNodeValue = rootNodeValue.substring(0,20);
+																							%>
+																							<%=rootNodeValue%><a href="javascript:void(0)"  style="color:blue;font-weight:bold;text-decoration:none;" title="<%=fieldConfigMap.getDisplayName()%>:  <%=personfieldValuesMapEO.get(epathValue)%>">... </a>
+																							<%}else{%>
+																							<%=personfieldValuesMapEO.get(epathValue)%> 
+																							<%}%>
+
                                                                                         <%}%>
                                                                                     </font>
                                                                                     <%} else {%>
@@ -993,13 +1023,27 @@ boolean isSessionActive = true;
 																				          <%if(eoHashMapValues.get("hasSensitiveData") != null && !operations.isField_VIP() &&  fieldConfigMap.isSensitive()){%> 
 																					        <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                           <%}else{%>
-                                                                                           <%=personfieldValuesMapEO.get(epathValue)%>
+																							<%rootNodeValue =  personfieldValuesMapEO.get(epathValue).toString();
+																							if(rootNodeValue!=null &&  rootNodeValue.length()>20){
+																							rootNodeValue = rootNodeValue.substring(0,20);
+																							%>
+																							<%=rootNodeValue%><a href="javascript:void(0)"  style="color:blue;font-weight:bold;text-decoration:none;" title="<%=fieldConfigMap.getDisplayName()%>:  <%=personfieldValuesMapEO.get(epathValue)%>">... </a>
+																							<%}else{%>
+																							<%=personfieldValuesMapEO.get(epathValue)%> 
+																							<%}%>
                                                                                         <%}%>
                                                                                        </font>
                                                                                      <%} else {%> 
                                                                                        <%if (eoHashMapValues.get("hasSensitiveData") != null && !operations.isField_VIP() &&  fieldConfigMap.isSensitive()) {%>                              <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                       <%} else {%> 
-                                                                                       <%=personfieldValuesMapEO.get(epathValue)%>
+																							<%rootNodeValue =  personfieldValuesMapEO.get(epathValue).toString();
+																							if(rootNodeValue!=null && rootNodeValue.length()>20){
+																							rootNodeValue = rootNodeValue.substring(0,20);
+																							%>
+																							<%=rootNodeValue%><a href="javascript:void(0)"  style="color:blue;font-weight:bold;text-decoration:none;" title="<%=fieldConfigMap.getDisplayName()%>:  <%=personfieldValuesMapEO.get(epathValue)%>">... </a>
+																							<%}else{%>
+																							<%=personfieldValuesMapEO.get(epathValue)%> 
+																							<%}%>
                                                                                       <%}%>
                                                                                     <%}%> 
 
@@ -1120,14 +1164,28 @@ ArrayList minorObjectsListPreview =  (eoMultiMergePreview  != null) ?((ArrayList
                                                                 	<%if(fieldConfigMap.isSensitive() && !operations.isField_VIP()){%> 
                                                                		<h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                	<%}else{%>
-                                                               		 <%=minorObjectHashMap.get(epathValue)%>
+																		<%rootNodeValue =  minorObjectHashMap.get(epathValue).toString();
+																		if(rootNodeValue!=null && rootNodeValue.length()>20){
+																		rootNodeValue = rootNodeValue.substring(0,20);
+																		%>
+																		<%=rootNodeValue%><a href="javascript:void(0)"  style="color:blue;font-weight:bold;text-decoration:none;" title="<%=fieldConfigMap.getDisplayName()%>:  <%=minorObjectHashMap.get(epathValue)%>">... </a>
+																		<%}else{%>
+																		<%=minorObjectHashMap.get(epathValue)%> 
+																		<%}%>
                                                                		 <%}%>
                                                               </font>
 												      <%} else {%>
 															 <%if(fieldConfigMap.isSensitive() && !operations.isField_VIP()){%> 
 															   <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
 															 <%}else{%>
-															  <%=minorObjectHashMap.get(epathValue)%>
+																<%rootNodeValue =  minorObjectHashMap.get(epathValue).toString();
+																if(rootNodeValue!=null && rootNodeValue.length()>20){
+																rootNodeValue = rootNodeValue.substring(0,20);
+																%>
+																<%=rootNodeValue%><a href="javascript:void(0)"  style="color:blue;font-weight:bold;text-decoration:none;" title="<%=fieldConfigMap.getDisplayName()%>:  <%=minorObjectHashMap.get(epathValue)%>">... </a>
+																<%}else{%>
+																<%=minorObjectHashMap.get(epathValue)%> 
+																<%}%>
 															 <%}%>
 													  <%}%>
 												<%} else {%>
@@ -1210,7 +1268,17 @@ ArrayList minorObjectsListPreview =  (eoMultiMergePreview  != null) ?((ArrayList
 												<%}%>
 												<table border="0" cellspacing="0" cellpadding="0" >
                                                             <tr>
-                                                                <td class="<%=menuClass%>"><%=personfieldValuesMapEO.get("SYSTEM_CODE")%></td>
+                                                                <td class="<%=menuClass%>">
+																<%rootNodeValue =  personfieldValuesMapEO.get("SYSTEM_CODE").toString();
+																if(rootNodeValue.length()>12){
+																rootNodeValue = rootNodeValue.substring(0,12);
+																%>
+																<%=rootNodeValue%>
+																<a href="javascript:void(0)"  style="color:blue;font-weight:bold;text-decoration:none;" title="<%=personfieldValuesMapEO.get("SYSTEM_CODE")%>">... </a>
+																<%}else{%>
+																<%=personfieldValuesMapEO.get("SYSTEM_CODE")%> 
+																<%}%>
+																</td>
                                                             </tr> 
                                                                  <tr>
                                                                     <td valign="top" class="dupfirst">
@@ -1251,7 +1319,15 @@ ArrayList minorObjectsListPreview =  (eoMultiMergePreview  != null) ?((ArrayList
                                                                                       <%if (eoHashMapValues.get("hasSensitiveData") != null && !operations.isField_VIP() &&  fieldConfigMap.isSensitive()){%>
                                                                                         <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                      <%}else {%>
-                                                                                        <%=personfieldValuesMapEOValues.get(epathValue)%>
+																						<%rootNodeValue =  personfieldValuesMapEOValues.get(epathValue).toString();
+																						if(rootNodeValue!=null && rootNodeValue.length()>20){
+																						rootNodeValue = rootNodeValue.substring(0,20);
+																						%>
+																						<%=rootNodeValue%><a href="javascript:void(0)"  style="color:blue;font-weight:bold;text-decoration:none;" title="<%=fieldConfigMap.getDisplayName()%>:  <%=personfieldValuesMapEOValues.get(epathValue)%>">... </a>
+																						<%}else{%>
+																						<%=personfieldValuesMapEOValues.get(epathValue)%> 
+																						<%}%>
+
                                                                                      <%}%>
                                                                                 <%} else {%>
                                                                                 &nbsp;
@@ -1308,14 +1384,28 @@ HashMap minorObjectHashMap = new HashMap();
                                                                                      <%if (eoHashMapValues.get("hasSensitiveData") != null && !operations.isField_VIP() &&  fieldConfigMap.isSensitive()){%>
                                                                                         <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                      <%}else {%>
-                                                                                        <%=minorObjectHashMap.get(epathValue)%>
+																						<%rootNodeValue =  minorObjectHashMap.get(epathValue).toString();
+																						if(rootNodeValue!=null && rootNodeValue.length()>20){
+																						rootNodeValue = rootNodeValue.substring(0,20);
+																						%>
+																						<%=rootNodeValue%><a href="javascript:void(0)"  style="color:blue;font-weight:bold;text-decoration:none;" title="<%=fieldConfigMap.getDisplayName()%>:  <%=minorObjectHashMap.get(epathValue)%>">... </a>
+																						<%}else{%>
+																						<%=minorObjectHashMap.get(epathValue)%> 
+																						<%}%>
                                                                                      <%}%>
  																				   </b>
 																				  <%}else{%>
                                                                                      <%if (eoHashMapValues.get("hasSensitiveData") != null && !operations.isField_VIP() &&  fieldConfigMap.isSensitive()){%>
                                                                                         <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                      <%}else {%>
-                                                                                        <%=minorObjectHashMap.get(epathValue)%>
+																						<%rootNodeValue =  minorObjectHashMap.get(epathValue).toString();
+																						if(rootNodeValue!=null && rootNodeValue.length()>20){
+																						rootNodeValue = rootNodeValue.substring(0,20);
+																						%>
+																						<%=rootNodeValue%><a href="javascript:void(0)"  style="color:blue;font-weight:bold;text-decoration:none;" title="<%=fieldConfigMap.getDisplayName()%>:  <%=minorObjectHashMap.get(epathValue)%>">... </a>
+																						<%}else{%>
+																						<%=minorObjectHashMap.get(epathValue)%> 
+																						<%}%>
                                                                                      <%}%>
  																				  <%}%>
 
@@ -1417,7 +1507,14 @@ HashMap minorObjectHashMap = new HashMap();
                                                                                   <%if (eoHashMapValues.get("hasSensitiveData") != null && !operations.isField_VIP() &&  fieldConfigMap.isSensitive()){%>
                                                                                         <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                      <%}else {%>
-                                                                                        <%=eoValuesMap.get(epathValue)%>
+																						<%rootNodeValue =  eoValuesMap.get(epathValue).toString();
+																						if(rootNodeValue!=null && rootNodeValue.length()>20){
+																						rootNodeValue = rootNodeValue.substring(0,20);
+																						%>
+																						<%=rootNodeValue%><a href="javascript:void(0)"  style="color:blue;font-weight:bold;text-decoration:none;" title="<%=fieldConfigMap.getDisplayName()%>:  <%=eoValuesMap.get(epathValue)%>">... </a>
+																						<%}else{%>
+																						<%=eoValuesMap.get(epathValue)%> 
+																						<%}%>
                                                                                      <%}%>
                                                                                 <%} else {%>
                                                                                 &nbsp;
@@ -1481,7 +1578,14 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                                                      <%if (eoHashMapValues.get("hasSensitiveData") != null && !operations.isField_VIP() &&  fieldConfigMap.isSensitive()){%>
                                                                                         <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                      <%}else {%>
-                                                                                        <%=minorObjectHashMap.get(epathValue)%>
+																						<%rootNodeValue =  minorObjectHashMap.get(epathValue).toString();
+																						if(rootNodeValue!=null && rootNodeValue.length()>20){
+																						rootNodeValue = rootNodeValue.substring(0,20);
+																						%>
+																						<%=rootNodeValue%><a href="javascript:void(0)"  style="color:blue;font-weight:bold;text-decoration:none;" title="<%=fieldConfigMap.getDisplayName()%>:  <%=minorObjectHashMap.get(epathValue)%>">... </a>
+																						<%}else{%>
+																						<%=minorObjectHashMap.get(epathValue)%> 
+																						<%}%>
                                                                                      <%}%>
  																				  <%}%>
                                                                                 <%} else {%>
@@ -1594,7 +1698,15 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
                                                                                       <%if (eoMultiMergePreview.get("hasSensitiveData") != null && !operations.isField_VIP() &&  fieldConfigMap.isSensitive()){%>
                                                                                         <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                      <%}else {%>
-                                                                                        <%=mergePersonfieldValuesMapEO.get(epathValue)%>
+																						<%rootNodeValue =  mergePersonfieldValuesMapEO.get(epathValue).toString();
+																						if(rootNodeValue!=null && rootNodeValue.length()>20){
+																						rootNodeValue = rootNodeValue.substring(0,20);
+																						%>
+																						<%=rootNodeValue%><a href="javascript:void(0)"  style="color:blue;font-weight:bold;text-decoration:none;" title="<%=fieldConfigMap.getDisplayName()%>:  <%=mergePersonfieldValuesMapEO.get(epathValue)%>">... </a>
+																						<%}else{%>
+																						<%=mergePersonfieldValuesMapEO.get(epathValue)%> 
+																						<%}%>
+
                                                                                      <%}%>
   																			   </span>
                                                                               <%}else{%>
@@ -1663,7 +1775,14 @@ FieldConfig[] fieldConfigArrayMinor = (FieldConfig[]) allNodefieldsMap.get(child
                                                                                      <%if (eoMultiMergePreview.get("hasSensitiveData") != null && !operations.isField_VIP() &&  fieldConfigMap.isSensitive()){%>
                                                                                         <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                      <%}else {%>
-                                                                                        <%=minorObjectHashMap.get(epathValue)%>
+																						<%rootNodeValue =  minorObjectHashMap.get(epathValue).toString();
+																						if(rootNodeValue!=null && rootNodeValue.length()>20){
+																						rootNodeValue = rootNodeValue.substring(0,20);
+																						%>
+																						<%=rootNodeValue%><a href="javascript:void(0)"  style="color:blue;font-weight:bold;text-decoration:none;" title="<%=fieldConfigMap.getDisplayName()%>:  <%=minorObjectHashMap.get(epathValue)%>">... </a>
+																						<%}else{%>
+																						<%=minorObjectHashMap.get(epathValue)%> 
+																						<%}%>
                                                                                      <%}%>
   
                                                                                 <%} else {%>

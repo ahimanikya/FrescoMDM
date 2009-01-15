@@ -173,6 +173,7 @@ String keyParam = new String();
 ArrayList collectedEuidsList = new ArrayList();
 HashMap previewEuidsHashMap  = new HashMap();
 String previousQuery=request.getQueryString(); //added  on 22/08/2008 for incorporate back button
+String rootNodeValue = "";
 %>
 
 <%
@@ -871,9 +872,15 @@ String previousQuery=request.getQueryString(); //added  on 22/08/2008 for incorp
                                                     <tr>
                                                         <td>
 														    <%if (fieldValuesMapSource.get(epathValue) != null) {%>
-
-                                                              <%=fieldValuesMapSource.get(epathValue)%>
-                                                            <%} else {%>
+																<%rootNodeValue =  fieldValuesMapSource.get(epathValue).toString();
+																if(rootNodeValue.length()>20){
+																rootNodeValue = rootNodeValue.substring(0,20);
+																%>
+																<%=rootNodeValue%><a href="javascript:void(0)"  style="color:blue;font-weight:bold;text-decoration:none;" title="<%=fieldConfigMap.getDisplayName()%>:  <%=fieldValuesMapSource.get(epathValue)%>">... </a>
+																<%}else{%>
+																<%=fieldValuesMapSource.get(epathValue)%>
+																<%}%>
+                                                             <%} else {%>
                                                             &nbsp;
                                                             <%}%>
 
@@ -900,15 +907,15 @@ String previousQuery=request.getQueryString(); //added  on 22/08/2008 for incorp
                                             <% 
                                                 if ("R".equalsIgnoreCase(potDupStatus)) {       
                                                  %>
-                                                 <div id="mainEuidContentDiv<%=fieldValuesMapSource.get("EUID")%>:<%=fac%><%=j%>" class="deactivate" style="width:169px;overflow:auto;overflow-y:hidden;overflow-x:visible;width:169px;">
+                                                 <div id="mainEuidContentDiv<%=fieldValuesMapSource.get("EUID")%>:<%=fac%><%=j%>" class="deactivate" style="width:169px;overflow:auto;overflow-y:hidden;overflow-x:hidden;width:169px;">
                                             <%} else if ("A".equalsIgnoreCase(potDupStatus) ){%>        
-                                                 <div id="mainEuidContentDiv<%=fieldValuesMapSource.get("EUID")%>:<%=fac%><%=j%>" class="source" style="width:169px;overflow:auto;overflow-y:hidden;overflow-x:visible;width:169px;">
+                                                 <div id="mainEuidContentDiv<%=fieldValuesMapSource.get("EUID")%>:<%=fac%><%=j%>" class="source" style="width:169px;overflow:auto;overflow-y:hidden;overflow-x:hidden;width:169px;">
                                             <%} else {%>
                                                 <%if(eoMultiMergePreviewHashMap != null && 
 													 eoMultiMergePreviewHashMap.get((String) fieldValuesMapSource.get("EUID")+":"+Integer.toString(fac) ) != null){ %>
-                                                  <div id="mainEuidContentDiv<%=fieldValuesMapSource.get("EUID")%>:<%=fac%><%=j%>" class="blue" style="width:169px;overflow:auto;overflow-y:hidden;overflow-x:visible;width:169px;">
+                                                  <div id="mainEuidContentDiv<%=fieldValuesMapSource.get("EUID")%>:<%=fac%><%=j%>" class="blue" style="width:169px;overflow:auto;overflow-y:hidden;overflow-x:hidden;width:169px;">
 											  <%} else {%>
-                                                  <div id="mainEuidContentDiv<%=fieldValuesMapSource.get("EUID")%>:<%=fac%><%=j%>" class="yellow" style="width:169px;overflow:auto;overflow-y:hidden;overflow-x:visible;width:169px;">
+                                                  <div id="mainEuidContentDiv<%=fieldValuesMapSource.get("EUID")%>:<%=fac%><%=j%>" class="yellow" style="width:169px;overflow:auto;overflow-y:hidden;overflow-x:hidden;width:169px;">
  											  <%}%>
                                             <%}%>        
 
@@ -990,8 +997,15 @@ String previousQuery=request.getQueryString(); //added  on 22/08/2008 for incorp
                                                                                         <font class="highlight">
                                                                                             <%if (eoHashMapValues.get("hasSensitiveData") != null && !operations.isField_VIP() &&  fieldConfigMap.isSensitive()) {%>                     <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                             <%} else {%> 
-                                                                                            <%=fieldValuesMapSource.get(epathValue)%>
-                                                                                            <%}%>
+																								<%rootNodeValue =  fieldValuesMapSource.get(epathValue).toString();
+																								if(rootNodeValue.length()>20){
+																								rootNodeValue = rootNodeValue.substring(0,20);
+																								%>
+																								<%=rootNodeValue%><a href="javascript:void(0)"  style="color:blue;font-weight:bold;text-decoration:none;" title="<%=fieldConfigMap.getDisplayName()%>:  <%=fieldValuesMapSource.get(epathValue)%>">... </a>
+																								<%}else{%>
+																								<%=fieldValuesMapSource.get(epathValue)%> 
+																								<%}%>
+                                                                                              <%}%>
                                                                                         </font>
                                                                                    
                                                                                     <%} else {%>
@@ -1000,21 +1014,42 @@ String previousQuery=request.getQueryString(); //added  on 22/08/2008 for incorp
 																				         <%if(eoHashMapValues.get("hasSensitiveData") != null && !operations.isField_VIP() &&  fieldConfigMap.isSensitive()){%> 
 																					       <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                         <%}else{%>
-                                                                                         <%=fieldValuesMapSource.get(epathValue)%>
-                                                                                       <%}%>
+																							<%rootNodeValue =  fieldValuesMapSource.get(epathValue).toString();
+																							if(rootNodeValue.length()>20){
+																							rootNodeValue = rootNodeValue.substring(0,20);
+																							%>
+																							<%=rootNodeValue%><a href="javascript:void(0)"  style="color:blue;font-weight:bold;text-decoration:none;" title="<%=fieldConfigMap.getDisplayName()%>:  <%=fieldValuesMapSource.get(epathValue)%>">... </a>
+																							<%}else{%>
+																							<%=fieldValuesMapSource.get(epathValue)%> 
+																							<%}%>
+                                                                                        <%}%>
                                                                                      </font>
                                                                                    <%} else {%> 
                                                                                        <%if (!operations.isField_VIP() &&  fieldConfigMap.isSensitive()) {%>                              <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                       <%} else {%> 
-                                                                                       <%=fieldValuesMapSource.get(epathValue)%>
-                                                                                      <%}%>
+																						<%rootNodeValue =  fieldValuesMapSource.get(epathValue).toString();
+																						if(rootNodeValue.length()>20){
+																						rootNodeValue = rootNodeValue.substring(0,20);
+																						%>
+																						<%=rootNodeValue%><a href="javascript:void(0)"  style="color:blue;font-weight:bold;text-decoration:none;" title="<%=fieldConfigMap.getDisplayName()%>:  <%=fieldValuesMapSource.get(epathValue)%>">... </a>
+																						<%}else{%>
+																						<%=fieldValuesMapSource.get(epathValue)%> 
+																						<%}%>
+                                                                                       <%}%>
                                                                                     <%}%>
 																				 <%}%>
                                                                        <%} else {%> <!-- When preview is found only highlight the differences from the resulted preview and compare with the ones which are involved in preview  -->
                                                                                        <%if (!operations.isField_VIP() &&  fieldConfigMap.isSensitive()) {%>                              <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                       <%} else {%> 
-                                                                                        <%=fieldValuesMapSource.get(epathValue)%>
-                                                                                      <%}%>
+																						<%rootNodeValue =  fieldValuesMapSource.get(epathValue).toString();
+																						if(rootNodeValue.length()>20){
+																						rootNodeValue = rootNodeValue.substring(0,20);
+																						%>
+																						<%=rootNodeValue%><a href="javascript:void(0)"  style="color:blue;font-weight:bold;text-decoration:none;" title="<%=fieldConfigMap.getDisplayName()%>:  <%=fieldValuesMapSource.get(epathValue)%>">... </a>
+																						<%}else{%>
+																						<%=fieldValuesMapSource.get(epathValue)%> 
+																						<%}%>
+                                                                                       <%}%>
 
                                                                        <%}%>
                                                                               <%} else {%> <!--if not [preview -->
@@ -1022,8 +1057,15 @@ String previousQuery=request.getQueryString(); //added  on 22/08/2008 for incorp
                                                                                      <font class="highlight">
                                                                                         <%if (!operations.isField_VIP() &&  fieldConfigMap.isSensitive()) {%>                          <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                         <%} else {%> 
-                                                                                          <%=fieldValuesMapSource.get(epathValue)%>
-                                                                                        <%}%>
+																						<%rootNodeValue =  fieldValuesMapSource.get(epathValue).toString();
+																						if(rootNodeValue.length()>20){
+																						rootNodeValue = rootNodeValue.substring(0,20);
+																						%>
+																						<%=rootNodeValue%><a href="javascript:void(0)"  style="color:blue;font-weight:bold;text-decoration:none;" title="<%=fieldConfigMap.getDisplayName()%>:  <%=fieldValuesMapSource.get(epathValue)%>">... </a>
+																						<%}else{%>
+																						<%=fieldValuesMapSource.get(epathValue)%> 
+																						<%}%>
+                                                                                       <%}%>
                                                                                     </font>
                                                                                     <%} else {%>
 
@@ -1032,13 +1074,27 @@ String previousQuery=request.getQueryString(); //added  on 22/08/2008 for incorp
 																				          <%if(!operations.isField_VIP() &&  fieldConfigMap.isSensitive()){%> 
 																					        <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                           <%}else{%>
-                                                                                           <%=fieldValuesMapSource.get(epathValue)%>
+																								<%rootNodeValue =  fieldValuesMapSource.get(epathValue).toString();
+																								if(rootNodeValue.length()>20){
+																								rootNodeValue = rootNodeValue.substring(0,20);
+																								%>
+																								<%=rootNodeValue%><a href="javascript:void(0)"  style="color:blue;font-weight:bold;text-decoration:none;" title="<%=fieldConfigMap.getDisplayName()%>:  <%=fieldValuesMapSource.get(epathValue)%>">... </a>
+																								<%}else{%>
+																								<%=fieldValuesMapSource.get(epathValue)%> 
+																								<%}%> 
                                                                                         <%}%>
                                                                                        </font>
                                                                                      <%} else {%> 
                                                                                        <%if (!operations.isField_VIP() &&  fieldConfigMap.isSensitive()) {%>                              <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
                                                                                       <%} else {%> 
-                                                                                       <%=fieldValuesMapSource.get(epathValue)%>
+																							<%rootNodeValue =  fieldValuesMapSource.get(epathValue).toString();
+																							if(rootNodeValue.length()>20){
+																							rootNodeValue = rootNodeValue.substring(0,20);
+																							%>
+																							<%=rootNodeValue%><a href="javascript:void(0)"  style="color:blue;font-weight:bold;text-decoration:none;" title="<%=fieldConfigMap.getDisplayName()%>:  <%=fieldValuesMapSource.get(epathValue)%>">... </a>
+																							<%}else{%>
+																							<%=fieldValuesMapSource.get(epathValue)%> 
+																							<%}%>
                                                                                       <%}%>
                                                                                     <%}%> 
 
@@ -1155,8 +1211,15 @@ String previousQuery=request.getQueryString(); //added  on 22/08/2008 for incorp
                                                         <td>
 														 <%if(eoMultiMergePreviewHashMap != null && eoMultiMergePreviewHashMap.get(keyParam) != null ){%>
 														     <%if(eoMapPreview.get(epathValue) != null)  {%>
-   														        <%=eoMapPreview.get(epathValue)%>
-														      <%} else {%>
+																<%rootNodeValue =  eoMapPreview.get(epathValue).toString();
+																if(rootNodeValue.length()>20){
+																rootNodeValue = rootNodeValue.substring(0,20);
+																%>
+																<%=rootNodeValue%><a href="javascript:void(0)"  style="color:blue;font-weight:bold;text-decoration:none;"title="<%=fieldConfig.getDisplayName()%>:  <%=eoMapPreview.get(epathValue)%>">... </a>
+																<%}else{%>
+																<%=eoMapPreview.get(epathValue)%>
+																<%}%>
+ 														      <%} else {%>
 														        &nbsp;
 														      <%}%>
 														   <%} else {%>
