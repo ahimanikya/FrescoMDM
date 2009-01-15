@@ -53,6 +53,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
                 <prop key="/m_byrecord_tree_section.htm">manage_byrecord_tree_section</prop>
 				<prop key="/m_byrecord_details_section.htm">manage_byrecord_details_section</prop>
 				<prop key="/m_byrecord_edit_attributes.htm">manage_byrecord_edit_attributes</prop>
+                                
+                <prop key="/m_hierarchy_main.htm">manage_hierarchy_main</prop>
                 
                 
                 
@@ -139,5 +141,9 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
 	<bean name="manage_byrecord_edit_attributes"  
         class="com.sun.mdm.multidomain.presentation.web.ManageByRecordEditAttributesController" />       
+
+    <bean name="manage_hierarchy_main"  
+        class="com.sun.mdm.multidomain.presentation.web.ManageHierarchyMainController" /> 
+
 
 </beans>

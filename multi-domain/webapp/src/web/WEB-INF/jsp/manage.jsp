@@ -24,6 +24,8 @@
     <script type='text/javascript' src='scripts/byrel_api.js'></script>
     <script type='text/javascript' src='scripts/byrecord_api.js'></script>
     <script type='text/javascript' src='scripts/byrecord_tree.js'></script>
+	
+	<script type='text/javascript' src='scripts/m_hierarchy.js'></script>
     <style type="text/css">
         @import "scripts/dijit/themes/mdwm/mdwm.css";
     </style>
@@ -65,7 +67,8 @@
 
 <div id="mainManageContainer" dojoType="dijit.layout.TabContainer" style="width:98%;height:800px;">
             
-    <div id="mHierarchyTab" dojoType="dijit.layout.ContentPane" title="<f:message key='hierarchy_tab_text' />"  selected="true" >
+    <div id="mHierarchyTab" dojoType="dijit.layout.ContentPane" title="<f:message key='hierarchy_tab_text' />"  selected="true" 
+		href="m_hierarchy_main.htm" parseOnLoad="true">
         Under construction!
     </div>
     <div id="mRelatioshipTab" dojoType="dijit.layout.ContentPane" title="<f:message key='relationship_text' />" 
