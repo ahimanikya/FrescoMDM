@@ -191,20 +191,30 @@ function validate_date(field, format) {
     		year = parseInt(elems[0], radix)
     		yearString = elems[0];
     } else {
-  	alert("Date format " + format + " is not supported.");
+		//document.getElementById("validate_date_div").style.visibility="visible";
+		//document.getElementById("validate_date_div").style.display="block";
+		//document.getElementById("validate_date_message_div").innerHTML= date_text+" "+format_text+" "+ format + " "+not_supported;
+  		alert(date_text+" "+format_text+" "+ format + " "+not_supported);
 	field.focus();  // go to current filed
 	return;
     }
 
     // if year, month, or day is not numeric or year is not 4 digits
     if (isNaN(month) || isNaN(day) || isNaN(year) || yearString.length != 4 ) {
-        alert("Please enter a date in " + format + " format.");
+		//document.getElementById("validate_date_div").style.visibility="visible";
+		//document.getElementById("validate_date_div").style.display="block";
+		//document.getElementById("validate_date_message_div").innerHTML= enter_date+" "+format+" "+format_text;
+
+        alert(enter_date+" "+format+" "+format_text);
         field.focus();  // go to current field
         return;
     }
 
     if (month <= 0 || month >= 13) {
-	alert("Invalid month is entered.");
+		//document.getElementById("validate_date_div").style.visibility="visible";
+		//document.getElementById("validate_date_div").style.display="block";
+		//document.getElementById("validate_date_message_div").innerHTML= invalid_month;
+ 	alert(invalid_month);
 	field.focus();  // go to current filed
 	return;
     }
@@ -239,7 +249,10 @@ function validate_date(field, format) {
     }
 
     if (day <= 0 || day > upperDay) { 
-	alert("Invalid day of the month is entered.");
+		//document.getElementById("validate_date_div").style.visibility="visible";
+		//document.getElementById("validate_date_div").style.display="block";
+		//document.getElementById("validate_date_message_div").innerHTML= invalid_day_of_month;
+		alert(invalid_day_of_month);
 	field.focus();  // go to current field
 	return;
     }

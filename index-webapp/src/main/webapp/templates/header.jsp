@@ -46,6 +46,12 @@
 
 
 <script>
+ var enter_date="";
+ var format_text = "";
+ var not_supported = "";
+ var date_text = "";
+ var invalid_day_of_month = "";
+ var invalid_month = "";
  var tabTitles=[];
  var unsavedEditMinorObjectType = '';
  var unsavedRootNodeValues='';
@@ -151,7 +157,15 @@ if(session!=null && session.isNew()) {
 <%if(session.getAttribute("user") == null  ) {%>
    <c:redirect url="login.jsf"/>
 <%}%>
+<table><table><tr><td><script>
+	enter_date ="<%=bundle.getString("enter_date")%>";	
+	format_text="<%=bundle.getString("format")%>";
+	not_supported = "<%=bundle.getString("not_supported")%>";
+    date_text = "<%=bundle.getString("date")%>";
+    invalid_day_of_month = "<%=bundle.getString("invalid_day_of_month")%>";
+    invalid_month = "<%=bundle.getString("invalid_month")%>";
 
+ </script></td></tr></table></table>
 <%
 ConfigManager.init();
 
@@ -568,3 +582,41 @@ makeDraggable("unsavedTopTabDiv");
                 </table> 
                 </form>
             </div> 
+
+	    <div id="validate_date_div" class="confirmPreview" style="top:175px;left:400px;visibility:hidden;display:none;">
+             <form id="activeMerge" name="activeMerge" >
+                 <table cellspacing="0" cellpadding="0" border="0">
+ 					 <tr>
+					     <th title="<%=bundle.getString("move")%>">&nbsp;<h:outputText value="#{msgs.popup_information_text}"/></th> 
+					     <th>
+							<a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('validate_date_div',event)"><h:outputText value="#{msgs.View_MergeTree_close_text}"/></a>
+							<a href="javascript:void(0);" title="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>" onclick="javascript:showExtraDivs('validate_date_div',event)"><img src="images/close.gif" border="0" alt="<h:outputText value="#{msgs.View_MergeTree_close_text}"/>"/></a>
+						</th>
+					  </tr>
+					 <tr><td colspan="2">&nbsp;</td></tr>
+                      <tr>
+					     <td colspan="2" ><b><div id="validate_date_message_div"></div></b></td>
+					 </tr>
+                     <tr><td colspan="2">&nbsp;</td></tr>
+                     <tr id="actions">
+                         <td colspan="2" border="2"  align="right" valign="top" >
+                            <table align="center">
+						      <tr>
+							 <td>&nbsp;</td>
+							 <td>
+                              <a title="<h:outputText value="#{msgs.ok_text_button}"/>"
+                                href="javascript:void(0)" class="button"
+                                onclick="javascript:showExtraDivs('validate_date_div',event);">
+                                <span><h:outputText value="#{msgs.ok_text_button}"/></span>
+                                </a>
+							  </td>
+							 </tr>
+							 </table>
+					     </td>
+                     </tr> 
+                 </table>
+             </form>
+         </div>
+<script>
+  makeDraggable("validate_date_div");
+</script>

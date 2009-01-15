@@ -55,7 +55,7 @@
 <%@ page import="com.sun.mdm.index.edm.presentation.managers.MidmUtilityManager"%>
 
 
- 
+ <%@ page import="com.sun.mdm.index.edm.services.configuration.ConfigManager"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.ViewMergeTreeHandler"%>
 
 <% 
@@ -315,7 +315,11 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 							 //Check numeric values
 							
 							 if (!sourceHandler.checkMasking(attributeValue,fcArray[k].getInputMask()))   {
-                                  valiadtions.put(fcArray[k].getDisplayName(),bundle.getString("lid_format_error_text") + " " +fcArray[k].getInputMask());								  
+								 if(fcArray[k].getValueType()==6){		
+										valiadtions.put(fcArray[k].getDisplayName(),bundle.getString("lid_format_error_text") + " " +ConfigManager.getDateFormat());
+								 }else{
+									  valiadtions.put(fcArray[k].getDisplayName(),bundle.getString("lid_format_error_text") + " " +fcArray[k].getInputMask());
+								 }
 								  isValidationErrorOccured = true;
 							 }
 						 }
@@ -370,7 +374,11 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 							 //Check numeric values
 							
 							 if (!sourceHandler.checkMasking(attributeValue,fcArray[k].getInputMask()))   {
-                                  valiadtions.put(fcArray[k].getDisplayName(),bundle.getString("lid_format_error_text") + " " +fcArray[k].getInputMask());								  
+								 if(fcArray[k].getValueType()==6){		
+										valiadtions.put(fcArray[k].getDisplayName(),bundle.getString("lid_format_error_text") + " " +ConfigManager.getDateFormat());
+								 }else{
+									  valiadtions.put(fcArray[k].getDisplayName(),bundle.getString("lid_format_error_text") + " " +fcArray[k].getInputMask());
+								 }
 								  isValidationErrorOccured = true;
 							 }
 						 }
@@ -1090,7 +1098,11 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 							 //Check numeric values
 							 
 							 if (!sourceHandler.checkMasking(attributeValue,fcArray[k].getInputMask()))   {
-                                  valiadtions.put(fcArray[k].getDisplayName(),bundle.getString("lid_format_error_text") + " " +fcArray[k].getInputMask());								  
+								 if(fcArray[k].getValueType()==6){		
+										valiadtions.put(fcArray[k].getDisplayName(),bundle.getString("lid_format_error_text") + " " +ConfigManager.getDateFormat());
+								 }else{
+									  valiadtions.put(fcArray[k].getDisplayName(),bundle.getString("lid_format_error_text") + " " +fcArray[k].getInputMask());
+								 }
 								  isValidationErrorOccured = true;
 							 }
 						 }
