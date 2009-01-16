@@ -1047,7 +1047,7 @@ int maxMinorObjectsDiff  =   maxMinorObjectsMAX - maxMinorObjectsMinorDB ;
 												 euidValueArray.push('<%=euid%>');
 										</script>
                                  		<% if (countEnt == 0) {%>
-                                        <td><img src='/<%=URI%>/images/spacer.gif' border="0" width="20px"></td>
+                                        <td><img src='/<%=URI%>/images/spacer.gif' border="0" width="40px"></td>
 										<td width="169px" valign="top">
                                           <table cellpadding="0" cellspacing="0">
 										    <tr>

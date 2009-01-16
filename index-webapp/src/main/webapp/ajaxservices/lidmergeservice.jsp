@@ -1762,9 +1762,9 @@ minorObjectHashMapPreview = (HashMap) mergePreviewMinorObjectList.get(ar);
                                                     <td><img src="images/spacer.gif" width="169px" height="1px" border="0"></td>
                                                <% }%>
                                                      <!--Displaying view sources and view history-->
-                                                     <td valign="top">
+                                                     <td valign="top" width="169px">
                                                          <div id="dynamicMainEuidButtonContent<%=countEnt%>">
-                                                                    <table border="0" cellspacing="0" cellpadding="0" border="0">
+                                                                    <table cellspacing="0" cellpadding="0" border="0">
                                                                              <tr> 
                                                                                 <td valign="top">
                                                                                  <%if(operations.isEO_SearchViewSBR()) {%>
@@ -1784,9 +1784,9 @@ minorObjectHashMapPreview = (HashMap) mergePreviewMinorObjectList.get(ar);
 																			String keepLid2 = bundle.getString("source_keep_btn") + " " + localIdDesignation + " 2" ;
 ValueExpression keepLid2ValueExpression = ExpressionFactory.newInstance().createValueExpression(keepLid2, keepLid2.getClass());
 																			%>
-                                                     <td>                                                                <!--Displaying view sources and view history-->
+                                                     <td width="169px" >                                                                <!--Displaying view sources and view history-->
                                                          <div id="previewActionButton">
-                                                                    <table>
+                                                                    <table border="0">
                                                                         <tr>
                                                                             <td>
                                                                                 <form  id="previewlid1Form">
@@ -1821,7 +1821,7 @@ ValueExpression keepLid2ValueExpression = ExpressionFactory.newInstance().create
                                                                 </div>  
                                                          <div id="confirmationButton" style="visibility:hidden">
                                                                 <%if(operations.isSO_Merge()) {%>
-                                                                    <table>
+                                                                    <table border="0">
                                                                         <tr>
                                                                             <td>
                                                                                 <a title='<h:outputText value="#{msgs.source_submenu_merge}" />' class="button" href="javascript:void(0)" onclick="javascript:showLIDDiv('mergeDiv',event)" > 
