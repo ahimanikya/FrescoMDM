@@ -32,3 +32,7 @@
                </div>
     </div>
 </div>
+
+<div id="select_hierarchy" dojoType="dijit.Dialog" title="<f:message key='select_hierarchy_text' />" style="display:none;width:750px;height:500px;padding:0px;"
+        href="m_hierarchy_select_hierarchy.htm" parseOnLoad="true" onLoad="loadSelectHierarchyDomains();">
+</div>

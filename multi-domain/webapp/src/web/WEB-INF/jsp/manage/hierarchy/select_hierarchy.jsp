@@ -1,6 +1,6 @@
 <%-- 
     Document   : select_hierarchy
-    Created on : Nov 10, 2008, 10:10:45 AM
+    Created on : Jan 15, 2008, 10:10:45 AM
     Author     : Narahari
 --%>
 
@@ -13,15 +13,99 @@
 <link rel="stylesheet" type="text/css" href="css/style.css" media="screen"/>
 
 <script type='text/javascript' src='scripts/mdwm.js'></script>
-<script type="text/javascript" src="../scripts/dojo/dojo.js" djConfig="parseOnLoad:true, isDebug: false"></script>                
+<script type="text/javascript" src="scripts/dojo/dojo.js" djConfig="parseOnLoad:true, isDebug: false"></script>                
 <script type="text/javascript">
     dojo.require("dojo.parser");
     dojo.require("dijit.form.DateTextBox");
+	dojo.require("dijit.GenericTitlePane");
     dojo.require("dijit.Dialog");
-    dojo.require("dijit.layout.ContentPane");
 </script>
 
 
+<body class="mdwm">
+   <div class="MainBox">
+   <div style="padding-left:5px;padding-top:5px;padding-right:5px;padding-bottom:5px;">
+    <table border="0" cellspacing="0" cellpadding="0" width="100%">
+	   <tr>
+          <td class="generalTextBold">&nbsp;<f:message key="domain_text" /><f:message key="colon_symbol" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		      <select id="select_hierarchy_domain" name="Domain" title="<f:message key='domain_text'/>" onchange="loadSelectHierarchySearch(this.id)"  style="width:150px"></select>
+	      </td>
+       </tr>
+       <tr><td colspan="2"><img src="images/spacer.gif" height="5" width="1"></td></tr>
+       <tr>
+	      <td class="generalTextBold">&nbsp;<f:message key="hierarchy_tab_text" /><f:message key="colon_symbol" />&nbsp;&nbsp;
+		      <select id="load_select_hierarchies" name="Hierarchy" title="<f:message key='hierarchy_tab_text'/>"  style="width:150px">
+			        <option value="Organization Chart">Organization Chart</option>
+              </select>
+		  </td>
+       </tr>
+	   <tr><td colspan="2"><img src="images/spacer.gif" height="5" width="1"></td></tr>
+	   <tr>
+	     <td>
+		   <div style="border: 1px solid #000000;padding-left:10px;padding-top:5px;padding-right:5px;padding-bottom:5px;">
+		      <table border="0" cellspacing="0" cellpadding="0" width="100%">
+			     <tr><td class="generalTextBold">&nbsp;<f:message key="initial_record_text" /></td></tr>
+				 <tr>
+				   <td class="generalTextBold">
+				    <input type="radio" value="<f:message key='root_node_text' />" title="<f:message key='root_node_text' />" name="Root Node" >Root Node <Br>
+                    <input type="radio" value="<f:message key='Root Node' />" title="<f:message key='Root Node' />" name="Specific Record">Specific Record
+				   </td>
+				 </tr>
+				 <tr><td><img src="images/spacer.gif" height="5" width="1"></td></tr>
+				 <tr>
+	               <td>
+				      <div class="MainBox" style="border: 1px solid #000000;padding-left:5px;padding-top:5px;padding-right:5px;padding-bottom:5px;">
+					  <div dojoType="dijit.GenericTitlePane" title="<f:message key='search_text' />" class="MainBox" jsId="pane1">
+						 <table class="MainBox" border="0" cellspacing="0" cellpadding="0" width="100%">
+						   <tr>
+						      <td>
+							    <div style="padding-left:5px;padding-top:5px;padding-right:5px;padding-bottom:5px;">
+								     <%@ include file="/WEB-INF/jsp/manage/hierarchy/domain_criteria.jsp" %>
+								</div>
+							   </td>
+						   </tr>
+						   <tr><td><img src="images/spacer.gif" height="5" width="1"></td></tr>
+						   <tr>
+						      <td>
+							     <div style="padding-left:5px;padding-top:5px;padding-right:5px;padding-bottom:5px;">
+								     <%@ include file="/WEB-INF/jsp/manage/hierarchy/node_attributes_criteria.jsp" %>
+								 </div>
+							  </td>
+						   </tr>
+						   <tr><td><img src="images/spacer.gif" height="5" width="1"></td></tr>
+						   <tr>
+						      <td align="right">
+							      <input type="button" class="button_spacing" title="<f:message key='search_text' />" value="<f:message key='search_text' />"/> 
+								  <input type="button" class="button_spacing" onclick="document.selectHierarchySearchFieldsForm.reset();" title="<f:message key='clear_text' />" value="<f:message key='clear_text' />" />&nbsp;
+							  </td>
+						   </tr>
+						   <tr><td><img src="images/spacer.gif" height="5" width="1"></td></tr>
+						 </table>
+					  </div>
+					     <table>
+						     <tr><td><img src="images/spacer.gif" height="5" width="1"></td></tr>
+							 <tr><td>search criteria results goes here....</td></tr>
+							 <tr><td><img src="images/spacer.gif" height="5" width="1"></td></tr>
+						 </table>
+					  </div>
+	                </td>
+	            </tr>
+			  </table>
+		   </div>
+	     </td>
+	  </tr>
+	  <tr><td><img src="images/spacer.gif" height="5" width="1"></td></tr>
+      <tr>
+        <td align="right" colspan="2"><input type="button" disabled = "true" title="<f:message key='select_text' />" value="<f:message key='select_text' />" onclick=""/> <input type="button" onclick="hideSelectHierarchyDialog();" title="<f:message key='cancel_text' />" value="<f:message key='cancel_text' />" />
+	    </td>
+	  </tr>
+   </table>
+   </div>
+   </div>
+</body>
+
+
+<!--
          
         <form name="HierarchyMaintain" class="Box">
             <table border="0" width="100%" cellpadding="0" cellspacing="0">
@@ -238,19 +322,4 @@
 
             </table> 
 </form>
-
-
-<script>
-    function showDiv(divId)  {
-    var y;
-    var x;      
-    if(document.getElementById(divId).style.visibility == 'hidden') {
-        document.getElementById(divId).style.visibility = "visible";
-        document.getElementById(divId).style.display = "block";
-    
-} else {
-   document.getElementById(divId).style.visibility = "hidden";
-   document.getElementById(divId).style.display = "none";
-}
-    }
-</script>
+-->

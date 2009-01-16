@@ -55,6 +55,9 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 				<prop key="/m_byrecord_edit_attributes.htm">manage_byrecord_edit_attributes</prop>
                                 
                 <prop key="/m_hierarchy_main.htm">manage_hierarchy_main</prop>
+                <prop key="/m_hierarchy_select_hierarchy.htm">manage_hierarchy_select_hierarchy</prop>
+                <prop key="/m_hierarchy_domain_criteria.htm">manage_hierarchy_domain_criteria</prop>
+                <prop key="/m_hierarchy_node_attributes_criteria.htm">manage_hierarchy_node_attributes_criteria</prop>
                 
                 
                 
@@ -144,6 +147,15 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
     <bean name="manage_hierarchy_main"  
         class="com.sun.mdm.multidomain.presentation.web.ManageHierarchyMainController" /> 
+        
+   <bean name="manage_hierarchy_select_hierarchy"  
+        class="com.sun.mdm.multidomain.presentation.web.ManageHierarchySelectHierarchyController" /> 
+        
+   <bean name="manage_hierarchy_domain_criteria"  
+        class="com.sun.mdm.multidomain.presentation.web.ManageHierarchyDomainCriteriaController" /> 
+      
+   <bean name="manage_hierarchy_node_attributes_criteria"  
+        class="com.sun.mdm.multidomain.presentation.web.ManageHierarchyNodeAttributesCriteriaController" /> 
 
 
 </beans>
