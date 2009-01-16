@@ -439,6 +439,26 @@ if(isSave) {
 	</script>
     <%	if ("success".equalsIgnoreCase(isSuccess))  { %>
 	   <div class="ajaxsuccess">
+          <table>
+				<tr>
+					<td>
+					   <ul>
+ 							<%while (messagesIter.hasNext())   { %>
+									<% FacesMessage facesMessage  = (FacesMessage)messagesIter.next(); %>
+ 									 <li>
+									 <%String message = facesMessage.getSummary().toString().trim();%>
+									 <%if(message!=null && message.equalsIgnoreCase("LID match found")){
+ 										  message = bundle.getString("lid_added_by_another_user")+" "+localIdDesignation+".";
+									   }
+									 %>
+									  <%=message%> 
+									</li>
+ 							<%}%>
+ 						  </ul>
+					<td>
+				<tr>
+			</table>
+    	</div>
     <%}else {%>
          <div class="ajaxalert" id="errormessage22">
      <%}%>
