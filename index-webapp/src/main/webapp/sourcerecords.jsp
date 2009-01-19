@@ -440,8 +440,7 @@ function showExtraTabDivs(divId,thisEvent)  {
                                         <form id="basicViewformData" name="basicViewformData">
                                              <input type="hidden" name="lidmask" value="DDD-DDD-DDDD" />
                                             <table border="0" cellpadding="0" cellspacing="0">
-                                                <tr><td>&nbsp;</td></tr>
-                                                <tr>
+                                                 <tr>
                                                     <td>
                                                         <h:dataTable id="fieldConfigId" var="feildConfig" headerClass="tablehead"  value="#{SourceHandler.viewEditScreenConfigArray}">
                                                             <!--Rendering Non Updateable HTML Text Area-->
@@ -462,14 +461,13 @@ function showExtraTabDivs(divId,thisEvent)  {
                                                                 </h:selectOneMenu>
                                                                     
                                                                 <h:selectOneMenu  
-                                                     rendered="#{feildConfig.name ne 'SystemCode'}">
+                                                                    rendered="#{feildConfig.name ne 'SystemCode'}">
                                                                     <f:selectItem itemLabel="" itemValue="" />
                                                                     <f:selectItems  value="#{feildConfig.selectOptions}" />
                                                                 </h:selectOneMenu>
                                                                     
                                                             </h:column>
-                                                                
-                                                                
+                                                                 
                                                             <h:column rendered="#{feildConfig.guiType eq 'TextBox' && feildConfig.valueType ne 6 }" >
                                                                 <nobr>
                                                                     <h:inputText   required="#{feildConfig.required}" 
@@ -540,11 +538,18 @@ function showExtraTabDivs(divId,thisEvent)  {
 												  <font class="dateFormat">(<%=dateFormat%>)</font>
                                                                 </nobr>
                                                             </h:column>
-                                                                
-                                                            <f:facet name="footer">
-                                                                <h:column>
-																<nobr>
-																<!--  modified  on 24-09-08 to incorparate with ajax call-->
+                                                         </h:dataTable>
+                                                    </td>
+                                                    <td valign="top">
+                                                        <% if ("View/Edit".equalsIgnoreCase((String) session.getAttribute("tabName"))) {%>
+                                                        <h:messages  styleClass="errorMessages"  layout="list" />
+                                                        <%}%>
+                                                    </td>	
+                                                </tr>
+												<tr>
+													<td>
+													  <nobr>
+														<!-- modified  on 24-09-08 to incorparate with ajax call-->
 														<a title="<h:outputText value="#{msgs.patdetails_search_button2}"/>&nbsp; <h:outputText value='#{childNodesName}'/>" href="javascript:void(0);" class="button" 
 														onclick="javascript:if(editMinorObjectType.length<1){
 														unsavedRootNodeValues='';
@@ -556,39 +561,29 @@ function showExtraTabDivs(divId,thisEvent)  {
 														<span id="<h:outputText value='#{childNodesName}'/>buttonspan">
 														<h:outputText value="#{msgs.patdetails_search_button2}" /></span>
 														</a> 
-                                                                                                       
-																	<a title="<h:outputText value="#{msgs.patdetails_search_button1}"/>"  class="button" href="javascript:
-																	if(document.getElementById('erromessage1')!=null){
-																		document.getElementById('erromessage1').innerHTML='';
-																	}
-																	if(document.getElementById('erromessage2')!=null){
-																		document.getElementById('erromessage2').innerHTML='';
-																	}
-																	if(document.getElementById('erromessage3')!=null){
-																		document.getElementById('erromessage3').innerHTML='';
-																	}
-																	if(document.getElementById('erromessage4')!=null){
-																		document.getElementById('erromessage4').innerHTML='';
-																	}
-																	document.getElementById('duplicateIdsDiv').innerHTML='';
-																	document.getElementById('errormessages').innerHTML='';
-																	document.getElementById('lidAlreadyfoundDiv').innerHTML='';
-																	ClearContents('basicViewformData');">
-                                                                        <span><h:outputText value="#{msgs.patdetails_search_button1}"/></span>
-                                                                    </a>
-																	</nobr>
-                                                                </h:column>
-                                                                    
-                                                            </f:facet>
-                                                                
-                                                        </h:dataTable>
-                                                    </td>
-                                                    <td valign="top">
-                                                        <% if ("View/Edit".equalsIgnoreCase((String) session.getAttribute("tabName"))) {%>
-                                                        <h:messages  styleClass="errorMessages"  layout="list" />
-                                                        <%}%>
-                                                    </td>	
-                                                </tr>
+																									   
+														<a title="<h:outputText value="#{msgs.patdetails_search_button1}"/>"  class="button" href="javascript:
+														if(document.getElementById('erromessage1')!=null){
+															document.getElementById('erromessage1').innerHTML='';
+														}
+														if(document.getElementById('erromessage2')!=null){
+															document.getElementById('erromessage2').innerHTML='';
+														}
+														if(document.getElementById('erromessage3')!=null){
+															document.getElementById('erromessage3').innerHTML='';
+														}
+														if(document.getElementById('erromessage4')!=null){
+															document.getElementById('erromessage4').innerHTML='';
+														}
+														document.getElementById('duplicateIdsDiv').innerHTML='';
+														document.getElementById('errormessages').innerHTML='';
+														document.getElementById('lidAlreadyfoundDiv').innerHTML='';
+														ClearContents('basicViewformData');">
+															<span><h:outputText value="#{msgs.patdetails_search_button1}"/></span>
+														</a>
+													  </nobr>                                                              
+ 													</td>
+												</tr>
                                             </table>  
                                         </form>
                                     </div>                                                                 
