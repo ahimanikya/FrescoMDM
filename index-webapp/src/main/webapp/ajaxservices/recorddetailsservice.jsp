@@ -597,31 +597,31 @@ if (results != null)   {
     
 
      <table border="0" cellpadding="0" cellspacing="0"> 
-         <tr>
-             <td width="30%">
+		 <tr>
+			<td>
 			   <% if (operations.isEO_Compare() && results.size() > 1)   {%>
-  
- 					  <a  
-					     href="javascript:ajaxURL('/<%=URI%>/ajaxservices/recorddetailsservice.jsf?collectEuids=true&<%=previousQueryStr%>&fromUrl=recorddetails.jsf','messages','')" 
-						 class="button" 
-						 title="<h:outputText value="#{msgs.dashboard_compare_tab_button}"/>">
-                         <span>
-                              <h:outputText value="#{msgs.dashboard_compare_tab_button}"/>
-                         </span>
-                       </a>                                     
-				 <% } %>
-   		       </td>
-			<td align="right">
-			   <h:outputText value="#{msgs.total_records_text}"/>&nbsp;<%=results.size()%>
+				 <a  
+					 href="javascript:ajaxURL('/<%=URI%>/ajaxservices/recorddetailsservice.jsf?collectEuids=true&<%=previousQueryStr%>&fromUrl=recorddetails.jsf','messages','')" 
+					 class="button" 
+					 title="<h:outputText value="#{msgs.dashboard_compare_tab_button}"/>">
+					 <span>
+						  <h:outputText value="#{msgs.dashboard_compare_tab_button}"/>
+					 </span>
+				 </a>                                     
+			   <% } %>
 			</td>
-			<td >
+            <td style="width:67%;text-align:right">
+                         <h:outputText value="#{msgs.total_records_text}"/>&nbsp;<%=results.size()%>&nbsp;
+			</td>
+			<td><nobr>
 				<% if (results.size() > 0)   {%>
-                    <h:panelGrid rendered="#{Operations.EO_PrintSBR}" >
-                        <a title="<%=print_text%>" class="button" href="javascript:void(0)" onclick="javascript:getRecordDetailsFormValues('advancedformData');openPrintWindow('/<%=URI%>/printservices/recorddetails.jsf?random='+rand+'&'+queryStr)"><span><%=print_text%></span></a>
+					<h:panelGrid rendered="#{Operations.EO_PrintSBR}" >
+						<a title="<%=print_text%>" class="button" href="javascript:void(0)" onclick="javascript:getRecordDetailsFormValues('advancedformData');openPrintWindow('/<%=URI%>/printservices/recorddetails.jsf?random='+rand+'&'+queryStr)"><span><%=print_text%></span></a>
 					</h:panelGrid>             
-				<% } %>
+			    <% } %>
+ 				</nobr>
             </td>
-		 </tr>
+         </tr>
           
          <tr>
          <td colspan="3">

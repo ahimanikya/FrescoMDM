@@ -15,6 +15,8 @@
 <%@ page import="com.sun.mdm.index.edm.services.configuration.FieldConfigGroup"  %>
 
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ScreenObject"  %>
+<%@ page import="com.sun.mdm.index.edm.services.configuration.ConfigManager"  %>
+
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ValidationService"  %>
 <%@ page import="com.sun.mdm.index.edm.services.configuration.ValidationService"  %>
 <%@ page import="com.sun.mdm.index.edm.presentation.handlers.ReportHandler"  %>
@@ -122,12 +124,16 @@ ArrayList fcArrayList  = new ArrayList();
   boolean isValidationErrorOccured = false;
   //HashMap valiadtions = new HashMap();
    ArrayList requiredValuesArray = new ArrayList();
+   
+   HashMap activityReportMap = new HashMap(); // Fix for 6701596 
+   String dateFormat  = ConfigManager.getDateFormat();
+
 
 %>
 
 
 
-<table cellspacing="0" cellpadding="0" class="printresultssearch">
+<table cellspacing="0" cellpadding="0"  class="printresultssearch">
 <tr>
 <td>
  <span><b><%=reportName%></b>&nbsp;-&nbsp;<h:outputText value="#{msgs.SEARCH_CRITERIA}"/>:</span>
@@ -140,7 +146,16 @@ ArrayList fcArrayList  = new ArrayList();
     String attributeValue = (String) request.getParameter(attributeName);
        if ( !("editThisID".equalsIgnoreCase(attributeName)) && 
 			!("random".equalsIgnoreCase(attributeName)) ) {
-            reportHandler.getReportParameters().put(attributeName,attributeValue);
+
+			//reportHandler.getReportParameters().put(attributeName,attributeValue);
+		    // Fix for 6701596 Start
+			if (activityText.equalsIgnoreCase(reportName))  {
+ 		       activityReportMap.put(attributeName,attributeValue);			
+			} else {
+ 		       reportHandler.getReportParameters().put(attributeName,attributeValue);			
+			}
+			// Fix for 6701596 Ends
+			
 			newHashMap.put(attributeName,attributeValue);
  %>
  <% if (attributeValue.length() != 0) { %>
@@ -148,27 +163,25 @@ ArrayList fcArrayList  = new ArrayList();
 <%
       }
    } 
+
 %>
 <%if(reportHandler.getReportParameters().get("selectedSearchType") != null) {%>
   <td>
 	  <span><%=bundle.getString("search_Type")%>:&nbsp;<b><%=reportHandler.getReportParameters().get("selectedSearchType")%></b></span>
   </td>
 <%}%>
-
-<%if(reportHandler.getReportParameters().get("activityType") != null) {%>
+<%if(activityText.equalsIgnoreCase(reportName) && activityReportMap.get("activityType") != null) {%>
   <td>
-	  <span>Activity Type:&nbsp;<b><%=reportHandler.getReportParameters().get("activityType")%></b></span>
+	  <span><%=bundle.getString("activity_type")%>:&nbsp;<b><%=activityReportMap.get("activityType")%></b></span>
   </td>
 <%}%>
 
-
-
+ 
 <%
         ArrayList fgGroups = reportHandler.getSearchScreenFieldGroupArray(reportHandler.getSearchScreenConfigArray());
 
 	 //if Activity report type loop through only once
 	 int fgSize  = (activityText.equalsIgnoreCase(reportName)) ? 1 : fgGroups.size();
-	 
      for (int fg = 0; fg < fgSize; fg++) {
             FieldConfigGroup basicSearchFieldGroup = (FieldConfigGroup) fgGroups.get(fg);
             ArrayList screenConfigArrayLocal = basicSearchFieldGroup.getFieldConfigs();
@@ -176,9 +189,7 @@ ArrayList fcArrayList  = new ArrayList();
  <%
 String strVal = new String();
 
-
-
-  for (int fc = 0 ; fc<screenConfigArrayLocal.size() ; fc++) {
+   for (int fc = 0 ; fc<screenConfigArrayLocal.size() ; fc++) {
 
 	  %>
 	  
@@ -186,7 +197,8 @@ String strVal = new String();
 
 	  <%
      FieldConfig fieldConfig = (FieldConfig) screenConfigArrayLocal.get(fc);
- 	 String   value = (fieldConfig.isRange()) ? (String) newHashMap.get(fieldConfig.getDisplayName()):(String) newHashMap.get(fieldConfig.getName());
+
+ 	 String   value = (String) newHashMap.get(fieldConfig.getName());
 	 %>
 
 	 <%
@@ -202,14 +214,44 @@ String strVal = new String();
     %>
 	  <span><%=fieldConfig.getDisplayName()%>:&nbsp;<b><%=strVal%></b>&nbsp;</span>
        
-   <%  } else {%>
+   <%  } else {
+	   %>
 	  <span><%=fieldConfig.getDisplayName()%>:&nbsp;<b><%=value%></b>&nbsp;</span>
    <% }%>
    <%}%>
    </td>
-  <% }%>
-  <% }%> <!-- FG LOOP-->
+  <%}%>
+  <%}%> <!-- FG LOOP-->
 <tr>
+  <% // Fix for 6701596 Start
+   if (activityText.equalsIgnoreCase(reportName))  {
+       reportHandler.getReportParameters().put("activityType",activityReportMap.get("activityType"));			
+	   if(activityReportMap.get("activityType").toString().equalsIgnoreCase(bundle.getString("WEEKLY_ACTIVITY")) ) {
+          reportHandler.getReportParameters().put("StartDate",activityReportMap.get("StartDate"));			
+	   } else if(activityReportMap.get("activityType").toString().equalsIgnoreCase(bundle.getString("MONTHLY_ACTIVITY")) ) {
+		  
+		  dateFormat = dateFormat.toUpperCase();
+          dateFormat = dateFormat.replace("DD","01");
+          dateFormat = dateFormat.replace("MM",activityReportMap.get("Monthly_Month").toString());
+          dateFormat = dateFormat.replace("YYYY",activityReportMap.get("Monthly_Year").toString());
+
+          String dateField = dateFormat;
+          reportHandler.getReportParameters().put("StartDate",dateField);			
+	   } else if(activityReportMap.get("activityType").toString().equalsIgnoreCase(bundle.getString("YEARLY_ACTIVITY")) ) {
+
+		  dateFormat = dateFormat.toUpperCase();
+          dateFormat = dateFormat.replace("DD","01");
+          dateFormat = dateFormat.replace("MM","01");
+          dateFormat = dateFormat.replace("YYYY",activityReportMap.get("Yearly_year").toString());
+
+          String dateField = dateFormat;
+
+		  reportHandler.getReportParameters().put("StartDate",dateField);			
+	   }
+   }
+   // Fix for 6701596 Ends
+
+%>
 </table>
 
 
@@ -268,7 +310,6 @@ String strVal = new String();
 	    }		
     }
     
-	
 	myColumnDefs.append("[");
     String value = new String();
  	for(int ji=0;ji<keys.size();ji++) {
@@ -287,15 +328,16 @@ String strVal = new String();
        if(ji != keys.size()-1) myColumnDefs.append(",");
 	}
     myColumnDefs.append("]");
-} 
-     %> 
+}%> 
          
 <% 
-String reportType = (String)request.getAttribute("frequency");
+String reportType = (String)request.getParameter("activityType");
+ //activityType
 %>
  
 <table border="0">
- <tr><td style="width:55%" style="text-decoration:underline;">
+ <tr><td>&nbsp;</td></tr>
+ <tr><td  style="text-decoration:none;">
      <b>
      <% if(reportType != null && reportType.equals(bundle.getString("YEARLY_ACTIVITY"))){%>
       <h:outputText value="#{msgs.Summary_Report_year}"/>&nbsp; <%=reportHandler.getActivityReport().getYearValue()%>
@@ -308,8 +350,6 @@ String reportType = (String)request.getAttribute("frequency");
  </tr>
    
  </table>
-
-
 <table class="printresultssummary">
 <%if(results != null) {%>
 <tr>
@@ -329,14 +369,18 @@ String reportType = (String)request.getAttribute("frequency");
 <%}%>
 <tr>
 <td>
+
 <% 
- if(results != null && results.size() > 0 ) {%>
+ if(results != null && results.size() > 0 ) {
+%>
 
 <div id="myMarkedUpContainer<%=divId%>" class="printresults" >
                 	<table id="myTable" border="0">
                   	   <thead>
                           <tr>
-                     	   <% for (int i =0;i< keys.size();i++) { %>
+<% 	
+for (int i =0;i< keys.size();i++) { 
+	%>
                                <th><nobr><%=keys.toArray()[i]%></nobr></th>
                           <%}%>
                          </tr>
@@ -392,8 +436,11 @@ String reportType = (String)request.getAttribute("frequency");
 	  &nbsp;
 	 <img src='/<%=URI%>/images/YUIhead.jpg' border="0" height="13px" width="1px"/>
 	   &nbsp;			   
+	    <% if(results != null && results.size() > 0 ) {%>
+
        <h:outputText value="#{msgs.total_records_text}"/>
  		<%=results.size()%>&nbsp;
+		<%}%>
    </em>
  </td>
 </tr>
