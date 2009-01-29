@@ -68,7 +68,7 @@
 
 <h2>Configuring the EDM Search Pages</h2>
 <p><a name="indexterm-437"></a><a name="indexterm-438"></a><a name="indexterm-439"></a><a name="indexterm-440"></a>The configuration for the search pages that appear on the EDM are configured
-in the Enterprise Data Manager file (<tt>edm.xml</tt>). The <i>eo-search</i> element, which is nested in
+in the <tt>midm.xml</tt>. The <i>eo-search</i> element, which is nested in
 the <i>page-definition</i> element of the <i>gui-definition</i> element, contains all of the configuration
 information for the search pages that appear on the EDM. If you add
 a new query to the Candidate Select file (<tt>query.xml</tt>) and you want to
@@ -90,7 +90,7 @@ you define, and they can be modified as needed.</p>
 <a name="gentextid-5259"></a><h5>To Specify Standard Search Page Properties</h5>
 <ol>
 <li><b>In the Projects window, expand the Configuration node in the Project you want
-to modify, and then double-click edm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+to modify, and then double-click midm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
 <li><b>Scroll to the <i>page-definition</i> element in the <i>gui-definition</i> element.</b></li>
 <li><b>In the <i>eo-search</i> element, modify any of the following elements. Do not modify
 the <i>tab-entrance</i> element.</b>
@@ -128,7 +128,7 @@ local ID and system fields.</p>
 <a name="gentextid-5304"></a><h5>To Define the Search Page</h5>
 <ol>
 <li><b>In the Projects window, expand the Configuration node in the Project you want
-to modify, and then double-click edm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+to modify, and then double-click midm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
 <li><b>Scroll to the <i>page-definition</i> element in the <i>gui-definition</i> element.</b></li>
 <li><b>In the <i>eo-search</i> element, create a <a name="indexterm-445"></a><i>simple-search-page</i> element.</b><p>Make sure the new element falls within the <i>eo-search</i> element, but outside
 any existing <i>simple-search-page</i> elements. For example:</p><pre>&lt;eo-search>
@@ -234,8 +234,8 @@ search option. </p>
 
 
 <div class="indent"><a name="cnfg_index-search-def_r"></a><h3>EDM Search Page Definition Elements</h3>
-<p>The following table lists and describes the elements you can configure in the
-Enterprise Data Manager file (<tt>edm.xml</tt>) to define the search pages on the EDM.</p><table><col width="25.00*"><col width="75.00*"><tr><th align="left" valign="top" scope="column"><p>Element</p></th>
+<p>The following table lists and describes the elements you can configure in 
+<tt>midm.xml</tt> to define the search pages on the EDM.</p><table><col width="25.00*"><col width="75.00*"><tr><th align="left" valign="top" scope="column"><p>Element</p></th>
 <th align="left" valign="top" scope="column"><p>Description</p></th>
 </tr>
 <tr><td align="left" valign="top" scope="row"><p><a name="indexterm-449"></a>screen-title</p></td>
@@ -271,7 +271,7 @@ above the search fields on the Search page.</p></td>
 
 <div class="indent"><a name="cnfg_index-search-fields_r"></a><h3>EDM Search Field Definition Elements</h3>
 <p>The following table lists and describes the elements you can configure in the
-Enterprise Data Manager file (<tt>edm.xml</tt>) to define the fields for each search on
+<tt>midm.xml</tt> to define the fields for each search on
 the EDM.</p><table><col width="25.00*"><col width="75.00*"><tr><th align="left" valign="top" scope="column"><p>Element/Attribute</p></th>
 <th align="left" valign="top" scope="column"><p>Description</p></th>
 </tr>
@@ -321,7 +321,7 @@ search from the EDM. For more information about range searching, see <a href="ht
 
 <div class="indent"><a name="cnfg_index-search-opts_r"></a><h3>EDM Search Option Elements</h3>
 <p>The following table lists and describes the elements you can configure in the
-Enterprise Data Manager file (<tt>edm.xml</tt>) to define the attributes for each search on
+<tt>midm.xml</tt> to define the attributes for each search on
 the EDM, such as which query to use, whether the search results are
 weighted, and so on.</p><table><col width="25*"><col width="75*"><tr><th align="left" valign="top" scope="column"><p>Element</p></th>
 <th align="left" valign="top" scope="column"><p>Description</p></th>
@@ -374,7 +374,7 @@ elements.</p>
 
 
 <div class="indent"><a name="agylk"></a><h3>Modifying a Search Page Definition </h3>
-<p>Once a search page is defined in the Enterprise Data Manager file,
+<p>Once a search page is defined in <tt>midm.xml</tt>,
 you can modify the search page definition. The following properties can be modified: the
 name of the search, the number of fields that appear on each
 row of the search page, and whether the EUID or local ID fields
@@ -383,7 +383,7 @@ are visible.</p>
 <a name="gentextid-5607"></a><h5>To Modify a Search Page Definition</h5>
 <ol>
 <li><b>In the Projects window, expand the Configuration node in the Project you want
-to modify, and then double-click edm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+to modify, and then double-click midm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
 <li><b>Scroll to the <i>page-definition</i> element in the <i>gui-definition</i> element.</b></li>
 <li><b>Scroll to the <i>eo-search</i> element, and then to the <i>simple-search-page</i> element you want
 to modify.</b></li>
@@ -407,7 +407,7 @@ field configuration, see <a href="#cnfg_index-search-fields_r">EDM Search Field 
 <a name="gentextid-5633"></a><h5>To Modify Search Fields</h5>
 <ol>
 <li><b>In the Projects window, expand the Configuration node in the Project you want
-to modify, and then double-click edm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+to modify, and then double-click midm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
 <li><b>Scroll to the <i>page-definition</i> element in the <i>gui-definition</i> element.</b></li>
 <li><b>Scroll to the <i>eo-search</i> element, and then to the <i>simple-search-page</i> element you want
 to modify.</b></li>
@@ -438,7 +438,7 @@ see <a href="#cnfg_index-search-opts_r">EDM Search Option Elements</a>.</p>
 <a name="gentextid-5683"></a><h5>To Modify Search Options</h5>
 <ol>
 <li><b>In the Projects window, expand the Configuration node in the Project you want
-to modify, and then double-click edm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
+to modify, and then double-click midm.xml.</b><p>The file opens in the NetBeans XML editor.</p></li>
 <li><b>Scroll to the <i>page-definition</i> element in the <i>gui-definition</i> element.</b></li>
 <li><b>Scroll to the <i>eo-search</i> element, and then to the <i>simple-search-page</i> element you want
 to modify.</b></li>
