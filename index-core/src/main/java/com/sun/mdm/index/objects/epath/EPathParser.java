@@ -48,7 +48,7 @@ public class EPathParser {
      * character class to allow for ' and - and spaces (space may occur in name "O HARE") 
      * Added Support for the following characters !~(){}+`#$%&:;-/  
      */     
-    private static String w = "[\\!\\~\\(\\)\\{\\}\\+\\`\\#\\$\\%\\&\\:\\;\\-\\/ўџоп'р-іј-§Р-жи-нa-zA-Z_0-9|\\s\\(\\#dot\\)\\(\\#comma\\)]*";
+    private static String w = "[\\!\\~\\(\\)\\{\\}\\+\\`\\#\\$\\%\\&\\:\\;\\-\\/ўџоп\"'р-іј-§Р-жи-нa-zA-Z_0-9|\\s\\(\\#dot\\)\\(\\#comma\\)]*";
 	
     /** pattern to recognize key'ed qualifier */
     private static Pattern keyPattern = Pattern.compile(
