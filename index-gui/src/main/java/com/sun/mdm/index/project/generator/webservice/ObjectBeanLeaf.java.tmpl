@@ -37,7 +37,6 @@ public final class [sbyntag:objname.makeClassName]Bean implements ObjectBean
 
     private [sbyntag:objname.makeClassName]Object m[sbyntag:objname]Object;
     private ClearFieldObject mClearFieldObj;
-    private java.text.SimpleDateFormat mDateFormat = new SimpleDateFormat(MetaDataService.getDateFormat());
 
     /**
      * Creates a new [sbyntag:objname.makeClassName]Bean instance.
@@ -212,6 +211,7 @@ public final class [sbyntag:objname.makeClassName]Bean implements ObjectBean
                 return (String) value;
             }
             else if (type == ObjectField.OBJECTMETA_DATE_TYPE) {               
+			   java.text.SimpleDateFormat mDateFormat = new SimpleDateFormat(MetaDataService.getDateFormat());
                return mDateFormat.format(value);              
             } else {
                 return value.toString();
@@ -226,6 +226,7 @@ public final class [sbyntag:objname.makeClassName]Bean implements ObjectBean
             return  str;
         } else if (type == ObjectField.OBJECTMETA_DATE_TYPE) {
             ParsePosition pos = new ParsePosition(0);
+			 java.text.SimpleDateFormat mDateFormat = new SimpleDateFormat(MetaDataService.getDateFormat());
              Object ret = mDateFormat.parse(str, pos);   
             if ( ret == null) {
                throw new ObjectException("Invalid Date format of" + fieldName + ",value:" + str);
