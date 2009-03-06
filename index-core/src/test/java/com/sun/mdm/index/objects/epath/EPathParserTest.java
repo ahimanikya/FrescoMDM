@@ -147,6 +147,11 @@ public class EPathParserTest extends TestCase {
         assertTrue(e4.ops[1] == EPath.OP_SECONDARY_BY_KEY);        
     }
     
+	public void testKeyForSpecialCharactersFive() throws Exception {
+        EPath e4 = EPathParser.parse("Person.Address[@somekey=where\"doublequote].*");
+        assertTrue(e4.ops[1] == EPath.OP_SECONDARY_BY_KEY);        
+    }
+    
     
     /** test
      * @throws Exception error
