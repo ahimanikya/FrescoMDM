@@ -2,7 +2,7 @@
 <Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="schema/object.xsd">
     <name>UKPatient</name>
     <database>Oracle</database>
-    <dateformat>MM/dd/yyyy</dateformat>
+    <dateformat>dd/MM/yyyy</dateformat>
     <nodes>
         <tag>UKPatient</tag>
         <fields>
