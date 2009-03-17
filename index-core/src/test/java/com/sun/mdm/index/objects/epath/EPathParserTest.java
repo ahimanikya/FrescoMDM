@@ -150,7 +150,55 @@ public class EPathParserTest extends TestCase {
 	public void testKeyForSpecialCharactersFive() throws Exception {
         EPath e4 = EPathParser.parse("Person.Address[@somekey=where\"doublequote].*");
         assertTrue(e4.ops[1] == EPath.OP_SECONDARY_BY_KEY);        
+		assertTrue(e4.filters[1][0].getField().equals("somekey"));
+		assertTrue(e4.filters[1][0].getValue().equals("where\"doublequote"));
+	}
+    
+	public void testKeyForSpecialCharactersSix() throws Exception {
+        EPath e4 = EPathParser.parse("Person.Address[@somekey=where^caret,@anotherkey=where#hash].*");
+        assertTrue(e4.ops[1] == EPath.OP_SECONDARY_BY_KEY);        
+		assertTrue(e4.filters[1][0].getField().equals("somekey"));
+		assertTrue(e4.filters[1][0].getValue().equals("where^caret"));
+		assertTrue(e4.filters[1][1].getField().equals("anotherkey"));
+		assertTrue(e4.filters[1][1].getValue().equals("where#hash"));
     }
+    
+	public void testKeyForSpecialCharactersSeven() throws Exception {
+        EPath e4 = EPathParser.parse("Person.Address[@somekey=Nôrmän Àntpïta Norá Büzzård HELENÉ WEKÂS].*");
+        assertTrue(e4.ops[1] == EPath.OP_SECONDARY_BY_KEY);        
+    }
+    
+	public void testKeyForSpecialCharactersEight() throws Exception {
+        EPath e4 = EPathParser.parse("Person.Address[@somekey=where=equals].*");
+        assertTrue(e4.ops[1] == EPath.OP_SECONDARY_BY_KEY);        
+		assertTrue(e4.filters[1][0].getField().equals("somekey"));
+		assertTrue(e4.filters[1][0].getValue().equals("where=equals"));
+    }
+    
+	public void testKeyForSpecialCharactersNine() throws Exception {
+        EPath e4 = EPathParser.parse("Person.Address[@somekey=where]close square bracket].*");
+        assertTrue(e4.ops[1] == EPath.OP_SECONDARY_BY_KEY);
+		assertTrue(e4.filters[1][0].getField().equals("somekey"));
+		assertTrue(e4.filters[1][0].getValue().equals("where]close square bracket"));
+    }
+
+	public void testKeyForSpecialCharactersTen() throws Exception {
+        EPath e4 = EPathParser.parse("Person.Address[@somekey=where]close square bracket,@anotherkey=yet some more data].*");
+        assertTrue(e4.ops[1] == EPath.OP_SECONDARY_BY_KEY);
+		assertTrue(e4.filters[1][0].getField().equals("somekey"));
+		assertTrue(e4.filters[1][0].getValue().equals("where]close square bracket"));
+		assertTrue(e4.filters[1][1].getField().equals("anotherkey"));
+		assertTrue(e4.filters[1][1].getValue().equals("yet some more data"));
+    }
+
+	public void testKeyForSpecialCharactersEleven() throws Exception {
+        EPath e4 = EPathParser.parse("Person.Address[@somekey=,@anotherkey=].*");
+        assertTrue(e4.ops[1] == EPath.OP_SECONDARY_BY_KEY);
+		assertTrue(e4.filters[1][0].getField().equals("somekey"));
+		assertTrue(e4.filters[1][0].getValue() == null || e4.filters[1][0].getValue().length() == 0);
+		assertTrue(e4.filters[1][1].getField().equals("anotherkey"));
+		assertTrue(e4.filters[1][1].getValue() == null || e4.filters[1][1].getValue().length() == 0);
+	}
     
     
     /** test

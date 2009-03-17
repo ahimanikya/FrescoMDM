@@ -48,17 +48,20 @@ public class EPathParser {
      * character class to allow for ' and - and spaces (space may occur in name "O HARE") 
      * Added Support for the following characters !~(){}+`#$%&:;-/  
      */     
-    private static String w = "[\\!\\~\\(\\)\\{\\}\\+\\`\\#\\$\\%\\&\\:\\;\\-\\/ўџоп\"'р-іј-§Р-жи-нa-zA-Z_0-9|\\s\\(\\#dot\\)\\(\\#comma\\)]*";
+    //private static String w = "[\\!\\~\\(\\)\\{\\}\\+\\`\\#\\$\\%\\&\\:\\;\\-\\/ўџоп\"'р-іј-§Р-жи-нa-zA-Z_0-9|\\s\\(\\#dot\\)\\(\\#comma\\)]*";
+    private static String w = "[^.,=\\]]*";
+	private static String fieldNameRegex = "[^=]*";
+	private static String fieldValueRegex = "[^,]*";
 	
     /** pattern to recognize key'ed qualifier */
     private static Pattern keyPattern = Pattern.compile(
-        "\\[\\s*(\\@" + w + "+\\s*\\=(\\s*" + w + "\\#*)?)(,\\s*\\@" + w 
-            + "\\s*\\=(\\s*" + w + "\\#*)?)*\\s*\\]");
+        "\\[\\s*(\\@" + fieldNameRegex + "+\\s*\\=(\\s*" + fieldValueRegex + "\\#*)?)(,\\s*\\@" + fieldNameRegex 
+            + "\\s*\\=(\\s*" + fieldValueRegex + "\\#*)?)*\\s*\\]");
 
     /** pattern to recognize filter qualifier */
     private static Pattern filterPattern = Pattern.compile(
-        "\\[\\s*(" + w + "+\\s*\\=(\\s*" + w + "\\#*)?)(,\\s*" + w 
-            + "\\s*\\=(\\s*" + w + "\\#*)?)*\\s*\\]");
+        "\\[\\s*(" + fieldNameRegex + "+\\s*\\=(\\s*" + fieldValueRegex + "\\#*)?)(,\\s*" + fieldNameRegex 
+            + "\\s*\\=(\\s*" + fieldValueRegex + "\\#*)?)*\\s*\\]");
 
     private transient static final Localizer mLocalizer = Localizer.get();
     
@@ -306,26 +309,32 @@ public class EPathParser {
 
         for (int i = 0; i < len; i++) {
             String filter = tok1.nextToken();
-            StringTokenizer tok2 = new StringTokenizer(filter, "=");
+			// Don't use StringTokenizer, because we only want the first '='
+            //StringTokenizer tok2 = new StringTokenizer(filter, "=");
+			int iPos = filter.indexOf("=");
 
             // now accepting empty RHS, so ignore this
-            if (tok2.countTokens() < 1) {
+            //if (tok2.countTokens() < 1) {
+            if (iPos <= 0) {
                 throw new IllegalArgumentException(mLocalizer.t("OBJ576: Could not " + 
                                              "parse filters: {0}. This is an " + 
                                              "invalid filter parameter: {1}", 
                                              s, filter));
             }
             // see if there is a @ in the name, remove it if there is
-            String name = tok2.nextToken();
+            //String name = tok2.nextToken();
+            String name = filter.substring(0,iPos);
 
             if (name.charAt(0) == '@') {
-                name = name.substring(1, name.length());
+                name = name.substring(1);
             }
 
             name.trim();
             String value = null;
-            if (tok2.hasMoreTokens()) {
-                value = tok2.nextToken();
+            //if (tok2.hasMoreTokens()) {
+            if (iPos+1 < filter.length()) {
+                //value = tok2.nextToken();
+                value = filter.substring(iPos+1);
                 value.trim();
             }
             filters[i] = new Filter(name, value);

@@ -85,13 +85,13 @@ public class TransactionUtil extends ScreenUtil {
                 ObjectField.OBJECTMETA_STRING_TYPE, true, searchFieldList);
         }
         if (addLIDSearchField == true) {
-            addSearchField(nodeConfigObj.getName(), FIELD_NAME_LID, localIdDesignation,
-                FieldConfig.GUI_TYPE_TEXTBOX, "", DEFAULT_FIELD_LENGTH, 
-                null, ObjectField.OBJECTMETA_STRING_TYPE, false, searchFieldList);
             addSearchField(nodeConfigObj.getName(), FIELD_NAME_SYSTEM, SYSTEM,
                 FieldConfig.GUI_TYPE_MENULIST, ValidationService.CONFIG_MODULE_SYSTEM, 
                 DEFAULT_FIELD_LENGTH, null, ObjectField.OBJECTMETA_STRING_TYPE, 
                 false, searchFieldList);
+            addSearchField(nodeConfigObj.getName(), FIELD_NAME_LID, localIdDesignation,
+                FieldConfig.GUI_TYPE_TEXTBOX, "", DEFAULT_FIELD_LENGTH, 
+                null, ObjectField.OBJECTMETA_STRING_TYPE, false, searchFieldList);
         }
         
         addSearchField(nodeConfigObj.getName(), FIELD_NAME_START_DATE, 
