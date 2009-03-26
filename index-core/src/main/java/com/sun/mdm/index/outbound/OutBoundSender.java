@@ -249,6 +249,13 @@ public class OutBoundSender {
                 mTopicSession.close();
                 mTopicSession = null;
             }
+			if (mTopicConnection != null) {
+				mTopicConnection.close();
+				mTopicConnection = null;
+			}
+			if (mLogger.isLoggable(Level.FINE)) {
+				mLogger.fine("Topic publishing resources released");
+			}
             mIsSessionReady = false;
         } catch (JMSException e) {
             throw new OutBoundException(mLocalizer.t("OUT510: JMS operations failed: {0}", e));
