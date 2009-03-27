@@ -1109,6 +1109,10 @@ public class ScreenConfiguration {
      */   
     public boolean checkMasking(String thisValue, String masking)  {
         Character c;
+		if (masking == null || masking.length() == 0) {
+			// no masking
+			return true;
+		}
         if ((thisValue != null && thisValue.trim().length() > 0 ) &&  (masking.length() != thisValue.length()) ) { 
 			return false; //check length
 		}
