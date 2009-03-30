@@ -633,8 +633,10 @@ public class MySQLAdapter extends DBAdapter {
             throws OPSException {
 
         Calendar cal = Calendar.getInstance();
-        char decSep = new DecimalFormatSymbols().getDecimalSeparator();
-        String pattern = "yyyy-MM-dd HH:mm:ss" + decSep + "SSS";
+		// Don't use the decimal separator, because the SQL code is explicitly looking for a dot.
+        //char decSep = new DecimalFormatSymbols().getDecimalSeparator();
+        //String pattern = "yyyy-MM-dd HH:mm:ss" + decSep + "SSS";
+        String pattern = "yyyy-MM-dd HH:mm:ss.SSS";
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
 
         // executes insert SQL statement
