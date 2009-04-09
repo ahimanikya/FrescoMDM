@@ -57,23 +57,25 @@ public abstract class DBAdapter {
      */
     public static DBAdapter getDBAdapterInstance() throws OPSException {
         if (mDBAdapterRef == null) {
-            // determine and set the database type
-            if (mDatabaseType == null) {
-                mDatabaseType = ObjectFactory.getDatabase();
+			synchronized(DBAdapter.class) {
+				// determine and set the database type
+				if (mDatabaseType == null) {
+					mDatabaseType = ObjectFactory.getDatabase();
 
-                if (mDatabaseType.compareToIgnoreCase(ORACLE) == 0) {
-                    mDBAdapterRef = OracleAdapter.getInstance();
-                } else if (mDatabaseType.compareToIgnoreCase(SQLSERVER) == 0) {
-                    mDBAdapterRef = SQLServerAdapter.getInstance();
-                } else if (mDatabaseType.compareToIgnoreCase(MYSQL) == 0) {
-                    mDBAdapterRef = MySQLAdapter.getInstance();
-                } else {    // TODO: Add support for new database vendors as necessary
+					if (mDatabaseType.compareToIgnoreCase(ORACLE) == 0) {
+						mDBAdapterRef = OracleAdapter.getInstance();
+					} else if (mDatabaseType.compareToIgnoreCase(SQLSERVER) == 0) {
+						mDBAdapterRef = SQLServerAdapter.getInstance();
+					} else if (mDatabaseType.compareToIgnoreCase(MYSQL) == 0) {
+						mDBAdapterRef = MySQLAdapter.getInstance();
+					} else {    // TODO: Add support for new database vendors as necessary
 
-                    throw new OPSException(mLocalizer.t("OPS500: Could not retrieve " +
-                            "a database adapter instance.  This is an " +
-                            "unsupported database type: {0}", mDatabaseType));
-                }
-            }
+						throw new OPSException(mLocalizer.t("OPS500: Could not retrieve " +
+								"a database adapter instance.  This is an " +
+								"unsupported database type: {0}", mDatabaseType));
+					}
+				}
+			}
         }
         return mDBAdapterRef;
     }
