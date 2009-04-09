@@ -255,9 +255,13 @@ public class SbmeStandardizerAdapter
             throw new StandardizationException(
                 "Failed to initialize standardizer adapter, standardization engine reports an error: " 
                     + ex.getMessage(), ex);                                    
-*/        } catch (Exception ex) {
+*/
+          } catch (StandardizationException ex) {
             throw new StandardizationException(mLocalizer.t("MAT537: Failed to " + 
-                                        "initialize the standardizer adapter: {0}", ex));
+                                        "initialize the standardizer adapter: {0}", ex), ex);
+          } catch (PhoneticEncoderException ex) {
+            throw new StandardizationException(mLocalizer.t("MAT554: Phonetic encoder exception " + 
+                                        "when initializing the standardizer adapter: {0}", ex), ex);
         }
     }
 

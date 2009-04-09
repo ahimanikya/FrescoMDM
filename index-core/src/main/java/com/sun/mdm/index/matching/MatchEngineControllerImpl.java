@@ -328,18 +328,22 @@ public class MatchEngineControllerImpl
                 mLogger.fine("No applicable block found " + ex.getMessage());
             }
         } catch (com.sun.mdm.index.query.QMException qex) {
-            throw new MatchingException(mLocalizer.t("MAT511: QueryManager execution failed: {0}", qex));
+            throw new MatchingException(mLocalizer.t("MAT511: QueryManager execution failed: {0}", qex), qex);
         } catch (UserException mex) {
         	throw mex;
-        } catch (Exception e) {
-            throw new MatchingException(mLocalizer.t("MAT503: Find match encountered an exception: {0}", e));
+        } catch (ConfigurationException cex) {
+        	throw new MatchingException(mLocalizer.t("MAT503: Find match encountered an exception: {0}", cex),cex);
+        } catch (QueryBuilderException qbex) {
+        	throw new MatchingException(mLocalizer.t("MAT555: Find match encountered an exception: {0}", qbex),qbex);
+        //} catch (Exception e) {
+            //throw new MatchingException(mLocalizer.t("MAT503: Find match encountered an exception: {0}", e));
         } finally {
         	try {
                     if (block != null) {
                         block.close();
                     }
         	} catch (QMException ex) {
-        		throw new MatchingException(mLocalizer.t("MAT504: Could not close query result block: {0}", ex));
+        		throw new MatchingException(mLocalizer.t("MAT504: Could not close query result block: {0}", ex), ex);
         	}
         }
         

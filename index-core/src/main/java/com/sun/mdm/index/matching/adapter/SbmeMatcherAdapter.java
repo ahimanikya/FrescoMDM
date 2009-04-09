@@ -26,6 +26,7 @@ import com.sun.mdm.index.objects.SystemObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.text.ParseException;
+import com.sun.mdm.index.configurator.ConfigurationException;
 import com.sun.mdm.index.matching.MatchingException;
 import com.sun.mdm.index.matching.MatchEngineConfiguration;
 import com.sun.mdm.index.matching.ScoreElement;
@@ -296,10 +297,16 @@ public class SbmeMatcherAdapter
             matchEngine.upLoadConfigFile(domain);
         } catch (MatcherException ex) {
             throw new MatchingException(mLocalizer.t("MAT525: Failed to initialize the " + 
-                                        "SBME match adapter: {0}", ex));
-        } catch (Exception ex) {
-            throw new MatchingException(mLocalizer.t("MAT526: Failed to initialize the " + 
-                                        "SBME match adapter: {0}", ex));
+                                        "SBME match adapter: {0}", ex), ex);
+        } catch (ConfigurationException ex) {
+            throw new MatchingException(mLocalizer.t("MAT526: Configuration exception when initializing the " + 
+                                        "SBME match adapter: {0}", ex), ex);
+        } catch (java.lang.InstantiationException ex) {
+            throw new MatchingException(mLocalizer.t("MAT552: Instantiation exception when initializing the " + 
+                                        "SBME match adapter: {0}", ex), ex);
+        } catch (java.io.IOException ex) {
+            throw new MatchingException(mLocalizer.t("MAT553: IO exception when initializing the " + 
+                                        "SBME match adapter: {0}", ex), ex);
         }
     }
 

@@ -106,9 +106,18 @@ public class TransactionMgrImpl implements TransactionMgr {
             mTransactionObjectDB = new TransactionObjectDB();
             mMergeObjectDB = new MergeObjectDB();
             mLockManager = new LockManager();
-        } catch (Exception ex) {
+        } catch (OPSException ex) {
             throw new OPSException(mLocalizer.t("OPS640: Could not initialize " + 
-                                            "TransactionMgrImpl: {0}", ex));
+                                            "TransactionMgrImpl: {0}", ex), ex);
+        } catch (ClassNotFoundException ex) {
+            throw new OPSException(mLocalizer.t("OPS716: Could not initialize " + 
+                                            "TransactionMgrImpl: {0}", ex), ex);
+        } catch (InstantiationException ex) {
+            throw new OPSException(mLocalizer.t("OPS717: Could not initialize " + 
+                                            "TransactionMgrImpl: {0}", ex), ex);
+        } catch (IllegalAccessException ex) {
+            throw new OPSException(mLocalizer.t("OPS718: Could not initialize " + 
+                                            "TransactionMgrImpl: {0}", ex), ex);
         }
     } 
    
