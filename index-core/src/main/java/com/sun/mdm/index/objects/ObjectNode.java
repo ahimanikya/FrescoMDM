@@ -2183,9 +2183,13 @@ public class ObjectNode implements Externalizable {
     * @return boolean
     */
    public boolean equals(Object node) {
-       try{
+   	
+       if(this == node) return true;
+       if((node == null) || (node.getClass() != this.getClass())) return false;
+       	
+       try {
            return equals((ObjectNode)node);
-       }catch (ObjectException e){ 
+       } catch (ObjectException e){ 
            mLogger.warn(mLocalizer.x("OBJ004: General error in invoking the equals method: {0}", e.getMessage()));
            return false;
        }
