@@ -231,7 +231,8 @@ public class DuplicateReportHandler    {
                             epathValue = screenObject.getRootObj().getName() + "." + fieldConfig.getFullFieldName();
                         }
 
-                        if (EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())!=null && fieldConfig.isUpdateable()) {
+                        //if (EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())!=null && fieldConfig.isUpdateable()) {
+                        if (EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())!=null) {
                             if (fieldConfig.getValueType() == 6) {
                                 newValuesMap.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
                                 //euid1Map.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
@@ -291,7 +292,7 @@ public class DuplicateReportHandler    {
                             epathValue = screenObject.getRootObj().getName() + "." + fieldConfig.getFullFieldName();
                         }
 
-                        if (fieldConfig.isUpdateable()) {
+                        //if (fieldConfig.isUpdateable()) {
                             if (fieldConfig.getValueType() == 6) {
                                 newValuesMap.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
                                 //euid2Map.put(fieldConfig.getFullFieldName(), simpleDateFormatFields.format(EPathAPI.getFieldValue(epathValue, eo.getSBR().getObject())));
@@ -331,7 +332,7 @@ public class DuplicateReportHandler    {
                                     }
                                 }
                             }
-                        }
+                        //}
                     }
                 }
             }
