@@ -425,12 +425,34 @@ import java.util.Date;
             + "from \n" 
             + "    sbyn_transaction \n" 
             + "where \n" 
-            + "    timestamp >= to_timestamp(?, 'YYYY-MM-DD HH24.MI.SSXFF') and \n" 
-            + "    (sbyn_transaction.euid = ? or sbyn_transaction.euid2 = ?) \n" 
+            + "    transactionnumber in (select transactionnumber from sbyn_transaction\n"
+			+ "        where euid = ? and timestamp >= to_timestamp(?, 'YYYY-MM-DD HH24.MI.SSXFF') )\n" 
+			+ "or \n"
+            + "    transactionnumber in (select transactionnumber from sbyn_transaction\n"
+			+ "        where euid2 = ? and timestamp >= to_timestamp(?, 'YYYY-MM-DD HH24.MI.SSXFF') )\n" 
             + "order by \n" 
             + "    timestamp, transactionnumber \n");
     }
-                
+
+    /** Specify parameters for the recovery SQL statement.
+     *
+	 * @param   euid EUID for recorvery
+	 * @param   fromTime Starting date for recovery
+     * @return  ArrayList of String parameters.
+     */
+    public ArrayList<String> getTransObjForRecoveryParameters(String euid, Date fromTime) {
+		ArrayList<String> params = new ArrayList<String>();
+        String pattern = "yyyy-MM-dd HH:mm:ss.SSS";
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+        String ts = sdf.format(fromTime);
+
+		params.add(euid);
+		params.add(ts);
+		params.add(euid);
+		params.add(ts);
+		return params;
+	}
+	
     /** Find the next Transaction Object for an EUID.
      *
      * @return  Select SQL statement for TransactionObjectDB.

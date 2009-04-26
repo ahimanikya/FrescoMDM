@@ -419,12 +419,34 @@ public class MySQLAdapter extends DBAdapter {
                 "FROM \n" + 
                 "    SBYN_TRANSACTION \n" + 
                 "WHERE \n" + 
-                "    TIMESTAMP >= ? AND \n" +
-                "    (SBYN_TRANSACTION.EUID = ? OR SBYN_TRANSACTION.EUID2 = ?) \n" + 
+                "    TRANSACTIONNUMBER in (select TRANSACTIONNUMBER from SBYN_TRANSACTION\n" +
+			    "        where EUID = ? and TIMESTAMP >= ? )\n" +
+			    "or \n" +
+                "    TRANSACTIONNUMBER in (select TRANSACTIONNUMBER from SBYN_TRANSACTION\n" +
+			    "        where EUID2 = ? and TIMESTAMP >= ? )\n" +
                 "ORDER BY \n" + 
                 "    TIMESTAMP, TRANSACTIONNUMBER \n");
     }
 
+	    /** Specify parameters for the recovery SQL statement.
+     *
+	 * @param   euid EUID for recorvery
+	 * @param   fromTime Starting date for recovery
+     * @return  ArrayList of String parameters.
+     */
+    public ArrayList<String> getTransObjForRecoveryParameters(String euid, Date fromTime) {
+		ArrayList<String> params = new ArrayList<String>();
+        String pattern = "yyyy-MM-dd HH:mm:ss.SSS";
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+        String ts = sdf.format(fromTime);
+
+		params.add(euid);
+		params.add(ts);
+		params.add(euid);
+		params.add(ts);
+		return params;
+	}
+	
     /** Find the next Transaction Object for an EUID.
      *
      * @return  Select SQL statement for TransactionObjectDB.

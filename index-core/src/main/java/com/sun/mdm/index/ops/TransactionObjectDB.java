@@ -859,26 +859,16 @@ public final class TransactionObjectDB extends ObjectPersistenceService {
         PreparedStatement stmt = null;
         ResultSet rSet = null;
         try {
+		    ArrayList<String> params = DBAdapter.getDBAdapterInstance().getTransObjForRecoveryParameters(euid, beginTS);
             if (mLogger.isLoggable(Level.FINE)) {
-                ArrayList params = new ArrayList();
-                params.add(beginTS);
-                params.add(euid);
-                params.add(euid);
                 String sql = sql2str(mFindByEUID5, params);
                 mLogger.fine("Query String for findTransactionObjectForRecovery(): " + sql);
             }
 
             stmt = getStatement(mFindByEUID5, conn);
-            char decSep = new DecimalFormatSymbols().getDecimalSeparator();
-            String pattern = "yyyy-MM-dd HH:mm:ss" + decSep + "SSS";
-            SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-            String ts = sdf.format(beginTS);
-
-            stmt.setString(1, ts);
-
-            //stmt.setString(1,beginTS.toString());
-            setParam(stmt, 2, "String", euid);
-            setParam(stmt, 3, "String", euid);
+			for (int i=0; i < params.size(); i++) {
+			    setParam(stmt, i+1, "String", params.get(i));
+			}
             rSet = stmt.executeQuery();
 
             if (null != rSet) {

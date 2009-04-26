@@ -29,6 +29,7 @@ import com.sun.mdm.index.util.Localizer;
 
 import java.sql.PreparedStatement;
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -162,6 +163,14 @@ public abstract class DBAdapter {
      * @return  Select SQL statement for TransactionObjectDB.
      */
     abstract String getTransObjForRecoveryStmt();
+
+    /** Specify parameters for the recovery SQL statement.
+     *
+	 * @param   euid EUID for recorvery
+	 * @param   fromTime Starting date for recovery
+     * @return  ArrayList of String parameters.
+     */
+    abstract ArrayList<String> getTransObjForRecoveryParameters(String euid, Date fromTime);
 
     /** Find the next Transaction Object for an EUID.
      *
