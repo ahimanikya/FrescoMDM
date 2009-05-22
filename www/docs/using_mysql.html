@@ -239,5 +239,40 @@ index application.
 </li>
 </ol>
 </div>
+<h1>Using MySQL With the Initial Bulk Match and Load Tool</h1>
+<p>The configuration of the IBML is the same for all database platforms with the exception of the cluster
+synchronizer database. The cluster synchronizer database is used to coordinate the activities of all IBML
+Tools processing data. The configuration of this section must be identical for all
+processors. </p>
+<br>
+<p>The following table lists the cluster synchronizer database properties and their required
+values for using MySQL.</p>
+<br>
+<table><col width="25%"><col width="75%">
+<tr>
+<th align="left" valign="top" scope="column"><p>Property Name</p></th>
+<th align="left" valign="top" scope="column"><p>Description</p></th>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>cluster.database</p></td>
+<td align="left" valign="top" scope="row"><p>The database platform on which the cluster synchronizer database is installed. For MySQL, enter <code class="small"><b>MySQL</b></code>.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>cluster.database.url</p></td>
+<td align="left" valign="top" scope="row"><p>The URL for the cluster synchronizer database. For MySQL, the format of the URL is:</p>
+<p><code class="small">jdbc:mysql://<i>server</i>:<i>port</i>:<i>database_name</i></code>.</p>
+</td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>cluster.database.user</p></td>
+<td align="left" valign="top" scope="row"><p>The user ID to log in
+to the cluster synchronizer database.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>cluster.database.password</p></td>
+<td align="left" valign="top" scope="row"><p>The password to log in to the cluster
+synchronizer database.</p></td>
+</tr>
+<tr><td align="left" valign="top" scope="row"><p>cluster.database.jdbc.driver</p></td>
+<td align="left" valign="top" scope="row"><p>The name of the database driver class.</p></td>
+</tr>
+</table>
+</div>
 </div>
 </body></html>
