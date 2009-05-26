@@ -108,6 +108,13 @@ public class ObjectNodeXMLTest extends TestCase {
 	  assertTrue(iPos > 0);
           iPos = xml.indexOf("PhoneType=\"W");
 	  assertTrue(iPos > 0);
+	  
+	  // Now test that removed child objects don't appear in the XML
+	  personObject.deleteChild(phoneObject1);
+	  xml = onx.constructXml(SystemObject.ACTION_UPDATE, "TRANSID002", eo);
+          System.out.println(xml);
+          iPos = xml.indexOf("PhoneType=\"H");
+	  assertTrue(iPos < 0);
     }
     
     /** Main entry point

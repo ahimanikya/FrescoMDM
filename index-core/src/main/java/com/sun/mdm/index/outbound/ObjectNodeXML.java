@@ -38,6 +38,11 @@ import java.util.Iterator;
 
 import java.text.SimpleDateFormat;
 
+import javax.naming.InitialContext;
+import java.util.logging.Level;
+import net.java.hulp.i18n.Logger;
+import javax.naming.NamingException;
+
 
 /**
  * Formats ObjectNode to an xml string
@@ -46,7 +51,7 @@ import java.text.SimpleDateFormat;
 public class ObjectNodeXML {
 
     private transient final Localizer mLocalizer = Localizer.get();
-    
+
     private final String LINEFEED
              = new String(System.getProperty("line.separator"));
     private final String XML_HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
@@ -156,7 +161,7 @@ public class ObjectNodeXML {
         ArrayList childNodes = sbr.pGetChildren();
         for (int i = 0; (childNodes != null) && (i < childNodes.size()); i++) {
             ObjectNode child = (ObjectNode) childNodes.get(i);
-            if (!child.pGetTag().equals("SBROverWrite")) {
+            if (!child.pGetTag().equals("SBROverWrite") && !child.isRemoved()) {
                 sb.append(nodeToXml(child, myPath));
             }
         }
@@ -328,7 +333,9 @@ public class ObjectNodeXML {
             childNodes = node.pGetChildren(childTypes[i]);
             for (int j = 0; childNodes != null && j < childNodes.size(); j++) {
                 ObjectNode child = (ObjectNode) childNodes.get(j);
-                sb.append(nodeToXml(child, myPath));
+				if (!child.isRemoved()) {
+					sb.append(nodeToXml(child, myPath));
+				}
             }
         }
         sb.append(endTag(myName));
