@@ -156,7 +156,7 @@ public class AuditLogUtil extends ScreenUtil {
             "Create User", FieldConfig.GUI_TYPE_TEXTBOX, DEFAULT_FIELD_LENGTH,
             ObjectField.OBJECTMETA_STRING_TYPE, false, resultFieldList);
         addSearchResultField(nodeConfigObj.getName(), FIELD_NAME_CREATE_DATE,
-            "Create Date", FieldConfig.GUI_TYPE_TEXTBOX, DEFAULT_FIELD_LENGTH,
+            "Create Date & Time", FieldConfig.GUI_TYPE_TEXTBOX, DEFAULT_FIELD_LENGTH,
             ObjectField.OBJECTMETA_DATE_TYPE, false, resultFieldList);
         
         EosFieldGroupConfig fgconfig = new EosFieldGroupConfig(null, nodeConfigObj);

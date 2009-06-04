@@ -335,15 +335,15 @@ public class AuditLogHandler extends ScreenConfiguration {
             
             // Lookup Audit log Controller
             AuditIterator alPageIter = masterControllerService.lookupAuditLog(aso);
-            AuditIterator alPageIterOutput = masterControllerService.lookupAuditLog(aso);
+            //AuditIterator alPageIterOutput = masterControllerService.lookupAuditLog(aso);
         
             
             int i = 0;
             //Set the size of the VO Array
             setAuditLogVO(new AuditDataObject[alPageIter.count()]);
             
-           SimpleDateFormat sdf = new SimpleDateFormat(ConfigManager.getDateFormat());
-           SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat(ConfigManager.getDateFormat());
+           //SimpleDateFormat sdf = new SimpleDateFormat(ConfigManager.getDateFormat() + " HH:mm:ss");
+           SimpleDateFormat simpleDateFormatFields = new SimpleDateFormat(ConfigManager.getDateFormat() + " HH:mm:ss");
             //Populate the Value Object to be displayed on the JSF page.
             while (alPageIter.hasNext()) {
                 auditLogVO[i] = new AuditDataObject(); //to be safe with malloc

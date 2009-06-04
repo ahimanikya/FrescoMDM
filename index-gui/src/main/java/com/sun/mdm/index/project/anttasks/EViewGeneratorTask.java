@@ -88,6 +88,7 @@ public class EViewGeneratorTask extends Task {
     private static final String REPOSITORY_RESOURCE_NAME = "repositoryImage.zip";
     private static final String PROPERTIES_RESOURCE_NAME = "standardizationEngine.properties";
     private static final String REPOSITORY_NAME_PROPERTY = "repositoryName";
+	private static final String PROJECT_PROPERTIES = "nbproject/project.properties";
     private static final Logger mLog = Logger.getLogger(EViewGeneratorTask.class.getName());
         
     public void setSrcdir(File srcdir) {
@@ -130,7 +131,7 @@ public class EViewGeneratorTask extends Task {
 
         // need to regenerate if source files have been modified
         if (modified() || mForce) {
-            try {
+            try {				
                 File objectFile = new File(mSrcdir,
                         EviewProjectProperties.CONFIGURATION_FOLDER
                                 + File.separator + "object.xml");
@@ -176,7 +177,9 @@ public class EViewGeneratorTask extends Task {
                 mLog.severe("Could not generate Master Index Files.");
                 throw new BuildException(ex.getMessage());
             }
-        }
+        } else {
+			mLog.info("+++Not generating master index files");
+		}
     }
 
     private void generateFiles(EIndexObject eo, File objectFile) 
@@ -773,22 +776,42 @@ public class EViewGeneratorTask extends Task {
             replaceToken(sunWebXml, token, "/"+applicationName+"MIDM" );         
         }               
     }
+	
+	private Properties loadProperties(File propertyFile) throws FileNotFoundException, IOException {
+        java.util.Properties properties = new java.util.Properties();
+		FileInputStream is = new FileInputStream(propertyFile);
+        properties.load(is);
+		is.close();
+		return properties;
+	}
+	
 
     private void addEjbLib() throws FileNotFoundException, IOException {
-
-        File ejbPropertyFile = new File(mEjbdir, "nbproject/project.properties");
-        java.util.Properties properties = new java.util.Properties();
-        properties.load(new FileInputStream(ejbPropertyFile));
-        properties.setProperty("file.reference.index-core.jar",
-                "../lib/index-core.jar");
-        properties.setProperty("file.reference.master-index-client.jar",
-                "../lib/master-index-client.jar");
-        properties.setProperty("file.reference.net.java.hulp.i18n.jar",
-                "../lib/net.java.hulp.i18n.jar");
-        properties.setProperty("javac.classpath",
-                "${file.reference.index-core.jar}:"
-                        + "${file.reference.master-index-client.jar}:"
-                        + "${file.reference.net.java.hulp.i18n.jar}");
+        File ejbPropertyFile = new File(mEjbdir, PROJECT_PROPERTIES);
+		Properties properties = loadProperties(ejbPropertyFile);
+		String[] fileReferences = {"file.reference.index-core.jar",
+				"file.reference.master-index-client.jar",
+				"file.reference.net.java.hulp.i18n.jar"};
+		String[] fileRefValues = {"../lib/index-core.jar",
+				"../lib/master-index-client.jar",
+				"../lib/net.java.hulp.i18n.jar"};
+		// reset the file references, and update the classpath if required
+		for (int i=0; i < fileReferences.length; i++) {
+			properties.setProperty(fileReferences[i], fileRefValues[i]);
+		}
+		String classPath = properties.getProperty("javac.classpath");
+		// Add references if they aren't there
+		for (int i=0; i < fileReferences.length; i++) {
+			String ref = "${" + fileReferences[i] + "}";
+			if (classPath.indexOf(ref) < 0) {
+				if (classPath == null) {
+					classPath = ref;
+				} else {
+					classPath += ":" + ref;
+				}
+			}
+		}
+		properties.setProperty("javac.classpath", classPath);
 
         properties.store(new FileOutputStream(ejbPropertyFile), null);
     }
