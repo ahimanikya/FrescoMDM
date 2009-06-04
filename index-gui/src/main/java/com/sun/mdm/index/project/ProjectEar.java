@@ -182,6 +182,16 @@ public final class ProjectEar extends J2eeModuleProvider
     public <T> MetadataModel<T> getDeploymentDescriptor(Class<T> arg0) {
         throw new UnsupportedOperationException("ProjectEar.getDeploymentDescriptor()--Not supported yet.");
     }
+
+    @Override
+    public String getServerInstanceID() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public String getServerID() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
         
     private static class IT implements Iterator {
         Iterator<FileObject> it;
