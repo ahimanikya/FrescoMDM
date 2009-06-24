@@ -205,6 +205,12 @@ public class EviewProjectGenerator {
         ep = projHelper.getProperties(ppath);
         ep.setProperty("war.ear.name", mainProjectName + "-war.war");
         ep.setProperty("war.name", mainProjectName + "-war.war");
+        ep.setProperty("source.encoding", "UTF-8");
+        ep.setProperty("source.root", "src");
+        ep.setProperty("src.dir", "src"+ File.separator + "java");
+        ep.setProperty("test.src.dir", "test");
+        ep.setProperty("web.docbase.dir", "web");
+        ep.setProperty("webinf.dir", "web/WEB-INF");
         //project.ä¸?æ??-ejb=../ä¸?æ??-ejb
         ep.setProperty("project." + mainProjectName + "-ejb", ".." + File.separator + mainProjectName + "-ejb");
         //reference.ä¸?æ??-ejb.dist=${project.ä¸?æ??-ejb}/dist/ä¸?æ??-ejb.jar
@@ -361,8 +367,12 @@ public class EviewProjectGenerator {
                 }
             }
         }
-        
-        J2eePlatform j2eePlatform = Deployment.getDefault().getJ2eePlatform(serverInstanceID);
+        J2eePlatform j2eePlatform = null;
+        try {
+            j2eePlatform = Deployment.getDefault().getServerInstance(serverInstanceID).getJ2eePlatform();
+        } catch (Exception ex) {
+            mLogger.severe(ex);
+        }
         File deployAntPropsFile = AntDeploymentHelper.getDeploymentPropertiesFile(serverInstanceID);
         //set private property of ejb project
         FileObject ejbProjDir =projectDir.getFileObject(mainProjectName+"-ejb");
@@ -382,7 +392,6 @@ public class EviewProjectGenerator {
             classpath = toClasspathString(j2eePlatform.getClasspathEntries());
             props.setProperty(EviewProjectProperties.J2EE_PLATFORM_WSCOMPILE_CLASSPATH,classpath);
         }
-        
         // ant deployment support
         File projectFolder = FileUtil.toFile(ejbProjDir);
         try {
