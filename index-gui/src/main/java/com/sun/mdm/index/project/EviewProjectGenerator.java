@@ -102,6 +102,17 @@ public class EviewProjectGenerator {
     private static String masterIndexDM;
     private EviewProjectGenerator() {}
 
+    private static EditableProperties getSubProjEP(AntProjectHelper helper, String subProj) {
+        EditableProperties ep = helper.getProperties(AntProjectHelper.PROJECT_PROPERTIES_PATH);
+        if (ep != null) {
+            String ppath = ep.getProperty(EviewProjectProperties.WAR_DIR) + File.separator + AntProjectHelper.PROJECT_PROPERTIES_PATH;
+            if (ppath != null) {
+                ep = helper.getProperties(ppath);
+            }
+        }
+        return ep;
+    }
+
     /**
      * Create a new empty J2SE project.
      * @param dir the top-level directory (need not yet exist but if it does it must be empty)
@@ -150,18 +161,15 @@ public class EviewProjectGenerator {
         ep.setProperty(EviewProjectProperties.EDM_VERSION, edmVersion);
         
         projHelper.putProperties(AntProjectHelper.PROJECT_PROPERTIES_PATH, ep);
-               
         // set private properties
         ep = projHelper.getProperties(AntProjectHelper.PRIVATE_PROPERTIES_PATH);        
         ep.setProperty(EviewProjectProperties.J2EE_SERVER_INSTANCE, serverInstanceID);
-        
         File deployAntPropsFile = AntDeploymentHelper.getDeploymentPropertiesFile(serverInstanceID);
         if (deployAntPropsFile != null) {
             ep.setProperty(EviewProjectProperties.DEPLOY_ANT_PROPS_FILE, deployAntPropsFile.getAbsolutePath());
         }
         
         projHelper.putProperties(AntProjectHelper.PRIVATE_PROPERTIES_PATH, ep);
-        
         EviewApplication eViewApplication = (EviewApplication) ProjectManager.getDefault().findProject(projHelper.getProjectDirectory ());
         // Set Application name and Object 
         eViewApplication.setApplicationName(wDesc.getProperty(com.sun.mdm.index.project.ui.wizards.Properties.PROP_TARGET_VIEW_NAME).toString());
@@ -173,7 +181,6 @@ public class EviewProjectGenerator {
         }
 
         ProjectManager.getDefault().saveProject(eViewApplication);
-        
         // do it again to overwrite mysterious garbage unicode
         ep = projHelper.getProperties(AntProjectHelper.PROJECT_PROPERTIES_PATH);
         //CLIENT_MODULE_URI
@@ -197,31 +204,31 @@ public class EviewProjectGenerator {
         ep.setProperty(EviewProjectProperties.JAR_CONTENT_ADDITIONAL, mainProjectName + "\\" + "\n" + "${reference." + mainProjectName + "-ejb.dist-ear};" + "\\" + "\n" +
                 "${reference." + mainProjectName + "-war.dist-ear}");
          */ 
-
         projHelper.putProperties(AntProjectHelper.PROJECT_PROPERTIES_PATH, ep);
-        
+
+        //kk cannot get the right ep in NB 6.5.1
+        // but it does not need to do the following either
         //JAR_NAME of war
-        String ppath = mainProjectName + "-war" + File.separator + AntProjectHelper.PROJECT_PROPERTIES_PATH;
-        ep = projHelper.getProperties(ppath);
-        ep.setProperty("war.ear.name", mainProjectName + "-war.war");
-        ep.setProperty("war.name", mainProjectName + "-war.war");
-        ep.setProperty("source.encoding", "UTF-8");
-        ep.setProperty("source.root", "src");
-        ep.setProperty("src.dir", "src"+ File.separator + "java");
-        ep.setProperty("test.src.dir", "test");
-        ep.setProperty("web.docbase.dir", "web");
-        ep.setProperty("webinf.dir", "web/WEB-INF");
+        //String ppath = mainProjectName + "-war" + File.separator + AntProjectHelper.PROJECT_PROPERTIES_PATH;
+        //ep = projHelper.getProperties(ppath);
+        //ep.setProperty("war.ear.name", mainProjectName + "-war.war");
+        //ep.setProperty("war.name", mainProjectName + "-war.war");
+        //ep.setProperty("source.encoding", "UTF-8");
+        //ep.setProperty("source.root", "src");
+        //ep.setProperty("src.dir", "src"+ File.separator + "java");
+        //ep.setProperty("test.src.dir", "test");
+        //ep.setProperty("web.docbase.dir", "web");
+        //ep.setProperty("webinf.dir", "web/WEB-INF");
         //project.ä¸?æ??-ejb=../ä¸?æ??-ejb
-        ep.setProperty("project." + mainProjectName + "-ejb", ".." + File.separator + mainProjectName + "-ejb");
+        //ep.setProperty("project." + mainProjectName + "-ejb", ".." + File.separator + mainProjectName + "-ejb");
         //reference.ä¸?æ??-ejb.dist=${project.ä¸?æ??-ejb}/dist/ä¸?æ??-ejb.jar
-        ep.setProperty("reference." + mainProjectName + "-ejb.dist", "${project." + mainProjectName + "-ejb}" + File.separator + "dist" + File.separator + mainProjectName + "-ejb.jar");
-        
-        projHelper.putProperties(ppath, ep);
+        //ep.setProperty("reference." + mainProjectName + "-ejb.dist", "${project." + mainProjectName + "-ejb}" + File.separator + "dist" + File.separator + mainProjectName + "-ejb.jar");
+        //projHelper.putProperties(ppath, ep);
         //JAR_NAME of ejb
-        ppath = mainProjectName + "-ejb" + File.separator + AntProjectHelper.PROJECT_PROPERTIES_PATH;
-        ep = projHelper.getProperties(ppath);
-        ep.setProperty(EviewProjectProperties.JAR_NAME, mainProjectName + "-ejb.jar");
-        projHelper.putProperties(ppath, ep);
+        //ppath = mainProjectName + "-ejb" + File.separator + AntProjectHelper.PROJECT_PROPERTIES_PATH;
+        //ep = projHelper.getProperties(ppath);
+        //ep.setProperty(EviewProjectProperties.JAR_NAME, mainProjectName + "-ejb.jar");
+        //kk projHelper.putProperties(ppath, ep);
         
         return projHelper;
     }
