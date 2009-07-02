@@ -913,6 +913,90 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
     }
 
     /**
+     * Adds or update the SystemObject to the EnterpriseObject specified by EUID.
+     *
+     * @param con
+     *            Connection
+     * @param euid
+     *            The EUID on which to perform the action.
+     * @param sysObj
+     *            The system object to be added.
+     * @param checkDups
+     *            Check for potential duplicates
+     * @exception ProcessingException
+     *                An error has occured.
+     * @exception UserException
+     *                A user error occured
+     */
+    public void addOrUpdateSystemObject(Connection con, String euid, 
+            SystemObject sysobj, boolean checkDups)
+            throws ProcessingException, UserException {
+
+        try {
+            SystemObjectPK systemKey = new SystemObjectPK(sysobj
+                    .getSystemCode(), sysobj.getLID());
+            sysobj = mMatch.standardize(sysobj);
+            validateSystemObject(con, sysobj);
+
+            // Check to make sure the system object key is not already assigned
+            // to a different EUID
+            String existingEuid = mQueryHelper.getEUID(con, systemKey);
+            if (existingEuid != null && !existingEuid.equals(euid)) {
+                 throw new ProcessingException(mLocalizer.t("MSC508: Could not add a SystemObject. " +
+                                        "The System Key {0} is already mapped to EUID {1}",
+                                        systemKey.toString(), existingEuid));
+            }
+            EnterpriseObject beforeEO = mTrans.getEnterpriseObject(con, euid);
+            if (beforeEO == null) {
+                createEnterpriseObject(con, sysobj, euid, checkDups);
+            } else {
+                SystemObject existingSO = beforeEO.getSystemObject(sysobj.getSystemCode(),
+                        sysobj.getLID());
+                if (existingSO == null) {
+                    mLogger.fine("addOrUpdateSystemObject(): adding: " + systemKey
+                        + " to EUID: " + euid);
+                } else {
+                    if (!existingSO.getStatus().equals(SystemObject.STATUS_ACTIVE)) {
+                        throw new ProcessingException(mLocalizer.t("MSC564: SystemObject could not be " +
+                                    "updated because the record is not active for " +
+                                    "System code={0}, LID={1}",  sysobj.getSystemCode(),
+                                    sysobj.getLID()));
+                    }
+                    if (mLogger.isLoggable(Level.FINE)) {
+                        mLogger.fine("addOrUpdateSystemObject(): updating: " + systemKey
+                            + " in EUID: " + euid);
+                    }
+                }
+
+                Object[] matchFields = mMatchFieldChange.getMatchFields(beforeEO);
+
+                String user = getCallerUserId();
+                int flag = Constants.FLAG_UM_REPLACE_SO;
+                UpdateResult result = mUpdate.updateEnterprise(con, sysobj, beforeEO,
+                        flag, user);
+
+                EnterpriseObject afterEO = result.getEnterpriseObject1();
+
+                if (result.getTransactionResult() != TMResult.NO_CHANGE_TRANSACTION) {
+                    if (checkDups && (afterEO.getSBR().getStatus() != null)
+                        && (afterEO.getSBR().getStatus().equals(SystemObject.STATUS_ACTIVE))) {
+                        String transId = result.getTransactionResult().getTMID();
+                        execPessimistic(con, afterEO.getEUID(), transId,
+                                    matchFields, afterEO, null);
+                    }
+                    mOutBoundSender.send(OutBoundMessages.UPD, result
+                            .getTransactionResult().getTMID(), result
+                            .getEnterpriseObject1());
+                }
+            } 
+        } catch (UserException e) {
+            throw e;
+        } catch (Exception e) {
+            throwProcessingException(e);
+        }
+    }
+
+    /**
      * Calculates the new SBR given an enterprise object that has been modified.
      * 
      * @param eo
@@ -958,6 +1042,32 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
     public EnterpriseObject createEnterpriseObject(Connection con,
             SystemObject sysobj) throws ProcessingException, UserException {
 
+        return createEnterpriseObject(con, sysobj, null, false);
+    }
+
+    /**
+     * Adds a new enterprise object to the database using the given system
+     * object.
+     *
+     * @param con
+     *            Connection
+     * @param sysobj
+     *            The system object to use as basis for new EO.
+     * @param euid
+     *            The EUID to assign to the EO.  If null then an EUID is
+     *            auto assigned.
+     * @param checkDups
+     *            Check for potential duplicates
+     * @exception ProcessingException
+     *                An error has occured.
+     * @exception UserException
+     *                A user error occured
+     * @return New EO.
+     */
+    public EnterpriseObject createEnterpriseObject(Connection con,
+            SystemObject sysobj, String euid, boolean checkDups)
+            throws ProcessingException, UserException {
+
         EnterpriseObject eo = null;
         try {
             SystemObjectPK systemKey = new SystemObjectPK(sysobj
@@ -972,9 +1082,9 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             // Check to make sure the system object key is not already assigned
             String existingEuid = mQueryHelper.getEUID(con, systemKey);
             if (existingEuid != null) {
-                throw new ProcessingException(mLocalizer.t("MSC510: Could not create " + 
-                                        "an EnterpriseObject. The SystemKey {0} is " + 
-                                        "already mapped to an existing EUID: {1}", 
+                throw new ProcessingException(mLocalizer.t("MSC510: Could not create " +
+                                        "an EnterpriseObject. The SystemKey {0} is " +
+                                        "already mapped to an existing EUID: {1}",
                                         systemKey.toString(), existingEuid));
             }
 
@@ -985,9 +1095,15 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             }
 //            sysobj.setCreateUser(user);
 
-            UpdateResult result = mUpdate.createEnterpriseObject(con, sysobj);
+            UpdateResult result = mUpdate.createEnterpriseObject(con, sysobj, euid);
             eo = result.getEnterpriseObject1();
 
+            if (checkDups) {
+                euid = eo.getEUID();
+                String transId = result.getTransactionResult().getTMID();
+                findInsertDuplicates(con, euid, transId, eo.getSBR(), null);
+            }
+            
             mOutBoundSender.send(OutBoundMessages.ADD, result
                     .getTransactionResult().getTMID(), eo);
         } catch (UserException e) {

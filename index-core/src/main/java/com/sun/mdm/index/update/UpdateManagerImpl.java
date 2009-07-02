@@ -162,6 +162,30 @@ public class UpdateManagerImpl implements UpdateManager {
                     Connection con, com.sun.mdm.index.objects.SystemObject so)
             throws SystemObjectException, UpdateException,
                    ObjectException, UserException {
+        return createEnterpriseObject(con, so, null);
+    }
+
+    /** creates an EnterpriseObject given a SystemObject.
+     * Populates the SBR with values from the initial object and persists it in the
+     * database
+     * @param con connection  database connection
+     * @param so <code>SystemObject</code> used to create <code>EnterpriseObject</code>
+     * @param euid EUID to assign to the enterprise object.  If null, it is
+     * autoassigned by the sequence manager.
+     * @return an <code>UpdateResult</code> containing the affected EnterpriseObjects
+     * and transaction ID.
+     * @throws SystemObjectException <code>SystemObject</code> access exception
+     * <code>SystemObject</code> access exception
+     * @throws UpdateException error updating
+     * @throws ObjectException ObjectNode access exception.
+     *      Please @see com.sun.mdm.index.objects.ObjectNode
+     * @throws UserException general user exception
+     */
+    public com.sun.mdm.index.update.UpdateResult createEnterpriseObject(
+                    Connection con, com.sun.mdm.index.objects.SystemObject so,
+                    String euid)
+            throws SystemObjectException, UpdateException,
+                   ObjectException, UserException {
         try {
             Date date = new Date();
             if (so.getCreateDateTime() == null) {
@@ -173,15 +197,15 @@ public class UpdateManagerImpl implements UpdateManager {
             so.setCreateFunction(SystemObject.ACTION_ADD);
             so.setUpdateFunction(SystemObject.ACTION_ADD);
             so.setCreateUser(so.getUpdateUser());
-            EnterpriseObject newEO = mHelper.createEO(so);        
+            EnterpriseObject newEO = mHelper.createEO(so);
             if (mLogger.isLoggable(Level.FINE)) {
                 mLogger.fine("Created EnterpriseObject in memory :" + newEO);
             }
-            
+
             if (mECreatePolicy != null) {
                 newEO = mECreatePolicy.applyUpdatePolicy(null,  newEO);
-            }           
-            TMResult tresult = mTransaction.addEnterpriseObject(con, newEO);
+            }
+            TMResult tresult = mTransaction.addEnterpriseObject(con, newEO, euid);
 
             // add newly allocated EUID
             if (tresult != null) {
@@ -190,19 +214,19 @@ public class UpdateManagerImpl implements UpdateManager {
                 throw new UpdateException(mLocalizer.t("UPD501: Enterprise Object " +
                                                 "creation failed."));
             }
-            
+
             if (mLogger.isLoggable(Level.FINE)) {
-                mLogger.fine("EnterpriseObject before returning " 
+                mLogger.fine("EnterpriseObject before returning "
                              + "createEnterpriseObject(so): " + newEO);
             }
-            
+
             return new UpdateResult(tresult, newEO);
         } catch (OPSException ex) {
             throw new UpdateException(mLocalizer.t("UPD502: Could not create an " +
                                             "Enterprise Object: {0}", ex));
         }
     }
-    
+
     /** creates an EnterpriseObject given a SystemObject.
      * Populates the SBR with values from the initial object and persists it in the
      * database     

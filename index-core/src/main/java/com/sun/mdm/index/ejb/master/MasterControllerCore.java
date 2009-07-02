@@ -606,6 +606,38 @@ public interface MasterControllerCore {
 	public void addSystemObject(Connection con, String euid, SystemObject sysobj)
 			throws ProcessingException, UserException;
 
+
+    /**
+     * Checks if the system object already exists and is associated with the
+     * given EUID.  If the system object is associated with a different EUID,
+     * an exception is thrown.  If the system object is associated with the
+     * given EUID it is updated.  If the system object does not already exist
+     * it is added to the enterprise object associated with the EUID specified.
+     * If the EUID specified does not exist, a new enterprise object is created
+     * with the specified EUID.  Potential duplicates are checked only if the
+     * checkDups flag is enabled.
+     *
+     * This function is intended to be used in environments where the system
+     * record / EUID relationship has already been defined and must be preserved
+     * as may be the case when migrating from an existing index.
+     *
+     * @param con
+     *            Connection
+     * @param euid
+     *            The EUID on which to perform the action.
+     * @param sysObj
+     *            The system object to be added.
+     * @param checkDups
+     *            Check for potential duplicates
+     * @exception ProcessingException
+     *                An error has occured.
+     * @exception UserException
+     *                A user error occured
+     */
+    public void addOrUpdateSystemObject(Connection con, String euid,
+            SystemObject sysObj, boolean checkDups)
+            throws ProcessingException, UserException;
+
 	/**
 	 * Creates a new enterprise object to add to the master index database using
 	 * the information in the specified system object. This method bypasses
@@ -627,6 +659,36 @@ public interface MasterControllerCore {
 	 */
 	public EnterpriseObject createEnterpriseObject(Connection con,
 			SystemObject sysobj) throws ProcessingException, UserException;
+
+	/**
+	 * Creates a new enterprise object to add to the master index
+     * database using the information in the specified system object. An
+     * option is given to check for potential duplicates as well as specify
+     * the EUID that should be given to the enterprise object.
+	 * <p>
+	 *
+	 * @param con
+	 *            Connection
+	 * @param sysobj
+	 *            The system object to use as a basis for the enterprise object.
+     * @param euid
+     *            The EUID to assign to the enterprise object.  If null, an
+     *            EUID is autoassigned by the sequence manager.
+     * @param checkDups
+     *            Check for potential duplicates
+	 * @return <CODE>EnterpriseObject</CODE> - The enterprise object created
+	 *         from the specified system object.
+	 * @exception ProcessingException
+	 *                Thrown if an error occurs while creating the enterprise
+	 *                object.
+	 * @exception UserException
+	 *                Thrown if the parameter is invalid.
+	 * @include
+	 */
+	public EnterpriseObject createEnterpriseObject(Connection con,
+			SystemObject sysobj, String euid, boolean checkDups)
+            throws ProcessingException, UserException;
+
 
 	/**
 	 * Creates a new enterprise object to add to the master index database using

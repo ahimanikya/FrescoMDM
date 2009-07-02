@@ -996,7 +996,51 @@ public class MasterControllerEJB implements MasterControllerRemote, MasterContro
             mControllerImpl.releaseResources( con );
         }
     }
-    
+
+    /**
+     * Checks if the system object already exists and is associated with the
+     * given EUID.  If the system object is associated with a different EUID,
+     * an exception is thrown.  If the system object is associated with the
+     * given EUID it is updated.  If the system object does not already exist
+     * it is added to the enterprise object associated with the EUID specified.
+     * If the EUID specified does not exist, a new enterprise object is created
+     * with the specified EUID.  Potential duplicates are checked only if the
+     * checkDups flag is enabled.
+     *
+     * This function is intended to be used in environments where the system
+     * record / EUID relationship has already been defined and must be preserved
+     * as may be the case when migrating from an existing index.
+     *
+     * <p>
+     * @param euid The EUID of the enterprise object to which the system
+     * object will be added.
+     * @param sysobj The system object to add to the enterprise object.
+     * @param checkDups Check for potential duplicates.
+     * <DT><B>Returns:</B><DD> <CODE>void</CODE> - None.
+     * @exception ProcessingException Thrown if an error occurs while
+     * adding the system object.
+     * @exception UserException Thrown if a parameter is invalid.
+     * @include
+     */
+    public void addOrUpdateSystemObject(String euid, SystemObject sysobj,
+            boolean checkDups) throws ProcessingException, UserException {
+         Connection con = null;
+        try {
+            mControllerImpl.beginTransaction();
+            con = mControllerImpl.getConnection();
+            mControllerImpl.addOrUpdateSystemObject(con, euid, sysobj, checkDups);
+            mControllerImpl.commitTransaction(con);
+        } catch (ProcessingException e) {
+            mControllerImpl.rollbackTransaction(con);
+            throw e;
+        } catch (UserException e) {
+            mControllerImpl.rollbackTransaction(con);
+            throw e;
+        } finally {
+            mControllerImpl.releaseResources( con );
+        }
+    }
+
     
     /**
      * Creates a new enterprise object to add to the master index
@@ -1034,7 +1078,47 @@ public class MasterControllerEJB implements MasterControllerRemote, MasterContro
         }
         return eo;
     }
-    
+
+    /**
+     * Creates a new enterprise object to add to the master index
+     * database using the information in the specified system object. An
+     * option is given to check for potential duplicates as well as specify
+     * the EUID that should be given to the enterprise object.
+     * <p>
+     * @param sysobj The system object to use as a basis for the
+     * enterprise object.
+     * @param euid The EUID to assign to the system object.  If null, an EUID
+     * is autoassigned by the sequence manager.
+     * @param checkDups Check for potential duplicates
+     * @return <CODE>EnterpriseObject</CODE> - The enterprise object
+     * created from the specified system object.
+     * @exception ProcessingException Thrown if an error occurs while
+     * creating the enterprise object.
+     * @exception UserException Thrown if the parameter is invalid.
+     * @include
+     */
+    public EnterpriseObject createEnterpriseObject(
+            SystemObject sysobj, String euid, boolean checkDups)
+    throws ProcessingException, UserException{
+        EnterpriseObject eo = null;
+        Connection con = null;
+
+        try {
+            mControllerImpl.beginTransaction();
+            con = mControllerImpl.getConnection();
+            eo = mControllerImpl.createEnterpriseObject(con, sysobj, euid, checkDups);
+            mControllerImpl.commitTransaction(con);
+        } catch (ProcessingException e) {
+            mControllerImpl.rollbackTransaction(con);
+            throw e;
+        } catch (UserException e) {
+            mControllerImpl.rollbackTransaction(con);
+            throw e;
+        } finally {
+            mControllerImpl.releaseResources( con );
+        }
+        return eo;
+    }
     
     /**
      * Creates a new enterprise object to add to the master index

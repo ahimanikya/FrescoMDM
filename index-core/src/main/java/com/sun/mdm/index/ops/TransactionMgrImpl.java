@@ -292,12 +292,30 @@ public class TransactionMgrImpl implements TransactionMgr {
      */
     public TMResult addEnterpriseObject(Connection conn, EnterpriseObject eo)
             throws OPSException {
+        return addEnterpriseObject(conn, eo, null);
+    }
+    
+    /**
+     * Persists a new EnterpriseObject into database:
+     * 1. Persists SystemSBR 
+     * 2. For each SystemObject: 
+     * - persists into database 
+     * - adds EUID-SystemCode-LocalID association
+     *
+     * @param conn JDBC connection.
+     * @param eo EnterpriseObject.
+     * @param euid The EUID to assign to the EnterpriseObject
+     * @throws OPSException if an error is encountered.
+     * @return TMResult object containing the results of the transaction.
+     */
+    public TMResult addEnterpriseObject(Connection conn, EnterpriseObject eo, 
+            String euid) throws OPSException {
                 
         TMResult ret = null;
 
         try {
             SBR sbr = eo.getSBR();
-            String euid = pAddSystemSBR(conn, sbr);
+            euid = pAddSystemSBR(conn, sbr, euid);
 
             ArrayList objs = (ArrayList) eo.getSystemObjects();
             StringBuffer systemCodes = new StringBuffer(50);
@@ -404,7 +422,7 @@ public class TransactionMgrImpl implements TransactionMgr {
         String euid;
  
         try {
-            euid = pAddSystemSBR(conn, sbr);
+            euid = pAddSystemSBR(conn, sbr, null);
             initCUIDManager(conn);
             String transnum = com.sun.mdm.index.idgen.CUIDManager.getNextUID(conn,
                                                         "TRANSACTIONNUMBER");
@@ -428,16 +446,18 @@ public class TransactionMgrImpl implements TransactionMgr {
      *
      * @param conn JDBC connection.
      * @param sbr SystemSBR to add.
+     * @param euid The EUID to assign to the SBR.  If null, invoke SequenceMgr.
      * @throws OPSException if an error is encountered.
      * @return EUID to which the SystemSBR has been added.
      */
-    private String pAddSystemSBR(Connection conn, SBR sbr)
+    private String pAddSystemSBR(Connection conn, SBR sbr, String euid)
         throws OPSException {
-        String euid;
  
         try {
-            initCUIDManager(conn);
-            euid = com.sun.mdm.index.idgen.CUIDManager.getNextUID(conn, "EUID");
+            if (euid == null) {
+              initCUIDManager(conn);
+              euid = com.sun.mdm.index.idgen.CUIDManager.getNextUID(conn, "EUID");
+            } 
             mSystemSBRDB.create(conn, mOPSMap, euid, sbr);
         } catch (Exception ex) {
             throw new OPSException(mLocalizer.t("OPS646: Could not add " + 

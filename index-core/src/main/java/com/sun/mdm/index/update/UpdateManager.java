@@ -42,6 +42,15 @@ public interface UpdateManager{
      * @see com.sun.mdm.index.update.UpdateManagerEJB#createEnterpriseObject
      */
     public com.sun.mdm.index.update.UpdateResult createEnterpriseObject(
+                Connection con, com.sun.mdm.index.objects.SystemObject so,
+                String euid)
+        throws SystemObjectException, UpdateException,
+               ObjectException, UserException;
+
+    /**
+     * @see com.sun.mdm.index.update.UpdateManagerEJB#createEnterpriseObject
+     */
+    public com.sun.mdm.index.update.UpdateResult createEnterpriseObject(
         Connection con, com.sun.mdm.index.objects.SystemObject[] so)
         throws SystemObjectException, UpdateException, 
             SurvivorCalculationException, 

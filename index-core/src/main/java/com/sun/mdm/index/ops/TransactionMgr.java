@@ -55,6 +55,18 @@ public interface TransactionMgr{
 
 
     /**
+     * Persists a new EnterpriseObject into database.
+     *
+     * @param conn JDBC connection.
+     * @param eo EnterpriseObject to persist.
+     * @param euid  EUID to use for new EnterpriseObject.
+     * @throws OPSException if an error occurred.
+     * @return result of the transaction.
+     */
+    TMResult addEnterpriseObject(Connection conn, EnterpriseObject eo, String euid)
+        throws OPSException;
+
+    /**
      * Updates an EnterpriseObject in database
      *
      * @param conn JDBC connection.
