@@ -723,13 +723,17 @@ public class EViewGeneratorTask extends Task {
         File destDir = new File(mWardir, "web");
         FileSet fileSet = new FileSet();
         fileSet.setDir(destDir);
-        //fileSet.setExcludes("**/lib/*.jar");
         Delete delete = (Delete) getProject().createTask("delete");
-        //delete.setDir(destDir);
-        delete.addFileset(fileSet);
-        delete.init();
-        delete.setLocation(getLocation());
-        delete.execute();
+				try {
+        	delete.addFileset(fileSet);
+        	delete.init();
+        	delete.setLocation(getLocation());
+        	delete.execute();
+        } catch (BuildException bex) {
+        	// Ideally throw warning to the console and 
+        	// undeleted files will be overwritten during copy.
+        }
+        
         destDir.mkdir();
 
         File srcFile = new File(mTemplateDir, "repository/" + edmWarName);
