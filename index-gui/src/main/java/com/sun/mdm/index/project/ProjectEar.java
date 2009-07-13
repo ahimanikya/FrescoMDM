@@ -56,6 +56,7 @@ public final class ProjectEar extends J2eeModuleProvider
     public static final String FILE_DD = "application.xml";//NOI18N   
     private EviewProject project;
     private J2eeApplication j2eeApplication;
+    private String severInstanceID = "";
     
     public ProjectEar (EviewProject project) {
         this.project = project;
@@ -141,7 +142,7 @@ public final class ProjectEar extends J2eeModuleProvider
 
     
     public void setServerInstanceID(String severInstanceID) {
-        throw new UnsupportedOperationException("ProjectEar.setServerInstanceID()--Not supported yet.");
+        this.severInstanceID = severInstanceID;
     }
     
     public void addModuleListener(ModuleListener listener){
@@ -185,12 +186,12 @@ public final class ProjectEar extends J2eeModuleProvider
 
     @Override
     public String getServerInstanceID() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return severInstanceID;
     }
 
     @Override
     public String getServerID() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return severInstanceID;
     }
         
     private static class IT implements Iterator {
