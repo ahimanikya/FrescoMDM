@@ -62,7 +62,7 @@ public class SampleChecksumCalculator implements ChecksumCalculator {
                 throw new SEQException(mLocalizer.t("IDG510: Checksum Length for SampleChecksumCalculator must be 1"));
             }
         } else {
-            throw new SEQException(mLocalizer.t("IDG512: Unknown parameter: (0}",
+            throw new SEQException(mLocalizer.t("IDG512: Unknown parameter: {0}",
                     parameterName));
         }
     }

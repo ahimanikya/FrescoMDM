@@ -59,7 +59,7 @@ public class DefaultChecksumCalculator implements ChecksumCalculator {
         if (parameterName.equals("ChecksumLength")) {
             mChecksumLength = ((Integer) value).intValue();
         } else {
-            throw new SEQException(mLocalizer.t("IDG511: Unknown parameter: (0}",
+            throw new SEQException(mLocalizer.t("IDG511: Unknown parameter: {0}",
                     parameterName));
         }
     }

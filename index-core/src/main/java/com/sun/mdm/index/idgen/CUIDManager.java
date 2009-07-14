@@ -112,7 +112,7 @@ public class CUIDManager {
             isInitialized = true;
 
         } catch (Exception ex) {
-            throw new SEQException(mLocalizer.t("IDG502: EUID generator could not be initialized: (0}", ex));
+            throw new SEQException(mLocalizer.t("IDG502: EUID generator could not be initialized: {0}", ex), ex);
         }
     }
 
@@ -231,7 +231,7 @@ public class CUIDManager {
             	con.commit();*/
         } catch (SQLException exp) {
             throw new SEQException(mLocalizer.t("IDG503A: Could not retrieve the next " + seqName +
-                    " ID from the CUID generator: (0}", exp.getMessage()));
+                    " ID from the CUID generator: {0}", exp.getMessage()), exp);
         }
 
 
