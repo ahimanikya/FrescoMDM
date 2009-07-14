@@ -131,7 +131,7 @@ public class DefaultEuidGenerator implements EuidGenerator {
             mChecksumClassname = (String) value;
             mChecksumCalculator = null;
         } else {
-            throw new SEQException(mLocalizer.t("IDG504: Unknown parameter: (0}",
+            throw new SEQException(mLocalizer.t("IDG504: Unknown parameter: {0}",
                     parameterName));
         }
     }
@@ -251,8 +251,8 @@ public class DefaultEuidGenerator implements EuidGenerator {
             }            
             	
         } catch (Exception exp) {
-            throw new SEQException(mLocalizer.t("IDG505: Could not retrieve the " +
-                    "next EUID: (0}", exp));
+            throw new SEQException(mLocalizer.t("IDG509: Could not retrieve the " +
+                    "next EUID: {0}", exp), exp);
         }
         return nextValue;
     }

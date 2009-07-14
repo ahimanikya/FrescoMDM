@@ -272,11 +272,11 @@ public class SequenceEJB implements SequenceEJBRemote, SequenceEJBLocal {
         } catch (SQLException exp) {
             mLogger.info(mLocalizer.x("Failed in update or commit" + exp.getMessage()));
             throw new SEQException(mLocalizer.t("IDG503: Could not retrieve the next " +
-                    "ID from the EUID generator: (0}", exp.getMessage()));
+                    "ID from the EUID generator: {0}", exp.getMessage()), exp);
         } catch (Exception e) {
             mLogger.info(mLocalizer.x("Failed in update or commit" + e.getMessage()));
             throw new SEQException(mLocalizer.t("IDG503: Could not retrieve the next " +
-                    "ID from the EUID generator: (0}", e.getMessage()));
+                    "ID from the EUID generator: {0}", e.getMessage()), e);
         } finally {
             if (con != null) {
                 try {
@@ -392,7 +392,7 @@ public class SequenceEJB implements SequenceEJBRemote, SequenceEJBLocal {
         } catch (Exception exp) {
             mLogger.info(mLocalizer.x("Failed in update or commit"+ exp.getMessage()));
             throw new SEQException(mLocalizer.t("IDG505: Could not retrieve the " +
-                    "next EUID: (0}", exp));
+                    "next EUID: {0}", exp), exp);
         } finally {
             if (conn != null) {
                 try {

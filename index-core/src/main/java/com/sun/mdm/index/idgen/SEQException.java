@@ -29,17 +29,25 @@ package com.sun.mdm.index.idgen;
  */
 public class SEQException extends com.sun.mdm.index.master.ProcessingException {
     /**
- * Creates a new instance of <code>UnsupportedDataTypeException</code> without detail message.
+ * Creates a new instance of <code>SEQException</code> without detail message.
  */
     public SEQException() {
     }
 
     /**
- * Constructs an instance of <code>UnsupportedDataTypeException</code> with the specified detail message.
+ * Constructs an instance of <code>SEQException</code> with the specified detail message.
  * @param msg the detail message.
  */
     public SEQException(String msg) {
         super("SEQException: " + msg);
+    }
+    
+    /** Constructs a chained instance of <code>SEQException</code> with the specified detail message.
+	 * @param msg the detail message.
+     * @param t Chained exception
+     */
+    public SEQException(String msg, Throwable t) {
+        super("SEQException: " + msg, t);
     }
     
     /** Constructor
