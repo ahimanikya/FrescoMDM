@@ -186,12 +186,12 @@ public final class ProjectEar extends J2eeModuleProvider
 
     @Override
     public String getServerInstanceID() {
-        return severInstanceID;
+        return this.project.getServerInstanceID();
     }
 
     @Override
     public String getServerID() {
-        return severInstanceID;
+        return this.project.getServerID();
     }
         
     private static class IT implements Iterator {
