@@ -109,6 +109,14 @@ public class CodeRegistry {
         return getInstance(null);
     }    
     
+	/** Reset current instance of CodeRegistry.
+	 * <p>
+	 * This will reload the code registry from the database the next time getInstance() is invoked. 
+	 */
+	 public static synchronized void reset() {
+		SINGLETON = null;
+	}
+    
     /** Get all codes for given module.
      *
      * @return ArrayList of CodeDescription objects.

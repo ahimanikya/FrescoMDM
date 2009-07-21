@@ -27,6 +27,7 @@ import javax.annotation.Resource;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 
+import com.sun.mdm.index.codelookup.CodeDescription;
 import com.sun.mdm.index.codelookup.CodeLookupException;
 import com.sun.mdm.index.codelookup.CodeRegistry;
 
@@ -66,5 +67,50 @@ public class CodeLookupEJB implements CodeLookupRemote {
         Map codeMap = CodeRegistry.getInstance().getCodeMapByModule(module);
         return codeMap;
     }
-
+	
+	/** Check validity of a module
+	 * @param module module
+	 * @return <b>true</b> if it is a valid module, <b>false</b> otherwise
+	 * @throws CodeLookupException an error occured
+	 */
+	 public boolean hasModule(String module) throws CodeLookupException {
+		return CodeRegistry.getInstance().hasModule(module);
+	 }
+    
+	/** Check validity of a code
+	 * @param module module
+	 * @param code code
+	 * @return <b>true</b> if it is a valid code in the specified modeule, <b>false</b> otherwise
+	 * @throws CodeLookupException an error occured
+	 */
+	 public boolean hasCode(String module, String code) throws CodeLookupException {
+		return CodeRegistry.getInstance().hasCode(module, code);
+	}
+    
+	/** Get code description
+	 * @param module module
+	 * @param code code
+	 * @return code description if this is a valid code, <b>null</b> otherwise
+	 * @throws CodeLookupException an error occured
+	 */
+	 public String getDescription(String module, String code) throws CodeLookupException {
+		Map codeMap = CodeRegistry.getInstance().getCodeMapByModule(module);
+		String desc = null;
+		if (codeMap != null) {
+			CodeDescription cd = (CodeDescription) codeMap.get(code);
+			if (cd != null) {
+				desc = cd.getDescription();
+			}
+		}
+		return desc;
+	 }
+	 
+	 /** Reset the code list.
+	  * <p>
+	  * This will reload the current set of codes from the database. This should only be used if it is
+	  * known or suspected that the code list has been modified.
+	  */
+	public void reset() {
+		CodeRegistry.reset();
+	}
 }

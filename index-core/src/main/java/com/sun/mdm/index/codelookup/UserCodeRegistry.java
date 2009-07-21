@@ -105,9 +105,17 @@ public class UserCodeRegistry {
         return getInstance(null);
     }    
     
+	/** Reset current instance of UserCodeRegistry.
+	 * <p>
+	 * This will reload the code registry from the database the next time getInstance() is invoked. 
+	 */
+	 public static synchronized void reset() {
+		SINGLETON = null;
+	}
+	
     /** Get all codes for given module.
      *
-     * @return ArrayList of CodeDescription objects.
+     * @return ArrayList of UserCode objects.
      * @param module Module name.
      */
     public ArrayList getCodesByModule(String module) {
@@ -121,9 +129,9 @@ public class UserCodeRegistry {
         return list;
     }
 
-    /** Get map of module->code->CodeDescription
+    /** Get map of module->code->UserCode
      *
-     * @return map of module->code->CodeDescription.
+     * @return map of module->code->UserCode
      */    
     public Map getCodeMap() {
         return tmCodes;

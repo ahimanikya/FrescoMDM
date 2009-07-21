@@ -24,6 +24,7 @@ package com.sun.mdm.index.ejb.codelookup;
 
 import java.util.Map;
 import com.sun.mdm.index.codelookup.CodeLookupException;
+import com.sun.mdm.index.codelookup.UserCode;
 
 /**
  * Interface for UserCodeLookupEJB
@@ -43,4 +44,33 @@ public interface UserCodeLookup{
      */    
     Map getCodesByModule(String module) throws CodeLookupException;
     
+	/** Check validity of a module
+	 * @param module module
+	 * @return <b>true</b> if it is a valid module, <b>false</b> otherwise
+	 * @throws CodeLookupException an error occured
+	 */
+	 boolean hasModule(String module) throws CodeLookupException;
+    
+	/** Check validity of a code
+	 * @param module module
+	 * @param code code
+	 * @return <b>true</b> if it is a valid code in the specified modeule, <b>false</b> otherwise
+	 * @throws CodeLookupException an error occured
+	 */
+	 boolean hasCode(String module, String code) throws CodeLookupException;
+    
+	/** Get user code details
+	 * @param module module
+	 * @param code code
+	 * @return UserCode object if this is a valid code, <b>null</b> otherwise
+	 * @throws CodeLookupException an error occured
+	 */
+	 UserCode getUserCode(String module, String code) throws CodeLookupException;
+
+	 /** Reset the code list.
+	  * <p>
+	  * This will reload the current set of codes from the database. This should only be used if it is
+	  * known or suspected that the code list has been modified.
+	  */
+	  void reset();
 }
