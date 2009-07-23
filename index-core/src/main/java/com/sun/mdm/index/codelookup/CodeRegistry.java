@@ -64,6 +64,7 @@ public class CodeRegistry {
     private final static String DB_PROP_KEY = "resJNDI";
     private final static String DB_PROP_FILE = "eviewdb.properties";
     private HashMap tmCodes = null;
+	private boolean mCurrent = true;
     private final static transient Logger mLogger = Logger.getLogger(CodeRegistry.class.getName());
     private final static transient Localizer mLocalizer = Localizer.get();
 
@@ -114,7 +115,24 @@ public class CodeRegistry {
 	 * This will reload the code registry from the database the next time getInstance() is invoked. 
 	 */
 	 public static synchronized void reset() {
-		SINGLETON = null;
+		if (SINGLETON != null) {
+			SINGLETON.setCurrent(false);
+			SINGLETON = null;
+		}
+	}
+    
+	/** Check if this is the current instance of CodeRegistry.
+	 * @return <b>true</b> if this is the current instance, and <b>false</b> otherwise 
+	 */
+	 public boolean isCurrent() {
+		return mCurrent;
+	}
+	
+	/** Set the instance status
+	 * @param status new status
+	 */
+	protected void setCurrent(boolean status) {
+		mCurrent = status;
 	}
     
     /** Get all codes for given module.

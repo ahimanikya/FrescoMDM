@@ -165,10 +165,12 @@ public class CodeRegistryTest extends TestCase {
 		// Confirm that the instance we get is still the original object
 		cr1 = CodeRegistry.getInstance(con);
 		assertTrue(cr1.equals(mCodeRegistry));
+		assertTrue(cr1.isCurrent() && mCodeRegistry.isCurrent());
 		// Reset and then confirm that we get a new object instance
 		mCodeRegistry.reset();
 		cr2 = CodeRegistry.getInstance(con);
 		assertTrue(!cr2.equals(mCodeRegistry));
+		assertTrue(!mCodeRegistry.isCurrent() && !cr1.isCurrent());
 		mCodeRegistry = cr2;
     }
 
