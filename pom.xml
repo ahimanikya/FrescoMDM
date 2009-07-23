@@ -64,7 +64,7 @@
     <properties>
         <mural.currentVersion>1.0</mural.currentVersion>
         <localRepository>${maven.repo.local}</localRepository>
-        <netbeans.version>RELEASE65BETA</netbeans.version>
+        <netbeans.version>RELEASE61</netbeans.version>
         <netbeans.cluster>soa2</netbeans.cluster>
     </properties>
     <repositories>

@@ -376,7 +376,13 @@ public class EviewProjectGenerator {
         }
         J2eePlatform j2eePlatform = null;
         try {
-            j2eePlatform = Deployment.getDefault().getServerInstance(serverInstanceID).getJ2eePlatform();
+			/*
+			The getDefault().getJ2eePlatform call has been depreciated, but the replacement isn't
+			valid in netbeans 6.1, so keep the older version of the call until 6.1 is no longer
+			supported by the open-dm-mi subproject of Mural
+			*/
+            //j2eePlatform = Deployment.getDefault().getServerInstance(serverInstanceID).getJ2eePlatform();
+            j2eePlatform = Deployment.getDefault().getJ2eePlatform(serverInstanceID);
         } catch (Exception ex) {
             mLogger.severe(ex);
         }
