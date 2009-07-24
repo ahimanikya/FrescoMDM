@@ -35,24 +35,28 @@ install all the necessary software for accessing the source repository
 and building the files. Additional software is required for working
 with the master index once you build it.</p>
 <ul>
-<li>Install the Java SE Development Kit 5 (previously JDK 1.5).
-You can download Java SDK from <a href="http://java.sun.com/javase/downloads/index_jdk5.jsp" target="blank">http://java.sun.com/javase/downloads/index_jdk5.jsp</a></li>
+<li>Install the Java SE Development Kit 5 (JDK 1.5.0_14 or later) or 6 (1.6.0_03 or later, but not 1.6.0_10).
+You can download Java SDK from <a href="http://java.sun.com/javase/downloads/index_jdk5.jsp" target="blank">http://java.sun.com/javase/downloads/index_jdk5.jsp</a><br>
+<b>Note:</b> If you are using JDK 6, the recommended versions are 1.6.0_13 or 1.6.0_14.</li>
 <li>Install Maven to build your master index projects. You can
 download Maven from <a href="http://maven.apache.org/download.html" target="_blank">http://maven.apache.org/download.html</a>.</li>
 <li>Install Subversion to access Open Master Index source
 files. You can download Subversion from <a href="http://subversion.tigris.org/getting.html" target="_blank">http://subversion.tigris.org/getting.html</a>.
 For Windows, download the packages built against Apache 2.0.</li>
-<li>Install one of the following combinations:
+<li>If building from the trunk, install one of the following combinations:
 <ul>
-<li><a href="https://glassfish.dev.java.net/public/downloadsindex.html" target="_blank">GlassFish</a> (the Sun Java System
-Application Server 9.1) and <a href="http://www.netbeans.org/" target="_blank">Netbeans 6.1</a></li>
-<li><a href="https://open-esb.dev.java.net/Downloads_OpenESB_Addons_NB6.html" target="_blank">Open ESB</a></li>
-<li>Java CAPS 6 Update 1</li>
+<li><a href="https://glassfish.dev.java.net/public/downloadsindex.html" target="_blank">GlassFish 2.1</a> and <a href="http://www.netbeans.org/" target="_blank">NetBeans 6.5 or Netbeans 6.1</a></li>
+<li><a href="https://open-esb.dev.java.net/Downloads_OpenESB_Addons_NB6.html" target="_blank">GlassFish ESB</a></li>
 </ul>
 </li>
+<li>If building from a branch (sierra, mdmpatch1, or soarelease), install one of the following combinations:
+	<ul>
+		<li><a href="https://glassfish.dev.java.net/public/downloadsindex.html" target="_blank">GlassFish v2 UR2</a> and <a href="http://www.netbeans.org/" target="_blank">Netbeans 6.1</a></li>
+		<li>
+		<li>Java CAPS 6 Update 1</li>
 <li>Download the database drivers.
 <ul>
-<li>Download the Oracle JDBC driver (ojdbc14.jar) from <a href="http://www.oracle.com/technology/software/tech/java/sqlj_jdbc/index.html" target="_blank">http://www.oracle.com/technology/software/tech/java/sqlj_jdbc/index.html</a>.</li>
+<li>Download the Oracle JDBC driver (ojdbc5.jar) from <a href="http://www.oracle.com/technology/software/tech/java/sqlj_jdbc/index.html" target="_blank">http://www.oracle.com/technology/software/tech/java/sqlj_jdbc/index.html</a>.</li>
 <li>Download the Microsoft SQL Server JDBC driver
 (sqljdbc.jar) from <a href="http://www.microsoft.com/downloads/details.aspx?FamilyId=6D483869-816A-44CB-9787-A866235EFC7C&amp;displaylang=en" target="_blank">http://www.microsoft.com/downloads/details.aspx?FamilyId=6D483869-816A-44CB-9787-A866235EFC7C&amp;displaylang=en</a>.</li>
 <li>Download the MySQL driver named <tt>MySQL
@@ -80,6 +84,10 @@ https://open-dm-mi.dev.java.net/svn/open-dm-mi/trunk open-dm-mi
 --username <i>user_name</i></code><br>
 where <i>user_name</i> is your username in the Open Master
 Index project.</p>
+<p>If you are checking out a branch, substitute the path to the 
+	branch for "trunk". For example, <code>svn checkout
+	https://open-dm-mi.dev.java.net/svn/open-dm-mi/branches/soarelease open-dm-mi
+	--username <i>user_name</i></code></p>
 </li>
 <li>From the working directory, check out the data quality
 source files using the following command:
@@ -89,6 +97,8 @@ https://open-dm-dq.dev.java.net/svn/open-dm-dq/trunk open-dm-dq
 --username <i>user_name</i></code><br>
 where <i>user_name</i> is your username in the Open Data
 Quality project.</p>
+<p>See the previous step for information on checking out from a branch rather 
+	than the trunk.</p>
 </li>
 </ol>
 <p>Your directory structure should look similar to this:</p>
@@ -108,8 +118,7 @@ batch file (<i>working_directory</i>\open-dm-mi\env.bat).
 Use the absolute path names for these variables.</p>
 <ul>
 <li>Set NB_HOME to the NetBeans directory.</li>
-<li>Set GF_HOME to the GlassFish (or Sun Java System
-Application Server) directory.</li>
+<li>Set GF_HOME to the GlassFish directory.</li>
 <li>Do one of the following:
 	<ul>
 <li>If you are using SQL Server, set FULL_PATH_TO_SQLSERVER_JDBC_JAR to the directory to
