@@ -43,6 +43,8 @@ import javax.naming.InitialContext;
 
 import com.sun.mdm.index.assumedmatch.AssumedMatchManager;
 import com.sun.mdm.index.audit.AuditManager;
+import com.sun.mdm.index.codelookup.CodeLookupException;
+import com.sun.mdm.index.codelookup.SystemRegistry;
 import com.sun.mdm.index.configurator.ConfigurationService;
 import com.sun.mdm.index.configurator.impl.decision.DecisionMakerConfiguration;
 import com.sun.mdm.index.configurator.impl.idgen.EuidGeneratorConfiguration;
@@ -2257,7 +2259,8 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
 
         SystemDefinition[] sd = null;
         try {
-            sd = mQueryHelper.lookupSystemDefinitions(con);
+            //sd = mQueryHelper.lookupSystemDefinitions(con);
+            sd = SystemRegistry.getInstance(con).getSystemDefinitions();
             if (mLogger.isLoggable(Level.FINE)) {
                 if (sd == null) {
                     mLogger.fine("lookupSystemDefinitions(): no systems defined");
@@ -2292,7 +2295,8 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
 
         SystemDefinition sd = null;
         try {
-            sd = mQueryHelper.lookupSystemDefinition(con, systemCode);
+            //sd = mQueryHelper.lookupSystemDefinition(con, systemCode);
+            sd = SystemRegistry.getInstance(con).getSystemDefinition(systemCode);
             if (mLogger.isLoggable(Level.FINE)) {
                 if (sd == null) {
                     mLogger.fine("lookupSystemDefinition() for: " + systemCode
@@ -4294,8 +4298,11 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
 
             String fromEUID = mQueryHelper.getEUID(con, sourceSystemKey);
             if (fromEUID == null) {
-                String sysDesc = lookupSystemDefinition(con, systemCode)
-                        .getDescription();
+                String sysDesc = systemCode;
+				SystemDefinition sd = lookupSystemDefinition(con, systemCode);
+				if (sd != null) {
+					sysDesc = sd.getDescription();
+				}
                 String sysMsg = "[" + sysDesc + "," + sourceLID + "]";
                 throw new ProcessingException(mLocalizer.t("MSC553: Source system record not found " +
                                     "for System Description={0}, LID={1}", 
@@ -4317,8 +4324,11 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                     errMsg = "Source system status unrecognized: ";
                 }
                 if (errMsg != null) {
-                    String sysDesc = lookupSystemDefinition(con, systemCode)
-                            .getDescription();
+					String sysDesc = systemCode;
+					SystemDefinition sd = lookupSystemDefinition(con, systemCode);
+					if (sd != null) {
+						sysDesc = sd.getDescription();
+					}
                     String sysMsg = "[" + sysDesc + "," + sourceLID + "]";
                     throw new ProcessingException(mLocalizer.t("MSC554: Record has been modified by another user " +
                                     "for System Description={0}, LID={1}: {2}", 
@@ -4329,8 +4339,11 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             String toEUID = mQueryHelper.getEUID(con, destSystemKey,
                     SystemObject.STATUS_ACTIVE);
             if (toEUID == null) {
-                String sysDesc = lookupSystemDefinition(con, systemCode)
-                        .getDescription();
+                String sysDesc = systemCode;
+				SystemDefinition sd = lookupSystemDefinition(con, systemCode);
+				if (sd != null) {
+					sysDesc = sd.getDescription();
+				}
                 String sysMsg = "[" + sysDesc + "," + destLID + "]";
                 throw new ProcessingException(mLocalizer.t("MSC555: Destination system record not found " +
                                     "for System Description={0}, LID={1}", 
@@ -4492,8 +4505,11 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
 
             String fromEUID = mQueryHelper.getEUID(con, sourceSystemKey);
             if (fromEUID == null) {
-                String sysDesc = lookupSystemDefinition(con, systemCode)
-                        .getDescription();
+                String sysDesc = systemCode;
+				SystemDefinition sd = lookupSystemDefinition(con, systemCode);
+				if (sd != null) {
+					sysDesc = sd.getDescription();
+				}
                 String sysMsg = "[" + sysDesc + "," + sourceLID + "]";
                 throw new ProcessingException(mLocalizer.t("MSC561: Source system record not found " +
                                     "for System Description={0}, LID={1}", 
@@ -4515,8 +4531,11 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                     errMsg = "Source system status unrecognized: ";
                 }
                 if (errMsg != null) {
-                    String sysDesc = lookupSystemDefinition(con, systemCode)
-                            .getDescription();
+					String sysDesc = systemCode;
+					SystemDefinition sd = lookupSystemDefinition(con, systemCode);
+					if (sd != null) {
+						sysDesc = sd.getDescription();
+					}
                     String sysMsg = "[" + sysDesc + "," + sourceLID + "]";
                     throw new ProcessingException(mLocalizer.t("MSC557: System records could not be unmerged. " +
                                     "Record has been modified by another user " +
@@ -4528,8 +4547,11 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             String toEUID = mQueryHelper.getEUID(con, destSystemKey,
                     SystemObject.STATUS_ACTIVE);
             if (toEUID == null) {
-                String sysDesc = lookupSystemDefinition(con, systemCode)
-                        .getDescription();
+                String sysDesc = systemCode;
+				SystemDefinition sd = lookupSystemDefinition(con, systemCode);
+				if (sd != null) {
+					sysDesc = sd.getDescription();
+				}
                 String sysMsg = "[" + sysDesc + "," + destLID + "]";
                 throw new ProcessingException(mLocalizer.t("MSC558: System records could not be unmerged. " +
                                     "Destination system record not found for " +
@@ -5316,8 +5338,11 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
         if (fromEUID == null) {
             String status = mQueryHelper.getSOStatus(con, sourceSystemKey);
             String errMsg = null;
-            String sysDesc = lookupSystemDefinition(con,
-                    sourceSystemKey.systemCode).getDescription();
+            String sysDesc = sourceSystemKey.systemCode;
+			SystemDefinition sd = lookupSystemDefinition(con, sourceSystemKey.systemCode);
+			if (sd != null) {
+				sysDesc = sd.getDescription();
+			}
             String lid = sourceSystemKey.lID;
             String sysMsg = "[" + sysDesc + "," + lid + "]";
 
@@ -5341,8 +5366,11 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
         if (toEUID == null) {
             String status = mQueryHelper.getSOStatus(con, destinationSystemKey);
             String errMsg = null;
-            String sysDesc = lookupSystemDefinition(con,
-                    destinationSystemKey.systemCode).getDescription();
+            String sysDesc = destinationSystemKey.systemCode;
+			SystemDefinition sd = lookupSystemDefinition(con, destinationSystemKey.systemCode);
+			if (sd != null) {
+				sysDesc = sd.getDescription();
+			}
             String lid = destinationSystemKey.lID;
             String sysMsg = "[" + sysDesc + "," + lid + "]";
             if (status == null) {
@@ -5360,8 +5388,11 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                                         "Record has been modified by another user: {0}", errMsg));
         }
         if (sourceSystemKey.equals(destinationSystemKey)) {
-            String sysDesc = lookupSystemDefinition(con,
-                    sourceSystemKey.systemCode).getDescription();
+            String sysDesc = sourceSystemKey.systemCode;
+			SystemDefinition sd = lookupSystemDefinition(con, sourceSystemKey.systemCode);
+			if (sd != null) {
+				sysDesc = sd.getDescription();
+			}
             String lid = sourceSystemKey.lID;
             String sysMsg = "[" + sysDesc + "," + lid + "]";
             throw new ProcessingException(mLocalizer.t("MSC572: Could not merge SystemObjects. " +
@@ -5371,8 +5402,11 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
         if (newSO != null) {
             if (!newSO.getSystemCode().equals(destinationSystemKey.systemCode)
                     || !newSO.getLID().equals(destinationSystemKey.lID)) {
-                String sysDesc = lookupSystemDefinition(con,
-                        newSO.getSystemCode()).getDescription();
+				String sysDesc = newSO.getSystemCode();
+				SystemDefinition sd = lookupSystemDefinition(con, newSO.getSystemCode());
+				if (sd != null) {
+					sysDesc = sd.getDescription();
+				}
                 throw new ProcessingException(mLocalizer.t("MSC573: Could not merge SystemObjects. " +
                                         "Destination SystemKey (SystemCode={0}, LID={1}) " +
                                         "does not match the SystemObject (SystemCode={2}, LID={3})",  
@@ -5670,8 +5704,11 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             } catch (ValidationException e) {
                 // Retrieve the system definition and use it for the
                 // error message.
+				String desc = sysCode;
                 SystemDefinition sd = lookupSystemDefinition(con, sysCode);
-                String desc = sd.getDescription();
+				if (sd != null) {
+					desc = sd.getDescription();
+				}
                 throw new ValidationException(mLocalizer.t("MSC580: validateSystemObject() encountered a format validation " + 
                                     "error for SystemDescription={0}, LID={1}: {2}", desc, lid, e));
             }

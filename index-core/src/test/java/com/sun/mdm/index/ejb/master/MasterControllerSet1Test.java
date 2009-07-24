@@ -47,6 +47,7 @@ public class MasterControllerSet1Test extends TestSuite {
         suite.addTestSuite(ExecuteMatch.class);
         suite.addTestSuite(LookupAssumedMatches.class);
         suite.addTestSuite(LookupPotentialDuplicates.class);
+		suite.addTestSuite(LookupSystemDefinitions.class);
         suite.addTestSuite(LookupSystemObjectPKs.class);
         suite.addTestSuite(LookupTransaction.class);
         suite.addTestSuite(LookupTransactions.class);

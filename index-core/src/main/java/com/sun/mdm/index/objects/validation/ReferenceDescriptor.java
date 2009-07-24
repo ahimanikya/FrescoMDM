@@ -115,6 +115,16 @@ public class ReferenceDescriptor implements FieldValidator {
      * @throws ValidationException InvalidReferencedCode
      */
     public void validate(ObjectField field, boolean newObject) throws ValidationException {
+	
+		// check if the Code Registry has been changed
+		if (!mCodeRegistry.isCurrent()) {
+			try {
+				mCodeRegistry = CodeRegistry.getInstance();
+			} catch (CodeLookupException e) {
+				mLogger.warn(mLocalizer.x("OBJ040: Code registry could not be retrieved: {0}", e));
+			}
+		}
+
         if (field == null) {
             throw new NullObjectException(mLocalizer.t("OBJ718: The field parameter " + 
                                         "cannot be null."));

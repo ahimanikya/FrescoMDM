@@ -95,7 +95,8 @@ public class UserCodeValidator implements FieldValidator {
             return;
         }
 
-        if (mUserCodeRegistry == null) {
+		// Check if we have the latest User Code Registry
+        if (mUserCodeRegistry == null || !mUserCodeRegistry.isCurrent()) {
             try {
                 mUserCodeRegistry = UserCodeRegistry.getInstance();
             } catch (CodeLookupException e) {

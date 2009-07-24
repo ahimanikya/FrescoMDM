@@ -932,6 +932,8 @@ public class EViewGeneratorTask extends Task {
                 + "/src/java/com/sun/mdm/index/ejb";
         String path = ejbFilePath + "/codelookup/CodeLookupEJB.java";
         files.add(path);
+        path = ejbFilePath + "/codelookup/SystemLookupEJB.java";
+        files.add(path);
         path = ejbFilePath + "/codelookup/UserCodeLookupEJB.java";
         files.add(path);
         path = ejbFilePath + "/master/MasterControllerEJB.java";

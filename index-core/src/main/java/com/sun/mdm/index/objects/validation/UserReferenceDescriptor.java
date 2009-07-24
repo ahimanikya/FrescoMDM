@@ -115,6 +115,16 @@ public class UserReferenceDescriptor implements FieldValidator {
      * @throws ValidationException InvalidReferencedCode
      */
     public void validate(ObjectField field, boolean newObject) throws ValidationException {
+
+		// Check if there has been a change to the User Code Registry
+		if (!mUserCodeRegistry.isCurrent()) {
+			try {
+				mUserCodeRegistry = UserCodeRegistry.getInstance();
+			} catch (CodeLookupException e) {
+				mLogger.warn(mLocalizer.x("OBJ041: User code registry could not be retrieved: {0}", e));
+			}
+        }
+
         if (field == null) {
             throw new NullObjectException(mLocalizer.t("OBJ739: Object field " + 
                                         "cannot be null."));

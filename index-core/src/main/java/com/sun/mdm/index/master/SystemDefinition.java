@@ -28,7 +28,7 @@ import java.util.Date;
  * external systems sharing data with the master index application. This
  * information is stored in the sbyn_systems database table.
  */
-public class SystemDefinition implements java.io.Serializable {
+public class SystemDefinition implements java.io.Serializable, Cloneable, Comparable<SystemDefinition> {
 
     private String mSystemCode;
     private String mDescription;
@@ -364,4 +364,32 @@ public class SystemDefinition implements java.io.Serializable {
          + "," + mUpdateDate + "," + mUpdateUserId + "]";
     }
 
+	/**
+	 * Clone the current SystemDefinition object
+	 * @return a copy of the current SystemDefinition object
+	 */
+	public Object clone() {
+		SystemDefinition sd = new SystemDefinition();
+		sd.setSystemCode(mSystemCode);
+		sd.setDescription(mDescription);
+		sd.setStatus(mStatus);
+		sd.setIdLength(mIdLength);
+		sd.setFormat(mFormat);
+		sd.setInputMask(mInputMask);
+		sd.setValueMask(mValueMask);
+		sd.setCreateDate(mCreateDate);
+		sd.setCreateUserId(mCreateUserId);
+		sd.setUpdateDate(mUpdateDate);
+		sd.setUpdateUserId(mUpdateUserId);
+		return sd;
+	}
+	
+	/**
+	 * Compare with the current SystemDefinition
+	 * @param obj SystemDefinition to compare to
+	 * @return negative, zero, or positive when less than, equal, or greater than the compared object
+	 */
+	public int compareTo(SystemDefinition obj) {
+		return mSystemCode.compareTo(obj.getSystemCode());
+	}
 }
