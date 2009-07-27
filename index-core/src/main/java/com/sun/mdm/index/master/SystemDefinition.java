@@ -22,6 +22,7 @@
  */
 package com.sun.mdm.index.master;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 /**
  * The <b>SystemDefinition</b> class represents the information about the
@@ -35,6 +36,7 @@ public class SystemDefinition implements java.io.Serializable, Cloneable, Compar
     private String mStatus;
     private int mIdLength;
     private String mFormat;
+	private Pattern mPattern;
     private String mInputMask;
     private String mValueMask;
     private Date mCreateDate;
@@ -112,6 +114,19 @@ public class SystemDefinition implements java.io.Serializable, Cloneable, Compar
      */
     public String getFormat() {
         return mFormat;
+    }
+    /**
+     * Retrieves the compiled format of the local IDs assigned by the system
+     * represented in a SystemDefinition object.
+     * <p>
+     * <DL><DT><B>Parameters:</B><DD>None.</DL>
+     * @return <CODE>Pattern</CODE> - The compiled local ID format of the system
+     * in the SystemDefinition object.
+     * <DT><B>Throws:</B><DD>None.
+     * @include
+     */
+    public Pattern getPattern() {
+        return mPattern;
     }
     /**
      * Retrieves the input mask defined for the local IDs assigned by the
@@ -252,6 +267,11 @@ public class SystemDefinition implements java.io.Serializable, Cloneable, Compar
      */
     public void setFormat(String format) {
         mFormat = format;
+		if (mFormat != null) {
+			mPattern = Pattern.compile(format);
+		} else {
+			mPattern = null;
+		}
     }
     /**
      * Sets the local ID input mask for the system represented in a
