@@ -24,6 +24,7 @@ package com.sun.mdm.index.dataobject.validation;
 
 import java.util.Hashtable;
 
+import java.util.regex.Pattern;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,7 +37,6 @@ import com.sun.mdm.index.objects.ObjectNode;
 import com.sun.mdm.index.objects.exception.ObjectException;
 import com.sun.mdm.index.objects.validation.exception.ValidationException;
 import com.sun.mdm.index.objects.validation.ObjectValidator;
-import com.sun.mdm.index.objects.validation.LocalIdValidator.LocalIdDefinition;
 import com.sun.mdm.index.objects.metadata.MetaDataService;
 
 import com.sun.mdm.index.loader.config.ValidationConfiguration;
@@ -71,9 +71,7 @@ public class LocalIdValidator implements ObjectValidator {
      */
     public void add(String systemId, String systemDescription, int idLength, String idFormat) {
     	
-    	com.sun.mdm.index.objects.validation.LocalIdValidator x = 
-    		new com.sun.mdm.index.objects.validation.LocalIdValidator(); 
-    	LocalIdDefinition localIdDefinition = x.new LocalIdDefinition(systemId, systemDescription, idLength, idFormat);
+    	LocalIdDefinition localIdDefinition = new LocalIdDefinition(systemId, systemDescription, idLength, idFormat);
     	localIdDefinitions.put(systemId, localIdDefinition);    	
     }
 
@@ -99,9 +97,7 @@ public class LocalIdValidator implements ObjectValidator {
                     lenId = MAXIMUM_LOCALID_LENGTH;
                  }
                  String format = rs.getString(4);
-                 com.sun.mdm.index.objects.validation.LocalIdValidator x = 
-             		new com.sun.mdm.index.objects.validation.LocalIdValidator();                  
-                 LocalIdDefinition localIdDefinition = x.new LocalIdDefinition(systemId, description, lenId, format);
+                 LocalIdDefinition localIdDefinition = new LocalIdDefinition(systemId, description, lenId, format);
                  localIdDefinitions.put(systemId, localIdDefinition);
              }
              rs.close();
@@ -155,5 +151,61 @@ public class LocalIdValidator implements ObjectValidator {
         }
         localIdDefinition.validate(id);		
 	}
-	
+    public class LocalIdDefinition {
+        private int localIddLength;
+        private String systemId;
+        private String systemDescr;
+        private String format = null;
+        private Pattern pattern = null;
+
+        public LocalIdDefinition(String systemId, String systemDescr, int len, String format) {
+            this.systemId = systemId;
+            this.systemDescr = systemDescr;
+            this.localIddLength = len;
+            this.format = format;
+            if (format != null) {
+                this.pattern = Pattern.compile(format);
+            }
+        }
+
+        String getSystemDescription() {
+            return systemDescr;
+        }
+
+        String getSystemId() {
+            return systemId;
+        }
+        
+        String getFormat() {
+            return format;
+        }
+        
+        int getIdLen() {
+            return localIddLength;
+        }
+
+        public void validate(String id) throws ValidationException {
+
+            if (id.length() > localIddLength) {
+                throw new ValidationException(systemId, systemDescr, format, id, 
+                                    localizer.t("OBJ675: The value " + 
+                                    "of the Local ID ({0}) does not conform " + 
+                                    "to the format of the Local ID for {1}, " +
+                                    "which is this pattern \"{2}\" - [maximum ID length exceeded]", 
+                                    id, systemDescr, format));
+            }
+            
+            if (pattern != null) {
+                if (!pattern.matcher(id).matches()) {
+                    throw new ValidationException(systemId, systemDescr, format ,id,
+                                        localizer.t("OBJ676: The value " + 
+                                        "of the Local ID ({0}) does not conform " + 
+                                        "to the format of the Local ID for {1}, " +
+                                        "which is this pattern \"{2}\"", 
+                                        id, systemDescr, format));
+                }
+            }
+                
+        }
+    }	
 }
