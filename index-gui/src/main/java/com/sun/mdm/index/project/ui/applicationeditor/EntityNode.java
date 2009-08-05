@@ -101,6 +101,7 @@ public class EntityNode extends DefaultMutableTreeNode {
     EntityTree mEntityTree = null;
     FieldDef mFieldDef = null;
     EDMType mEdmType = null;
+    static String mDatabase = "";
     EviewEditorMainApp mEviewEditorMainApp;
     EviewApplication mEviewApplication;
     
@@ -130,6 +131,7 @@ public class EntityNode extends DefaultMutableTreeNode {
         mEviewApplication = entityTree.getEviewApplication();
         try {
             mEdmType = mEviewApplication.getEDMType(false);
+            mDatabase = mEviewApplication.getEIndexObject(false).getDataBase();
         } catch (Exception ex) {
             mLog.severe(ex.getMessage());
         }
@@ -963,7 +965,7 @@ public class EntityNode extends DefaultMutableTreeNode {
             DialogDisplayer.getDefault().notify(desc);
             return false;
         }
-        if (value.length() > 20) {
+        if (value.length() > 20 && !mDatabase.equalsIgnoreCase("MySQL")) {
             Toolkit.getDefaultToolkit().beep();
             String prompt = NbBundle.getMessage(EntityNode.class, "MSG_Long_Field_Name", value);
             desc = new NotifyDescriptor.Message(prompt);
