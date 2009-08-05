@@ -145,6 +145,7 @@ public class DefineDeploymentPanel implements WizardDescriptor.Panel {
         WizardDescriptor wiz = (WizardDescriptor) settings;
 
         try {
+            Properties.setDatabase(mComponent.getDatabase());
             wiz.putProperty(Properties.PROP_DATABASE, mComponent.getDatabase());
             matchEngine = mComponent.getMatchEngine();
             wiz.putProperty(Properties.PROP_MATCH_ENGINE, matchEngine);

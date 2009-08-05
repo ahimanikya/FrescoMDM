@@ -22,6 +22,10 @@
  */
 package com.sun.mdm.index.project.ui.wizards;
 
+import org.openide.util.NbBundle;
+import org.openide.NotifyDescriptor;
+import org.openide.DialogDisplayer;
+import java.awt.Toolkit;
 
 /**
  * Wizard properties.
@@ -74,5 +78,53 @@ public abstract class Properties {
     public static final String PROP_AUTO_GENERATE = "No";
     
     public static final String SERVER_INSTANCE_ID = "serverInstanceID"; //NOI18N
+
+    private static String mDatabase;
+
+    public static void setDatabase(String database) {
+        mDatabase = database;
+    }
     
+    public static String getDatabase() {
+        return mDatabase;
+    }
+
+    public static boolean checkNodeNameValue(String value) {
+        boolean bRet = true;
+        NotifyDescriptor desc;
+        if (value.length() == 0) {
+            Toolkit.getDefaultToolkit().beep();
+
+            desc = new NotifyDescriptor.Message(NbBundle.getMessage(Properties.class, "MSG_Name_Cannot_Be_Empty"));
+            desc.setMessageType(NotifyDescriptor.ERROR_MESSAGE);
+            desc.setTitle("Error");
+            desc.setTitle(NbBundle.getMessage(Properties.class, "MSG_Error"));
+            DialogDisplayer.getDefault().notify(desc);
+            return false;
+        }
+        if (value.length() > 20 && !mDatabase.equalsIgnoreCase("MySQL")) {
+            Toolkit.getDefaultToolkit().beep();
+            String prompt = NbBundle.getMessage(Properties.class, "MSG_Long_Field_Name", value);
+            desc = new NotifyDescriptor.Message(prompt);
+            desc.setMessageType(NotifyDescriptor.WARNING_MESSAGE);
+            desc.setTitle(NbBundle.getMessage(Properties.class, "MSG_Warning"));
+            DialogDisplayer.getDefault().notify(desc);
+        }
+
+        for (int i = 0; i < value.length(); i++) {
+            char c = value.charAt(i);
+            if (!Character.isLetterOrDigit(c) && c != '-' && c != '_' || c == ' ') {
+                Toolkit.getDefaultToolkit().beep();
+                String msgC = "" + c;
+                String msg = NbBundle.getMessage(Properties.class, "MSG_Invalid_Character", msgC);
+                desc = new NotifyDescriptor.Message(msg);
+                desc.setMessageType(NotifyDescriptor.ERROR_MESSAGE);
+                desc.setTitle(NbBundle.getMessage(Properties.class, "MSG_Error"));
+                DialogDisplayer.getDefault().notify(desc);
+                bRet = false;
+                break;
+            }
+        }
+        return bRet;
+    }
 }

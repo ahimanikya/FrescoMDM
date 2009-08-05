@@ -975,7 +975,7 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
         }
         */
         
-        if (value.length() > 20) {
+        if (value.length() > 20 && !(Properties.getDatabase().equalsIgnoreCase("mysql"))) {
             Toolkit.getDefaultToolkit().beep();
 
             NotifyDescriptor d = new NotifyDescriptor.Message("\"" +

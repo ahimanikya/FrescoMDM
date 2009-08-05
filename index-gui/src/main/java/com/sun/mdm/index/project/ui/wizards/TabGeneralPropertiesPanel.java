@@ -76,7 +76,7 @@ public class TabGeneralPropertiesPanel extends javax.swing.JPanel {
 
                 public void focusLost(java.awt.event.FocusEvent ev) {
                     String newName = txtName.getText();
-                    if (!oldName.equals(newName) && com.sun.mdm.index.project.ui.applicationeditor.EntityNode.checkNodeNameValue(newName)) {
+                    if (!oldName.equals(newName) && Properties.checkNodeNameValue(newName)) {
                         txtName.setText(newName);
                         mEntityNode.setNodeName(newName);
                     }
