@@ -425,11 +425,13 @@ import java.util.Date;
             + "from \n" 
             + "    sbyn_transaction \n" 
             + "where \n" 
-            + "    transactionnumber in (select transactionnumber from sbyn_transaction\n"
-			+ "        where euid = ? and timestamp >= to_timestamp(?, 'YYYY-MM-DD HH24.MI.SSXFF') )\n" 
-			+ "or \n"
-            + "    transactionnumber in (select transactionnumber from sbyn_transaction\n"
-			+ "        where euid2 = ? and timestamp >= to_timestamp(?, 'YYYY-MM-DD HH24.MI.SSXFF') )\n" 
+            + "    transactionnumber in (\n"
+			+ "        select transactionnumber from sbyn_transaction\n"
+			+ "        where euid = ? and timestamp >= to_timestamp(?, 'YYYY-MM-DD HH24.MI.SSXFF')\n" 
+			+ "        union \n"
+            + "        select transactionnumber from sbyn_transaction\n"
+			+ "        where euid2 = ? and timestamp >= to_timestamp(?, 'YYYY-MM-DD HH24.MI.SSXFF')\n"
+            + "	       )\n" 
             + "order by \n" 
             + "    timestamp, transactionnumber \n");
     }
