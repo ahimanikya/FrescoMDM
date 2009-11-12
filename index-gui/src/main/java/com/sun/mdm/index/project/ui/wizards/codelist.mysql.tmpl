@@ -8,8 +8,8 @@ create procedure codelist()
 modifies SQL data
 codelist: begin 
     declare v_objtype       varchar(1);
-    declare v_code          varchar(8);
-    declare v_descr         varchar(50);
+    declare v_code          varchar(40);
+    declare v_descr         varchar(255);
     declare v_appl_id	    int;
     declare v_header_seq    int;
     declare v_detail_seq    int;
@@ -29,8 +29,8 @@ codelist: begin
 
     create temporary table tCodelist (
 	objtype varchar(1) not null, 
-	code varchar(8) not null,
-	descr varchar(50) not null);
+	code varchar(40) not null,
+	descr varchar(255) not null);
 </header>
 <repeat>
     -- ****   $<module-comment>   ****

@@ -19,8 +19,8 @@ GO
 CREATE TABLE SBYN_USER_CODE
 (
     CODE_LIST		varchar(20)	NOT NULL,
-    CODE			varchar(20)	NOT NULL,
-    DESCR			varchar(50)	NOT NULL,
+    CODE			varchar(40)	NOT NULL,
+    DESCR			varchar(255)	NOT NULL,
     FORMAT			varchar(60)	NULL    ,
     INPUT_MASK		varchar(60)	NULL    ,
     VALUE_MASK		varchar(60)	NULL    ,
@@ -185,8 +185,8 @@ CREATE TABLE SBYN_COMMON_HEADER
 (
     COMMON_HEADER_ID         numeric(10)            NOT NULL,
     APPL_ID                  numeric(10)            NOT NULL,
-    CODE                     varchar(8)             NOT NULL,
-    DESCR                    varchar(50)            NOT NULL,
+    CODE                     varchar(40)             NOT NULL,
+    DESCR                    varchar(255)            NOT NULL,
     READ_ONLY                char(1)                DEFAULT 'N' NOT NULL,
     MAX_INPUT_LEN            numeric(10)            DEFAULT 1 NOT NULL,
     TYP_TABLE_CODE           varchar(3)             NOT NULL,
@@ -206,8 +206,8 @@ CREATE TABLE SBYN_COMMON_DETAIL
     COMMON_DETAIL_ID         numeric(10)            NOT NULL
         CONSTRAINT CHK_COMMON_DETAIL_ID CHECK (COMMON_DETAIL_ID >= 0),
     COMMON_HEADER_ID         numeric(10)            NOT NULL,
-    CODE                     varchar(20)            NOT NULL,
-    DESCR                    varchar(50)            NOT NULL,
+    CODE                     varchar(40)            NOT NULL,
+    DESCR                    varchar(255)            NOT NULL,
     READ_ONLY                char(1)                DEFAULT 'N' NOT NULL
         CONSTRAINT CHK_SBYN_COMMON_DETAIL CHECK (READ_ONLY IN ('Y','N')),
     CREATE_DATE              datetime               NOT NULL,

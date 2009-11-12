@@ -5,8 +5,8 @@
 
 declare @codelist table(
     objtype varchar(1) not null, 
-    code varchar(8) not null,
-    descr varchar(50) not null
+    code varchar(40) not null,
+    descr varchar(255) not null
 )
 
 -- declare cursor to loop
@@ -19,8 +19,8 @@ select * from @codelist
 -- temporary variables
 
 declare @v_objtype varchar(1),
-              @v_code varchar(8),
-              @v_descr varchar(50),
+              @v_code varchar(40),
+              @v_descr varchar(255),
               @v_appl_id int,
               @v_header_seq int,
               @v_detail_seq int,
