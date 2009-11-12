@@ -853,6 +853,13 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
     public String validateEntityTree() {
         String msg = "Success";
         EntityNode primaryNode = (EntityNode) mRootNode.getChildAt(0);
+        if (primaryNode != null && primaryNode.getName() != null) {
+            char ch = primaryNode.getName().charAt(0);
+            if (Character.isDigit(ch)) {
+                msg = "Primary object node \"" + primaryNode.getName() + "\" starts with a digit!";                
+                return msg;
+            }
+        }              
         int cnt = primaryNode.getChildCount();
 	    if (cnt > 0) {
             EntityNode fieldNode = (EntityNode) primaryNode.getChildAt(0);
@@ -862,11 +869,17 @@ public class DefineEntityVisualPanel extends javax.swing.JPanel
                 boolean foundOneMatchType = false;
                 for (int i = 0; i < cnt; i++) {
                     EntityNode objNode = (EntityNode) primaryNode.getChildAt(i);
+                    if (objNode.isSub()) {
+                        char ch = objNode.getName().charAt(0);
+                        if (Character.isDigit(ch)) {
+                            msg = "Object node \"" + objNode.getName() + "\" starts with a digit!";                
+                            break;
+                        }
+                    }                    
                     if (objNode.isSub() && objNode.getChildCount() <= 0) {
                         msg = "Object node \"" + objNode.getName() + "\" contains no fields!";
                         break;
                     }
-                    
                     //if the node is sub node,check to make sure that sub node has at last one match type
                     if (objNode.isSub()) {
                         //for child sub node
