@@ -423,7 +423,8 @@ String reportType = (String)request.getAttribute("frequency");
 					rowsPerPage    : 10, // REQUIRED
 					totalRecords   : <%=results.size()%> //, // OPTIONAL
 					//template       : "{PageLinks} Show {RowsPerPageDropdown} per page"
-				})     
+				}),
+				resizable : true     
 			};
 			var myColumnDefs = <%=myColumnDefs.toString().length() == 0?"\""+ "\"":myColumnDefs.toString()%>;
 			var myDataTable = new YAHOO.widget.DataTable("myMarkedUpContainer<%=divId%>", myColumnDefs, myDataSource,myConfigs);

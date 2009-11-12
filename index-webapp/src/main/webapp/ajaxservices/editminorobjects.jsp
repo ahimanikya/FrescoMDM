@@ -166,10 +166,12 @@ boolean isDelete = (null == deleteIndex?false:true);
 String minorObjSave = request.getParameter("minorObjSave");
 boolean isminorObjSave = (null == minorObjSave?false:true);
 
-
 //Variables required for Edit
 String editIndex = request.getParameter("editIndex");
 boolean isEdit = (null == editIndex?false:true);
+
+//Variable for display long field value, fix for long string value display
+String displayFieldValue = "";
 
 //Variables for Validate LID
 String validate = request.getParameter("validate");
@@ -574,7 +576,18 @@ while(parameterNames.hasMoreElements() && !isLoad && !isEdit && !isValidate && !
 												  <%if (fcArray[k].getUserCode() != null){%> <!-- if it has user defined value list-->
 													 <%=ValidationService.getInstance().getUserCodeDescription(fcArray[k].getUserCode(), (String) minorObjectMap.get(fcArray[k].getFullFieldName()))%>
 												  <%}else{%>
-													<%=ValidationService.getInstance().getDescription(fcArray[k].getValueList(), (String) minorObjectMap.get(fcArray[k].getFullFieldName()))%>
+												  
+													<!-- start fix for long string value display -->	
+													<% String fieldValue = ValidationService.getInstance().getDescription(fcArray[k].getValueList(), (String) minorObjectMap.get(fcArray[k].getFullFieldName()));
+														 if (fieldValue != null && fieldValue.length()>20) {
+														 		 displayFieldValue = fieldValue.substring(0,20);
+														 } else  {
+														     displayFieldValue = fieldValue;
+														 }
+													%>
+					   					   <%=displayFieldValue%><a href="javascript:void(0)" style="color:blue;font-weight:bold;text-decoration:none;" title="<%=fcArray[k].getFullFieldName()%>:  <%=fieldValue%>">&nbsp&nbsp&nbsp&nbsp...</a>
+													<!-- end fix for long string value display -->	
+													
 												 <%}%>
 											   <%} else {%> <!-- In other cases-->
 											   <%

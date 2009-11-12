@@ -86,10 +86,13 @@
  String cal_today_text = bundle.getString("cal_today_text");
  String cal_month_text = bundle.getString("cal_month_text");
  String cal_year_text = bundle.getString("cal_year_text");
- String  dateFormat = ConfigManager.getDateFormat();
+ String dateFormat = ConfigManager.getDateFormat();
+ String rootFieldValue="";
+ String descriptionValue ="";
 %>
+<!-- fix for long string value display -->
 
- <%
+<%
  double rand = java.lang.Math.random();
 String URI = request.getRequestURI();
 URI = URI.substring(1, URI.lastIndexOf("/"));
@@ -193,8 +196,17 @@ boolean isSessionActive = true;
 							<%if(rootFieldValuesMap.get(fieldConfigMap.getFullFieldName()) != null && systemObjectAsHashMap.get("hasSensitiveData") != null && fieldConfigMap.isSensitive() && !operations.isField_VIP()){%>   
 							   <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
 							<%}else{%>
-							   <%=(rootFieldValuesMap.get(fieldConfigMap.getFullFieldName())) != null ? rootFieldValuesMap.get(fieldConfigMap.getFullFieldName()) : "&nbsp"%>
-							 <%}%>
+							     <!-- fix for long string value display -->
+									 <%rootFieldValue = rootFieldValuesMap.get(fieldConfigMap.getFullFieldName()) != null ? rootFieldValuesMap.get(fieldConfigMap.getFullFieldName()).toString() : null;%>
+									 <%if(rootFieldValue != null && rootFieldValue.length()>20){
+								   		 String rootFieldValueHead = rootFieldValue.substring(0,20);
+ 								   %>
+								   <%=rootFieldValueHead%><a href="javascript:void(0)" style="color:blue;font-weight:bold;text-decoration:none;" title="<%=fieldConfigMap.getDisplayName()%>: <%=rootFieldValue%>">&nbsp&nbsp&nbsp&nbsp...</a>
+							     <%}else{%>
+							     <%=(rootFieldValuesMap.get(fieldConfigMap.getFullFieldName())) != null ? rootFieldValuesMap.get(fieldConfigMap.getFullFieldName()) : "&nbsp"%>
+									 <%}%>
+									 <!-- fix for long string value display -->
+							<%}%>
 						</td>
 					 </tr>
 				   <%}%>
@@ -239,36 +251,45 @@ boolean isSessionActive = true;
 					  <%}%>
 
 					 <tr class="<%=styleClass%>">
-						<% for(int k=0;k<fieldConfigArrayMinor.length;k++) {%>
+						<%for(int k=0;k<fieldConfigArrayMinor.length;k++){%>
 						  <td>
 						  <%if(minorObjectMap.get(fieldConfigArrayMinor[k].getFullFieldName()) != null ) {%>  <!--if has value-->
-							<%if( systemObjectAsHashMap.get("hasSensitiveData") != null &&  fieldConfigArrayMinor[k].isSensitive() && !operations.isField_VIP()){%>   
-							   <h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
-							<%}else{%>
-								<%if(fieldConfigArrayMinor[k].getValueList() != null) {%> <!-- if the field config has value list-->
-								  <%if (fieldConfigArrayMinor[k].getUserCode() != null){%> <!-- if it has user defined value list-->
-									 <%=ValidationService.getInstance().getUserCodeDescription(fieldConfigArrayMinor[k].getUserCode(), (String) minorObjectMap.get(fieldConfigArrayMinor[k].getFullFieldName()))%>
-								  <%}else{%>
-									<%=ValidationService.getInstance().getDescription(fieldConfigArrayMinor[k].getValueList(), (String) minorObjectMap.get(fieldConfigArrayMinor[k].getFullFieldName()))%>
-								 <%}%>
-							   <%} else {%> <!--minorObjectMap- In other cases-->
-							   <%
-								String value = minorObjectMap.get(fieldConfigArrayMinor[k].getFullFieldName()).toString();   
-								if (fieldConfigArrayMinor[k].getInputMask() != null && fieldConfigArrayMinor[k].getInputMask().length() > 0) {
-								  if (value != null) {
-									 //Mask the value as per the masking 
-									 value = fieldConfigArrayMinor[k].mask(value.toString());
-								   }
-								} 
-								%> 
-								 <%=value%>
-							   <%}%>
- 							 <%}%>
- 						  <%} else {%> <!-- else print &nbsp-->
+								<%if( systemObjectAsHashMap.get("hasSensitiveData") != null &&  fieldConfigArrayMinor[k].isSensitive() && !operations.isField_VIP()){%>   
+							  	<h:outputText  value="#{msgs.SENSITIVE_FIELD_MASKING}" />
+								<%}else{%>
+									<%if(fieldConfigArrayMinor[k].getValueList() != null) {%> <!-- if the field config has value list-->
+								  	<%if (fieldConfigArrayMinor[k].getUserCode() != null){%> <!-- if it has user defined value list-->
+								    		<!-- fix for long string value display -->
+								     		<%descriptionValue = ValidationService.getInstance().getUserCodeDescription(fieldConfigArrayMinor[k].getUserCode(), (String) minorObjectMap.get(fieldConfigArrayMinor[k].getFullFieldName()));%>
+								  	<%}else{%>
+								   			<!-- fix for long string value display -->
+												<%descriptionValue = ValidationService.getInstance().getDescription(fieldConfigArrayMinor[k].getValueList(), (String) minorObjectMap.get(fieldConfigArrayMinor[k].getFullFieldName()));%>								  		   
+								  	<%}%>
+								  	<!-- fix for long string value display -->
+								    <%if(descriptionValue.length()>20) {
+								    		String descriptionValueHead = descriptionValue.substring(0,20);%>
+								      	<%=descriptionValueHead%><a href="javascript:void(0)" style="color:blue;font-weight:bold;text-decoration:none;" title="<%=fieldConfigArrayMinor[k].getDisplayName()%>: <%=descriptionValue%>">&nbsp...</a>
+								    <%}else{%>		  
+									  		<%=descriptionValue%>
+								    <%}%>
+								  	
+							   <%}else{%> <!--minorObjectMap- In other cases-->
+							   		<%String value = minorObjectMap.get(fieldConfigArrayMinor[k].getFullFieldName()).toString();   
+								 		if (fieldConfigArrayMinor[k].getInputMask() != null && fieldConfigArrayMinor[k].getInputMask().length() > 0) {
+								  		if (value != null) {
+									 		//Mask the value as per the masking 
+									 		value = fieldConfigArrayMinor[k].mask(value.toString());
+								  		}
+								 		} 
+								 		%> 
+								 	  <%=value%>
+							 	 <%}%>
+ 							  <%}%>
+ 						  <%}else{%> <!-- else print &nbsp-->
 							&nbsp;
 						  <%}%>
 						  </td>
-					  <% } %>
+					  <%}%>
 					</tr>
  					 <%}%>
 
@@ -512,10 +533,10 @@ boolean isSessionActive = true;
 										</span>
 									  </h:column>
 									<!--Rendering HTML Select Menu List-->
+									<!-- need to fix for long string value display -->
 									<h:column rendered="#{fieldConfigPerAdd.guiType eq 'MenuList' &&  fieldConfigPerAdd.valueType ne 6 && !fieldConfigPerAdd.sensitive}" >
 										<h:selectOneMenu title="#{fieldConfigPerAdd.fullFieldName}"  readonly="#{!fieldConfigPerAdd.updateable}"
-										                 onchange="javascript:unsavedRootNodeValues='true';
-										 				 hideDivs('activeHeaders');showDivs('inactiveHeaders');"
+										                 onchange="javascript:unsavedRootNodeValues='true'; hideDivs('activeHeaders');showDivs('inactiveHeaders');"
 														 value="#{SourceAddHandler.newSOHashMap['SYSTEM_OBJECT_EDIT'][fieldConfigPerAdd.fullFieldName]}">
 											<f:selectItem itemLabel="" itemValue="" />
 											<f:selectItems  value="#{fieldConfigPerAdd.selectOptions}"  />

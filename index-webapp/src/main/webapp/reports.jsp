@@ -146,7 +146,7 @@ if(session!=null ){
         <body class="yui-skin-sam">
              <% Operations operations=new Operations();%>
              <%@include file="./templates/header.jsp"%>
-            <div id="mainContent" style="overflow:hidden;">                 
+            <div id="mainContent" style="overflow:scroll;">                 
             <div id="reports">
                         <!--td><%=(String)request.getAttribute("tabName")%></td-->
                               <%
