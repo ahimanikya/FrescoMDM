@@ -33,6 +33,19 @@ import com.sun.mdm.index.objects.EnterpriseObject;
  * automatically checks the Threshold configuration file for the name of the custom
  * plug-ins that contain these custom processing methods. If no custom plug-ins are
  * defined, the value for each method defaults to false.
+ * <p>
+ * The Threshold configuration file allows for <b>two</b> custom plug-ins for this class.
+ * The plug-ins are used by different methods in the <b>MasterController</b> class. The GUI
+ * plug-in is used by the following <b>MasterController</b> methods:
+ * <ul>
+ * <li>executeMatchGui()
+ * <li>executeMatchUpdate()
+ * <li>executeMatchUpdateDupRecalc()
+ * </ul><p>
+ * All other methods will use the other defined plug-in. If the same behavior is required in
+ * all cases for any particular method in this class, then that method in both defined plug-ins
+ * should be the same. If the same behavior is required for all methods, then set both
+ * plug-ins to the same class.
  */
 public class ExecuteMatchLogics {
 
@@ -129,6 +142,25 @@ public class ExecuteMatchLogics {
      * @include
      */
     public boolean rejectAssumedMatch(SystemObject so, EnterpriseObject eo) throws CustomizationException {
+        return false;
+    }
+	
+    /**
+     * Specifies to the execute match method on whether to reject a potential duplicate
+     * after examining the record that is to be a potential duplicate.
+     * <p> 
+     * @param euid The EUID of the record that is being matched.
+     * @param so The single best record of the EUID that is being matched.
+     * @param potdupeuid The EUID of the potential duplicate.
+     * @param weight The weight of the potential duplicate.
+     * @return <CODE>boolean</CODE> - An indicator of whether to reject the potential
+     * duplicate. Specify true to reject assumed matches;
+     * otherwise, specify false.
+     * @exception CustomizationException Thrown if there is an error in the custom
+     * processing.
+     * @include
+     */
+    public boolean rejectPotentialDuplicate(String euid, SystemObject so, String potdupeuid, double weight) throws CustomizationException {
         return false;
     }
 }

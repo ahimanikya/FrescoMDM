@@ -95,6 +95,7 @@ import com.sun.mdm.index.master.search.transaction.TransactionIterator;
 import com.sun.mdm.index.master.search.transaction.TransactionSearchObject;
 import com.sun.mdm.index.master.search.transaction.TransactionSummary;
 import com.sun.mdm.index.master.UserException;
+import com.sun.mdm.index.master.CustomizationException;
 import com.sun.mdm.index.master.ExecuteMatchLogics;
 import com.sun.mdm.index.matching.MatchEngineController;
 import com.sun.mdm.index.matching.MatchEngineControllerFactory;
@@ -832,7 +833,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
 
             SBR mergedSBR = afterEO.getSBR();
             findInsertDuplicates(con, afterEO.getEUID(), transId, mergedSBR,
-                    null);
+                    null, null);
 
             mOutBoundSender.send(OutBoundMessages.REA, result
                     .getTransactionResult().getTMID(), eo);
@@ -1103,7 +1104,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             if (checkDups) {
                 euid = eo.getEUID();
                 String transId = result.getTransactionResult().getTMID();
-                findInsertDuplicates(con, euid, transId, eo.getSBR(), null);
+                findInsertDuplicates(con, euid, transId, eo.getSBR(), null, null);
             }
             
             mOutBoundSender.send(OutBoundMessages.ADD, result
@@ -1653,7 +1654,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                                     .getEnterpriseObject1();
                             if (performPessimistic.booleanValue() == true) {
                                 potDups = execPessimistic(con, euid, transId,
-                                        beforeMatchFields, afterEO, null);
+                                        beforeMatchFields, afterEO, null, userLogics);
                             }
                             Object[] afterMatchFields = mMatchFieldChange
                                     .getMatchFields(afterEO);
@@ -1781,7 +1782,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                                     if (performPessimistic.booleanValue() == true) {
                                         potDups = execPessimistic(con, euid,
                                                 transId, beforeMatchFields,
-                                                afterEO, null);
+                                                afterEO, null, userLogics);
                                     }
                                     mAssumedMatchMgr.addAssumedMatch(con,
                                             assumedMatch, sysObj
@@ -1815,7 +1816,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                     DecisionMakerStruct[] dmsArray = dmr
                             .getPotentialDuplicates();
                     if (dmsArray != null) {
-                        potDups = constructPotentialDuplicates(euid, dmsArray);
+                        potDups = constructPotentialDuplicates(euid, outboundSBR, dmsArray, userLogics);
                         mPotDup.addPotentialDuplicates(con, euid, potDups,
                                 transId);
                     }
@@ -2023,7 +2024,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                 newEuid = result.getEnterpriseObject2().getEUID();
                 SBR newSbr = result.getEnterpriseObject2().getSBR();
 
-                findInsertDuplicates(con, newEuid, transId, newSbr, null);
+                findInsertDuplicates(con, newEuid, transId, newSbr, null, null);
 
                 EnterpriseObject origEO = result.getEnterpriseObject1();
                 if (mLogger.isLoggable(Level.FINE)) {
@@ -4109,7 +4110,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
 
                 SBR mergedSBR = mergeResult.getSourceEO().getSBR();
                 findInsertDuplicates(con, mergedEUID, transId, mergedSBR,
-                        activeEUID);
+                        activeEUID, null);
                 // Reevaluate duplicates for 'destination' record if
                 // pessimistic mode on
                 if (pessimisticModeEnabled) {
@@ -4238,7 +4239,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
 
                 SBR mergedSBR = mergeResult.getSourceEO().getSBR();
                 findInsertDuplicates(con, mergedEUID, transId, mergedSBR,
-                        activeEUID);
+                        activeEUID, null);
                 // Reevaluate duplicates for 'destination' record if
                 // pessimistic mode on
                 if (pessimisticModeEnabled) {
@@ -4416,7 +4417,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                             mPotDup.deletePotentialDuplicates(con, sourceEO
                                     .getEUID());
                             findInsertDuplicates(con, sourceEO.getEUID(),
-                                    transId, sourceSBR, null);
+                                    transId, sourceSBR, null, null);
                         }
                     } else {
                         if ((sourceEO.getSBR().getStatus() != null)
@@ -4428,7 +4429,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                                             + sourceEO.getEUID());
                             }
                             findInsertDuplicates(con, sourceEO.getEUID(),
-                                    transId, sourceSBR, null);
+                                    transId, sourceSBR, null, null);
                         }
                     }
                 }
@@ -4639,7 +4640,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                             mPotDup.deletePotentialDuplicates(con, sourceEO
                                     .getEUID());
                             findInsertDuplicates(con, sourceEO.getEUID(),
-                                    transId, sourceSBR, null);
+                                    transId, sourceSBR, null, null);
                         }
                     } else {
                         if ((sourceEO.getSBR().getStatus() != null)
@@ -4651,7 +4652,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
                                             + sourceEO.getEUID());
                             }
                             findInsertDuplicates(con, sourceEO.getEUID(),
-                                    transId, sourceSBR, null);
+                                    transId, sourceSBR, null, null);
                         }
                     }
                 }
@@ -5104,8 +5105,12 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
      * 
      * @param euid1
      *            EUID for which list of matches is to be listed a duplicate of.
+	 * @param so
+	 *			  SBR of the EUID
      * @param dmArray
      *            The array of decision maker results
+	 * @param userLogics
+	 *			  Execute match logics class
      * @throws SystemObjectException
      *             An error occured.
      * @throws ObjectException
@@ -5113,16 +5118,26 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
      * @return An array of potential duplicates
      */
     private PotentialDuplicate[] constructPotentialDuplicates(String euid1,
-            DecisionMakerStruct[] dmArray) throws SystemObjectException,
-            ObjectException {
+            SystemObject so, DecisionMakerStruct[] dmArray, ExecuteMatchLogics userLogics)
+			throws SystemObjectException, ObjectException, CustomizationException {
 
-        PotentialDuplicate[] pots = new PotentialDuplicate[dmArray.length];
-        for (int i = 0; i < pots.length; i++) {
-            pots[i] = new PotentialDuplicate();
-            pots[i].setEUID1(euid1);
-            pots[i].setEUID2(dmArray[i].euid);
-            pots[i].setProbability(dmArray[i].weight);
-            pots[i].setDescription(dmArray[i].comment);
+		if (userLogics == null) {
+			userLogics = mUserLogics;
+		}
+		ArrayList potDups = new ArrayList(dmArray.length);
+		for (int i = 0; i < dmArray.length; i++) {
+			if (!userLogics.rejectPotentialDuplicate(euid1, so, dmArray[i].euid, dmArray[i].weight)) {
+				PotentialDuplicate pd = new PotentialDuplicate();
+				pd.setEUID1(euid1);
+				pd.setEUID2(dmArray[i].euid);
+				pd.setProbability(dmArray[i].weight);
+				pd.setDescription(dmArray[i].comment);
+				potDups.add(pd);
+			}
+		}
+        PotentialDuplicate[] pots = new PotentialDuplicate[potDups.size()];
+        for (int i = 0; i < potDups.size(); i++) {
+			pots[i] = (PotentialDuplicate) potDups.get(i);
         }
         return pots;
     }
@@ -5132,10 +5147,14 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
      * 
      * @param euid1
      *            EUID for which list of matches is to be listed a duplicate of.
+	 * @param so
+	 *			  The SBR of the EUID
      * @param list
      *            The list of MEC results
      * @param ignoreEUID
      *            do not create pot dup with this euid
+	 * @param userLogics
+	 *			  Execute match logics class
      * @throws SystemObjectException
      *             An error occured.
      * @throws ObjectException
@@ -5143,9 +5162,12 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
      * @return An array of potential duplicates
      */
     private PotentialDuplicate[] constructPotentialDuplicates(String euid1,
-            ArrayList list, String ignoreEuid) throws SystemObjectException,
-            ObjectException {
+            SystemObject so, ArrayList list, String ignoreEuid, ExecuteMatchLogics userLogics)
+			throws SystemObjectException, ObjectException, CustomizationException {
 
+		if (userLogics == null) {
+			userLogics = mUserLogics;
+		}
         ArrayList potDups = new ArrayList(list.size());
         Object scoreElements[] = list.toArray();
         for (int i = 0; i < scoreElements.length; i++) {
@@ -5153,11 +5175,13 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             String euid2 = se.getEUID();
             if (!euid1.equals(euid2)
                     && (ignoreEuid == null || !euid2.equals(ignoreEuid))) {
-                PotentialDuplicate pd = new PotentialDuplicate();
-                pd.setEUID1(euid1);
-                pd.setEUID2(euid2);
-                pd.setProbability((float) se.getWeight());
-                potDups.add(pd);
+				if (!userLogics.rejectPotentialDuplicate(euid1, so, euid2, se.getWeight())) {
+					PotentialDuplicate pd = new PotentialDuplicate();
+					pd.setEUID1(euid1);
+					pd.setEUID2(euid2);
+					pd.setProbability((float) se.getWeight());
+					potDups.add(pd);
+				}
             }
         }
         PotentialDuplicate[] pots = new PotentialDuplicate[potDups.size()];
@@ -5190,6 +5214,34 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             String transId, Object[] beforeMatchFields,
             EnterpriseObject afterEO, String ignoreEuid)
             throws ProcessingException {
+			return execPessimistic(con, euid, transId, beforeMatchFields,
+				afterEO, ignoreEuid, mUserLogics);
+	}
+	
+    /**
+     * Perform pessimistic mode handling.
+     * 
+     * @param con
+     *            Connection
+     * @param euid
+     *            EUID to perform pessimistic handling on
+     * @param transId
+     *            Current transaction
+     * @param beforeSBR
+     *            Before image of SBR
+     * @param afterSBR
+     *            After image of SBR
+     * @param ignoreEUID
+     *            do not create pot dup with this euid
+	 * @param userLogics
+	 *			  ExecuteMatchLogics instance
+     * @throws ProcessingException
+     *             An error occured.
+     */
+    private PotentialDuplicate[] execPessimistic(Connection con, String euid,
+            String transId, Object[] beforeMatchFields,
+            EnterpriseObject afterEO, String ignoreEuid, ExecuteMatchLogics userLogics)
+            throws ProcessingException {
         try {
             Object afterMatchFields[] = mMatchFieldChange
                     .getMatchFields(afterEO);
@@ -5199,7 +5251,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             if (sbrMatchFieldChanged) {
                 mPotDup.deletePotentialDuplicates(con, euid);
                 potDups = findInsertDuplicates(con, euid, transId, afterEO
-                        .getSBR(), ignoreEuid);
+                        .getSBR(), ignoreEuid, userLogics);
             }
             return potDups;
         } catch (Exception e) {
@@ -5242,7 +5294,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             mPotDup.deletePotentialDuplicates(con, euid);
             ArrayList list = mMatch.findMatch(con, eoSearchCriteria,
                     mSearchOptions, opts);
-            pots = constructPotentialDuplicates(euid, list, null);
+            pots = constructPotentialDuplicates(euid, sbr, list, null, null);
             if (pots != null) {
                 mPotDup.addPotentialDuplicates(con, euid, pots, transID);
             }
@@ -5266,11 +5318,13 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
      *            SBR for which to find duplicates
      * @param ignoreEuid
      *            do not create pot dup with this euid
+	 * @param userLogics
+	 *			  Execute match logics class
      * @throws ProcessingException
      *             An error occured.
      */
     private PotentialDuplicate[] findInsertDuplicates(Connection con,
-            String euid, String transId, SBR sbr, String ignoreEuid)
+            String euid, String transId, SBR sbr, String ignoreEuid, ExecuteMatchLogics userLogics)
             throws ProcessingException {
         try {
             MatchOptions opts = new MatchOptions();
@@ -5280,7 +5334,7 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             ArrayList list = mMatch.findMatch(con, eoSearchCriteria,
                     mSearchOptions, opts);
             PotentialDuplicate pots[] = constructPotentialDuplicates(euid,
-                    list, ignoreEuid);
+                    sbr, list, ignoreEuid, userLogics);
             if (pots != null) {
                 mPotDup.addPotentialDuplicates(con, euid, pots, transId);
             }
