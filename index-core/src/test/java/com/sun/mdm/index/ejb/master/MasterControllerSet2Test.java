@@ -74,6 +74,7 @@ public class MasterControllerSet2Test extends TestSuite {
         suite.addTestSuite(MergeMultipleEnterpriseObject.class);
         suite.addTestSuite(CountPotentialDuplicates.class);
         suite.addTestSuite(CountAssumedMatches.class);
+		suite.addTestSuite(ValidateObject.class);
         
         return suite;
     }

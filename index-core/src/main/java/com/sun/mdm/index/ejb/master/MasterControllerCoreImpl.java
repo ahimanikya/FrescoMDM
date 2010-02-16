@@ -6098,6 +6098,25 @@ public class MasterControllerCoreImpl implements MasterControllerCore {
             return resultMap;
     }
 
+	/** Validates an object according to the object model and any specified validation scripts.
+	* <br>
+	* A ValidationException exception will be thrown if validation fails. Otherwise the method will simply return.
+	*
+	* @param objNode The object to be validated
+	* @throws ValidationException Validation failed.
+	* @throws ProcessingException An error accessing the object components occured.
+	*
+	*/
+	public void validateObject(ObjectNode objNode) throws ProcessingException, ValidationException {
+		if (objNode != null) {
+			ValidationRuleRegistry reg = ValidationRuleRegistry.getInstance();
+			ObjectDescriptor odsc = reg.getObjectDescriptor(objNode.pGetTag());
+			if (odsc != null) {
+				odsc.validate(objNode);
+			}
+		}
+	}
+
 	public void setSecurityManager(SecurityManager securityManager) {
 		this.securityManager=securityManager;
 		

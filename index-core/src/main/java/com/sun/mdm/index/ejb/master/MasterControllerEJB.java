@@ -54,6 +54,7 @@ import com.sun.mdm.index.objects.SBR;
 import com.sun.mdm.index.objects.SystemObject;
 import com.sun.mdm.index.objects.SystemObjectPK;
 import com.sun.mdm.index.objects.exception.ObjectException;
+import com.sun.mdm.index.objects.validation.exception.ValidationException;
 import com.sun.mdm.index.ops.exception.OPSException;
 import com.sun.mdm.index.security.SecurityManager;
 import com.sun.mdm.index.update.UpdateResult;
@@ -3231,6 +3232,19 @@ public EnterpriseObject previewUndoAssumedMatch(
         }
         return result;
     }
+	/** Validates an object according to the object model and any specified validation scripts.
+	* <br>
+	* A ValidationException exception will be thrown if validation fails. Otherwise the method will simply return.
+	*
+	* @param objNode The object to be validated
+	* @throws ValidationException Validation failed.
+	* @throws ProcessingException An error accessing the object components occured.
+	*
+	*/
+	public void validateObject(ObjectNode objNode) throws ProcessingException, ValidationException {
+		mControllerImpl.validateObject(objNode);
+	}
+
     @AroundInvoke
     public Object intercept(InvocationContext invocation) throws Exception {
     	securityManager.setCurrentMethod(invocation.getMethod().getName());
