@@ -34,6 +34,7 @@ import com.sun.mdm.index.objects.EnterpriseObject;
 import com.sun.mdm.index.objects.SystemObject;
 import java.util.List;
 import com.sun.mdm.index.master.search.transaction.TransactionIterator;
+import java.util.Calendar;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
@@ -108,9 +109,10 @@ public class TMTest2 extends TestCase {
     }
 
     private void lookupXA(int pageSize) throws Exception {
+		String tomorrow = getTomorrow();
         LookupTransactionsHelper lt = new LookupTransactionsHelper();
         TransactionIterator iterator = 
-            lt.run(new String[] {"startDate=20000101000000", "endDate=20100101000000", "pageSize=" + pageSize});
+            lt.run(new String[] {"startDate=20000101000000", "endDate=" + tomorrow, "pageSize=" + pageSize});
         System.out.println("# of XA's found: " + iterator.count());
         int count = 0;
         Date latestDate = null;
@@ -126,7 +128,7 @@ public class TMTest2 extends TestCase {
         int recordCount = iterator.count();
         
         //Now set the end date to be the last one in the set
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddkkmmss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
         latestDate.setSeconds(latestDate.getSeconds()+1);
         String dateCriteria = sdf.format(latestDate);
         iterator = lt.run(new String[] {"startDate=20000101000000", "endDate=" + dateCriteria});
@@ -137,6 +139,13 @@ public class TMTest2 extends TestCase {
     private void log(String msg) {
         System.out.println(msg);
     }
+
+	private String getTomorrow() {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DATE,1);
+		return sdf.format(cal.getTime());
+	}
     
     /** Main entry point
      * @param args args

@@ -29,9 +29,12 @@ import com.sun.mdm.index.ejb.master.helper.ClearDb;
 import com.sun.mdm.index.ejb.master.helper.LookupTransactionsHelper;
 import com.sun.mdm.index.master.search.transaction.TransactionIterator;
 import com.sun.mdm.index.master.search.transaction.TransactionSummary;
+import java.util.Calendar;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.math.BigInteger;
+
+import java.util.List;
 
 /** Test class for delete system object method
  * @author Dan Cidon
@@ -70,11 +73,15 @@ public class LookupTransactions extends TestCase {
     
     private void executeTest(int pageSize) throws Exception {
         int recordCount = 10;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+		String tomorrow = getTomorrow();
+
         CreateEnterpriseObjectHelper createHelper = new CreateEnterpriseObjectHelper(); 
-        createHelper.run(new String[] {"fileName=LookupTransactions1.txt", "fileType=eiEvent"});
+        List eoList = createHelper.run(new String[] {"fileName=LookupTransactions1.txt", "fileType=eiEvent"});
         LookupTransactionsHelper lt = new LookupTransactionsHelper();
         TransactionIterator iterator = 
-            lt.run(new String[] {"startDate=20000101000000", "endDate=20100101000000", "pageSize=" + pageSize});
+            lt.run(new String[] {"startDate=20000101000000", "endDate=" + tomorrow, "pageSize=" + pageSize});
+		assertTrue(iterator != null);
         assertTrue(iterator.count() == recordCount);
         int count = 0;
         Date latestDate = null;
@@ -93,7 +100,6 @@ public class LookupTransactions extends TestCase {
         assertTrue(summaryArray.length == recordCount);
         
         //Now set the end date to be the last one in the set
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddkkmmss");
         latestDate.setSeconds(latestDate.getSeconds()+1);
         String dateCriteria = sdf.format(latestDate);
         iterator = lt.run(new String[] {"startDate=20000101000000", "endDate=" + dateCriteria});
@@ -101,7 +107,7 @@ public class LookupTransactions extends TestCase {
         
         //  run another test
         iterator 
-                = lt.run2(new String[] {"startDate=20000101000000", "endDate=20100101000000", "pageSize=" + pageSize});
+                = lt.run2(new String[] {"startDate=20000101000000", "endDate=" + tomorrow, "pageSize=" + pageSize});
         assertTrue(iterator.count() == recordCount);
         count = 0;
         latestDate = null;
@@ -117,7 +123,7 @@ public class LookupTransactions extends TestCase {
         
         //  run another test
         iterator 
-                = lt.run3(new String[] {"startDate=20000101000000", "endDate=20100101000000", "pageSize=" + pageSize});
+                = lt.run3(new String[] {"startDate=20000101000000", "endDate=" + tomorrow, "pageSize=" + pageSize});
         assertTrue(iterator.count() == recordCount);
         count = 0;
         latestDate = null;
@@ -162,7 +168,13 @@ public class LookupTransactions extends TestCase {
     private void log(String msg) {
         System.out.println(msg);
     }
-    
+
+	private String getTomorrow() {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DATE,1);
+		return sdf.format(cal.getTime());
+	}
     /** Main entry point
      * @param args args
      */
